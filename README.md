@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FreelAI Front
 
 Estrutura inicial do frontend FreelAI, construída com Next.js App Router, React, TypeScript e Tailwind CSS.
@@ -23,3 +24,6 @@ Abra [http://localhost:3000](http://localhost:3000) no navegador.
 - `npm run build`: gera a versão de produção.
 - `npm run start`: inicia a versão de produção.
 - `npm run typecheck`: verifica os tipos TypeScript.
+=======
+# FreelAI-Front
+>>>>>>> fdcfd00a22ad50425f08c584e8cbd0abd337d17b
