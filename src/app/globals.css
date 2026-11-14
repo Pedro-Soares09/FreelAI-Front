@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #172033;
+  background: #f7f8fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.app-shell {
+  display: flex;
+  min-height: calc(100vh - 4rem);
+}
+
+.app-content {
+  flex: 1;
+}
+
+.card-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4rem;
+  padding: 0 1.5rem;
+  background: white;
+  border-bottom: 1px solid #e6e8ee;
+}
+
+.site-sidebar {
+  width: 15rem;
+  padding: 1.5rem;
+  background: white;
+  border-right: 1px solid #e6e8ee;
+}
+
+.site-sidebar nav,
+.mobile-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.site-sidebar nav {
+  flex-direction: column;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .site-sidebar {
+    display: none;
+  }
+
+  .mobile-nav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+    background: white;
+    border-top: 1px solid #e6e8ee;
+  }
+}

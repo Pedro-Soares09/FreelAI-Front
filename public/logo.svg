@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" role="img" aria-labelledby="title">
+  <title id="title">FreelAI</title>
+  <rect width="40" height="40" rx="12" fill="#4f46e5"/>
+  <path d="M12 28V12h15v4H17v3h9v4h-9v5z" fill="#fff"/>
+  <text x="48" y="28" fill="#172033" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">FreelAI</text>
+</svg>
