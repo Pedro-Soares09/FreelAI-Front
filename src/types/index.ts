@@ -11,6 +11,7 @@ export type Job = {
   description: string;
   category: string;
   budget: string;
+  status?: string;
 };
 
 export type Conversation = {

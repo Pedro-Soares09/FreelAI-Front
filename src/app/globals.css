@@ -2,93 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: 10 10 20;
+  --surface: 20 20 34;
+  --surface-2: 30 30 50;
+  --borda: 52 52 82;
+  --fg: 238 236 255;
+  --muted: 160 158 190;
+  --primary: 167 139 250;
+  --primary-fg: 14 10 30;
+  --accent: 34 211 238;
+  --success: 74 222 128;
+  --warning: 251 191 36;
+  --danger: 251 113 133;
+  --info: 96 165 250;
+}
+
+:root[data-theme="light"] {
   color-scheme: light;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #172033;
-  background: #f7f8fb;
+  --bg: 247 245 255;
+  --surface: 255 255 255;
+  --surface-2: 240 236 253;
+  --borda: 221 214 245;
+  --fg: 30 20 60;
+  --muted: 98 90 130;
+  --primary: 109 40 217;
+  --primary-fg: 255 255 255;
+  --accent: 8 145 178;
+  --success: 21 128 61;
+  --warning: 161 98 7;
+  --danger: 190 18 60;
+  --info: 29 78 216;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.page {
-  width: min(100% - 2rem, 72rem);
-  margin: 0 auto;
-  padding: 2rem 0;
-}
-
-.app-shell {
-  display: flex;
-  min-height: calc(100vh - 4rem);
-}
-
-.app-content {
-  flex: 1;
-}
-
-.card-list {
-  display: grid;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 4rem;
-  padding: 0 1.5rem;
-  background: white;
-  border-bottom: 1px solid #e6e8ee;
-}
-
-.site-sidebar {
-  width: 15rem;
-  padding: 1.5rem;
-  background: white;
-  border-right: 1px solid #e6e8ee;
-}
-
-.site-sidebar nav,
-.mobile-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-.site-sidebar nav {
-  flex-direction: column;
-}
-
-.mobile-nav {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .site-sidebar {
-    display: none;
+@layer base {
+  html {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
+  body {
+    @apply min-h-screen bg-bg text-fg antialiased;
+    margin: 0;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
 
-  .mobile-nav {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-around;
-    padding: 1rem;
-    background: white;
-    border-top: 1px solid #e6e8ee;
+@layer components {
+  .page {
+    @apply mx-auto w-full max-w-6xl px-4 py-8;
+  }
+  .card-list {
+    @apply mt-6 grid gap-4;
+  }
+  .app-shell {
+    @apply flex min-h-[calc(100vh-4rem)];
+  }
+  .app-content {
+    @apply min-w-0 flex-1 pb-20 md:pb-0;
   }
 }
