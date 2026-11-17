@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ReviewModal } from "@/components/chat/review-modal";
 import { CONTEST_REASONS, CONTEST_WINDOW_HOURS } from "@/lib/constants";
 import { formatDateTime } from "@/lib/format";
 import {
@@ -25,6 +26,7 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   const [contesting, setContesting] = useState(false);
   const [reason, setReason] = useState<ContestReason>("nao-realizado");
   const [details, setDetails] = useState("");
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   const otherName = conversation.contact.name;
   const iConfirmed = iAmHirer ? agreement.completionByHirer : agreement.completionByWorker;
@@ -58,7 +60,16 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       )}
 
       {agreement.status === "completed" && (
-        <p role="status">Serviço concluído pelas duas partes.</p>
+        <>
+          <p role="status">Serviço concluído pelas duas partes.</p>
+          <button type="button" className="cta" onClick={() => setReviewOpen(true)}>
+            Avaliar {otherName}
+          </button>
+        </>
+      )}
+
+      {reviewOpen && (
+        <ReviewModal agreement={agreement} targetName={otherName} onClose={() => setReviewOpen(false)} />
       )}
 
       {agreement.status === "contested" && (

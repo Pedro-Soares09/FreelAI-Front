@@ -397,3 +397,24 @@ export async function contestAgreement(
   addEvent(agreement, `Serviço contestado: ${label}`);
   return structuredClone(agreement);
 }
+
+// --- Avaliação e reputação exibidas no perfil (US56) ---
+
+export type ReviewSummary = {
+  /** Média das notas recebidas; null quando ainda não há avaliações. */
+  average: number | null;
+  total: number;
+  reviews: Review[];
+};
+
+/** Avaliações recebidas por um usuário, com média para o perfil público. */
+export async function getReviewsFor(userId: string): Promise<ReviewSummary> {
+  await simulateDelay(250);
+  const reviews = chatDb.reviews
+    .filter((r) => r.targetId === userId)
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const average = reviews.length
+    ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) * 10) / 10
+    : null;
+  return { average, total: reviews.length, reviews: structuredClone(reviews) };
+}
