@@ -4,6 +4,7 @@ import {
   ConviteVaga,
   DisponibilidadeProfissional,
   Notificacao,
+  Top3Contratacao,
   Vaga,
 } from '@/types';
 import { mockRouter } from '@/mocks/freelai-mock';
@@ -62,6 +63,18 @@ export const freelaiApi = {
   },
 
   obterVaga: (vagaId: string) => request<Vaga>(`/api/v1/vagas/${vagaId}`),
+
+  listarTop3Contratante: () =>
+    request<Top3Contratacao[]>('/api/v1/contratante/top3'),
+
+  escolherProfissional: (vagaId: string, profissionalId: string) =>
+    request<Top3Contratacao>(
+      `/api/v1/contratante/vagas/${encodeURIComponent(vagaId)}/escolher`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ profissional_id: profissionalId }),
+      }
+    ),
 
   manifestarInteresse: (vagaId: string, valorProposto?: number | null) =>
     request<ConviteVaga>(`/api/v1/vagas/${vagaId}/interesse`, {

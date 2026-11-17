@@ -2,15 +2,16 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ContratanteTop3 } from '@/components/match/contratante-top3';
 import { freelaiApi } from '@/services/api';
-import { ConviteVaga, Vaga } from '@/types';
+import { ConviteVaga, PerfilAtivo, Vaga } from '@/types';
 
 interface ItemConvite {
   convite: ConviteVaga;
   vaga: Vaga;
 }
 
-export default function MatchConvitePage() {
+function ProfissionalConvites() {
   const router = useRouter();
   const [itens, setItens] = useState<ItemConvite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -259,5 +260,31 @@ export default function MatchConvitePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function MatchPage() {
+  const [perfilAtivo, setPerfilAtivo] = useState<PerfilAtivo | null>(null);
+
+  useEffect(() => {
+    const salvo = localStorage.getItem('freelai_perfil_ativo');
+    setPerfilAtivo(
+      salvo === 'contratante' || salvo === 'admin' ? salvo : 'profissional'
+    );
+  }, []);
+
+  if (!perfilAtivo) {
+    return (
+      <div
+        aria-label="Carregando perfil"
+        className="mx-auto mt-8 h-48 max-w-3xl animate-pulse rounded-2xl border border-zinc-800 bg-zinc-900"
+      />
+    );
+  }
+
+  return perfilAtivo === 'contratante' ? (
+    <ContratanteTop3 />
+  ) : (
+    <ProfissionalConvites />
   );
 }

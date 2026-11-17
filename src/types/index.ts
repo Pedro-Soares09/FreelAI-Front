@@ -43,6 +43,37 @@ export interface ConviteVaga {
   rodada: number;
 }
 
+export interface ProfissionalRecomendado {
+  id: string;
+  nome: string;
+  foto_url?: string | null;
+  verificado: boolean;
+  nota_media: number;
+  total_avaliacoes: number;
+  distancia_km: number;
+  novo: boolean;
+  pro: boolean;
+  demonstrou_interesse: boolean;
+  valor_proposto?: number | null;
+  resumo: string;
+  habilidades: string[];
+  estado: 'disponivel' | 'falhou';
+}
+
+export interface ConviteContratante {
+  id: string;
+  profissional_id: string;
+  status: 'em_andamento' | 'aceito';
+  prazo_em: string;
+}
+
+export interface Top3Contratacao {
+  vaga: Vaga;
+  rodada: number;
+  profissionais: ProfissionalRecomendado[];
+  convite_atual: ConviteContratante | null;
+}
+
 export interface Vaga {
   id: string;
   titulo: string;
