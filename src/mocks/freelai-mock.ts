@@ -4,6 +4,8 @@ import {
   ConviteVaga,
   DisponibilidadeProfissional,
   Notificacao,
+  ProfissionalRecomendado,
+  Top3Contratacao,
   Vaga,
 } from '@/types';
 
@@ -162,6 +164,163 @@ const mockVagas: Vaga[] = [
   },
 ];
 
+const profissionaisPorRodada: ProfissionalRecomendado[][] = [
+  [
+    {
+      id: 'prof-top-1',
+      nome: 'Ana Beatriz Lima',
+      foto_url: 'https://i.pravatar.cc/160?img=47',
+      verificado: true,
+      nota_media: 4.9,
+      total_avaliacoes: 38,
+      distancia_km: 2.4,
+      novo: false,
+      pro: true,
+      demonstrou_interesse: true,
+      valor_proposto: 180,
+      resumo: 'Garçonete com experiência em eventos corporativos e recepções.',
+      habilidades: ['Atendimento', 'Eventos corporativos', 'Inglês'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-2',
+      nome: 'Lucas Ferreira',
+      foto_url: 'https://i.pravatar.cc/160?img=12',
+      verificado: true,
+      nota_media: 4.8,
+      total_avaliacoes: 24,
+      distancia_km: 4.1,
+      novo: false,
+      pro: false,
+      demonstrou_interesse: true,
+      valor_proposto: null,
+      resumo: 'Profissional de atendimento focado em eventos e serviço de salão.',
+      habilidades: ['Serviço de salão', 'Recepção'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-3',
+      nome: 'Mariana Costa',
+      foto_url: 'https://i.pravatar.cc/160?img=44',
+      verificado: true,
+      nota_media: 4.7,
+      total_avaliacoes: 12,
+      distancia_km: 5.3,
+      novo: true,
+      pro: false,
+      demonstrou_interesse: false,
+      valor_proposto: null,
+      resumo: 'Nova na plataforma, com experiência prévia em eventos e buffets.',
+      habilidades: ['Buffet', 'Organização', 'Atendimento'],
+      estado: 'disponivel',
+    },
+  ],
+  [
+    {
+      id: 'prof-top-4',
+      nome: 'Rafael Santos',
+      foto_url: 'https://i.pravatar.cc/160?img=13',
+      verificado: true,
+      nota_media: 4.8,
+      total_avaliacoes: 19,
+      distancia_km: 3.2,
+      novo: false,
+      pro: true,
+      demonstrou_interesse: true,
+      valor_proposto: 175,
+      resumo: 'Atendente Pro com experiência em eventos de médio e grande porte.',
+      habilidades: ['Eventos', 'Coquetel', 'Liderança'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-5',
+      nome: 'Camila Oliveira',
+      foto_url: 'https://i.pravatar.cc/160?img=49',
+      verificado: true,
+      nota_media: 4.9,
+      total_avaliacoes: 31,
+      distancia_km: 4.7,
+      novo: false,
+      pro: false,
+      demonstrou_interesse: true,
+      valor_proposto: null,
+      resumo: 'Profissional experiente em atendimento e organização de salão.',
+      habilidades: ['Atendimento', 'Organização'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-6',
+      nome: 'Pedro Henrique Alves',
+      foto_url: 'https://i.pravatar.cc/160?img=60',
+      verificado: true,
+      nota_media: 4.6,
+      total_avaliacoes: 8,
+      distancia_km: 6.1,
+      novo: true,
+      pro: false,
+      demonstrou_interesse: false,
+      valor_proposto: null,
+      resumo: 'Profissional recém-chegado à plataforma, disponível para eventos.',
+      habilidades: ['Recepção', 'Serviço de salão'],
+      estado: 'disponivel',
+    },
+  ],
+];
+
+const mockTop3Contratacoes: Top3Contratacao[] = [
+  {
+    vaga: mockVagas[1],
+    rodada: 1,
+    profissionais: profissionaisPorRodada[0].map((profissional) => ({
+      ...profissional,
+      habilidades: [...profissional.habilidades],
+    })),
+    convite_atual: null,
+  },
+];
+
+function atualizarRodadasTop3(): void {
+  for (const match of mockTop3Contratacoes) {
+    const convite = match.convite_atual;
+    if (
+      !convite ||
+      convite.status !== 'em_andamento' ||
+      new Date(convite.prazo_em).getTime() > Date.now()
+    ) {
+      continue;
+    }
+
+    const profissional = match.profissionais.find(
+      (item) => item.id === convite.profissional_id
+    );
+    if (profissional) profissional.estado = 'falhou';
+    match.convite_atual = null;
+
+    if (match.profissionais.every((item) => item.estado === 'falhou')) {
+      match.rodada += 1;
+      const novaRodada =
+        profissionaisPorRodada[(match.rodada - 1) % profissionaisPorRodada.length];
+      match.profissionais = novaRodada.map((item) => ({
+        ...item,
+        estado: 'disponivel',
+        habilidades: [...item.habilidades],
+      }));
+    }
+  }
+}
+
+function copiarTop3(match: Top3Contratacao): Top3Contratacao {
+  return {
+    ...match,
+    vaga: { ...match.vaga },
+    profissionais: match.profissionais.map((item) => ({
+      ...item,
+      habilidades: [...item.habilidades],
+    })),
+    convite_atual: match.convite_atual ? { ...match.convite_atual } : null,
+  };
+}
+
 let mockDisponibilidade: DisponibilidadeProfissional = {
   disponivel_agora: false,
   disponivel_ate: null,
@@ -242,6 +401,38 @@ export async function mockRouter<T>(
   const body = options?.body ? JSON.parse(String(options.body)) : {};
   const [pathname, search] = path.split('?');
   const params = new URLSearchParams(search || '');
+
+  if (pathname === '/api/v1/contratante/top3' && method === 'GET') {
+    atualizarRodadasTop3();
+    return mockTop3Contratacoes.map(copiarTop3) as unknown as T;
+  }
+
+  const escolhaMatch = pathname.match(
+    /^\/api\/v1\/contratante\/vagas\/([^/]+)\/escolher$/
+  );
+  if (escolhaMatch && method === 'POST') {
+    atualizarRodadasTop3();
+    const match = mockTop3Contratacoes.find(
+      (item) => item.vaga.id === escolhaMatch[1]
+    );
+    if (!match) throw new Error('Vaga não encontrada para esta rodada.');
+    if (match.convite_atual) {
+      throw new Error('Aguarde a resolução do convite atual.');
+    }
+    const profissional = match.profissionais.find(
+      (item) => item.id === body.profissional_id
+    );
+    if (!profissional || profissional.estado === 'falhou') {
+      throw new Error('Este profissional não está disponível nesta rodada.');
+    }
+    match.convite_atual = {
+      id: `convite-match-${Date.now()}`,
+      profissional_id: profissional.id,
+      status: 'em_andamento',
+      prazo_em: new Date(Date.now() + 30 * 60_000).toISOString(),
+    };
+    return copiarTop3(match) as unknown as T;
+  }
 
   if (pathname === '/api/v1/vagas/oportunidades' && method === 'GET') {
     const raio = Number(params.get('raio_km') || 15);

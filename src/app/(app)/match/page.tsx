@@ -2,6 +2,9 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ContratanteTop3 } from '@/components/match/contratante-top3';
+import { Carregando } from '@/components/ui/estados';
+import { useSessao } from '@/lib/session';
 import { freelaiApi } from '@/services/api';
 import { ConviteVaga, Vaga } from '@/types';
 import { IconCheck } from '@/components/ui/icons';
@@ -13,7 +16,7 @@ interface ItemConvite {
   vaga: Vaga;
 }
 
-export default function MatchConvitePage() {
+function ProfissionalConvites() {
   const confirmar = useConfirmar();
   const { avisar } = useToast();
   const router = useRouter();
@@ -264,5 +267,17 @@ export default function MatchConvitePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function MatchPage() {
+  const { usuario } = useSessao();
+
+  if (!usuario) return <Carregando rotulo="Carregando perfil" />;
+
+  return usuario.perfil_ativo === 'contratante' ? (
+    <ContratanteTop3 />
+  ) : (
+    <ProfissionalConvites />
   );
 }

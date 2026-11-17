@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useSessao } from '@/lib/session';
 import { freelaiApi } from '@/services/api';
 import { PerfilAtivo, Vaga } from '@/types';
 import { CheckinPanel } from '@/components/vagas/checkin-panel';
@@ -14,19 +15,14 @@ export default function DetalheVagaPage() {
   const [vaga, setVaga] = useState<Vaga | null>(null);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
-  const [perfilAtivo, setPerfilAtivo] = useState<PerfilAtivo>('profissional');
+  const { usuario } = useSessao();
+  const perfilAtivo: PerfilAtivo =
+    usuario?.papel === 'admin' ? 'admin' : usuario?.perfil_ativo ?? 'profissional';
 
   const [mostrarContraproposta, setMostrarContraproposta] = useState(false);
   const [valorContraproposta, setValorContraproposta] = useState<string>('');
   const [erroForm, setErroForm] = useState<string | null>(null);
   const [enviandoInteresse, setEnviandoInteresse] = useState(false);
-
-  useEffect(() => {
-    const salvo = localStorage.getItem('freelai_perfil_ativo');
-    if (salvo === 'contratante' || salvo === 'admin') {
-      setPerfilAtivo(salvo);
-    }
-  }, []);
 
   const carregarVaga = useCallback(async () => {
     setLoading(true);
