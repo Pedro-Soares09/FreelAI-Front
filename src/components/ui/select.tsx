@@ -11,6 +11,7 @@ type SelectProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, "children"> & {
   placeholder?: string;
   error?: string;
   hint?: string;
+  ocultarRotulo?: boolean;
 };
 
 export function Select({
@@ -19,11 +20,12 @@ export function Select({
   placeholder,
   error,
   hint,
+  ocultarRotulo,
   className,
   ...props
 }: SelectProps) {
   return (
-    <Field label={label} error={error} hint={hint}>
+    <Field label={label} error={error} hint={hint} ocultarRotulo={ocultarRotulo}>
       {({ id, describedBy, invalid }) => (
         <select
           id={id}

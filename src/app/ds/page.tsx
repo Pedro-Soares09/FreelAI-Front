@@ -99,13 +99,28 @@ export default function DesignSystemPage() {
       <Secao titulo="Card de vaga">
         <div className="w-full max-w-xl">
           <JobCard
-            job={{
+            vaga={{
               id: "exemplo",
-              title: "Montagem de guarda-roupa",
-              description: "Montar guarda-roupa de seis portas em apartamento na Boa Viagem.",
-              category: "Montagem",
-              budget: "R$ 150,00",
-              status: "PUBLICADA",
+              titulo: "Montagem de guarda-roupa",
+              descricao: "Montar guarda-roupa de seis portas.",
+              categoria: "montagem",
+              nivel_risco: "baixo",
+              valor: 150,
+              duracao_horas: 3,
+              data_inicio: new Date().toISOString(),
+              bairro: "Boa Viagem",
+              distancia_km: 2.4,
+              latitude: -8.12,
+              longitude: -34.9,
+              status: "publicada",
+              contratante: {
+                id: "c1",
+                nome: "Maria Souza",
+                verificado: true,
+                nota_media: 4.8,
+                total_avaliacoes: 12,
+                pro: true,
+              },
             }}
           />
         </div>

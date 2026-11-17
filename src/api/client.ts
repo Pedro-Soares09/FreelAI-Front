@@ -81,3 +81,21 @@ export async function chamar<T>(promessa: Promise<Resultado<T>>): Promise<T> {
   }
   return resultado.data as T;
 }
+
+/** Requisição autenticada para chamadas fora do cliente tipado, com a mesma renovação de token. */
+export async function fetchAutenticado(caminho: string, init?: RequestInit): Promise<Response> {
+  const montar = () => {
+    const headers = new Headers(init?.headers);
+    if (!headers.has("Content-Type") && init?.body) headers.set("Content-Type", "application/json");
+    const tokens = lerTokens();
+    if (tokens) headers.set("Authorization", `Bearer ${tokens.access}`);
+    return fetch(`${BASE_URL}${caminho}`, { ...init, headers });
+  };
+
+  let resposta = await montar();
+  if (resposta.status === 401) {
+    if (await renovar()) resposta = await montar();
+    if (resposta.status === 401) notificarExpiracao();
+  }
+  return resposta;
+}

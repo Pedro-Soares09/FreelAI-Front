@@ -3,8 +3,10 @@ import type { TipoPerfil, Usuario } from "@/api/tipos";
 export type ItemNav = { href: string; rotulo: string };
 
 const comum: ItemNav[] = [
+  { href: "/plano-pro", rotulo: "Plano Pro" },
   { href: "/chat", rotulo: "Conversas" },
   { href: "/perfil", rotulo: "Perfil" },
+  { href: "/suporte", rotulo: "Suporte" },
 ];
 
 const navProfissional: ItemNav[] = [
@@ -20,10 +22,14 @@ const navContratante: ItemNav[] = [
   ...comum,
 ];
 
-const navAdmin: ItemNav[] = [{ href: "/admin", rotulo: "Painel" }, ...comum];
+const navAdmin: ItemNav[] = [
+  { href: "/admin", rotulo: "Painel" },
+  { href: "/chat", rotulo: "Conversas" },
+  { href: "/perfil", rotulo: "Perfil" },
+];
 
 export function itensDeNavegacao(usuario: Usuario | null): ItemNav[] {
-  if (!usuario) return [];
+  if (!usuario || usuario.estado !== "ativa") return [];
   if (usuario.papel === "admin") return navAdmin;
   return usuario.perfil_ativo === "contratante" ? navContratante : navProfissional;
 }

@@ -10,13 +10,29 @@ Interface web do FreelAI, marketplace de serviços pontuais em Recife. Next.js (
 
 ## Execução local
 
+### 1. API (repositório FreelAI-Back)
+
+```bash
+cd ../FreelAI-Back
+python -m venv .venv
+.venv/Scripts/pip install -r requirements-dev.txt      # Windows; no Linux/macOS: .venv/bin/pip
+cp .env.example .env                                    # ajuste DATABASE_URL=sqlite:///./freelai.db para rodar sem Docker
+.venv/Scripts/python -m alembic upgrade head
+.venv/Scripts/python scripts/semear_demo.py             # contas de demonstração
+.venv/Scripts/python -m uvicorn app.main:app --port 8000
+```
+
+Contas de demonstração (senha `senha-segura-123`): `ana@example.com` (profissional e contratante) e `admin@example.com` (administração).
+
+### 2. Front
+
 ```bash
 npm install
 cp .env.example .env.local
 npm run dev
 ```
 
-Abra http://localhost:3000.
+Abra http://localhost:3000 e entre com uma das contas acima. As telas de vagas, match, chat, acordo, perfil e verificação usam dados de apoio locais (`NEXT_PUBLIC_USE_MOCKS=true`) até os endpoints correspondentes entrarem no contrato; login, cadastro e sessão usam a API real.
 
 ## Scripts
 
