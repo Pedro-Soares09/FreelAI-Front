@@ -77,6 +77,7 @@ export const conversations: Conversation[] = [
     lastMessageAt: minutesAgo(26 * 60),
     unreadCount: 0,
     agreementId: "a-3",
+    jobClosed: true,
   },
 ];
 

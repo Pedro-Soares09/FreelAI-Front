@@ -92,3 +92,65 @@ a {
     border-top: 1px solid #e6e8ee;
   }
 }
+
+/* ===== Chat (Pessoa 5) ===== */
+.state-box {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border: 1px dashed #c9cdd8;
+  border-radius: 0.75rem;
+  color: #55607a;
+}
+
+.conversation-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.conversation-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  border: 1px solid #e6e8ee;
+}
+
+.conversation-body {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.conversation-body span,
+.conversation-body small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #55607a;
+}
+
+.conversation-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: #55607a;
+}
+
+.unread-badge {
+  min-width: 1.4rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  background: #4f46e5;
+  color: #fff;
+  text-align: center;
+  font-size: 0.75rem;
+}

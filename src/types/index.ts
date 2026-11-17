@@ -26,6 +26,8 @@ export type Conversation = {
   unreadCount: number;
   /** Preenchido quando já existe um acordo (proposto, aceito etc.). */
   agreementId?: string;
+  /** Vaga encerrada: a conversa vira somente leitura. */
+  jobClosed?: boolean;
 };
 
 export type Payment = {
