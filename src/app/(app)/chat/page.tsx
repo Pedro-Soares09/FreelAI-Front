@@ -1,13 +1,59 @@
-import { Pagina } from "@/components/layout/pagina";
-import { ListaVazia } from "@/components/ui/estados";
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import { ConversationItem } from "@/components/chat/conversation-item";
+import { getConversations } from "@/services/api";
+import type { Conversation } from "@/types";
 
 export default function ChatPage() {
+  const [conversations, setConversations] = useState<Conversation[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = useCallback(() => {
+    setError(null);
+    getConversations()
+      .then(setConversations)
+      .catch((err: Error) => setError(err.message));
+  }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
   return (
-    <Pagina titulo="Conversas" descricao="Converse com quem você contratou ou com quem contratou você.">
-      <ListaVazia
-        titulo="Nenhuma conversa ainda"
-        descricao="O chat é aberto quando um convite é aceito e o contrato fica pronto."
-      />
-    </Pagina>
+    <section className="page">
+      <h1>Conversas</h1>
+
+      {error && (
+        <div role="alert" className="state-box">
+          <p>Não foi possível carregar suas conversas. {error}</p>
+          <button type="button" onClick={load}>
+            Tentar de novo
+          </button>
+        </div>
+      )}
+
+      {!error && conversations === null && (
+        <p className="state-box" aria-live="polite">
+          Carregando conversas...
+        </p>
+      )}
+
+      {!error && conversations?.length === 0 && (
+        <div className="state-box">
+          <p>Suas conversas aparecerão aqui quando você se candidatar a uma vaga.</p>
+        </div>
+      )}
+
+      {conversations && conversations.length > 0 && (
+        <ul className="conversation-list">
+          {conversations.map((conversation) => (
+            <li key={conversation.id}>
+              <ConversationItem conversation={conversation} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }

@@ -155,3 +155,6 @@ export const freelaiApi = {
       method: 'POST',
     }),
 };
+
+// Chat, acordo e pós-serviço (mocks com atraso simulado até o back expor os endpoints).
+export * from './chat';
