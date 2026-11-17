@@ -47,7 +47,7 @@ export function Header() {
             />
           </div>
         )}
-        {usuario && <Notificacoes />}
+        {usuario?.estado === "ativa" && <Notificacoes />}
         <ThemeToggle />
         {usuario && (
           <Button

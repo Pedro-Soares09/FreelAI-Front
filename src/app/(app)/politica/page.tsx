@@ -1,8 +1,13 @@
+import { Pagina } from "@/components/layout/pagina";
+import { ListaVazia } from "@/components/ui/estados";
+
 export default function PolicyPage() {
   return (
-    <section className="page">
-      <h1>Política de privacidade</h1>
-      <p>As informações sobre privacidade serão publicadas aqui.</p>
-    </section>
+    <Pagina titulo="Política de privacidade">
+      <ListaVazia
+        titulo="Texto em revisão"
+        descricao="A política de privacidade será publicada aqui assim que for validada."
+      />
+    </Pagina>
   );
 }

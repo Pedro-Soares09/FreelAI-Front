@@ -21,10 +21,14 @@ const navContratante: ItemNav[] = [
   ...comum,
 ];
 
-const navAdmin: ItemNav[] = [{ href: "/admin", rotulo: "Painel" }, ...comum];
+const navAdmin: ItemNav[] = [
+  { href: "/admin", rotulo: "Painel" },
+  { href: "/chat", rotulo: "Conversas" },
+  { href: "/perfil", rotulo: "Perfil" },
+];
 
 export function itensDeNavegacao(usuario: Usuario | null): ItemNav[] {
-  if (!usuario) return [];
+  if (!usuario || usuario.estado !== "ativa") return [];
   if (usuario.papel === "admin") return navAdmin;
   return usuario.perfil_ativo === "contratante" ? navContratante : navProfissional;
 }
