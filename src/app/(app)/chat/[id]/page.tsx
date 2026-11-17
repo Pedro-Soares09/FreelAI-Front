@@ -2,13 +2,20 @@
 
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
+import { AgreementModal } from "@/components/chat/agreement-modal";
 import { AiSuggestion } from "@/components/chat/ai-suggestion";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { Composer } from "@/components/chat/composer";
 import { MessageList } from "@/components/chat/message-list";
 import { CURRENT_USER_ID } from "@/mocks/conversations";
-import { getConversation, getMessages, markConversationAsRead } from "@/services/api";
-import type { Conversation, Message } from "@/types";
+import {
+  getAgreementByConversation,
+  getConversation,
+  getMessages,
+  getMyRole,
+  markConversationAsRead,
+} from "@/services/api";
+import type { Agreement, Conversation, Message } from "@/types";
 
 const POLL_INTERVAL_MS = 3000;
 
@@ -24,6 +31,8 @@ export default function ConversationPage({ params }: ConversationPageProps) {
   const [connection, setConnection] = useState<"online" | "reconnecting">("online");
   const [draft, setDraft] = useState("");
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [agreement, setAgreement] = useState<Agreement | null>(null);
+  const [agreementOpen, setAgreementOpen] = useState(false);
 
   // Carrega a conversa e marca como lida.
   useEffect(() => {
@@ -51,9 +60,13 @@ export default function ConversationPage({ params }: ConversationPageProps) {
 
     async function poll() {
       try {
-        const fresh = await getMessages(id);
+        const [fresh, currentAgreement] = await Promise.all([
+          getMessages(id),
+          getAgreementByConversation(id),
+        ]);
         if (!active) return;
         setMessages(fresh);
+        setAgreement(currentAgreement);
         setConnection("online");
       } catch {
         if (active) setConnection("reconnecting");
@@ -101,10 +114,23 @@ export default function ConversationPage({ params }: ConversationPageProps) {
   }
 
   const readOnly = Boolean(conversation.jobClosed);
+  const iAmWorker = getMyRole(conversation) === "profissional";
+  const canOpenAgreement = !readOnly && (!agreement || agreement.status === "pending");
+  const waitingPayment = agreement?.status === "accepted" && iAmWorker;
 
   return (
     <section className="chat-screen">
-      <ChatHeader conversation={conversation} connection={connection} />
+      <ChatHeader
+        conversation={conversation}
+        connection={connection}
+        onAgreementClick={canOpenAgreement ? () => setAgreementOpen(true) : undefined}
+      />
+
+      {waitingPayment && (
+        <p role="status" className="state-box">
+          Acordo aceito pelas duas partes. Aguardando pagamento do contratante.
+        </p>
+      )}
 
       {readOnly && (
         <p role="status" className="state-box">
@@ -118,6 +144,15 @@ export default function ConversationPage({ params }: ConversationPageProps) {
         </p>
       ) : (
         <MessageList messages={messages} currentUserId={CURRENT_USER_ID} />
+      )}
+
+      {agreementOpen && (
+        <AgreementModal
+          conversation={conversation}
+          agreement={agreement}
+          onClose={() => setAgreementOpen(false)}
+          onChanged={setAgreement}
+        />
       )}
 
       {!readOnly && (

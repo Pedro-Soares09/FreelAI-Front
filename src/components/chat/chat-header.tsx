@@ -6,9 +6,11 @@ import type { Conversation } from "@/types";
 type ChatHeaderProps = {
   conversation: Conversation;
   connection: "online" | "reconnecting";
+  /** Quando informado, mostra o botão "Fechar acordo". */
+  onAgreementClick?: () => void;
 };
 
-export function ChatHeader({ conversation, connection }: ChatHeaderProps) {
+export function ChatHeader({ conversation, connection, onAgreementClick }: ChatHeaderProps) {
   const { contact, job } = conversation;
 
   return (
@@ -25,6 +27,11 @@ export function ChatHeader({ conversation, connection }: ChatHeaderProps) {
       <Link href="/perfil" className="chip">
         Ver perfil
       </Link>
+      {onAgreementClick && (
+        <button type="button" className="cta" onClick={onAgreementClick}>
+          Fechar acordo
+        </button>
+      )}
       {connection === "reconnecting" && (
         <p role="status" className="connection-warning">
           Reconectando...
