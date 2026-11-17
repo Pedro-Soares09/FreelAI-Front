@@ -116,8 +116,10 @@ export default function ConversationPage({ params }: ConversationPageProps) {
 
   const readOnly = Boolean(conversation.jobClosed);
   const iAmWorker = getMyRole(conversation) === "profissional";
-  const canOpenAgreement = !readOnly && (!agreement || agreement.status === "pending");
-  const waitingPayment = agreement?.status === "accepted" && iAmWorker;
+  // Acordo cancelado não bloqueia uma nova proposta.
+  const activeAgreement = agreement && agreement.status !== "cancelled" ? agreement : null;
+  const canOpenAgreement = !readOnly && (!activeAgreement || activeAgreement.status === "pending");
+  const waitingPayment = activeAgreement?.status === "accepted" && iAmWorker;
 
   return (
     <section className="chat-screen">
@@ -139,10 +141,10 @@ export default function ConversationPage({ params }: ConversationPageProps) {
         </p>
       )}
 
-      {agreement && agreement.status !== "pending" && agreement.status !== "cancelled" && (
+      {activeAgreement && activeAgreement.status !== "pending" && (
         <PostServicePanel
           conversation={conversation}
-          agreement={agreement}
+          agreement={activeAgreement}
           iAmHirer={!iAmWorker}
           onChanged={setAgreement}
         />
@@ -159,7 +161,7 @@ export default function ConversationPage({ params }: ConversationPageProps) {
       {agreementOpen && (
         <AgreementModal
           conversation={conversation}
-          agreement={agreement}
+          agreement={activeAgreement}
           onClose={() => setAgreementOpen(false)}
           onChanged={setAgreement}
         />

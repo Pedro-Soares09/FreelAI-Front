@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
+import { CancelModal } from "@/components/chat/cancel-modal";
 import { ModalShell } from "@/components/chat/modal-shell";
 import { CURRENT_USER_ID } from "@/mocks/conversations";
 import { formatCurrency, formatDateTime } from "@/lib/format";
@@ -42,6 +43,7 @@ export function AgreementModal({ conversation, agreement, onClose, onChanged }: 
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cancelOpen, setCancelOpen] = useState(false);
 
   const iAccepted = agreement
     ? iAmHirer
@@ -148,6 +150,7 @@ export function AgreementModal({ conversation, agreement, onClose, onChanged }: 
   }
 
   return (
+    <>
     <ModalShell title="Contrato do serviço" onClose={onClose}>
       <div className="modal-body">
         <dl className="terms">
@@ -203,7 +206,23 @@ export function AgreementModal({ conversation, agreement, onClose, onChanged }: 
         {bothAccepted && iAmHirer && <p role="status">Acordo aceito. Indo para o pagamento...</p>}
 
         {error && <p role="alert" className="connection-warning">{error}</p>}
+      {(agreement.status === "pending" || agreement.status === "accepted") && (
+          <button type="button" className="chip" onClick={() => setCancelOpen(true)}>
+            Cancelar acordo
+          </button>
+        )}
       </div>
     </ModalShell>
+    {cancelOpen && (
+      <CancelModal
+        agreement={agreement}
+        onClose={() => setCancelOpen(false)}
+        onCancelled={(cancelled) => {
+          onChanged(cancelled);
+          setCancelOpen(false);
+        }}
+      />
+    )}
+    </>
   );
 }

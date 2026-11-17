@@ -205,3 +205,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .timeline { margin: 0; padding-left: 1.1rem; font-size: 0.875rem; color: #334155; }
 .timeline time { color: #55607a; }
 .post-service select { padding: 0.5rem 0.6rem; border: 1px solid #c9cdd8; border-radius: 0.5rem; font: inherit; }
+
+/* ===== Cancelamento (Pessoa 5) ===== */
+.modal-body .ai-actions { justify-content: flex-end; }
