@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { freelaiApi } from '@/services/api';
 import { AssinaturaPro } from '@/types';
+import { useConfirmar } from '@/components/ui/confirmar';
 
 export default function PerfilPage() {
+  const confirmar = useConfirmar();
   const [assinatura, setAssinatura] = useState<AssinaturaPro | null>(null);
   const [cancelando, setCancelando] = useState(false);
   const [mensagemPro, setMensagemPro] = useState<string | null>(null);
@@ -26,7 +28,7 @@ export default function PerfilPage() {
 
   const handleCancelarAssinatura = async () => {
     if (
-      !window.confirm(
+      !await confirmar(
         'Deseja cancelar a renovação do Plano Pro? Você manterá os benefícios até o fim do período atual.'
       )
     ) {
@@ -158,7 +160,7 @@ export default function PerfilPage() {
             </p>
             <Link
               href="/plano-pro"
-              className="shrink-0 rounded-xl bg-primary px-4 py-2 text-center text-xs font-bold text-primary-fg hover:bg-primary"
+              className="shrink-0 rounded-xl bg-primary px-4 py-2 text-center text-xs font-bold text-primary-fg hover:brightness-110"
             >
               Conhecer Plano Pro
             </Link>

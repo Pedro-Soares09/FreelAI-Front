@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
 import { ConviteVaga, Vaga } from '@/types';
 import { IconCheck } from '@/components/ui/icons';
+import { useConfirmar } from '@/components/ui/confirmar';
+import { useToast } from '@/components/ui/toast';
 
 interface ItemConvite {
   convite: ConviteVaga;
@@ -12,6 +14,8 @@ interface ItemConvite {
 }
 
 export default function MatchConvitePage() {
+  const confirmar = useConfirmar();
+  const { avisar } = useToast();
   const router = useRouter();
   const [itens, setItens] = useState<ItemConvite[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +53,7 @@ export default function MatchConvitePage() {
 
   const handleAceitar = async (item: ItemConvite) => {
     if (
-      !window.confirm(
+      !await confirmar(
         `Confirmar aceite da vaga "${item.vaga.titulo}"? O chat será aberto imediatamente.`
       )
     ) {
@@ -66,7 +70,7 @@ export default function MatchConvitePage() {
         valorFixado,
       });
     } catch (e) {
-      alert(e instanceof Error ? e.message : 'Não foi possível aceitar o convite.');
+      avisar(e instanceof Error ? e.message : 'Não foi possível aceitar o convite.', 'error');
     } finally {
       setProcessandoId(null);
     }
@@ -74,7 +78,7 @@ export default function MatchConvitePage() {
 
   const handleRecusar = async (item: ItemConvite) => {
     if (
-      !window.confirm(
+      !await confirmar(
         'Tem certeza que deseja recusar este convite? A vaga voltará para o contratante.'
       )
     ) {
@@ -88,7 +92,7 @@ export default function MatchConvitePage() {
         prev.filter((i) => i.convite.id !== item.convite.id)
       );
     } catch (e) {
-      alert(e instanceof Error ? e.message : 'Erro ao recusar convite.');
+      avisar(e instanceof Error ? e.message : 'Erro ao recusar convite.', 'error');
     } finally {
       setProcessandoId(null);
     }
@@ -119,14 +123,14 @@ export default function MatchConvitePage() {
             <button
               type="button"
               onClick={() => router.push(`/chat/${matchConfirmado.conversaId}`)}
-              className="w-full rounded-xl bg-primary py-3 text-sm font-bold text-primary-fg hover:bg-primary"
+              className="w-full rounded-xl bg-primary py-3 text-sm font-bold text-primary-fg hover:brightness-110"
             >
               Abrir chat da vaga agora
             </button>
             <button
               type="button"
               onClick={() => router.push(`/vagas/${matchConfirmado.vaga.id}`)}
-              className="w-full rounded-xl border border-borda bg-surface-2 py-2.5 text-xs font-semibold text-fg hover:bg-surface-2"
+              className="w-full rounded-xl border border-borda bg-surface-2 py-2.5 text-xs font-semibold text-fg hover:border-primary/60"
             >
               Ver endereço completo e detalhes
             </button>
@@ -238,7 +242,7 @@ export default function MatchConvitePage() {
                       type="button"
                       disabled={processandoId === convite.id}
                       onClick={() => handleAceitar(item)}
-                      className="flex-1 rounded-xl bg-primary py-3 text-sm font-bold text-primary-fg hover:bg-primary disabled:opacity-50"
+                      className="flex-1 rounded-xl bg-primary py-3 text-sm font-bold text-primary-fg hover:brightness-110 disabled:opacity-50"
                     >
                       {processandoId === convite.id
                         ? 'Confirmando...'
@@ -248,7 +252,7 @@ export default function MatchConvitePage() {
                       type="button"
                       disabled={processandoId === convite.id}
                       onClick={() => handleRecusar(item)}
-                      className="rounded-xl border border-borda bg-surface-2 px-5 py-3 text-sm font-semibold text-fg hover:bg-surface-2 disabled:opacity-50"
+                      className="rounded-xl border border-borda bg-surface-2 px-5 py-3 text-sm font-semibold text-fg hover:border-primary/60 disabled:opacity-50"
                     >
                       Recusar
                     </button>

@@ -119,7 +119,7 @@ export default function PlanoProPage() {
               type="button"
               disabled={processando}
               onClick={handleAssinar}
-              className="w-full rounded-xl bg-primary py-3.5 text-sm font-extrabold text-primary-fg hover:bg-primary disabled:opacity-50"
+              className="w-full rounded-xl bg-primary py-3.5 text-sm font-extrabold text-primary-fg hover:brightness-110 disabled:opacity-50"
             >
               {processando
                 ? 'Processando assinatura Pix...'

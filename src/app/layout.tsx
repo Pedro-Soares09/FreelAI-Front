@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/toast";
+import { ConfirmarProvider } from "@/components/ui/confirmar";
 import { SessionProvider } from "@/lib/session";
 import { CHAVE_TEMA, TEMA_PADRAO } from "@/theme/tokens";
 import "./globals.css";
@@ -20,7 +21,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ToastProvider>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <ConfirmarProvider>{children}</ConfirmarProvider>
+          </SessionProvider>
         </ToastProvider>
       </body>
     </html>

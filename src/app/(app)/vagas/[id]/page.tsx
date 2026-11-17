@@ -247,7 +247,7 @@ export default function DetalheVagaPage() {
                 <button
                   type="button"
                   onClick={() => router.push('/match')}
-                  className="rounded-xl bg-warning px-4 py-2.5 text-sm font-bold text-primary-fg hover:bg-warning"
+                  className="rounded-xl bg-warning px-4 py-2.5 text-sm font-bold text-primary-fg hover:brightness-110"
                 >
                   Ir para o convite (30 min)
                 </button>
@@ -323,7 +323,7 @@ export default function DetalheVagaPage() {
               <button
                 type="submit"
                 disabled={enviandoInteresse}
-                className="w-full rounded-xl bg-primary py-3 text-sm font-bold text-primary-fg hover:bg-primary disabled:opacity-50"
+                className="w-full rounded-xl bg-primary py-3 text-sm font-bold text-primary-fg hover:brightness-110 disabled:opacity-50"
               >
                 {enviandoInteresse
                   ? 'Enviando interesse...'

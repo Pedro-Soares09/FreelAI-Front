@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { freelaiApi } from '@/services/api';
 import { PerfilAtivo, Vaga } from '@/types';
+import { useConfirmar } from '@/components/ui/confirmar';
 
 interface CheckinPanelProps {
   vaga: Vaga;
@@ -15,6 +16,7 @@ export function CheckinPanel({
   perfilAtivo,
   onAtualizar,
 }: CheckinPanelProps) {
+  const confirmar = useConfirmar();
   const [enviando, setEnviando] = useState(false);
   const [isModoDemo, setIsModoDemo] = useState(true);
   const [feedback, setFeedback] = useState<{
@@ -91,7 +93,7 @@ export function CheckinPanel({
 
   const handleRegistrarFalta = async () => {
     if (
-      !window.confirm(
+      !await confirmar(
         'Confirmar falta do profissional? O valor retido será estornado integralmente.'
       )
     ) {
@@ -151,7 +153,7 @@ export function CheckinPanel({
               type="button"
               disabled={enviando || !janelaCheckinAberta}
               onClick={() => executarCheckin(false)}
-              className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-primary-fg hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-primary-fg hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {enviando ? 'Validando GPS...' : 'Fazer check-in por GPS'}
             </button>
@@ -180,7 +182,7 @@ export function CheckinPanel({
             type="button"
             disabled={enviando}
             onClick={handleRegistrarFalta}
-            className="rounded-xl bg-danger px-4 py-2 text-xs font-bold text-fg hover:bg-danger disabled:opacity-50"
+            className="rounded-xl bg-danger px-4 py-2 text-xs font-bold text-fg hover:brightness-110 disabled:opacity-50"
           >
             {enviando ? 'Registrando...' : 'Registrar falta'}
           </button>

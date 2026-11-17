@@ -4,7 +4,15 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { freelaiApi } from '@/services/api';
 import { DisponibilidadeProfissional, Vaga } from '@/types';
+import dynamic from 'next/dynamic';
 import { JobCard } from '@/components/shared/job-card';
+import { Carregando } from '@/components/ui/estados';
+
+const MapaVagas = dynamic(() => import('@/components/vagas/mapa-vagas'), {
+  ssr: false,
+  loading: () => <Carregando rotulo="Carregando mapa" />,
+});
+import { useToast } from '@/components/ui/toast';
 
 const RECIFE_CENTER = { lat: -8.0476, lng: -34.877 };
 const CATEGORIAS = [
@@ -27,6 +35,7 @@ function formatarTempoRestante(isoTarget?: string | null): string | null {
 }
 
 export default function VagasMapaPage() {
+  const { avisar } = useToast();
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
@@ -137,7 +146,7 @@ export default function VagasMapaPage() {
       setBloqueioFim('');
       setBloqueioMotivo('');
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Erro ao bloquear período.');
+      avisar(err instanceof Error ? err.message : 'Erro ao bloquear período.', 'error');
     } finally {
       setSalvandoBloqueio(false);
     }
@@ -225,7 +234,7 @@ export default function VagasMapaPage() {
           <button
             type="button"
             onClick={() => setAgendaAberta((v) => !v)}
-            className="rounded-xl border border-borda bg-surface-2/80 px-4 py-2.5 text-sm font-medium text-fg hover:bg-surface-2"
+            className="rounded-xl border border-borda bg-surface-2/80 px-4 py-2.5 text-sm font-medium text-fg hover:border-primary/60"
           >
             Minha agenda ({disponibilidade.bloqueios.length})
           </button>
@@ -246,7 +255,7 @@ export default function VagasMapaPage() {
           </div>
           <Link
             href="/match"
-            className="shrink-0 rounded-xl bg-warning px-4 py-2 text-center text-sm font-bold text-primary-fg hover:bg-warning"
+            className="shrink-0 rounded-xl bg-warning px-4 py-2 text-center text-sm font-bold text-primary-fg hover:brightness-110"
           >
             Responder convite
           </Link>
@@ -304,7 +313,7 @@ export default function VagasMapaPage() {
               <button
                 type="submit"
                 disabled={salvandoBloqueio}
-                className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-primary disabled:opacity-50"
+                className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:brightness-110 disabled:opacity-50"
               >
                 {salvandoBloqueio ? 'Salvando...' : 'Bloquear horário'}
               </button>
@@ -332,7 +341,7 @@ export default function VagasMapaPage() {
                   <button
                     type="button"
                     onClick={() => handleRemoverBloqueio(b.id)}
-                    className="text-xs font-medium text-danger hover:text-danger"
+                    className="text-xs font-medium text-danger hover:underline"
                   >
                     Remover
                   </button>
@@ -407,7 +416,7 @@ export default function VagasMapaPage() {
                 className={`rounded-xl py-2 text-xs font-semibold transition ${
                   dataFiltro === opt.id
                     ? 'bg-primary text-primary-fg'
-                    : 'border border-borda bg-bg text-fg hover:border-borda'
+                    : 'border border-borda bg-bg text-fg hover:border-primary/60'
                 }`}
               >
                 {opt.label}
@@ -419,57 +428,18 @@ export default function VagasMapaPage() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <div className="relative h-[440px] w-full overflow-hidden rounded-2xl border border-borda bg-bg">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#10b98118_0%,_transparent_65%)]" />
-            <div className="absolute left-3 top-3 z-10 rounded-lg border border-borda bg-surface/90 px-3 py-1.5 text-xs text-fg backdrop-blur">
-              Recife, PE ({RECIFE_CENTER.lat.toFixed(4)}, {RECIFE_CENTER.lng.toFixed(4)}) • Raio{' '}
-              <strong className="text-primary">{raioKm} km</strong>
-            </div>
-
-            <div className="flex h-full w-full items-center justify-center">
-              <div
-                style={{
-                  width: `${Math.min(92, 24 + raioKm * 4.5)}%`,
-                  height: `${Math.min(92, 24 + raioKm * 4.5)}%`,
-                }}
-                className="relative flex items-center justify-center rounded-full border-2 border-dashed border-primary/40 bg-primary/5 transition-all duration-300"
-              >
-                <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold text-primary-fg shadow">
-                  Você
-                </span>
-
-                {vagasFiltradas.map((vaga, idx) => {
-                  const angle = (idx * 137.5 * Math.PI) / 180;
-                  const distRatio = Math.min(
-                    0.85,
-                    vaga.distancia_km / Math.max(raioKm, 1)
-                  );
-                  const topPct = 50 + Math.sin(angle) * distRatio * 42;
-                  const leftPct = 50 + Math.cos(angle) * distRatio * 42;
-                  const isConvite = vaga.meu_convite?.status === 'escolhido';
-                  const isSelected = vagaSelecionadaId === vaga.id;
-
-                  return (
-                    <button
-                      key={vaga.id}
-                      type="button"
-                      onClick={() => setVagaSelecionadaId(vaga.id)}
-                      style={{ top: `${topPct}%`, left: `${leftPct}%` }}
-                      className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-2.5 py-1 text-xs font-bold shadow-lg transition ${
-                        isConvite
-                          ? 'animate-bounce bg-warning text-primary-fg ring-4 ring-warning/30'
-                          : isSelected
-                          ? 'scale-110 bg-white text-primary-fg'
-                          : 'bg-surface text-primary ring-1 ring-primary/60 hover:scale-105'
-                      }`}
-                    >
-                      R$ {vaga.valor.toFixed(0)} • {vaga.bairro}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+          <div className="relative z-0 h-[440px] w-full overflow-hidden rounded-card border border-borda bg-surface">
+            <MapaVagas
+              centro={RECIFE_CENTER}
+              raioKm={raioKm}
+              vagas={vagasFiltradas}
+              selecionadaId={vagaSelecionadaId}
+              onSelecionar={setVagaSelecionadaId}
+            />
           </div>
+          <p className="mt-2 text-xs text-muted">
+            Centro de busca: Recife, PE. O raio de {raioKm} km é medido a partir dele.
+          </p>
         </div>
 
         <div className="space-y-4 lg:col-span-5">
@@ -522,7 +492,7 @@ export default function VagasMapaPage() {
               {vagasFiltradas
                 .filter((v) => !vagaSelecionadaId || v.id === vagaSelecionadaId)
                 .map((vaga) => (
-                  <JobCard key={vaga.id} vaga={vaga} />
+                  <JobCard key={vaga.id} vaga={vaga} selecionada={vagaSelecionadaId === vaga.id} />
                 ))}
             </div>
           )}

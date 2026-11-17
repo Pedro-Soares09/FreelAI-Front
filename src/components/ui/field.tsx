@@ -7,16 +7,17 @@ type FieldProps = {
   label: string;
   error?: string;
   hint?: string;
+  ocultarRotulo?: boolean;
   children: (ids: { id: string; describedBy?: string; invalid: boolean }) => ReactNode;
 };
 
-export function Field({ label, error, hint, children }: FieldProps) {
+export function Field({ label, error, hint, ocultarRotulo, children }: FieldProps) {
   const id = useId();
   const msgId = `${id}-msg`;
   const describedBy = error || hint ? msgId : undefined;
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium">
+      <label htmlFor={id} className={ocultarRotulo ? "sr-only" : "text-sm font-medium"}>
         {label}
       </label>
       {children({ id, describedBy, invalid: Boolean(error) })}
