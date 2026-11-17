@@ -18,44 +18,44 @@ export function JobCard({ vaga }: JobCardProps) {
     <article
       className={`rounded-2xl border p-4 transition ${
         isConvitePendente
-          ? 'border-amber-500/70 bg-amber-500/10 shadow-lg shadow-amber-500/10'
+          ? 'border-warning/70 bg-warning/10 shadow-lg shadow-warning/10'
           : isContratantePro
-          ? 'border-emerald-500/50 bg-zinc-900 shadow-md shadow-emerald-500/5'
-          : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+          ? 'border-primary/50 bg-surface shadow-md shadow-primary/5'
+          : 'border-borda bg-surface hover:border-borda'
       }`}
     >
       <div className="flex items-start justify-between gap-3">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-md bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-300">
+            <span className="rounded-md bg-surface-2 px-2 py-0.5 text-xs font-medium text-fg">
               {vaga.categoria}
             </span>
-            <span className="text-xs text-zinc-400">
+            <span className="text-xs text-muted">
               {vaga.bairro} • ~{vaga.distancia_km.toFixed(1)} km
             </span>
             {isContratantePro && (
-              <span className="rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-zinc-950">
+              <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-primary-fg">
                 PRO
               </span>
             )}
           </div>
-          <h3 className="mt-1.5 text-base font-bold text-white">{vaga.titulo}</h3>
+          <h3 className="mt-1.5 text-base font-bold text-fg">{vaga.titulo}</h3>
         </div>
 
         <div className="text-right">
-          <span className="text-lg font-extrabold text-emerald-400">
+          <span className="text-lg font-extrabold text-primary">
             R$ {vaga.valor.toFixed(2).replace('.', ',')}
           </span>
-          <p className="text-xs text-zinc-400">{vaga.duracao_horas}h</p>
+          <p className="text-xs text-muted">{vaga.duracao_horas}h</p>
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-zinc-800/80 pt-3">
-        <div className="flex items-center gap-2 text-xs text-zinc-400">
+      <div className="mt-3 flex items-center justify-between border-t border-borda/80 pt-3">
+        <div className="flex items-center gap-2 text-xs text-muted">
           <span>{vaga.contratante.nome}</span>
           {vaga.contratante.verificado && (
-            <span className="rounded bg-sky-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-sky-400">
-              ✓ Verificado
+            <span className="rounded bg-info/15 px-1.5 py-0.5 text-[11px] font-semibold text-info">
+              Verificado
             </span>
           )}
         </div>
@@ -64,19 +64,19 @@ export function JobCard({ vaga }: JobCardProps) {
           {isConvitePendente && (
             <Link
               href="/match"
-              className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-bold text-zinc-950 hover:bg-amber-400"
+              className="rounded-lg bg-warning px-3 py-1.5 text-xs font-bold text-primary-fg hover:bg-warning"
             >
               Responder convite
             </Link>
           )}
           {isInteresseEnviado && (
-            <span className="rounded-lg bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-400">
+            <span className="rounded-lg bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary">
               Interesse enviado
             </span>
           )}
           <Link
             href={`/vagas/${vaga.id}`}
-            className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-zinc-700"
+            className="rounded-lg border border-borda bg-surface-2 px-3 py-1.5 text-xs font-semibold text-fg hover:bg-surface-2"
           >
             Ver detalhes
           </Link>

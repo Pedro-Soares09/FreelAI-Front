@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
 import { AssinaturaPro } from '@/types';
+import { IconCheck } from '@/components/ui/icons';
 
 export default function PlanoProPage() {
   const router = useRouter();
@@ -50,41 +51,41 @@ export default function PlanoProPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-4 md:p-8">
-      <div className="rounded-3xl border border-emerald-500/40 bg-zinc-900 p-8 shadow-2xl shadow-emerald-500/10">
-        <span className="inline-block rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 px-3 py-1 text-xs font-extrabold uppercase text-zinc-950">
+      <div className="rounded-3xl border border-primary/40 bg-surface p-8 shadow-2xl shadow-primary/10">
+        <span className="inline-block rounded-full bg-primary px-3 py-1 text-xs font-extrabold uppercase text-primary-fg">
           FREELAI PRO
         </span>
 
-        <h1 className="mt-4 text-3xl font-extrabold text-white">
+        <h1 className="mt-4 text-3xl font-extrabold text-fg">
           Destaque seu perfil e receba alertas imediatos
         </h1>
-        <p className="mt-2 text-sm text-zinc-300">
+        <p className="mt-2 text-sm text-fg">
           Seu próximo freela está aqui. Com o Plano Pro, você ganha visibilidade
           visual e prioridade no envio de notificações.
         </p>
 
-        <div className="my-6 flex items-baseline gap-1 border-y border-zinc-800 py-5">
-          <span className="text-4xl font-black text-emerald-400">R$ 19,90</span>
-          <span className="text-sm text-zinc-400">/ mês (Pix simulado)</span>
+        <div className="my-6 flex items-baseline gap-1 border-y border-borda py-5">
+          <span className="text-4xl font-black text-primary">R$ 19,90</span>
+          <span className="text-sm text-muted">/ mês (Pix simulado)</span>
         </div>
 
-        <ul className="space-y-3 text-sm text-zinc-200">
+        <ul className="space-y-3 text-sm text-fg">
           <li className="flex items-center gap-2.5">
-            <span className="text-emerald-400">✓</span>
+            <IconCheck width={16} height={16} className="text-primary" />
             <span>
               <strong>Selo Pro</strong> exibido no seu perfil e nos cards de
               oportunidade.
             </span>
           </li>
           <li className="flex items-center gap-2.5">
-            <span className="text-emerald-400">✓</span>
+            <IconCheck width={16} height={16} className="text-primary" />
             <span>
               <strong>Prioridade de notificação:</strong> alertas imediatos sem o
               atraso padrão de 2 minutos.
             </span>
           </li>
           <li className="flex items-center gap-2.5">
-            <span className="text-emerald-400">✓</span>
+            <IconCheck width={16} height={16} className="text-primary" />
             <span>
               <strong>Destaque visual</strong> na apresentação do perfil para
               contratantes.
@@ -92,23 +93,23 @@ export default function PlanoProPage() {
           </li>
         </ul>
 
-        <p className="mt-4 rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-400">
+        <p className="mt-4 rounded-xl border border-borda bg-bg p-3 text-xs text-muted">
           Transparência FREELAI: o Plano Pro não altera o algoritmo de ranking
           do match (40% localização, 30% habilidades, 20% reputação, 10% preço).
         </p>
 
         <div className="mt-6">
           {loading ? (
-            <div className="h-12 animate-pulse rounded-xl bg-zinc-800" />
+            <div className="h-12 animate-pulse rounded-xl bg-surface-2" />
           ) : assinatura?.ativo ? (
             <div className="space-y-3">
-              <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3 text-center text-sm font-semibold text-emerald-300">
+              <div className="rounded-xl border border-primary/40 bg-primary/10 p-3 text-center text-sm font-semibold text-primary">
                 Você já é assinante Plano Pro!
               </div>
               <button
                 type="button"
                 onClick={() => router.push('/perfil')}
-                className="w-full rounded-xl border border-zinc-700 bg-zinc-800 py-3 text-sm font-semibold text-white"
+                className="w-full rounded-xl border border-borda bg-surface-2 py-3 text-sm font-semibold text-fg"
               >
                 Gerenciar assinatura no Perfil
               </button>
@@ -118,7 +119,7 @@ export default function PlanoProPage() {
               type="button"
               disabled={processando}
               onClick={handleAssinar}
-              className="w-full rounded-xl bg-emerald-500 py-3.5 text-sm font-extrabold text-zinc-950 hover:bg-emerald-400 disabled:opacity-50"
+              className="w-full rounded-xl bg-primary py-3.5 text-sm font-extrabold text-primary-fg hover:bg-primary disabled:opacity-50"
             >
               {processando
                 ? 'Processando assinatura Pix...'

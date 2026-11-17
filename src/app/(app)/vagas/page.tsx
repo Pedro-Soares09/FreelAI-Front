@@ -184,12 +184,12 @@ export default function VagasMapaPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
-      <section className="flex flex-col justify-between gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/90 p-4 md:flex-row md:items-center">
+      <section className="flex flex-col justify-between gap-4 rounded-2xl border border-borda bg-surface/90 p-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-xl font-bold text-white">
+          <h1 className="text-xl font-bold text-fg">
             Oportunidades em Recife
           </h1>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-muted">
             Ative sua disponibilidade para receber convites imediatos na região.
           </p>
         </div>
@@ -201,15 +201,15 @@ export default function VagasMapaPage() {
             disabled={alternandoDisp}
             className={`flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
               disponibilidade.disponivel_agora
-                ? 'bg-emerald-500 text-zinc-950 shadow-lg shadow-emerald-500/25'
-                : 'border border-zinc-700 bg-zinc-800 text-zinc-200 hover:border-emerald-500/50'
+                ? 'bg-primary text-primary-fg shadow-lg shadow-primary/25'
+                : 'border border-borda bg-surface-2 text-fg hover:border-primary/50'
             }`}
           >
             <span
               className={`h-2.5 w-2.5 rounded-full ${
                 disponibilidade.disponivel_agora
-                  ? 'animate-ping bg-zinc-950'
-                  : 'bg-zinc-500'
+                  ? 'animate-ping bg-bg'
+                  : 'bg-muted'
               }`}
             />
             {disponibilidade.disponivel_agora ? (
@@ -225,7 +225,7 @@ export default function VagasMapaPage() {
           <button
             type="button"
             onClick={() => setAgendaAberta((v) => !v)}
-            className="rounded-xl border border-zinc-700 bg-zinc-800/80 px-4 py-2.5 text-sm font-medium text-zinc-200 hover:bg-zinc-800"
+            className="rounded-xl border border-borda bg-surface-2/80 px-4 py-2.5 text-sm font-medium text-fg hover:bg-surface-2"
           >
             Minha agenda ({disponibilidade.bloqueios.length})
           </button>
@@ -233,12 +233,12 @@ export default function VagasMapaPage() {
       </section>
 
       {convitesEscolhidos.length > 0 && (
-        <div className="flex flex-col justify-between gap-3 rounded-2xl border border-amber-500/50 bg-amber-500/10 p-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col justify-between gap-3 rounded-2xl border border-warning/50 bg-warning/10 p-4 sm:flex-row sm:items-center">
           <div>
-            <span className="inline-block rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold text-zinc-950">
+            <span className="inline-block rounded-full bg-warning px-2.5 py-0.5 text-xs font-bold text-primary-fg">
               CONVITE PENDENTE
             </span>
-            <p className="mt-1 text-sm font-medium text-amber-100">
+            <p className="mt-1 text-sm font-medium text-warning">
               Você foi escolhido para{' '}
               <strong>{convitesEscolhidos[0].titulo}</strong>! Responda dentro
               do prazo de 30 minutos.
@@ -246,7 +246,7 @@ export default function VagasMapaPage() {
           </div>
           <Link
             href="/match"
-            className="shrink-0 rounded-xl bg-amber-500 px-4 py-2 text-center text-sm font-bold text-zinc-950 hover:bg-amber-400"
+            className="shrink-0 rounded-xl bg-warning px-4 py-2 text-center text-sm font-bold text-primary-fg hover:bg-warning"
           >
             Responder convite
           </Link>
@@ -254,12 +254,12 @@ export default function VagasMapaPage() {
       )}
 
       {agendaAberta && (
-        <section className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
+        <section className="space-y-4 rounded-2xl border border-borda bg-surface p-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-white">
+            <h2 className="text-base font-semibold text-fg">
               Bloquear período na agenda
             </h2>
-            <span className="text-xs text-zinc-400">
+            <span className="text-xs text-muted">
               Períodos bloqueados removem você automaticamente do match.
             </span>
           </div>
@@ -269,27 +269,27 @@ export default function VagasMapaPage() {
             className="grid grid-cols-1 gap-3 sm:grid-cols-4"
           >
             <div>
-              <label className="mb-1 block text-xs text-zinc-400">Início</label>
+              <label className="mb-1 block text-xs text-muted">Início</label>
               <input
                 type="datetime-local"
                 required
                 value={bloqueioInicio}
                 onChange={(e) => setBloqueioInicio(e.target.value)}
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white"
+                className="w-full rounded-lg border border-borda bg-bg px-3 py-2 text-sm text-fg"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-zinc-400">Fim</label>
+              <label className="mb-1 block text-xs text-muted">Fim</label>
               <input
                 type="datetime-local"
                 required
                 value={bloqueioFim}
                 onChange={(e) => setBloqueioFim(e.target.value)}
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white"
+                className="w-full rounded-lg border border-borda bg-bg px-3 py-2 text-sm text-fg"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-zinc-400">
+              <label className="mb-1 block text-xs text-muted">
                 Motivo (opcional)
               </label>
               <input
@@ -297,14 +297,14 @@ export default function VagasMapaPage() {
                 placeholder="Ex: Compromisso pessoal"
                 value={bloqueioMotivo}
                 onChange={(e) => setBloqueioMotivo(e.target.value)}
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white"
+                className="w-full rounded-lg border border-borda bg-bg px-3 py-2 text-sm text-fg"
               />
             </div>
             <div className="flex items-end">
               <button
                 type="submit"
                 disabled={salvandoBloqueio}
-                className="w-full rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-emerald-400 disabled:opacity-50"
+                className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-fg hover:bg-primary disabled:opacity-50"
               >
                 {salvandoBloqueio ? 'Salvando...' : 'Bloquear horário'}
               </button>
@@ -312,19 +312,19 @@ export default function VagasMapaPage() {
           </form>
 
           {disponibilidade.bloqueios.length > 0 && (
-            <ul className="divide-y divide-zinc-800 rounded-xl border border-zinc-800 bg-zinc-950">
+            <ul className="divide-y divide-borda rounded-xl border border-borda bg-bg">
               {disponibilidade.bloqueios.map((b) => (
                 <li
                   key={b.id}
                   className="flex items-center justify-between px-4 py-2.5 text-sm"
                 >
                   <div>
-                    <span className="font-medium text-zinc-200">
+                    <span className="font-medium text-fg">
                       {new Date(b.inicio).toLocaleString('pt-BR')} até{' '}
                       {new Date(b.fim).toLocaleString('pt-BR')}
                     </span>
                     {b.motivo && (
-                      <span className="ml-2 text-xs text-zinc-400">
+                      <span className="ml-2 text-xs text-muted">
                         ({b.motivo})
                       </span>
                     )}
@@ -332,7 +332,7 @@ export default function VagasMapaPage() {
                   <button
                     type="button"
                     onClick={() => handleRemoverBloqueio(b.id)}
-                    className="text-xs font-medium text-rose-400 hover:text-rose-300"
+                    className="text-xs font-medium text-danger hover:text-danger"
                   >
                     Remover
                   </button>
@@ -343,11 +343,11 @@ export default function VagasMapaPage() {
         </section>
       )}
 
-      <section className="grid grid-cols-1 gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 md:grid-cols-3">
+      <section className="grid grid-cols-1 gap-4 rounded-2xl border border-borda bg-surface p-4 md:grid-cols-3">
         <div>
-          <div className="mb-1 flex items-center justify-between text-xs font-medium text-zinc-300">
+          <div className="mb-1 flex items-center justify-between text-xs font-medium text-fg">
             <span>Raio de busca (Recife)</span>
-            <span className="rounded bg-emerald-500/15 px-2 py-0.5 font-bold text-emerald-400">
+            <span className="rounded bg-primary/15 px-2 py-0.5 font-bold text-primary">
               {raioKm} km
             </span>
           </div>
@@ -362,9 +362,9 @@ export default function VagasMapaPage() {
               setRaioKm(val);
               freelaiApi.atualizarRaio(val).catch(() => {});
             }}
-            className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-800 accent-emerald-500"
+            className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-surface-2 accent-primary"
           />
-          <div className="mt-1 flex justify-between text-[11px] text-zinc-500">
+          <div className="mt-1 flex justify-between text-[11px] text-muted">
             <span>1 km</span>
             <span>Padrão: 5 km</span>
             <span>Máx: 15 km</span>
@@ -372,13 +372,13 @@ export default function VagasMapaPage() {
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-zinc-300">
+          <label className="mb-1 block text-xs font-medium text-fg">
             Categoria
           </label>
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-white"
+            className="w-full rounded-xl border border-borda bg-bg px-3 py-2 text-sm text-fg"
           >
             {CATEGORIAS.map((cat) => (
               <option key={cat.value} value={cat.value}>
@@ -389,7 +389,7 @@ export default function VagasMapaPage() {
         </div>
 
         <div>
-          <label className="mb-1 block text-xs font-medium text-zinc-300">
+          <label className="mb-1 block text-xs font-medium text-fg">
             Data da oportunidade
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -406,8 +406,8 @@ export default function VagasMapaPage() {
                 onClick={() => setDataFiltro(opt.id)}
                 className={`rounded-xl py-2 text-xs font-semibold transition ${
                   dataFiltro === opt.id
-                    ? 'bg-emerald-500 text-zinc-950'
-                    : 'border border-zinc-700 bg-zinc-950 text-zinc-300 hover:border-zinc-500'
+                    ? 'bg-primary text-primary-fg'
+                    : 'border border-borda bg-bg text-fg hover:border-borda'
                 }`}
               >
                 {opt.label}
@@ -419,11 +419,11 @@ export default function VagasMapaPage() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <div className="relative h-[440px] w-full overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
+          <div className="relative h-[440px] w-full overflow-hidden rounded-2xl border border-borda bg-bg">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#10b98118_0%,_transparent_65%)]" />
-            <div className="absolute left-3 top-3 z-10 rounded-lg border border-zinc-800 bg-zinc-900/90 px-3 py-1.5 text-xs text-zinc-300 backdrop-blur">
+            <div className="absolute left-3 top-3 z-10 rounded-lg border border-borda bg-surface/90 px-3 py-1.5 text-xs text-fg backdrop-blur">
               Recife, PE ({RECIFE_CENTER.lat.toFixed(4)}, {RECIFE_CENTER.lng.toFixed(4)}) • Raio{' '}
-              <strong className="text-emerald-400">{raioKm} km</strong>
+              <strong className="text-primary">{raioKm} km</strong>
             </div>
 
             <div className="flex h-full w-full items-center justify-center">
@@ -432,9 +432,9 @@ export default function VagasMapaPage() {
                   width: `${Math.min(92, 24 + raioKm * 4.5)}%`,
                   height: `${Math.min(92, 24 + raioKm * 4.5)}%`,
                 }}
-                className="relative flex items-center justify-center rounded-full border-2 border-dashed border-emerald-500/40 bg-emerald-500/5 transition-all duration-300"
+                className="relative flex items-center justify-center rounded-full border-2 border-dashed border-primary/40 bg-primary/5 transition-all duration-300"
               >
-                <span className="rounded-full bg-emerald-500 px-2.5 py-1 text-[11px] font-bold text-zinc-950 shadow">
+                <span className="rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold text-primary-fg shadow">
                   Você
                 </span>
 
@@ -457,10 +457,10 @@ export default function VagasMapaPage() {
                       style={{ top: `${topPct}%`, left: `${leftPct}%` }}
                       className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full px-2.5 py-1 text-xs font-bold shadow-lg transition ${
                         isConvite
-                          ? 'animate-bounce bg-amber-400 text-zinc-950 ring-4 ring-amber-400/30'
+                          ? 'animate-bounce bg-warning text-primary-fg ring-4 ring-warning/30'
                           : isSelected
-                          ? 'scale-110 bg-white text-zinc-950'
-                          : 'bg-zinc-900 text-emerald-400 ring-1 ring-emerald-500/60 hover:scale-105'
+                          ? 'scale-110 bg-white text-primary-fg'
+                          : 'bg-surface text-primary ring-1 ring-primary/60 hover:scale-105'
                       }`}
                     >
                       R$ {vaga.valor.toFixed(0)} • {vaga.bairro}
@@ -474,14 +474,14 @@ export default function VagasMapaPage() {
 
         <div className="space-y-4 lg:col-span-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
               {vagasFiltradas.length} oportunidade(s) encontrada(s)
             </h2>
             {vagaSelecionadaId && (
               <button
                 type="button"
                 onClick={() => setVagaSelecionadaId(null)}
-                className="text-xs text-emerald-400 hover:underline"
+                className="text-xs text-primary hover:underline"
               >
                 Mostrar todas
               </button>
@@ -493,27 +493,27 @@ export default function VagasMapaPage() {
               {[1, 2, 3].map((n) => (
                 <div
                   key={n}
-                  className="h-32 animate-pulse rounded-2xl border border-zinc-800 bg-zinc-900"
+                  className="h-32 animate-pulse rounded-2xl border border-borda bg-surface"
                 />
               ))}
             </div>
           ) : erro ? (
-            <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4 text-sm text-rose-200">
+            <div className="rounded-2xl border border-danger/40 bg-danger/10 p-4 text-sm text-danger">
               <p>{erro}</p>
               <button
                 type="button"
                 onClick={carregarDados}
-                className="mt-2 rounded-lg bg-rose-500 px-3 py-1.5 text-xs font-semibold text-white"
+                className="mt-2 rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-fg"
               >
                 Tentar novamente
               </button>
             </div>
           ) : vagasFiltradas.length === 0 ? (
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 text-center">
-              <p className="text-sm font-medium text-zinc-300">
+            <div className="rounded-2xl border border-borda bg-surface p-6 text-center">
+              <p className="text-sm font-medium text-fg">
                 Nenhuma vaga encontrada com esses filtros.
               </p>
-              <p className="mt-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-muted">
                 Aumente o raio de busca ou limpe os filtros de categoria e data.
               </p>
             </div>
