@@ -8,9 +8,11 @@ type ChatHeaderProps = {
   connection: "online" | "reconnecting";
   /** Quando informado, mostra o botão "Fechar acordo". */
   onAgreementClick?: () => void;
+  /** Quando informado, mostra o botão "Denunciar". */
+  onReportClick?: () => void;
 };
 
-export function ChatHeader({ conversation, connection, onAgreementClick }: ChatHeaderProps) {
+export function ChatHeader({ conversation, connection, onAgreementClick, onReportClick }: ChatHeaderProps) {
   const { contact, job } = conversation;
 
   return (
@@ -27,6 +29,11 @@ export function ChatHeader({ conversation, connection, onAgreementClick }: ChatH
       <Link href="/perfil" className="chip">
         Ver perfil
       </Link>
+      {onReportClick && (
+        <button type="button" className="chip" onClick={onReportClick}>
+          Denunciar
+        </button>
+      )}
       {onAgreementClick && (
         <button type="button" className="cta" onClick={onAgreementClick}>
           Fechar acordo

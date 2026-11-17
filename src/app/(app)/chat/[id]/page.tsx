@@ -8,6 +8,7 @@ import { ChatHeader } from "@/components/chat/chat-header";
 import { Composer } from "@/components/chat/composer";
 import { MessageList } from "@/components/chat/message-list";
 import { PostServicePanel } from "@/components/chat/post-service-panel";
+import { ReportModal } from "@/components/chat/report-modal";
 import { CURRENT_USER_ID } from "@/mocks/conversations";
 import {
   getAgreementByConversation,
@@ -34,6 +35,7 @@ export default function ConversationPage({ params }: ConversationPageProps) {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [agreement, setAgreement] = useState<Agreement | null>(null);
   const [agreementOpen, setAgreementOpen] = useState(false);
+  const [reportOpen, setReportOpen] = useState(false);
 
   // Carrega a conversa e marca como lida.
   useEffect(() => {
@@ -127,7 +129,12 @@ export default function ConversationPage({ params }: ConversationPageProps) {
         conversation={conversation}
         connection={connection}
         onAgreementClick={canOpenAgreement ? () => setAgreementOpen(true) : undefined}
+        onReportClick={() => setReportOpen(true)}
       />
+
+      {reportOpen && (
+        <ReportModal conversationId={id} onClose={() => setReportOpen(false)} />
+      )}
 
       {waitingPayment && (
         <p role="status" className="state-box">
