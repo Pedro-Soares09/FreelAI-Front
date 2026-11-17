@@ -1,4 +1,9 @@
-import { CANCEL_FREE_HOURS, MAX_ATTACHMENT_MB } from "@/lib/constants";
+import {
+  CANCEL_FREE_HOURS,
+  CONTEST_REASONS,
+  CONTEST_WINDOW_HOURS,
+  MAX_ATTACHMENT_MB,
+} from "@/lib/constants";
 import {
   CURRENT_USER_ID,
   agreements as mockAgreements,
@@ -12,6 +17,7 @@ import type {
   AgreementTerms,
   CancellationResult,
   ChatRole,
+  ContestReason,
   Conversation,
   Message,
   NewMessage,
@@ -310,4 +316,84 @@ export async function reportConversation(
   };
   chatDb.reports.push(report);
   return structuredClone(report);
+}
+
+// --- Pós-serviço: conclusão, contestação e linha do tempo (US43) ---
+
+/**
+ * Mock: enquanto o back não existe, a outra parte confirma a conclusão
+ * sozinha logo depois da nossa confirmação, para o fluxo ser testável.
+ * Remover quando o back enviar a confirmação real.
+ */
+const MOCK_OTHER_PARTY_AUTO_CONFIRM = true;
+
+function addEvent(agreement: Agreement, label: string) {
+  agreement.events = [
+    ...(agreement.events ?? []),
+    { id: newId("e"), at: new Date().toISOString(), label },
+  ];
+}
+
+export function getAgreementEvents(agreement: Agreement) {
+  return [...(agreement.events ?? [])].sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
+}
+
+export function canContest(agreement: Agreement, now = new Date()): boolean {
+  if (agreement.status === "accepted") return true;
+  if (agreement.status !== "completed" || !agreement.completedAt) return false;
+  const hours = (now.getTime() - Date.parse(agreement.completedAt)) / (60 * 60 * 1000);
+  return hours <= CONTEST_WINDOW_HOURS;
+}
+
+export async function confirmCompletion(agreementId: string): Promise<Agreement> {
+  const agreement = findAgreement(agreementId);
+  if (agreement.status !== "accepted") {
+    throw new Error("Só é possível confirmar a conclusão de um acordo aceito pelas duas partes.");
+  }
+  const iAmHirer = agreement.hirerId === CURRENT_USER_ID;
+  if (iAmHirer ? agreement.completionByHirer : agreement.completionByWorker) {
+    throw new Error("Você já confirmou a conclusão.");
+  }
+
+  await simulateDelay();
+  if (iAmHirer) agreement.completionByHirer = true;
+  else agreement.completionByWorker = true;
+  addEvent(agreement, `Conclusão confirmada pelo ${iAmHirer ? "contratante" : "profissional"}`);
+
+  if (MOCK_OTHER_PARTY_AUTO_CONFIRM) {
+    if (iAmHirer) agreement.completionByWorker = true;
+    else agreement.completionByHirer = true;
+    addEvent(agreement, "Conclusão confirmada pela outra parte");
+  }
+
+  if (agreement.completionByHirer && agreement.completionByWorker) {
+    agreement.status = "completed";
+    agreement.completedAt = new Date().toISOString();
+    addEvent(agreement, "Serviço concluído");
+  }
+  return structuredClone(agreement);
+}
+
+export async function contestAgreement(
+  agreementId: string,
+  reason: ContestReason,
+  details?: string,
+): Promise<Agreement> {
+  const agreement = findAgreement(agreementId);
+  if (!canContest(agreement)) {
+    throw new Error(
+      agreement.status === "completed"
+        ? `O prazo de ${CONTEST_WINDOW_HOURS}h para contestar terminou.`
+        : "Só é possível contestar um serviço aceito ou concluído.",
+    );
+  }
+
+  await simulateDelay();
+  const label = CONTEST_REASONS.find((r) => r.value === reason)?.label ?? reason;
+  agreement.status = "contested";
+  agreement.contestedAt = new Date().toISOString();
+  agreement.contestReason = reason;
+  agreement.contestDetails = details?.trim() || undefined;
+  addEvent(agreement, `Serviço contestado: ${label}`);
+  return structuredClone(agreement);
 }

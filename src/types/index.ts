@@ -94,7 +94,8 @@ export type AgreementStatus =
   | "pending" // proposto, aguardando a outra parte
   | "accepted" // as duas partes deram ciência dos termos
   | "cancelled"
-  | "completed"; // serviço concluído, libera avaliação
+  | "completed" // serviço concluído, libera avaliação
+  | "contested"; // contestação aberta (US43)
 
 export type AgreementTerms = {
   /** Data/hora ISO de início do serviço. */
@@ -120,7 +121,25 @@ export type Agreement = AgreementTerms & {
   status: AgreementStatus;
   createdAt: string;
   cancelledAt?: string;
+  /** Pós-serviço: confirmação de conclusão de cada parte. */
+  completionByHirer?: boolean;
+  completionByWorker?: boolean;
+  completedAt?: string;
+  contestedAt?: string;
+  contestReason?: ContestReason;
+  contestDetails?: string;
+  /** Linha do tempo do acordo. */
+  events?: AgreementEvent[];
 };
+
+export type AgreementEvent = {
+  id: string;
+  /** Data/hora ISO do evento. */
+  at: string;
+  label: string;
+};
+
+export type ContestReason = "nao-realizado" | "valor-diferente" | "outro";
 
 export type CancellationResult = {
   agreement: Agreement;

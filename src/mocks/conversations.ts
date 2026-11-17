@@ -195,6 +195,15 @@ export const agreements: Agreement[] = [
     acceptedByWorker: true,
     status: "completed",
     createdAt: minutesAgo(48 * 60),
+    completionByHirer: true,
+    completionByWorker: true,
+    completedAt: minutesAgo(2 * 60),
+    events: [
+      { id: "e-3-1", at: minutesAgo(48 * 60), label: "Acordo proposto" },
+      { id: "e-3-2", at: minutesAgo(47 * 60), label: "Aceito pelas duas partes" },
+      { id: "e-3-3", at: minutesAgo(2 * 60), label: "Conclusão confirmada pelas duas partes" },
+      { id: "e-3-4", at: minutesAgo(2 * 60), label: "Serviço concluído" },
+    ],
   },
 ];
 

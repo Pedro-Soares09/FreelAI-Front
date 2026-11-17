@@ -16,3 +16,12 @@ export const REPORT_REASONS = [
   { value: "perfil-falso", label: "Perfil falso" },
   { value: "outro", label: "Outro motivo" },
 ] as const;
+
+/** Janela para contestar o serviço depois de concluído (US61). */
+export const CONTEST_WINDOW_HOURS = 24;
+
+export const CONTEST_REASONS = [
+  { value: "nao-realizado", label: "O serviço não foi realizado" },
+  { value: "valor-diferente", label: "O valor pago é diferente do combinado" },
+  { value: "outro", label: "Outro motivo" },
+] as const;

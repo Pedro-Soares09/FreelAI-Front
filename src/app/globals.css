@@ -198,3 +198,10 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .terms dd { margin: 0; }
 .acceptance { margin: 0; padding-left: 1.1rem; font-size: 0.9rem; }
 .cta { padding: 0.5rem 0.9rem; border-radius: 0.6rem; border: none; background: #4f46e5; color: #fff; cursor: pointer; }
+
+/* ===== Pós-serviço (Pessoa 5) ===== */
+.post-service { display: flex; flex-direction: column; gap: 0.6rem; padding: 1rem; border-radius: 0.75rem; background: #fff; border: 1px solid #e6e8ee; }
+.post-service h3, .post-service h4 { margin: 0; }
+.timeline { margin: 0; padding-left: 1.1rem; font-size: 0.875rem; color: #334155; }
+.timeline time { color: #55607a; }
+.post-service select { padding: 0.5rem 0.6rem; border: 1px solid #c9cdd8; border-radius: 0.5rem; font: inherit; }

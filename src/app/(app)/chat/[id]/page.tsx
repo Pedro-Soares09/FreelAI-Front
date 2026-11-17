@@ -7,6 +7,7 @@ import { AiSuggestion } from "@/components/chat/ai-suggestion";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { Composer } from "@/components/chat/composer";
 import { MessageList } from "@/components/chat/message-list";
+import { PostServicePanel } from "@/components/chat/post-service-panel";
 import { CURRENT_USER_ID } from "@/mocks/conversations";
 import {
   getAgreementByConversation,
@@ -136,6 +137,15 @@ export default function ConversationPage({ params }: ConversationPageProps) {
         <p role="status" className="state-box">
           Esta vaga foi encerrada. A conversa está somente leitura.
         </p>
+      )}
+
+      {agreement && agreement.status !== "pending" && agreement.status !== "cancelled" && (
+        <PostServicePanel
+          conversation={conversation}
+          agreement={agreement}
+          iAmHirer={!iAmWorker}
+          onChanged={setAgreement}
+        />
       )}
 
       {messages === null ? (
