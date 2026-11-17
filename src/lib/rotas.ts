@@ -6,6 +6,7 @@ const comum: ItemNav[] = [
   { href: "/plano-pro", rotulo: "Plano Pro" },
   { href: "/chat", rotulo: "Conversas" },
   { href: "/perfil", rotulo: "Perfil" },
+  { href: "/suporte", rotulo: "Suporte" },
 ];
 
 const navProfissional: ItemNav[] = [

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/toast";
 import { ConfirmarProvider } from "@/components/ui/confirmar";
 import { SessionProvider } from "@/lib/session";
+import { UserProvider } from "@/context/user-context";
 import { CHAVE_TEMA, TEMA_PADRAO } from "@/theme/tokens";
 import "./globals.css";
 
@@ -22,7 +23,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <ToastProvider>
           <SessionProvider>
-            <ConfirmarProvider>{children}</ConfirmarProvider>
+            <UserProvider>
+              <ConfirmarProvider>{children}</ConfirmarProvider>
+            </UserProvider>
           </SessionProvider>
         </ToastProvider>
       </body>

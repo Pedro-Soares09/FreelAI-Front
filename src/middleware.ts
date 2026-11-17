@@ -24,6 +24,8 @@ export const config = {
     "/perfil/:path*",
     "/plano-pro/:path*",
     "/politica/:path*",
+    "/suporte/:path*",
+    "/verificacao/:path*",
     "/vagas/:path*",
     "/admin/:path*",
   ],

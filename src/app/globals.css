@@ -49,6 +49,22 @@
     color: inherit;
     text-decoration: none;
   }
+  input,
+  textarea,
+  select {
+    color: rgb(var(--fg));
+    background-color: rgb(var(--surface-2));
+    border-color: rgb(var(--borda));
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(var(--muted));
+  }
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"] {
+    accent-color: rgb(var(--primary));
+  }
   :focus-visible {
     outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
