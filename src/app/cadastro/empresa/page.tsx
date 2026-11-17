@@ -118,7 +118,7 @@ export default function CompanyRegisterPage() {
       </Link>
 
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary border border-primary text-primary text-xs font-semibold mb-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 border border-primary/40 text-primary text-xs font-semibold mb-3">
           <BuildingIcon className="w-4 h-4 text-primary" />
           <span>Cadastro de Empresa Contratante</span>
         </div>
@@ -131,14 +131,14 @@ export default function CompanyRegisterPage() {
       </div>
 
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-xl bg-danger border border-danger text-danger text-sm flex items-center gap-2">
+        <div className="mb-6 p-4 rounded-xl bg-danger/15 border border-danger/40 text-danger text-sm flex items-center gap-2">
           <AlertCircleIcon className="w-5 h-5 text-danger shrink-0" />
           <span>{errorMsg}</span>
         </div>
       )}
 
       {successMsg && (
-        <div className="mb-6 p-4 rounded-xl bg-primary border border-primary text-primary text-sm flex items-center gap-2">
+        <div className="mb-6 p-4 rounded-xl bg-primary/15 border border-primary/40 text-primary text-sm flex items-center gap-2">
           <CheckIcon className="w-5 h-5 text-primary shrink-0" />
           <span>{successMsg}</span>
         </div>
@@ -210,12 +210,12 @@ export default function CompanyRegisterPage() {
               {isCnpjFilled && (
                 <div className="absolute right-3 top-2.5 flex items-center">
                   {isCnpjValid ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary px-2 py-0.5 rounded-md">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/15 px-2 py-0.5 rounded-md">
                       <CheckIcon className="w-3.5 h-3.5" />
                       <span>Válido</span>
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-danger bg-danger px-2 py-0.5 rounded-md">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-danger bg-danger/15 px-2 py-0.5 rounded-md">
                       <span>Inválido</span>
                     </span>
                   )}
@@ -368,7 +368,7 @@ export default function CompanyRegisterPage() {
 
             <button
               type="submit"
-              className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
+              className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
             >
               <span>Concluir Cadastro da Empresa</span>
               <ArrowRightIcon className="w-4 h-4" />

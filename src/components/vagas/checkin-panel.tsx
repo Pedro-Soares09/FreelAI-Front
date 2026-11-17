@@ -182,7 +182,7 @@ export function CheckinPanel({
             type="button"
             disabled={enviando}
             onClick={handleRegistrarFalta}
-            className="rounded-xl bg-danger px-4 py-2 text-xs font-bold text-fg hover:brightness-110 disabled:opacity-50"
+            className="rounded-xl bg-danger px-4 py-2 text-xs font-bold text-primary-fg hover:brightness-110 disabled:opacity-50"
           >
             {enviando ? 'Registrando...' : 'Registrar falta'}
           </button>

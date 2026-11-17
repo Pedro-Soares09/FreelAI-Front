@@ -198,7 +198,7 @@ export default function ProfileEditPage() {
           {isProf && (
             <Link
               href="/perfil/publico"
-              className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-info hover:bg-info text-fg font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md"
+              className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-info hover:bg-info text-primary-fg font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md"
             >
               <ShieldCheckIcon className="w-4 h-4" />
               <span>Ver perfil verificado</span>
@@ -234,20 +234,20 @@ export default function ProfileEditPage() {
                 <span
                   className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                     verificationStatus === "verificado"
-                      ? "bg-info text-info"
+                      ? "bg-info/15 text-info"
                       : verificationStatus === "em_analise"
-                        ? "bg-warning text-warning"
+                        ? "bg-warning/15 text-warning"
                         : verificationStatus === "recusado"
-                          ? "bg-danger text-danger"
+                          ? "bg-danger/15 text-danger"
                           : "bg-surface-2 text-fg"
                   }`}
                 >
                   {verificationStatus === "verificado"
-                    ? "✓ Selo Verificado Ativo"
+                    ? "Selo Verificado Ativo"
                     : verificationStatus === "em_analise"
-                      ? "⏳ Em Análise"
+                      ? "Em Análise"
                       : verificationStatus === "recusado"
-                        ? "✕ Recusado"
+                        ? "Recusado"
                         : "Não Verificado"}
                 </span>
               </div>
@@ -270,7 +270,7 @@ export default function ProfileEditPage() {
 
       {/* Alerta de Salvo */}
       {savedSuccess && (
-        <div className="mb-6 p-4 rounded-xl bg-primary border border-primary text-primary text-sm flex items-center gap-2 shadow-xs">
+        <div className="mb-6 p-4 rounded-xl bg-primary/15 border border-primary/40 text-primary text-sm flex items-center gap-2 shadow-xs">
           <CheckIcon className="w-5 h-5 text-primary shrink-0" />
           <span>Alterações salvas com sucesso no seu perfil!</span>
         </div>
@@ -392,7 +392,7 @@ export default function ProfileEditPage() {
               <MapPinIcon className="w-4 h-4 text-primary" />
               <span>Localização (Campo Obrigatório)</span>
             </h2>
-            <span className="text-[11px] font-semibold text-danger bg-danger px-2 py-0.5 rounded">
+            <span className="text-[11px] font-semibold text-danger bg-danger/15 px-2 py-0.5 rounded">
               Obrigatória
             </span>
           </div>
@@ -616,7 +616,7 @@ export default function ProfileEditPage() {
                 <button
                   type="button"
                   onClick={handleAddExperience}
-                  className="px-3 py-1.5 rounded-lg bg-primary hover:brightness-110 text-fg font-semibold text-xs"
+                  className="px-3 py-1.5 rounded-lg bg-primary hover:brightness-110 text-primary-fg font-semibold text-xs"
                 >
                   Salvar Experiência
                 </button>
@@ -666,7 +666,7 @@ export default function ProfileEditPage() {
 
           <button
             type="submit"
-            className="w-full sm:w-auto py-3 px-8 rounded-xl bg-primary hover:brightness-110 text-fg font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto py-3 px-8 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
           >
             <CheckIcon className="w-4 h-4" />
             <span>Salvar Alterações do Perfil</span>

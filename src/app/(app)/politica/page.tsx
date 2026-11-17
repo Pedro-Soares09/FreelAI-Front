@@ -68,9 +68,9 @@ export default function PolicyMainPage() {
 
       {/* Alerta de Sucesso */}
       {showSuccessToast && (
-        <div className="mb-6 p-4 rounded-xl bg-primary border border-primary text-primary text-sm flex items-center justify-between shadow-xs animate-in fade-in">
+        <div className="mb-6 p-4 rounded-xl bg-primary/15 border border-primary/40 text-primary text-sm flex items-center justify-between shadow-xs animate-in fade-in">
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-full bg-primary text-fg flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-6 h-6 rounded-full bg-primary text-primary-fg flex items-center justify-center font-bold text-xs shrink-0">
               <CheckIcon className="w-4 h-4" />
             </div>
             <div>
@@ -230,7 +230,7 @@ export default function PolicyMainPage() {
             onClick={handleConfirmAction}
             className={`w-full sm:w-auto py-3 px-8 rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 ${
               hasAgreedCheckbox
-                ? "bg-primary hover:brightness-110 text-fg cursor-pointer hover:shadow-md"
+                ? "bg-primary hover:brightness-110 text-primary-fg cursor-pointer hover:shadow-md"
                 : "bg-surface-2 text-muted cursor-not-allowed opacity-60"
             }`}
           >

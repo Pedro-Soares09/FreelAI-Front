@@ -40,7 +40,7 @@ export default function PublicProfilePage() {
       {/* Cartão de Cabeçalho do Perfil Público */}
       <div className="rounded-3xl bg-surface border border-borda overflow-hidden shadow-xs mb-8">
         {/* Cover Banner */}
-        <div className="h-36 sm:h-44 bg-primary relative">
+        <div className="h-36 sm:h-44 bg-primary/20 relative">
           <div className="absolute inset-0 bg-black/10"></div>
           {isVerified && (
             <div className="absolute top-4 right-4 bg-surface/95 backdrop-blur-xs text-info px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm">
@@ -75,7 +75,7 @@ export default function PublicProfilePage() {
                 onClick={() =>
                   alert("Solicitação de proposta enviada para o profissional!")
                 }
-                className="flex-1 sm:flex-initial py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-fg text-xs sm:text-sm font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5"
+                className="flex-1 sm:flex-initial py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg text-xs sm:text-sm font-bold shadow-xs transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Contratar Profissional</span>
               </button>
@@ -89,7 +89,7 @@ export default function PublicProfilePage() {
               </h1>
               {isVerified ? (
                 <span
-                  className="inline-flex items-center gap-1 text-xs font-bold text-info bg-info border border-info px-2.5 py-0.5 rounded-full"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-info bg-info/15 border border-info/40 px-2.5 py-0.5 rounded-full"
                   title="Identidade verificada com CPF, documento e selfie"
                 >
                   <ShieldCheckIcon className="w-3.5 h-3.5 text-info" />

@@ -211,7 +211,7 @@ export default function VagasMapaPage() {
             className={`flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
               disponibilidade.disponivel_agora
                 ? 'bg-primary text-primary-fg shadow-lg shadow-primary/25'
-                : 'border border-borda bg-surface-2 text-fg hover:border-primary/50'
+                : 'border border-borda bg-surface-2 text-primary-fg hover:border-primary/50'
             }`}
           >
             <span
@@ -416,7 +416,7 @@ export default function VagasMapaPage() {
                 className={`rounded-xl py-2 text-xs font-semibold transition ${
                   dataFiltro === opt.id
                     ? 'bg-primary text-primary-fg'
-                    : 'border border-borda bg-bg text-fg hover:border-primary/60'
+                    : 'border border-borda bg-bg text-primary-fg hover:border-primary/60'
                 }`}
               >
                 {opt.label}
@@ -473,7 +473,7 @@ export default function VagasMapaPage() {
               <button
                 type="button"
                 onClick={carregarDados}
-                className="mt-2 rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-fg"
+                className="mt-2 rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-primary-fg"
               >
                 Tentar novamente
               </button>

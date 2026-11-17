@@ -39,7 +39,7 @@ export const conversations: Conversation[] = [
       role: "contratante",
     },
     job: { id: "j-garcom", title: "Precisa de Garçom", amount: 120 },
-    lastMessage: "📎 curriculo-garcom.pdf",
+    lastMessage: "Anexo: curriculo-garcom.pdf",
     lastMessageAt: minutesAgo(2),
     unreadCount: 0,
   },

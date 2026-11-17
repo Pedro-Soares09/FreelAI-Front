@@ -111,7 +111,7 @@ export default async function PolicyDetailPage({
 
           <Link
             href="/verificacao"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-fg text-xs font-bold hover:brightness-110 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-fg text-xs font-bold hover:brightness-110 transition-colors"
           >
             <ShieldCheckIcon className="w-3.5 h-3.5" />
             <span>Verificar Minha Identidade</span>

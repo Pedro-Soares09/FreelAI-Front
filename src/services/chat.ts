@@ -122,7 +122,7 @@ export async function sendMessage(
   };
 
   chatDb.messages.push(message);
-  conversation.lastMessage = text ?? `📎 ${input.attachment?.name}`;
+  conversation.lastMessage = text ?? `Anexo: ${input.attachment?.name}`;
   conversation.lastMessageAt = message.createdAt;
 
   return structuredClone(message);

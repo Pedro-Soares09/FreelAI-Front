@@ -22,8 +22,10 @@ export function ChatHeader({ conversation, connection, onAgreementClick, onRepor
       </Link>
       <AvatarVerified name={contact.name} imageUrl={contact.avatarUrl} verified={contact.verified} />
       <div className="chat-header-info">
-        <span>{contact.online ? "Online" : "Offline"}</span>
-        <strong>{job.title}</strong>
+        <strong>{contact.name}</strong>
+        <span className="text-xs text-muted">
+          {contact.online ? "Online" : "Offline"} · {job.title}
+        </span>
       </div>
       <span className="chat-amount">{formatCurrency(job.amount)}</span>
       <Link href="/perfil" className="chip">

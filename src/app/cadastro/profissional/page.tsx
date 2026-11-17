@@ -256,9 +256,9 @@ export default function ProfessionalRegisterPage() {
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs transition-all ${
                     isDone
-                      ? "bg-primary text-fg shadow-xs"
+                      ? "bg-primary text-primary-fg shadow-xs"
                       : isCurrent
-                        ? "bg-primary text-fg shadow-sm ring-4 ring-primary/30"
+                        ? "bg-primary text-primary-fg shadow-sm ring-4 ring-primary/30"
                         : "bg-surface-2 text-muted"
                   }`}
                 >
@@ -283,7 +283,7 @@ export default function ProfessionalRegisterPage() {
 
       {/* Alerta de Erro */}
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-xl bg-danger border border-danger text-danger text-sm flex items-center gap-2">
+        <div className="mb-6 p-4 rounded-xl bg-danger/15 border border-danger/40 text-danger text-sm flex items-center gap-2">
           <AlertCircleIcon className="w-5 h-5 text-danger shrink-0" />
           <span>{errorMsg}</span>
         </div>
@@ -502,7 +502,7 @@ export default function ProfessionalRegisterPage() {
                   <button
                     type="button"
                     onClick={handleAddExperience}
-                    className="px-3 py-1.5 rounded-lg bg-primary hover:brightness-110 text-fg font-semibold text-xs"
+                    className="px-3 py-1.5 rounded-lg bg-primary hover:brightness-110 text-primary-fg font-semibold text-xs"
                   >
                     Salvar Experiência
                   </button>
@@ -641,11 +641,11 @@ export default function ProfessionalRegisterPage() {
                       onClick={() => toggleTech(tech)}
                       className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
                         isSelected
-                          ? "bg-primary text-fg shadow-xs font-semibold"
+                          ? "bg-primary text-primary-fg shadow-xs font-semibold"
                           : "bg-surface-2 text-muted hover:bg-surface-2"
                       }`}
                     >
-                      {isSelected ? `✓ ${tech}` : `+ ${tech}`}
+                      {isSelected ? tech : `+ ${tech}`}
                     </button>
                   );
                 })}
@@ -707,7 +707,7 @@ export default function ProfessionalRegisterPage() {
                   Etapa 4: Localização Obrigatória
                 </h2>
               </div>
-              <div className="mt-2 p-3 rounded-xl bg-warning border border-warning text-warning text-xs flex items-start gap-2">
+              <div className="mt-2 p-3 rounded-xl bg-warning/15 border border-warning/40 text-warning text-xs flex items-start gap-2">
                 <AlertCircleIcon className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                 <span>
                   <strong>Atenção:</strong> A localização é obrigatória para conectar você a
@@ -800,7 +800,7 @@ export default function ProfessionalRegisterPage() {
 
               <button
                 type="submit"
-                className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
+                className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
               >
                 <span>Concluir Cadastro & Verificar Identidade</span>
                 <ArrowRightIcon className="w-4 h-4" />
@@ -828,7 +828,7 @@ export default function ProfessionalRegisterPage() {
             <button
               type="button"
               onClick={handleNextStep}
-              className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-fg font-semibold text-sm shadow-sm flex items-center gap-2 transition-colors"
+              className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-semibold text-sm shadow-sm flex items-center gap-2 transition-colors"
             >
               <span>Avançar para Etapa {step + 1}</span>
               <ArrowRightIcon className="w-4 h-4" />

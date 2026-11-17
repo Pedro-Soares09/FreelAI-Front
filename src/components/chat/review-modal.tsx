@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ModalShell } from "@/components/chat/modal-shell";
-import { RatingStars } from "@/components/shared/rating-stars";
+import { Estrela, RatingStars } from "@/components/shared/rating-stars";
 import { getMyReview, submitReview } from "@/services/api";
 import type { Agreement, Review, ReviewRating } from "@/types";
 
@@ -81,7 +81,7 @@ export function ReviewModal({ agreement, targetName, onClose }: ReviewModalProps
               className="star-button"
               onClick={() => setRating(value)}
             >
-              {value <= (rating ?? 0) ? "★" : "☆"}
+              <Estrela cheia={value <= (rating ?? 0)} tamanho={28} />
             </button>
           ))}
         </fieldset>
