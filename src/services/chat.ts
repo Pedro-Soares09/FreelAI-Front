@@ -12,6 +12,8 @@ import {
   reports as mockReports,
   reviews as mockReviews,
 } from "@/mocks/conversations";
+import { fetchAutenticado } from "@/api/client";
+import { ApiError, erroDeResposta } from "@/api/erro";
 import type {
   Agreement,
   AgreementTerms,
@@ -31,6 +33,29 @@ import type {
 // Funções mockadas com atraso simulado. Quando o back estiver pronto,
 // trocar o corpo de cada função por apiRequest(...) mantendo a mesma assinatura,
 // assim as telas não precisam mudar.
+
+export const CHAT_USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
+
+/** Chamada autenticada à API real; converte falhas no erro padrão da aplicação. */
+async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetchAutenticado(caminho, init);
+  } catch {
+    throw new ApiError(0, "rede", "Não foi possível conectar ao servidor.");
+  }
+  if (!res.ok) {
+    let corpo: unknown;
+    try {
+      corpo = await res.json();
+    } catch {
+      corpo = undefined;
+    }
+    throw erroDeResposta(res.status, corpo);
+  }
+  if (res.status === 204) return undefined as T;
+  return res.json() as Promise<T>;
+}
 
 const simulateDelay = (ms = 400) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -68,6 +93,7 @@ export function getMyRole(conversation: Conversation): ChatRole {
 // --- Conversas e mensagens ---
 
 export async function getConversations(): Promise<Conversation[]> {
+  if (!CHAT_USA_MOCKS) return chamar<Conversation[]>("/api/v1/conversas");
   await simulateDelay();
   return structuredClone(chatDb.conversations).sort(
     (a, b) => Date.parse(b.lastMessageAt) - Date.parse(a.lastMessageAt),
@@ -77,12 +103,23 @@ export async function getConversations(): Promise<Conversation[]> {
 export async function getConversation(
   conversationId: string,
 ): Promise<Conversation | null> {
+  if (!CHAT_USA_MOCKS) {
+    try {
+      return await chamar<Conversation>(`/api/v1/conversas/${encodeURIComponent(conversationId)}`);
+    } catch (erro) {
+      if (erro instanceof ApiError && erro.status === 404) return null;
+      throw erro;
+    }
+  }
   await simulateDelay();
   const conversation = chatDb.conversations.find((c) => c.id === conversationId);
   return conversation ? structuredClone(conversation) : null;
 }
 
 export async function getMessages(conversationId: string): Promise<Message[]> {
+  if (!CHAT_USA_MOCKS) {
+    return chamar<Message[]>(`/api/v1/conversas/${encodeURIComponent(conversationId)}/mensagens`);
+  }
   await simulateDelay();
   return structuredClone(
     chatDb.messages.filter((m) => m.conversationId === conversationId),
@@ -90,6 +127,12 @@ export async function getMessages(conversationId: string): Promise<Message[]> {
 }
 
 export async function markConversationAsRead(conversationId: string): Promise<void> {
+  if (!CHAT_USA_MOCKS) {
+    await chamar<void>(`/api/v1/conversas/${encodeURIComponent(conversationId)}/lida`, {
+      method: "POST",
+    });
+    return;
+  }
   await simulateDelay(150);
   findConversation(conversationId).unreadCount = 0;
 }
@@ -104,6 +147,14 @@ export async function sendMessage(
   }
   if (input.attachment && input.attachment.sizeBytes > MAX_ATTACHMENT_MB * 1024 * 1024) {
     throw new Error(`O arquivo deve ter no máximo ${MAX_ATTACHMENT_MB} MB.`);
+  }
+
+  if (!CHAT_USA_MOCKS) {
+    if (input.attachment) throw new Error("O envio de anexos ainda não está disponível.");
+    return chamar<Message>(`/api/v1/conversas/${encodeURIComponent(conversationId)}/mensagens`, {
+      method: "POST",
+      body: JSON.stringify({ text }),
+    });
   }
 
   const conversation = findConversation(conversationId);
@@ -131,7 +182,11 @@ export async function sendMessage(
 // --- Ajuda da IA (mock) ---
 
 export async function getAiSuggestion(conversationId: string): Promise<string> {
-  const { contact, job } = findConversation(conversationId);
+  const conversation = CHAT_USA_MOCKS
+    ? findConversation(conversationId)
+    : await getConversation(conversationId);
+  if (!conversation) throw new Error("Conversa não encontrada.");
+  const { contact, job } = conversation;
   await simulateDelay(700);
   return `Olá, ${contact.name}! Tenho disponibilidade e experiência para a vaga "${job.title}". Podemos alinhar horário e detalhes?`;
 }

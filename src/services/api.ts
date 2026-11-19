@@ -42,7 +42,39 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export type CategoriaVaga = { slug: string; nome: string; nivel_risco: 'baixo' | 'medio' | 'alto' };
+
+export type NovaVaga = {
+  titulo: string;
+  descricao: string;
+  categoria: string;
+  valor: number;
+  duracao_horas: number;
+  data_inicio: string;
+  bairro: string;
+  logradouro?: string;
+  latitude: number;
+  longitude: number;
+};
+
+const CATEGORIAS_MOCK: CategoriaVaga[] = [
+  { slug: 'montagem', nome: 'Montagem de móveis', nivel_risco: 'baixo' },
+  { slug: 'limpeza', nome: 'Limpeza', nivel_risco: 'baixo' },
+  { slug: 'eletrica', nome: 'Elétrica', nivel_risco: 'alto' },
+  { slug: 'pintura', nome: 'Pintura', nivel_risco: 'medio' },
+];
+
 export const freelaiApi = {
+  listarCategorias: () =>
+    USE_MOCKS
+      ? Promise.resolve(CATEGORIAS_MOCK)
+      : request<CategoriaVaga[]>('/api/v1/categorias'),
+
+  criarVaga: (dados: NovaVaga) =>
+    USE_MOCKS
+      ? Promise.resolve({ id: 'mock-nova-vaga', titulo: dados.titulo } as unknown as Vaga)
+      : request<Vaga>('/api/v1/vagas', { method: 'POST', body: JSON.stringify(dados) }),
+
   listarPainelContratante: () =>
     request<ItemPainelContratante[]>('/api/v1/contratante/painel'),
 

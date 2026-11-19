@@ -9,6 +9,7 @@ import { Composer } from "@/components/chat/composer";
 import { MessageList } from "@/components/chat/message-list";
 import { PostServicePanel } from "@/components/chat/post-service-panel";
 import { ReportModal } from "@/components/chat/report-modal";
+import { useSessao } from "@/lib/session";
 import { CURRENT_USER_ID } from "@/mocks/conversations";
 import {
   getAgreementByConversation,
@@ -16,6 +17,7 @@ import {
   getMessages,
   getMyRole,
   markConversationAsRead,
+  CHAT_USA_MOCKS,
 } from "@/services/api";
 import type { Agreement, Conversation, Message } from "@/types";
 
@@ -27,6 +29,8 @@ type ConversationPageProps = {
 
 export default function ConversationPage({ params }: ConversationPageProps) {
   const { id } = use(params);
+  const { usuario } = useSessao();
+  const idDoUsuario = CHAT_USA_MOCKS ? CURRENT_USER_ID : String(usuario?.id ?? "");
   // undefined = carregando, null = não encontrada
   const [conversation, setConversation] = useState<Conversation | null | undefined>(undefined);
   const [messages, setMessages] = useState<Message[] | null>(null);
@@ -162,7 +166,7 @@ export default function ConversationPage({ params }: ConversationPageProps) {
           Carregando mensagens...
         </p>
       ) : (
-        <MessageList messages={messages} currentUserId={CURRENT_USER_ID} />
+        <MessageList messages={messages} currentUserId={idDoUsuario} />
       )}
 
       {agreementOpen && (
