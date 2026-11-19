@@ -10,6 +10,7 @@ import {
   UserIcon,
   ShieldCheckIcon,
   LockIcon,
+  MessageSquareIcon,
 } from "@/components/ui/icons";
 
 export function Sidebar() {
@@ -20,6 +21,7 @@ export function Sidebar() {
     { href: "/vagas", label: "Vagas", icon: BriefcaseIcon },
     { href: "/match", label: "Match Inteligente", icon: SparklesIcon },
     { href: "/criar-vaga", label: "Criar Vaga", icon: FileTextIcon },
+    { href: "/chat", label: "Mensagens & Chat", icon: MessageSquareIcon },
     {
       href: "/verificacao",
       label: "Verificação de Identidade",
