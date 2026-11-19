@@ -13,6 +13,7 @@ import {
 import { mockRouter } from '@/mocks/freelai-mock';
 import { fetchAutenticado } from '@/api/client';
 import { ApiError, erroDeResposta } from '@/api/erro';
+import type { DadosAcordo, PagamentoDetalhe } from '@/api/tipos';
 
 const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
@@ -65,6 +66,22 @@ const CATEGORIAS_MOCK: CategoriaVaga[] = [
 ];
 
 export const freelaiApi = {
+  obterAcordo: (vagaId: string) => request<DadosAcordo>(`/api/v1/vagas/${vagaId}/acordo`),
+
+  aceitarAcordo: (vagaId: string) =>
+    request<DadosAcordo>(`/api/v1/vagas/${vagaId}/acordo/aceite`, { method: 'POST' }),
+
+  obterPagamento: (vagaId: string) =>
+    request<PagamentoDetalhe>(`/api/v1/vagas/${vagaId}/pagamento`),
+
+  abrirCobranca: (vagaId: string) =>
+    request<PagamentoDetalhe>(`/api/v1/vagas/${vagaId}/pagamento`, { method: 'POST' }),
+
+  simularPagamento: (pagamentoId: number) =>
+    request<PagamentoDetalhe>(`/api/v1/pagamentos/${pagamentoId}/simular-confirmacao`, {
+      method: 'POST',
+    }),
+
   listarCategorias: () =>
     USE_MOCKS
       ? Promise.resolve(CATEGORIAS_MOCK)

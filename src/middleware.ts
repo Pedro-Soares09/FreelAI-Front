@@ -21,6 +21,7 @@ export const config = {
     "/criar-vaga/:path*",
     "/match/:path*",
     "/pagamento/:path*",
+    "/acordo/:path*",
     "/perfil/:path*",
     "/plano-pro/:path*",
     "/politica/:path*",

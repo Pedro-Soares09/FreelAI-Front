@@ -138,7 +138,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/conversas/{conversa_id}": {
+    "/api/v1/categorias": {
         parameters: {
             query?: never;
             header?: never;
@@ -146,12 +146,187 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Detalhar Conversa
-         * @description Resumo de uma conversa, com o id da vaga a que pertence (resposta de exemplo).
+         * Listar Categorias
+         * @description Categorias de serviço disponíveis para publicar uma vaga.
          */
+        get: operations["vagas_listar_categorias"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contratante/top3": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Top3
+         * @description Top 3 atual de cada vaga do contratante que ainda está em busca de profissional.
+         */
+        get: operations["vagas_listar_top3"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contratante/vagas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Minhas Vagas
+         * @description Vagas publicadas pelo contratante, da mais recente para a mais antiga.
+         */
+        get: operations["vagas_listar_minhas_vagas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contratante/vagas/{vaga_id}/escolher": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Escolher Profissional
+         * @description Escolhe um dos três profissionais e abre a janela de aceite.
+         */
+        post: operations["vagas_escolher_profissional"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conversas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Conversas
+         * @description Conversas do usuário nos dois perfis, da mais recente para a mais antiga.
+         */
+        get: operations["conversas_listar_conversas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conversas/{conversa_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Detalhar Conversa */
         get: operations["conversas_detalhar_conversa"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conversas/{conversa_id}/lida": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Marcar Como Lida
+         * @description Marca como lidas as mensagens recebidas pelo usuário na conversa.
+         */
+        post: operations["conversas_marcar_como_lida"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conversas/{conversa_id}/mensagens": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar Mensagens */
+        get: operations["conversas_listar_mensagens"];
+        put?: never;
+        /** Enviar Mensagem */
+        post: operations["conversas_enviar_mensagem"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/convites/{convite_id}/aceitar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Aceitar Convite
+         * @description Aceita o convite em que o contratante escolheu o profissional e abre a conversa.
+         */
+        post: operations["vagas_aceitar_convite"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/convites/{convite_id}/recusar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Recusar Convite
+         * @description Recusa o convite. Se o contratante já tinha escolhido o profissional, a vaga reabre.
+         */
+        post: operations["vagas_recusar_convite"];
         delete?: never;
         options?: never;
         head?: never;
@@ -218,6 +393,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/profissional/convites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Convites Do Profissional
+         * @description Convites em que o contratante já escolheu o profissional e o prazo de aceite segue aberto.
+         */
+        get: operations["vagas_listar_convites_do_profissional"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Criar Vaga
+         * @description Publica uma vaga e já gera a primeira rodada do top 3.
+         */
+        post: operations["vagas_criar_vaga"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/oportunidades": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Oportunidades
+         * @description Vagas publicadas dentro do raio do profissional, da mais próxima para a mais distante.
+         */
+        get: operations["vagas_listar_oportunidades"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vagas/{vaga_id}": {
         parameters: {
             query?: never;
@@ -227,7 +462,7 @@ export interface paths {
         };
         /**
          * Detalhar Vaga
-         * @description Detalhe de uma vaga (resposta de exemplo).
+         * @description Detalhe de uma vaga. O endereço completo só aparece para as partes da contratação.
          */
         get: operations["vagas_detalhar_vaga"];
         put?: never;
@@ -247,11 +482,31 @@ export interface paths {
         };
         /**
          * Consultar Acordo
-         * @description Resumo do acordo que alimenta o contrato e o pagamento (resposta de exemplo).
+         * @description Termos do acordo e situação dos aceites. Restrito às duas partes da vaga.
          */
-        get: operations["vagas_consultar_acordo"];
+        get: operations["acordo_consultar_acordo"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/acordo/aceite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Aceitar Acordo
+         * @description Registra o "Li e aceito" do usuário. O contrato é congelado no primeiro aceite.
+         */
+        post: operations["acordo_aceitar_acordo"];
         delete?: never;
         options?: never;
         head?: never;
@@ -292,6 +547,26 @@ export interface paths {
          * @description O contratante registra a falta do profissional após a tolerância; o valor é estornado.
          */
         post: operations["pagamentos_registrar_falta"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/interesse": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Manifestar Interesse
+         * @description Marca o convite do profissional como interessado, com contraproposta opcional.
+         */
+        post: operations["vagas_manifestar_interesse"];
         delete?: never;
         options?: never;
         head?: never;
@@ -346,12 +621,31 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AceiteResposta */
+        AceiteResposta: {
+            /** Conversa Id */
+            conversa_id: string;
+            /** Vaga Id */
+            vaga_id: string;
+        };
         /** AceitesAcordo */
         AceitesAcordo: {
             /** Contratante */
             contratante: boolean;
             /** Profissional */
             profissional: boolean;
+        };
+        /** CategoriaResumo */
+        CategoriaResumo: {
+            /**
+             * Nivel Risco
+             * @enum {string}
+             */
+            nivel_risco: "baixo" | "medio" | "alto";
+            /** Nome */
+            nome: string;
+            /** Slug */
+            slug: string;
         };
         /** ConfiguracoesEfetivas */
         ConfiguracoesEfetivas: {
@@ -362,46 +656,108 @@ export interface components {
                 [key: string]: number;
             };
         };
-        /**
-         * ConversaResumo
-         * @description Conversa ligada a uma vaga. Só existe depois que o convite é aceito.
-         * @example {
-         *       "aberta": true,
-         *       "id": 9,
-         *       "nao_lidas": 1,
-         *       "outra_parte": {
-         *         "nome": "Ana Souza",
-         *         "novo": true,
-         *         "pro": false,
-         *         "total_avaliacoes": 0,
-         *         "usuario_id": 7,
-         *         "verificado": true
-         *       },
-         *       "ultima_mensagem": {
-         *         "autor_id": 7,
-         *         "enviada_em": "2026-11-19T18:30:00Z",
-         *         "texto": "Chego às 14h."
-         *       },
-         *       "vaga_id": 42
-         *     }
-         */
-        ConversaResumo: {
-            /**
-             * Aberta
-             * @description Falso quando a vaga foi cancelada ou encerrada.
-             */
-            aberta: boolean;
+        /** ContatoChat */
+        ContatoChat: {
+            /** Avatarurl */
+            avatarUrl?: string | null;
             /** Id */
-            id: number;
+            id: string;
+            /** Name */
+            name: string;
             /**
-             * Nao Lidas
-             * @default 0
+             * Online
+             * @default false
              */
-            nao_lidas: number;
-            outra_parte: components["schemas"]["PerfilResumo"];
-            ultima_mensagem?: components["schemas"]["MensagemResumo"] | null;
+            online: boolean;
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "contratante" | "profissional";
+            /** Verified */
+            verified: boolean;
+        };
+        /** ContratanteResumo */
+        ContratanteResumo: {
+            /** Foto Url */
+            foto_url?: string | null;
+            /** Id */
+            id: string;
+            /** Nome */
+            nome: string;
+            /** Nota Media */
+            nota_media: number;
+            /**
+             * Pro
+             * @default false
+             */
+            pro: boolean;
+            /** Total Avaliacoes */
+            total_avaliacoes: number;
+            /** Verificado */
+            verificado: boolean;
+        };
+        /** ConversaChat */
+        ConversaChat: {
+            contact: components["schemas"]["ContatoChat"];
+            /** Id */
+            id: string;
+            job: components["schemas"]["VagaDaConversa"];
+            /**
+             * Jobclosed
+             * @default false
+             */
+            jobClosed: boolean;
+            /** Lastmessage */
+            lastMessage?: string | null;
+            /**
+             * Lastmessageat
+             * Format: date-time
+             */
+            lastMessageAt: string;
+            /** Participantids */
+            participantIds: string[];
+            /** Unreadcount */
+            unreadCount: number;
+        };
+        /** ConviteComVaga */
+        ConviteComVaga: {
+            convite: components["schemas"]["ConviteVaga"];
+            vaga: components["schemas"]["VagaDetalhe"];
+        };
+        /** ConviteContratante */
+        ConviteContratante: {
+            /** Id */
+            id: string;
+            /**
+             * Prazo Em
+             * Format: date-time
+             */
+            prazo_em: string;
+            /** Profissional Id */
+            profissional_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "em_andamento" | "aceito";
+        };
+        /** ConviteVaga */
+        ConviteVaga: {
+            /** Id */
+            id: string;
+            /** Prazo Em */
+            prazo_em?: string | null;
+            /** Profissional Id */
+            profissional_id: string;
+            /** Rodada */
+            rodada: number;
+            /** Status */
+            status: string;
             /** Vaga Id */
-            vaga_id: number;
+            vaga_id: string;
+            /** Valor Proposto */
+            valor_proposto?: number | null;
         };
         /**
          * DadosAcordo
@@ -511,6 +867,11 @@ export interface components {
             /** Valor Total */
             valor_total: string;
         };
+        /** EscolhaEntrada */
+        EscolhaEntrada: {
+            /** Profissional Id */
+            profissional_id: string;
+        };
         /**
          * EstadoConta
          * @enum {string}
@@ -530,6 +891,11 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** InteresseEntrada */
+        InteresseEntrada: {
+            /** Valor Proposto */
+            valor_proposto?: number | null;
         };
         /**
          * LancamentoResumo
@@ -565,17 +931,31 @@ export interface components {
             /** Senha */
             senha: string;
         };
-        /** MensagemResumo */
-        MensagemResumo: {
-            /** Autor Id */
-            autor_id: number;
+        /** MensagemChat */
+        MensagemChat: {
+            /** Conversationid */
+            conversationId: string;
             /**
-             * Enviada Em
+             * Createdat
              * Format: date-time
              */
-            enviada_em: string;
-            /** Texto */
-            texto: string | null;
+            createdAt: string;
+            /** Id */
+            id: string;
+            /** Senderid */
+            senderId: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "sent" | "seen";
+            /** Text */
+            text?: string | null;
+        };
+        /** MensagemEntrada */
+        MensagemEntrada: {
+            /** Text */
+            text: string;
         };
         /**
          * PagamentoDetalhe
@@ -768,6 +1148,43 @@ export interface components {
              */
             valor?: string | null;
         };
+        /** ProfissionalRecomendado */
+        ProfissionalRecomendado: {
+            /** Demonstrou Interesse */
+            demonstrou_interesse: boolean;
+            /** Distancia Km */
+            distancia_km: number;
+            /**
+             * Estado
+             * @enum {string}
+             */
+            estado: "disponivel" | "falhou";
+            /** Foto Url */
+            foto_url?: string | null;
+            /** Habilidades */
+            habilidades: string[];
+            /** Id */
+            id: string;
+            /** Nome */
+            nome: string;
+            /** Nota Media */
+            nota_media: number;
+            /** Novo */
+            novo: boolean;
+            /**
+             * Pro
+             * @default false
+             */
+            pro: boolean;
+            /** Resumo */
+            resumo: string;
+            /** Total Avaliacoes */
+            total_avaliacoes: number;
+            /** Valor Proposto */
+            valor_proposto?: number | null;
+            /** Verificado */
+            verificado: boolean;
+        };
         /** RegistroEntrada */
         RegistroEntrada: {
             /**
@@ -822,6 +1239,15 @@ export interface components {
          * @enum {string}
          */
         TipoPerfil: "profissional" | "contratante";
+        /** Top3Contratacao */
+        Top3Contratacao: {
+            convite_atual?: components["schemas"]["ConviteContratante"] | null;
+            /** Profissionais */
+            profissionais: components["schemas"]["ProfissionalRecomendado"][];
+            /** Rodada */
+            rodada: number;
+            vaga: components["schemas"]["VagaDetalhe"];
+        };
         /**
          * UsuarioAtual
          * @description Conta autenticada e seus perfis.
@@ -866,57 +1292,82 @@ export interface components {
              */
             verificado: boolean;
         };
-        /**
-         * VagaResumo
-         * @description Vaga como aparece em cards e no detalhe. O endereço completo só vai ao contratado.
-         * @example {
-         *       "bairro": "Várzea",
-         *       "categoria": "montagem-de-moveis",
-         *       "contratante": {
-         *         "nome": "Bia Lima",
-         *         "nota_media": 4.8,
-         *         "novo": false,
-         *         "pro": false,
-         *         "total_avaliacoes": 12,
-         *         "usuario_id": 3,
-         *         "verificado": true
-         *       },
-         *       "distancia_km": 1.2,
-         *       "duracao_minutos": 180,
-         *       "estado": "publicada",
-         *       "id": 42,
-         *       "inicio_em": "2026-11-20T14:00:00Z",
-         *       "titulo": "Montagem de guarda-roupa",
-         *       "valor_inicial": "150.00"
-         *     }
-         */
-        VagaResumo: {
+        /** VagaCriar */
+        VagaCriar: {
+            /** Bairro */
+            bairro: string;
+            /**
+             * Categoria
+             * @description Slug da categoria, obtido em GET /categorias.
+             */
+            categoria: string;
+            /**
+             * Data Inicio
+             * Format: date-time
+             */
+            data_inicio: string;
+            /** Descricao */
+            descricao: string;
+            /** Duracao Horas */
+            duracao_horas: number;
+            /** Latitude */
+            latitude: number;
+            /** Logradouro */
+            logradouro?: string | null;
+            /** Longitude */
+            longitude: number;
+            /** Titulo */
+            titulo: string;
+            /** Valor */
+            valor: number;
+        };
+        /** VagaDaConversa */
+        VagaDaConversa: {
+            /** Amount */
+            amount: number;
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+        };
+        /** VagaDetalhe */
+        VagaDetalhe: {
             /** Bairro */
             bairro: string;
             /** Categoria */
             categoria: string;
-            contratante: components["schemas"]["PerfilResumo"];
+            contratante: components["schemas"]["ContratanteResumo"];
             /**
-             * Distancia Km
-             * @description Distância até quem consulta, quando há localização.
-             */
-            distancia_km?: number | null;
-            /** Duracao Minutos */
-            duracao_minutos: number;
-            estado: components["schemas"]["EstadoVaga"];
-            /** Id */
-            id: number;
-            /**
-             * Inicio Em
+             * Data Inicio
              * Format: date-time
              */
-            inicio_em: string;
+            data_inicio: string;
+            /** Descricao */
+            descricao: string;
+            /** Distancia Km */
+            distancia_km: number;
+            /** Duracao Horas */
+            duracao_horas: number;
+            /** Endereco Completo */
+            endereco_completo?: string | null;
+            /** Id */
+            id: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            meu_convite?: components["schemas"]["ConviteVaga"] | null;
+            /**
+             * Nivel Risco
+             * @enum {string}
+             */
+            nivel_risco: "baixo" | "medio" | "alto";
+            /** Status */
+            status: string;
             /** Titulo */
             titulo: string;
-            /** Valor Fixado */
-            valor_fixado?: string | null;
-            /** Valor Inicial */
-            valor_inicial: string;
+            /** Valor */
+            valor: number;
         };
         /** ValidacaoFacialEntrada */
         ValidacaoFacialEntrada: {
@@ -1141,6 +1592,121 @@ export interface operations {
             };
         };
     };
+    vagas_listar_categorias: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoriaResumo"][];
+                };
+            };
+        };
+    };
+    vagas_listar_top3: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Top3Contratacao"][];
+                };
+            };
+        };
+    };
+    vagas_listar_minhas_vagas: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VagaDetalhe"][];
+                };
+            };
+        };
+    };
+    vagas_escolher_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EscolhaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Top3Contratacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_listar_conversas: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversaChat"][];
+                };
+            };
+        };
+    };
     conversas_detalhar_conversa: {
         parameters: {
             query?: never;
@@ -1158,8 +1724,163 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ConversaResumo"];
+                    "application/json": components["schemas"]["ConversaChat"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_marcar_como_lida: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversa_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_listar_mensagens: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversa_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MensagemChat"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_enviar_mensagem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversa_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MensagemEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MensagemChat"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    vagas_aceitar_convite: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                convite_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AceiteResposta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    vagas_recusar_convite: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                convite_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {
@@ -1260,6 +1981,92 @@ export interface operations {
             };
         };
     };
+    vagas_listar_convites_do_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConviteComVaga"][];
+                };
+            };
+        };
+    };
+    vagas_criar_vaga: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VagaCriar"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VagaDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    vagas_listar_oportunidades: {
+        parameters: {
+            query?: {
+                raio_km?: number;
+                categoria?: string | null;
+                data?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VagaDetalhe"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     vagas_detalhar_vaga: {
         parameters: {
             query?: never;
@@ -1277,7 +2084,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["VagaResumo"];
+                    "application/json": components["schemas"]["VagaDetalhe"];
                 };
             };
             /** @description Validation Error */
@@ -1291,7 +2098,38 @@ export interface operations {
             };
         };
     };
-    vagas_consultar_acordo: {
+    acordo_consultar_acordo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DadosAcordo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    acordo_aceitar_acordo: {
         parameters: {
             query?: never;
             header?: never;
@@ -1371,6 +2209,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PagamentoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    vagas_manifestar_interesse: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InteresseEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConviteVaga"];
                 };
             };
             /** @description Validation Error */

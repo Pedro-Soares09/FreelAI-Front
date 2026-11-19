@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { AgreementModal } from "@/components/chat/agreement-modal";
 import { AiSuggestion } from "@/components/chat/ai-suggestion";
@@ -29,6 +30,7 @@ type ConversationPageProps = {
 
 export default function ConversationPage({ params }: ConversationPageProps) {
   const { id } = use(params);
+  const router = useRouter();
   const { usuario } = useSessao();
   const idDoUsuario = CHAT_USA_MOCKS ? CURRENT_USER_ID : String(usuario?.id ?? "");
   // undefined = carregando, null = não encontrada
@@ -132,7 +134,14 @@ export default function ConversationPage({ params }: ConversationPageProps) {
       <ChatHeader
         conversation={conversation}
         connection={connection}
-        onAgreementClick={canOpenAgreement ? () => setAgreementOpen(true) : undefined}
+        onAgreementClick={
+          canOpenAgreement
+            ? () =>
+                CHAT_USA_MOCKS
+                  ? setAgreementOpen(true)
+                  : router.push(`/acordo/${conversation.job.id}`)
+            : undefined
+        }
         onReportClick={() => setReportOpen(true)}
       />
 

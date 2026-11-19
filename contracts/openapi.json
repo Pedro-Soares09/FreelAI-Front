@@ -1,6 +1,24 @@
 {
   "components": {
     "schemas": {
+      "AceiteResposta": {
+        "properties": {
+          "conversa_id": {
+            "title": "Conversa Id",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "conversa_id"
+        ],
+        "title": "AceiteResposta",
+        "type": "object"
+      },
       "AceitesAcordo": {
         "properties": {
           "contratante": {
@@ -17,6 +35,34 @@
           "contratante"
         ],
         "title": "AceitesAcordo",
+        "type": "object"
+      },
+      "CategoriaResumo": {
+        "properties": {
+          "nivel_risco": {
+            "enum": [
+              "baixo",
+              "medio",
+              "alto"
+            ],
+            "title": "Nivel Risco",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome",
+          "nivel_risco"
+        ],
+        "title": "CategoriaResumo",
         "type": "object"
       },
       "ConfiguracoesEfetivas": {
@@ -40,69 +86,262 @@
         "title": "ConfiguracoesEfetivas",
         "type": "object"
       },
-      "ConversaResumo": {
-        "description": "Conversa ligada a uma vaga. Só existe depois que o convite é aceito.",
-        "examples": [
-          {
-            "aberta": true,
-            "id": 9,
-            "nao_lidas": 1,
-            "outra_parte": {
-              "nome": "Ana Souza",
-              "novo": true,
-              "pro": false,
-              "total_avaliacoes": 0,
-              "usuario_id": 7,
-              "verificado": true
-            },
-            "ultima_mensagem": {
-              "autor_id": 7,
-              "enviada_em": "2026-11-19T18:30:00Z",
-              "texto": "Chego às 14h."
-            },
-            "vaga_id": 42
-          }
-        ],
+      "ContatoChat": {
         "properties": {
-          "aberta": {
-            "description": "Falso quando a vaga foi cancelada ou encerrada.",
-            "title": "Aberta",
-            "type": "boolean"
-          },
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "nao_lidas": {
-            "default": 0,
-            "title": "Nao Lidas",
-            "type": "integer"
-          },
-          "outra_parte": {
-            "$ref": "#/components/schemas/PerfilResumo"
-          },
-          "ultima_mensagem": {
+          "avatarUrl": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/MensagemResumo"
+                "type": "string"
               },
               {
                 "type": "null"
               }
-            ]
+            ],
+            "title": "Avatarurl"
           },
-          "vaga_id": {
-            "title": "Vaga Id",
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "online": {
+            "default": false,
+            "title": "Online",
+            "type": "boolean"
+          },
+          "role": {
+            "enum": [
+              "contratante",
+              "profissional"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "verified": {
+            "title": "Verified",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "verified",
+          "role"
+        ],
+        "title": "ContatoChat",
+        "type": "object"
+      },
+      "ContratanteResumo": {
+        "properties": {
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "title": "Nota Media",
+            "type": "number"
+          },
+          "pro": {
+            "default": false,
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "total_avaliacoes": {
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "verificado",
+          "nota_media",
+          "total_avaliacoes"
+        ],
+        "title": "ContratanteResumo",
+        "type": "object"
+      },
+      "ConversaChat": {
+        "properties": {
+          "contact": {
+            "$ref": "#/components/schemas/ContatoChat"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job": {
+            "$ref": "#/components/schemas/VagaDaConversa"
+          },
+          "jobClosed": {
+            "default": false,
+            "title": "Jobclosed",
+            "type": "boolean"
+          },
+          "lastMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastmessage"
+          },
+          "lastMessageAt": {
+            "format": "date-time",
+            "title": "Lastmessageat",
+            "type": "string"
+          },
+          "participantIds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Participantids",
+            "type": "array"
+          },
+          "unreadCount": {
+            "title": "Unreadcount",
             "type": "integer"
           }
         },
         "required": [
           "id",
-          "vaga_id",
-          "aberta",
-          "outra_parte"
+          "participantIds",
+          "contact",
+          "job",
+          "lastMessageAt",
+          "unreadCount"
         ],
-        "title": "ConversaResumo",
+        "title": "ConversaChat",
+        "type": "object"
+      },
+      "ConviteComVaga": {
+        "properties": {
+          "convite": {
+            "$ref": "#/components/schemas/ConviteVaga"
+          },
+          "vaga": {
+            "$ref": "#/components/schemas/VagaDetalhe"
+          }
+        },
+        "required": [
+          "convite",
+          "vaga"
+        ],
+        "title": "ConviteComVaga",
+        "type": "object"
+      },
+      "ConviteContratante": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "prazo_em": {
+            "format": "date-time",
+            "title": "Prazo Em",
+            "type": "string"
+          },
+          "profissional_id": {
+            "title": "Profissional Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "em_andamento",
+              "aceito"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "profissional_id",
+          "status",
+          "prazo_em"
+        ],
+        "title": "ConviteContratante",
+        "type": "object"
+      },
+      "ConviteVaga": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "prazo_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prazo Em"
+          },
+          "profissional_id": {
+            "title": "Profissional Id",
+            "type": "string"
+          },
+          "rodada": {
+            "title": "Rodada",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "string"
+          },
+          "valor_proposto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Proposto"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "profissional_id",
+          "status",
+          "rodada"
+        ],
+        "title": "ConviteVaga",
         "type": "object"
       },
       "DadosAcordo": {
@@ -304,6 +543,19 @@
         "title": "DivisaoValores",
         "type": "object"
       },
+      "EscolhaEntrada": {
+        "properties": {
+          "profissional_id": {
+            "title": "Profissional Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "profissional_id"
+        ],
+        "title": "EscolhaEntrada",
+        "type": "object"
+      },
       "EstadoConta": {
         "enum": [
           "pendente",
@@ -358,6 +610,24 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "InteresseEntrada": {
+        "properties": {
+          "valor_proposto": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Proposto"
+          }
+        },
+        "title": "InteresseEntrada",
         "type": "object"
       },
       "LancamentoResumo": {
@@ -429,18 +699,34 @@
         "title": "LoginEntrada",
         "type": "object"
       },
-      "MensagemResumo": {
+      "MensagemChat": {
         "properties": {
-          "autor_id": {
-            "title": "Autor Id",
-            "type": "integer"
-          },
-          "enviada_em": {
-            "format": "date-time",
-            "title": "Enviada Em",
+          "conversationId": {
+            "title": "Conversationid",
             "type": "string"
           },
-          "texto": {
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "senderId": {
+            "title": "Senderid",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "sent",
+              "seen"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "text": {
             "anyOf": [
               {
                 "type": "string"
@@ -449,15 +735,32 @@
                 "type": "null"
               }
             ],
-            "title": "Texto"
+            "title": "Text"
           }
         },
         "required": [
-          "autor_id",
-          "texto",
-          "enviada_em"
+          "id",
+          "conversationId",
+          "senderId",
+          "createdAt",
+          "status"
         ],
-        "title": "MensagemResumo",
+        "title": "MensagemChat",
+        "type": "object"
+      },
+      "MensagemEntrada": {
+        "properties": {
+          "text": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "title": "MensagemEntrada",
         "type": "object"
       },
       "PagamentoDetalhe": {
@@ -797,6 +1100,103 @@
         "title": "PontoMapa",
         "type": "object"
       },
+      "ProfissionalRecomendado": {
+        "properties": {
+          "demonstrou_interesse": {
+            "title": "Demonstrou Interesse",
+            "type": "boolean"
+          },
+          "distancia_km": {
+            "title": "Distancia Km",
+            "type": "number"
+          },
+          "estado": {
+            "enum": [
+              "disponivel",
+              "falhou"
+            ],
+            "title": "Estado",
+            "type": "string"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "habilidades": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Habilidades",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "title": "Nota Media",
+            "type": "number"
+          },
+          "novo": {
+            "title": "Novo",
+            "type": "boolean"
+          },
+          "pro": {
+            "default": false,
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "resumo": {
+            "title": "Resumo",
+            "type": "string"
+          },
+          "total_avaliacoes": {
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "valor_proposto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Proposto"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "verificado",
+          "nota_media",
+          "total_avaliacoes",
+          "distancia_km",
+          "novo",
+          "demonstrou_interesse",
+          "resumo",
+          "habilidades",
+          "estado"
+        ],
+        "title": "ProfissionalRecomendado",
+        "type": "object"
+      },
       "RegistroEntrada": {
         "properties": {
           "email": {
@@ -906,6 +1306,41 @@
         "title": "TipoPerfil",
         "type": "string"
       },
+      "Top3Contratacao": {
+        "properties": {
+          "convite_atual": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConviteContratante"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "profissionais": {
+            "items": {
+              "$ref": "#/components/schemas/ProfissionalRecomendado"
+            },
+            "title": "Profissionais",
+            "type": "array"
+          },
+          "rodada": {
+            "title": "Rodada",
+            "type": "integer"
+          },
+          "vaga": {
+            "$ref": "#/components/schemas/VagaDetalhe"
+          }
+        },
+        "required": [
+          "vaga",
+          "rodada",
+          "profissionais"
+        ],
+        "title": "Top3Contratacao",
+        "type": "object"
+      },
       "UsuarioAtual": {
         "description": "Conta autenticada e seus perfis.",
         "examples": [
@@ -993,30 +1428,110 @@
         "title": "UsuarioAtual",
         "type": "object"
       },
-      "VagaResumo": {
-        "description": "Vaga como aparece em cards e no detalhe. O endereço completo só vai ao contratado.",
-        "examples": [
-          {
-            "bairro": "Várzea",
-            "categoria": "montagem-de-moveis",
-            "contratante": {
-              "nome": "Bia Lima",
-              "nota_media": 4.8,
-              "novo": false,
-              "pro": false,
-              "total_avaliacoes": 12,
-              "usuario_id": 3,
-              "verificado": true
-            },
-            "distancia_km": 1.2,
-            "duracao_minutos": 180,
-            "estado": "publicada",
-            "id": 42,
-            "inicio_em": "2026-11-20T14:00:00Z",
-            "titulo": "Montagem de guarda-roupa",
-            "valor_inicial": "150.00"
+      "VagaCriar": {
+        "properties": {
+          "bairro": {
+            "maxLength": 80,
+            "minLength": 2,
+            "title": "Bairro",
+            "type": "string"
+          },
+          "categoria": {
+            "description": "Slug da categoria, obtido em GET /categorias.",
+            "title": "Categoria",
+            "type": "string"
+          },
+          "data_inicio": {
+            "format": "date-time",
+            "title": "Data Inicio",
+            "type": "string"
+          },
+          "descricao": {
+            "minLength": 5,
+            "title": "Descricao",
+            "type": "string"
+          },
+          "duracao_horas": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 24.0,
+            "title": "Duracao Horas",
+            "type": "number"
+          },
+          "latitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "logradouro": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logradouro"
+          },
+          "longitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "titulo": {
+            "maxLength": 120,
+            "minLength": 3,
+            "title": "Titulo",
+            "type": "string"
+          },
+          "valor": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100000.0,
+            "title": "Valor",
+            "type": "number"
           }
+        },
+        "required": [
+          "titulo",
+          "descricao",
+          "categoria",
+          "valor",
+          "duracao_horas",
+          "data_inicio",
+          "bairro",
+          "latitude",
+          "longitude"
         ],
+        "title": "VagaCriar",
+        "type": "object"
+      },
+      "VagaDaConversa": {
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "number"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "amount"
+        ],
+        "title": "VagaDaConversa",
+        "type": "object"
+      },
+      "VagaDetalhe": {
         "properties": {
           "bairro": {
             "title": "Bairro",
@@ -1027,41 +1542,26 @@
             "type": "string"
           },
           "contratante": {
-            "$ref": "#/components/schemas/PerfilResumo"
+            "$ref": "#/components/schemas/ContratanteResumo"
+          },
+          "data_inicio": {
+            "format": "date-time",
+            "title": "Data Inicio",
+            "type": "string"
+          },
+          "descricao": {
+            "title": "Descricao",
+            "type": "string"
           },
           "distancia_km": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Distância até quem consulta, quando há localização.",
-            "title": "Distancia Km"
+            "title": "Distancia Km",
+            "type": "number"
           },
-          "duracao_minutos": {
-            "title": "Duracao Minutos",
-            "type": "integer"
+          "duracao_horas": {
+            "title": "Duracao Horas",
+            "type": "number"
           },
-          "estado": {
-            "$ref": "#/components/schemas/EstadoVaga"
-          },
-          "id": {
-            "title": "Id",
-            "type": "integer"
-          },
-          "inicio_em": {
-            "format": "date-time",
-            "title": "Inicio Em",
-            "type": "string"
-          },
-          "titulo": {
-            "title": "Titulo",
-            "type": "string"
-          },
-          "valor_fixado": {
+          "endereco_completo": {
             "anyOf": [
               {
                 "type": "string"
@@ -1070,25 +1570,69 @@
                 "type": "null"
               }
             ],
-            "title": "Valor Fixado"
+            "title": "Endereco Completo"
           },
-          "valor_inicial": {
-            "title": "Valor Inicial",
+          "id": {
+            "title": "Id",
             "type": "string"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "meu_convite": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConviteVaga"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nivel_risco": {
+            "enum": [
+              "baixo",
+              "medio",
+              "alto"
+            ],
+            "title": "Nivel Risco",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "titulo": {
+            "title": "Titulo",
+            "type": "string"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "number"
           }
         },
         "required": [
           "id",
           "titulo",
+          "descricao",
           "categoria",
-          "estado",
-          "valor_inicial",
-          "inicio_em",
-          "duracao_minutos",
+          "nivel_risco",
+          "valor",
+          "duracao_horas",
+          "data_inicio",
           "bairro",
+          "distancia_km",
+          "latitude",
+          "longitude",
+          "status",
           "contratante"
         ],
-        "title": "VagaResumo",
+        "title": "VagaDetalhe",
         "type": "object"
       },
       "ValidacaoFacialEntrada": {
@@ -1421,9 +1965,190 @@
         ]
       }
     },
+    "/api/v1/categorias": {
+      "get": {
+        "description": "Categorias de serviço disponíveis para publicar uma vaga.",
+        "operationId": "vagas_listar_categorias",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoriaResumo"
+                  },
+                  "title": "Response Vagas Listar Categorias",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Categorias",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratante/top3": {
+      "get": {
+        "description": "Top 3 atual de cada vaga do contratante que ainda está em busca de profissional.",
+        "operationId": "vagas_listar_top3",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Top3Contratacao"
+                  },
+                  "title": "Response Vagas Listar Top3",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Top3",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratante/vagas": {
+      "get": {
+        "description": "Vagas publicadas pelo contratante, da mais recente para a mais antiga.",
+        "operationId": "vagas_listar_minhas_vagas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VagaDetalhe"
+                  },
+                  "title": "Response Vagas Listar Minhas Vagas",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Minhas Vagas",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratante/vagas/{vaga_id}/escolher": {
+      "post": {
+        "description": "Escolhe um dos três profissionais e abre a janela de aceite.",
+        "operationId": "vagas_escolher_profissional",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscolhaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Top3Contratacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Escolher Profissional",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/conversas": {
+      "get": {
+        "description": "Conversas do usuário nos dois perfis, da mais recente para a mais antiga.",
+        "operationId": "conversas_listar_conversas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConversaChat"
+                  },
+                  "title": "Response Conversas Listar Conversas",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Conversas",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
     "/api/v1/conversas/{conversa_id}": {
       "get": {
-        "description": "Resumo de uma conversa, com o id da vaga a que pertence (resposta de exemplo).",
         "operationId": "conversas_detalhar_conversa",
         "parameters": [
           {
@@ -1441,7 +2166,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversaResumo"
+                  "$ref": "#/components/schemas/ConversaChat"
                 }
               }
             },
@@ -1458,9 +2183,250 @@
             "description": "Validation Error"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Detalhar Conversa",
         "tags": [
           "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}/lida": {
+      "post": {
+        "description": "Marca como lidas as mensagens recebidas pelo usuário na conversa.",
+        "operationId": "conversas_marcar_como_lida",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Marcar Como Lida",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}/mensagens": {
+      "get": {
+        "operationId": "conversas_listar_mensagens",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MensagemChat"
+                  },
+                  "title": "Response Conversas Listar Mensagens",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Mensagens",
+        "tags": [
+          "conversas"
+        ]
+      },
+      "post": {
+        "operationId": "conversas_enviar_mensagem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MensagemEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MensagemChat"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Mensagem",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/convites/{convite_id}/aceitar": {
+      "post": {
+        "description": "Aceita o convite em que o contratante escolheu o profissional e abre a conversa.",
+        "operationId": "vagas_aceitar_convite",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "convite_id",
+            "required": true,
+            "schema": {
+              "title": "Convite Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AceiteResposta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Convite",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/convites/{convite_id}/recusar": {
+      "post": {
+        "description": "Recusa o convite. Se o contratante já tinha escolhido o profissional, a vaga reabre.",
+        "operationId": "vagas_recusar_convite",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "convite_id",
+            "required": true,
+            "schema": {
+              "title": "Convite Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Recusar Convite",
+        "tags": [
+          "vagas"
         ]
       }
     },
@@ -1624,9 +2590,175 @@
         ]
       }
     },
+    "/api/v1/profissional/convites": {
+      "get": {
+        "description": "Convites em que o contratante já escolheu o profissional e o prazo de aceite segue aberto.",
+        "operationId": "vagas_listar_convites_do_profissional",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConviteComVaga"
+                  },
+                  "title": "Response Vagas Listar Convites Do Profissional",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Convites Do Profissional",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/vagas": {
+      "post": {
+        "description": "Publica uma vaga e já gera a primeira rodada do top 3.",
+        "operationId": "vagas_criar_vaga",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VagaCriar"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VagaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Criar Vaga",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/vagas/oportunidades": {
+      "get": {
+        "description": "Vagas publicadas dentro do raio do profissional, da mais próxima para a mais distante.",
+        "operationId": "vagas_listar_oportunidades",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "raio_km",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "maximum": 15,
+              "minimum": 1,
+              "title": "Raio Km",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "categoria",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Categoria"
+            }
+          },
+          {
+            "in": "query",
+            "name": "data",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(hoje|amanha)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VagaDetalhe"
+                  },
+                  "title": "Response Vagas Listar Oportunidades",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Oportunidades",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
     "/api/v1/vagas/{vaga_id}": {
       "get": {
-        "description": "Detalhe de uma vaga (resposta de exemplo).",
+        "description": "Detalhe de uma vaga. O endereço completo só aparece para as partes da contratação.",
         "operationId": "vagas_detalhar_vaga",
         "parameters": [
           {
@@ -1644,7 +2776,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/VagaResumo"
+                  "$ref": "#/components/schemas/VagaDetalhe"
                 }
               }
             },
@@ -1661,6 +2793,11 @@
             "description": "Validation Error"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Detalhar Vaga",
         "tags": [
           "vagas"
@@ -1669,8 +2806,8 @@
     },
     "/api/v1/vagas/{vaga_id}/acordo": {
       "get": {
-        "description": "Resumo do acordo que alimenta o contrato e o pagamento (resposta de exemplo).",
-        "operationId": "vagas_consultar_acordo",
+        "description": "Termos do acordo e situação dos aceites. Restrito às duas partes da vaga.",
+        "operationId": "acordo_consultar_acordo",
         "parameters": [
           {
             "in": "path",
@@ -1704,9 +2841,62 @@
             "description": "Validation Error"
           }
         },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
         "summary": "Consultar Acordo",
         "tags": [
-          "vagas"
+          "acordo"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/acordo/aceite": {
+      "post": {
+        "description": "Registra o \"Li e aceito\" do usuário. O contrato é congelado no primeiro aceite.",
+        "operationId": "acordo_aceitar_acordo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DadosAcordo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Acordo",
+        "tags": [
+          "acordo"
         ]
       }
     },
@@ -1803,6 +2993,64 @@
         "summary": "Registrar Falta",
         "tags": [
           "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/interesse": {
+      "post": {
+        "description": "Marca o convite do profissional como interessado, com contraproposta opcional.",
+        "operationId": "vagas_manifestar_interesse",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InteresseEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConviteVaga"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Manifestar Interesse",
+        "tags": [
+          "vagas"
         ]
       }
     },
