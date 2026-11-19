@@ -3,80 +3,85 @@
 import React from 'react';
 import Link from 'next/link';
 import { Vaga } from '@/types';
+import { SeloPro } from '@/components/ui/selos';
+import { IconCheck } from '@/components/ui/icons';
+import { formatCurrency } from '@/lib/format';
 
 interface JobCardProps {
   vaga: Vaga;
+  selecionada?: boolean;
 }
 
-export function JobCard({ vaga }: JobCardProps) {
+export function JobCard({ vaga, selecionada = false }: JobCardProps) {
   const conviteStatus = vaga.meu_convite?.status;
   const isConvitePendente = conviteStatus === 'escolhido';
   const isInteresseEnviado = conviteStatus === 'interessado';
   const isContratantePro = Boolean(vaga.contratante?.pro);
 
+  const borda = isConvitePendente
+    ? 'border-warning/70 bg-warning/10'
+    : selecionada
+    ? 'border-primary bg-surface shadow-neon'
+    : isContratantePro
+    ? 'border-primary/50 bg-surface hover:border-primary'
+    : 'border-borda bg-surface hover:border-primary/60';
+
   return (
-    <article
-      className={`rounded-2xl border p-4 transition ${
-        isConvitePendente
-          ? 'border-amber-500/70 bg-amber-500/10 shadow-lg shadow-amber-500/10'
-          : isContratantePro
-          ? 'border-emerald-500/50 bg-zinc-900 shadow-md shadow-emerald-500/5'
-          : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
-      }`}
-    >
+    <article className={`rounded-card border p-4 transition ${borda}`}>
       <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-md bg-zinc-800 px-2 py-0.5 text-xs font-medium text-zinc-300">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span className="rounded-md bg-surface-2 px-2 py-0.5 text-xs font-medium capitalize text-fg">
               {vaga.categoria}
             </span>
-            <span className="text-xs text-zinc-400">
-              {vaga.bairro} • ~{vaga.distancia_km.toFixed(1)} km
+            <span className="text-xs text-muted">
+              {vaga.bairro} · cerca de {vaga.distancia_km.toFixed(1).replace('.', ',')} km
             </span>
-            {isContratantePro && (
-              <span className="rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-zinc-950">
-                PRO
-              </span>
-            )}
+            {isContratantePro && <SeloPro />}
           </div>
-          <h3 className="mt-1.5 text-base font-bold text-white">{vaga.titulo}</h3>
+          <h3 className="mt-1.5 text-base font-bold text-fg">
+            <Link href={`/vagas/${vaga.id}`} className="hover:text-primary">
+              {vaga.titulo}
+            </Link>
+          </h3>
         </div>
 
-        <div className="text-right">
-          <span className="text-lg font-extrabold text-emerald-400">
-            R$ {vaga.valor.toFixed(2).replace('.', ',')}
+        <div className="shrink-0 text-right">
+          <span className="whitespace-nowrap text-lg font-extrabold text-primary">
+            {formatCurrency(vaga.valor)}
           </span>
-          <p className="text-xs text-zinc-400">{vaga.duracao_horas}h</p>
+          <p className="text-xs text-muted">{vaga.duracao_horas} h de serviço</p>
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-zinc-800/80 pt-3">
-        <div className="flex items-center gap-2 text-xs text-zinc-400">
-          <span>{vaga.contratante.nome}</span>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-borda pt-3">
+        <div className="flex min-w-0 items-center gap-2 text-xs text-muted">
+          <span className="truncate">{vaga.contratante.nome}</span>
           {vaga.contratante.verificado && (
-            <span className="rounded bg-sky-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-sky-400">
-              ✓ Verificado
+            <span className="inline-flex shrink-0 items-center gap-1 rounded bg-info/15 px-1.5 py-0.5 text-[11px] font-semibold text-info">
+              <IconCheck width={11} height={11} strokeWidth={3} />
+              Verificado
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {isConvitePendente && (
             <Link
               href="/match"
-              className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-bold text-zinc-950 hover:bg-amber-400"
+              className="whitespace-nowrap rounded-lg bg-warning px-3 py-1.5 text-xs font-bold text-primary-fg hover:brightness-110"
             >
               Responder convite
             </Link>
           )}
           {isInteresseEnviado && (
-            <span className="rounded-lg bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-400">
+            <span className="whitespace-nowrap rounded-lg bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary">
               Interesse enviado
             </span>
           )}
           <Link
             href={`/vagas/${vaga.id}`}
-            className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-zinc-700"
+            className="whitespace-nowrap rounded-lg border border-borda bg-surface-2 px-3 py-1.5 text-xs font-semibold text-fg hover:border-primary/60"
           >
             Ver detalhes
           </Link>

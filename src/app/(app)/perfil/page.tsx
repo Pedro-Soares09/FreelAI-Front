@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { freelaiApi } from '@/services/api';
 import { AssinaturaPro } from '@/types';
+import { useConfirmar } from '@/components/ui/confirmar';
 
 export default function PerfilPage() {
+  const confirmar = useConfirmar();
   const [assinatura, setAssinatura] = useState<AssinaturaPro | null>(null);
   const [cancelando, setCancelando] = useState(false);
   const [mensagemPro, setMensagemPro] = useState<string | null>(null);
@@ -26,7 +28,7 @@ export default function PerfilPage() {
 
   const handleCancelarAssinatura = async () => {
     if (
-      !window.confirm(
+      !await confirmar(
         'Deseja cancelar a renovação do Plano Pro? Você manterá os benefícios até o fim do período atual.'
       )
     ) {
@@ -64,47 +66,47 @@ export default function PerfilPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 p-4 md:p-6">
-      <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+      <div className="flex items-center justify-between rounded-2xl border border-borda bg-surface p-6">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-white">Meu Perfil</h1>
+            <h1 className="text-2xl font-bold text-fg">Meu Perfil</h1>
             {assinatura?.ativo && (
-              <span className="rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 px-2.5 py-0.5 text-xs font-extrabold uppercase text-zinc-950">
+              <span className="rounded-full bg-primary px-2.5 py-0.5 text-xs font-extrabold uppercase text-primary-fg">
                 PRO
               </span>
             )}
           </div>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-muted">
             Gerencie seus dados, verificações e assinatura FREELAI.
           </p>
         </div>
       </div>
 
-      <section className="space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+      <section className="space-y-4 rounded-2xl border border-borda bg-surface p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-base font-bold text-white">
+            <h2 className="text-base font-bold text-fg">
               Assinatura Plano Pro
             </h2>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-muted">
               Selo Pro, destaque visual e prioridade imediata nas notificações.
             </p>
           </div>
 
           {assinatura?.ativo ? (
-            <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-400">
+            <span className="rounded-full bg-primary/15 px-3 py-1 text-xs font-bold text-primary">
               Ativo
             </span>
           ) : (
-            <span className="rounded-full bg-zinc-800 px-3 py-1 text-xs font-semibold text-zinc-400">
+            <span className="rounded-full bg-surface-2 px-3 py-1 text-xs font-semibold text-muted">
               Plano Gratuito
             </span>
           )}
         </div>
 
         {assinatura?.ativo ? (
-          <div className="space-y-3 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-            <p className="text-sm text-zinc-200">
+          <div className="space-y-3 rounded-xl border border-borda bg-bg p-4">
+            <p className="text-sm text-fg">
               {assinatura.renovacao_automatica ? (
                 <>
                   Assinatura ativa (R$ 19,90/mês). Próxima renovação em{' '}
@@ -119,9 +121,9 @@ export default function PerfilPage() {
                 </>
               ) : (
                 <>
-                  Assinatura cancelada — seus benefícios Pro permanecem válidos
+                  Assinatura cancelada: seus benefícios Pro permanecem válidos
                   até{' '}
-                  <strong className="text-amber-400">
+                  <strong className="text-warning">
                     {assinatura.valido_ate
                       ? new Date(assinatura.valido_ate).toLocaleDateString(
                           'pt-BR'
@@ -134,7 +136,7 @@ export default function PerfilPage() {
             </p>
 
             {mensagemPro && (
-              <p className="rounded-lg bg-amber-500/10 p-2.5 text-xs text-amber-300">
+              <p className="rounded-lg bg-warning/10 p-2.5 text-xs text-warning">
                 {mensagemPro}
               </p>
             )}
@@ -144,21 +146,21 @@ export default function PerfilPage() {
                 type="button"
                 disabled={cancelando}
                 onClick={handleCancelarAssinatura}
-                className="rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-2 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 disabled:opacity-50"
+                className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-2 text-xs font-semibold text-danger hover:bg-danger/20 disabled:opacity-50"
               >
                 {cancelando ? 'Cancelando...' : 'Cancelar assinatura Pro'}
               </button>
             )}
           </div>
         ) : (
-          <div className="flex flex-col justify-between gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 sm:flex-row sm:items-center">
-            <p className="text-xs text-zinc-300">
+          <div className="flex flex-col justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4 sm:flex-row sm:items-center">
+            <p className="text-xs text-fg">
               Ative o Plano Pro por <strong>R$ 19,90/mês</strong> para receber
               alertas sem atraso de 2 min e exibir o selo Pro.
             </p>
             <Link
               href="/plano-pro"
-              className="shrink-0 rounded-xl bg-emerald-500 px-4 py-2 text-center text-xs font-bold text-zinc-950 hover:bg-emerald-400"
+              className="shrink-0 rounded-xl bg-primary px-4 py-2 text-center text-xs font-bold text-primary-fg hover:brightness-110"
             >
               Conhecer Plano Pro
             </Link>
