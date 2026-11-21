@@ -4,7 +4,7 @@ import type {
   Message,
   Report,
   Review,
-} from "@/types";
+} from '@/types';
 
 /**
  * Usuário logado nos mocks do chat (profissional).

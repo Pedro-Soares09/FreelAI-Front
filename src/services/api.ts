@@ -3,7 +3,10 @@ import {
   BloqueioAgenda,
   ConviteVaga,
   DisponibilidadeProfissional,
+  ItemPainelContratante,
   Notificacao,
+  PagamentoPix,
+  ResultadoValidacaoFacial,
   Top3Contratacao,
   Vaga,
 } from '@/types';
@@ -40,6 +43,26 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const freelaiApi = {
+  listarPainelContratante: () =>
+    request<ItemPainelContratante[]>('/api/v1/contratante/painel'),
+
+  obterPagamentoPix: (vagaId: string) =>
+    request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix`),
+
+  simularPagamentoPix: (vagaId: string) =>
+    request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix/simular`, {
+      method: 'POST',
+    }),
+
+  validarLiberacaoFacial: (vagaId: string) =>
+    request<ResultadoValidacaoFacial>(
+      `/api/v1/vagas/${encodeURIComponent(vagaId)}/validacao-facial`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ selfie: 'captura_simulada' }),
+      }
+    ),
+
   listarVagasProximas: (params: {
     raio_km: number;
     categoria?: string;

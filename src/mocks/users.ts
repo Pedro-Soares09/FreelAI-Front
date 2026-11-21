@@ -1,4 +1,4 @@
-import type { ProfessionalUser, CompanyUser, User } from "@/types";
+import type { ProfessionalUser, CompanyUser, User } from '@/types';
 
 export const mockProfessionalUser: ProfessionalUser = {
   id: "usr_prof_01",
