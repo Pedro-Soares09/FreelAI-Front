@@ -93,7 +93,86 @@ export interface Vaga {
   meu_convite?: ConviteVaga | null;
   checkin_realizado_em?: string | null;
   falta_registrada?: boolean;
+  interessados_count?: number;
+  conclusao_confirmada_em?: string | null;
+  encerrada_motivo?: string | null;
 }
+
+export type EstadoPainelVaga =
+  | 'publicada'
+  | 'em_contratacao'
+  | 'contratada'
+  | 'em_execucao'
+  | 'aguardando_confirmacao'
+  | 'concluida'
+  | 'encerradas';
+
+export interface ItemPainelContratante {
+  vaga: Vaga;
+  estado: EstadoPainelVaga;
+  interessados_count: number;
+  proxima_acao: 'escolher' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
+  conversa_id?: string | null;
+  pagamento_id?: string | null;
+}
+
+export type StatusPagamento =
+  | 'aguardando'
+  | 'retido'
+  | 'liberado'
+  | 'parcial'
+  | 'estornado'
+  | 'expirado';
+
+export interface LancamentoPagamento {
+  tipo: 'profissional' | 'freelai';
+  descricao: string;
+  valor: number;
+}
+
+export interface PagamentoPix {
+  id: string;
+  vaga_id: string;
+  status: StatusPagamento;
+  total: number;
+  taxa: number;
+  liquido: number;
+  qr_codigo: string;
+  copia_e_cola: string;
+  prazo_em: string;
+  lancamentos: LancamentoPagamento[];
+  conclusao_confirmada: boolean;
+  liberacao_validada: boolean;
+  liberacao_prazo_em?: string | null;
+}
+
+export interface ResultadoValidacaoFacial {
+  vaga_id: string;
+  validado: boolean;
+  prazo_em: string;
+  mensagem: string;
+  lancamentos: LancamentoPagamento[];
+}
+
+export interface Conversation {
+  id: string;
+  titulo: string;
+  vaga_id?: string;
+}
+
+export interface Job {
+  id: string;
+  titulo: string;
+  status: StatusVaga;
+}
+
+export interface User {
+  id: string;
+  nome: string;
+  perfil: PerfilAtivo;
+}
+
+export interface Payment extends PagamentoPix {}
 
 export interface BloqueioAgenda {
   id: string;
