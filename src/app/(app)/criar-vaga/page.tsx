@@ -1,8 +1,13 @@
+import { Pagina } from "@/components/layout/pagina";
+import { ListaVazia } from "@/components/ui/estados";
+
 export default function CreateJobPage() {
   return (
-    <section className="page">
-      <h1>Criar vaga</h1>
-      <p>Publique uma oportunidade para encontrar profissionais.</p>
-    </section>
+    <Pagina titulo="Criar vaga" descricao="Descreva o serviço e a FREELAI encontra os três melhores profissionais.">
+      <ListaVazia
+        titulo="Formulário em desenvolvimento"
+        descricao="Aqui você informa categoria, descrição, valor, data e endereço da vaga."
+      />
+    </Pagina>
   );
 }

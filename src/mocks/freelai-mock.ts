@@ -16,7 +16,7 @@ const agora = Date.now();
 const emHoras = (h: number) => new Date(agora + h * 3_600_000).toISOString();
 const emMinutos = (m: number) => new Date(agora + m * 60_000).toISOString();
 
-let mockVagas: Vaga[] = [
+const mockVagas: Vaga[] = [
   {
     id: 'vaga-101',
     titulo: 'Garçom para Evento Corporativo',
@@ -301,7 +301,7 @@ const profissionaisPorRodada: ProfissionalRecomendado[][] = [
   ],
 ];
 
-let mockTop3Contratacoes: Top3Contratacao[] = [
+const mockTop3Contratacoes: Top3Contratacao[] = [
   {
     vaga: mockVagas[1],
     rodada: 1,

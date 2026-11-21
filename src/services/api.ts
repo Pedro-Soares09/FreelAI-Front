@@ -11,9 +11,9 @@ import {
   Vaga,
 } from '@/types';
 import { mockRouter } from '@/mocks/freelai-mock';
+import { fetchAutenticado } from '@/api/client';
+import { ApiError, erroDeResposta } from '@/api/erro';
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
@@ -21,27 +21,21 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     return mockRouter<T>(path, options);
   }
 
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('freelai_token') : null;
-
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options?.headers || {}),
-    },
-  });
+  let res: Response;
+  try {
+    res = await fetchAutenticado(path, options);
+  } catch {
+    throw new ApiError(0, 'rede', 'Não foi possível conectar ao servidor.');
+  }
 
   if (!res.ok) {
-    let errorMessage = 'Erro ao comunicar com o servidor.';
+    let corpo: unknown;
     try {
-      const errData = await res.json();
-      errorMessage = errData?.message || errorMessage;
+      corpo = await res.json();
     } catch {
-      // mantém mensagem padrão
+      corpo = undefined;
     }
-    throw new Error(errorMessage);
+    throw erroDeResposta(res.status, corpo);
   }
 
   if (res.status === 204) return undefined as T;
@@ -197,3 +191,6 @@ export const freelaiApi = {
       method: 'POST',
     }),
 };
+
+// Chat, acordo e pós-serviço (mocks com atraso simulado até o back expor os endpoints).
+export * from './chat';

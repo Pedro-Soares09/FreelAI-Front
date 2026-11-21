@@ -154,26 +154,6 @@ export interface ResultadoValidacaoFacial {
   lancamentos: LancamentoPagamento[];
 }
 
-export interface Conversation {
-  id: string;
-  titulo: string;
-  vaga_id?: string;
-}
-
-export interface Job {
-  id: string;
-  titulo: string;
-  status: StatusVaga;
-}
-
-export interface User {
-  id: string;
-  nome: string;
-  perfil: PerfilAtivo;
-}
-
-export interface Payment extends PagamentoPix {}
-
 export interface BloqueioAgenda {
   id: string;
   inicio: string;
@@ -221,3 +201,278 @@ export interface ApiError {
   message: string;
   details?: unknown;
 }
+
+export type Job = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  budget: string;
+  status?: string;
+};
+
+export type Conversation = {
+  id: string;
+  participantIds: string[];
+  lastMessage?: string;
+  /** Pessoa com quem o usuário logado está conversando. */
+  contact: ChatContact;
+  /** Vaga que originou a conversa (exibida no header do chat). */
+  job: ChatJob;
+  /** Data/hora ISO da última mensagem, usada para ordenar a lista. */
+  lastMessageAt: string;
+  unreadCount: number;
+  /** Preenchido quando já existe um acordo (proposto, aceito etc.). */
+  agreementId?: string;
+  /** Vaga encerrada: a conversa vira somente leitura. */
+  jobClosed?: boolean;
+};
+
+export type Payment = {
+  id: string;
+  amount: number;
+  currency: string;
+  status: "pending" | "paid" | "failed";
+};
+
+// ===== Chat, acordo e pós-serviço (Pessoa 5) =====
+
+export type ChatRole = "contratante" | "profissional";
+
+export type ChatContact = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+  verified: boolean;
+  online: boolean;
+  role: ChatRole;
+};
+
+export type ChatJob = {
+  id: string;
+  /** Ex.: "Precisa de Garçom" */
+  title: string;
+  /** Valor combinado na vaga, em reais. */
+  amount: number;
+};
+
+/** sending → sent → delivered → seen ("visto") */
+export type MessageStatus = "sending" | "sent" | "delivered" | "seen";
+
+export type AttachmentKind = "pdf" | "image";
+
+export type AttachmentStatus = "uploading" | "sent" | "failed";
+
+export type Attachment = {
+  id: string;
+  kind: AttachmentKind;
+  name: string;
+  sizeBytes: number;
+  status: AttachmentStatus;
+  url?: string;
+};
+
+export type Message = {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  text?: string;
+  attachment?: Attachment;
+  /** Data/hora ISO do envio. */
+  createdAt: string;
+  status: MessageStatus;
+};
+
+export type NewMessage = {
+  text?: string;
+  attachment?: Omit<Attachment, "id" | "status">;
+};
+
+export type AgreementStatus =
+  | "pending" // proposto, aguardando a outra parte
+  | "accepted" // as duas partes deram ciência dos termos
+  | "cancelled"
+  | "completed" // serviço concluído, libera avaliação
+  | "contested"; // contestação aberta (US43)
+
+export type AgreementTerms = {
+  /** Data/hora ISO de início do serviço. */
+  startsAt: string;
+  /** Duração em texto livre. Ex.: "4 horas", "3 dias". */
+  duration: string;
+  dressCode: string;
+  /** Data ISO combinada para o pagamento. */
+  paymentDate: string;
+  duties: string;
+  amount: number;
+};
+
+export type Agreement = AgreementTerms & {
+  id: string;
+  conversationId: string;
+  jobId: string;
+  jobTitle: string;
+  hirerId: string;
+  workerId: string;
+  acceptedByHirer: boolean;
+  acceptedByWorker: boolean;
+  status: AgreementStatus;
+  createdAt: string;
+  cancelledAt?: string;
+  /** Pós-serviço: confirmação de conclusão de cada parte. */
+  completionByHirer?: boolean;
+  completionByWorker?: boolean;
+  completedAt?: string;
+  contestedAt?: string;
+  contestReason?: ContestReason;
+  contestDetails?: string;
+  /** Linha do tempo do acordo. */
+  events?: AgreementEvent[];
+};
+
+export type AgreementEvent = {
+  id: string;
+  /** Data/hora ISO do evento. */
+  at: string;
+  label: string;
+};
+
+export type ContestReason = "nao-realizado" | "valor-diferente" | "outro";
+
+export type CancellationResult = {
+  agreement: Agreement;
+  /** true quando cancelado com 12h ou mais de antecedência. */
+  freeOfCharge: boolean;
+};
+
+export type ReviewRating = 1 | 2 | 3 | 4 | 5;
+
+export type Review = {
+  id: string;
+  agreementId: string;
+  authorId: string;
+  targetId: string;
+  rating: ReviewRating;
+  comment?: string;
+  createdAt: string;
+};
+
+export type ReportReason =
+  | "golpe"
+  | "assedio"
+  | "linguagem-ofensiva"
+  | "perfil-falso"
+  | "outro";
+
+export type Report = {
+  id: string;
+  conversationId: string;
+  reporterId: string;
+  reason: ReportReason;
+  details?: string;
+  createdAt: string;
+};
+
+// ===== Conta, verificação e perfis =====
+
+export type AccountType = "profissional" | "empresa";
+
+export type VerificationStatus =
+  | "nao_verificado"
+  | "em_analise"
+  | "verificado"
+  | "recusado";
+
+export type ExperienceItem = {
+  id: string;
+  title: string;
+  company: string;
+  period: string;
+  description: string;
+};
+
+export type ProfessionalCharacteristics = {
+  comunicacao: number; // 1 a 5
+  proatividade: number; // 1 a 5
+  agilidade: number; // 1 a 5
+  conhecimentoTecnico: string[];
+};
+
+export type LocationInfo = {
+  city: string;
+  state: string;
+  neighborhood?: string;
+  cep?: string;
+};
+
+export type VerificationData = {
+  status: VerificationStatus;
+  cpf?: string;
+  documentType?: "rg" | "cnh" | "passaporte";
+  documentFileName?: string;
+  selfieFileName?: string;
+  submittedAt?: string;
+  rejectionReason?: string;
+};
+
+export type ProfessionalUser = {
+  id: string;
+  accountType: "profissional";
+  name: string;
+  birthDate: string; // YYYY-MM-DD
+  email: string;
+  phone?: string;
+  avatarUrl?: string;
+  title: string;
+  bio: string;
+  location: LocationInfo; // obrigatória
+  experiences: ExperienceItem[];
+  characteristics: ProfessionalCharacteristics;
+  verification: VerificationData;
+  rating: {
+    average: number;
+    totalReviews: number;
+  };
+  reviews: ProfileReview[];
+  verified: boolean;
+};
+
+export type CompanyUser = {
+  id: string;
+  accountType: "empresa";
+  corporateReason: string; // Razão Social (obrigatório)
+  tradeName?: string; // Nome Fantasia
+  cnpj: string; // CNPJ com máscara e validação
+  email: string;
+  phone: string;
+  industry: string;
+  location: LocationInfo;
+  description: string;
+  verified: boolean;
+};
+
+export type PolicySection = {
+  title: string;
+  content: string[];
+};
+
+export type PolicyDetail = {
+  slug: string;
+  title: string;
+  badge: string;
+  summary: string;
+  lastUpdated: string;
+  sections: PolicySection[];
+};
+
+export type ProfileReview = {
+  id: string;
+  authorName: string;
+  authorCompany: string;
+  authorAvatar?: string;
+  rating: number; // 1 a 5
+  date: string;
+  comment: string;
+};
+
+export type User = ProfessionalUser | CompanyUser;

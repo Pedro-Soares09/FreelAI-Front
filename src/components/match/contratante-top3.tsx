@@ -1,5 +1,6 @@
 'use client';
 
+import { IconCheck } from '@/components/ui/icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { freelaiApi } from '@/services/api';
 import { ProfissionalRecomendado, Top3Contratacao } from '@/types';
@@ -39,7 +40,7 @@ function FotoProfissional({
       ) : (
         <span
           aria-hidden="true"
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-800 text-xl font-bold text-emerald-300"
+          className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-2 text-xl font-bold text-primary"
         >
           {profissional.nome.slice(0, 1).toUpperCase()}
         </span>
@@ -48,9 +49,9 @@ function FotoProfissional({
         <span
           aria-label="Perfil verificado"
           title="Perfil verificado"
-          className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-zinc-900 bg-sky-400 text-xs font-black text-zinc-950"
+          className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-borda bg-info text-xs font-black text-primary-fg"
         >
-          ✓
+          <IconCheck width={12} height={12} strokeWidth={3.5} />
         </span>
       )}
     </div>
@@ -84,8 +85,8 @@ function CartaoProfissional({
     <article
       className={`flex h-full flex-col rounded-2xl border p-5 transition ${
         profissional.estado === 'falhou'
-          ? 'border-zinc-800 bg-zinc-900/60 opacity-75'
-          : 'border-zinc-800 bg-zinc-900 hover:border-zinc-700'
+          ? 'border-borda bg-surface-2/60 opacity-75'
+          : 'border-borda bg-surface-2 hover:border-primary/60'
       }`}
     >
       <div className="flex items-start gap-4">
@@ -93,22 +94,22 @@ function CartaoProfissional({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap gap-2">
             {profissional.novo && (
-              <span className="rounded-full bg-sky-500/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-300">
+              <span className="rounded-full bg-info/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-info">
                 Novo
               </span>
             )}
             {profissional.pro && (
-              <span className="rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-zinc-950">
+              <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-primary-fg">
                 Pro
               </span>
             )}
           </div>
-          <h2 className="mt-2 truncate text-base font-bold text-white">
+          <h2 className="mt-2 truncate text-base font-bold text-fg">
             {profissional.nome}
           </h2>
-          <p className="mt-1 text-xs text-zinc-400">
-            <span className="font-semibold text-amber-300">
-              ★ {profissional.nota_media.toFixed(1)}
+          <p className="mt-1 text-xs text-muted">
+            <span className="font-semibold text-warning">
+              Nota {profissional.nota_media.toFixed(1)}
             </span>
             <span aria-hidden="true"> · </span>
             {profissional.total_avaliacoes} avaliações
@@ -117,19 +118,19 @@ function CartaoProfissional({
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-zinc-950 px-3 py-2.5">
-          <span className="block text-[10px] uppercase tracking-wide text-zinc-500">
+        <div className="rounded-xl bg-surface-2 px-3 py-2.5">
+          <span className="block text-[10px] uppercase tracking-wide text-muted">
             Distância
           </span>
-          <span className="mt-1 block text-sm font-semibold text-zinc-200">
+          <span className="mt-1 block text-sm font-semibold text-muted">
             {profissional.distancia_km.toLocaleString('pt-BR')} km
           </span>
         </div>
-        <div className="rounded-xl bg-zinc-950 px-3 py-2.5">
-          <span className="block text-[10px] uppercase tracking-wide text-zinc-500">
+        <div className="rounded-xl bg-surface-2 px-3 py-2.5">
+          <span className="block text-[10px] uppercase tracking-wide text-muted">
             Valor proposto
           </span>
-          <span className="mt-1 block truncate text-sm font-semibold text-zinc-200">
+          <span className="mt-1 block truncate text-sm font-semibold text-muted">
             {formatarValor(profissional.valor_proposto)}
           </span>
         </div>
@@ -138,26 +139,26 @@ function CartaoProfissional({
       <p
         className={`mt-4 rounded-lg px-3 py-2 text-xs font-semibold ${
           profissional.demonstrou_interesse
-            ? 'bg-emerald-500/10 text-emerald-300'
-            : 'bg-zinc-800/70 text-zinc-400'
+            ? 'bg-primary/10 text-primary'
+            : 'bg-surface-2 text-muted'
         }`}
       >
         {profissional.demonstrou_interesse
-          ? '✓ Demonstrou interesse nesta vaga'
+          ? 'Demonstrou interesse nesta vaga'
           : 'Ainda não demonstrou interesse'}
       </p>
 
-      <details className="mt-4 border-t border-zinc-800 pt-3">
-        <summary className="cursor-pointer text-xs font-semibold text-zinc-300 hover:text-white">
+      <details className="mt-4 border-t border-borda pt-3">
+        <summary className="cursor-pointer text-xs font-semibold text-muted hover:text-fg">
           Ver perfil resumido
         </summary>
-        <div className="mt-3 space-y-3 text-xs text-zinc-400">
+        <div className="mt-3 space-y-3 text-xs text-muted">
           <p>{profissional.resumo}</p>
           <div className="flex flex-wrap gap-1.5">
             {profissional.habilidades.map((habilidade) => (
               <span
                 key={habilidade}
-                className="rounded-md bg-zinc-800 px-2 py-1 text-zinc-300"
+                className="rounded-md bg-surface-2 px-2 py-1 text-muted"
               >
                 {habilidade}
               </span>
@@ -168,7 +169,7 @@ function CartaoProfissional({
 
       <div className="mt-auto pt-5">
         {profissional.estado === 'falhou' ? (
-          <p className="mb-3 text-center text-xs font-semibold text-rose-300">
+          <p className="mb-3 text-center text-xs font-semibold text-danger">
             Convite não concluído nesta rodada
           </p>
         ) : null}
@@ -176,7 +177,7 @@ function CartaoProfissional({
           type="button"
           disabled={bloqueado}
           onClick={onEscolher}
-          className="w-full rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-zinc-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-700 disabled:text-zinc-400"
+          className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-fg transition hover:bg-primary disabled:cursor-not-allowed disabled:bg-surface-2 disabled:text-muted"
         >
           {processando
             ? 'Enviando convite...'
@@ -260,13 +261,13 @@ export function ContratanteTop3() {
   return (
     <main className="mx-auto max-w-6xl space-y-6 p-4 pb-24 md:p-6">
       <header className="space-y-2">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-400">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
           Contratação por match
         </p>
-        <h1 className="text-2xl font-extrabold text-white md:text-3xl">
+        <h1 className="text-2xl font-extrabold text-fg md:text-3xl">
           3 melhores profissionais
         </h1>
-        <p className="max-w-2xl text-sm text-zinc-400">
+        <p className="max-w-2xl text-sm text-muted">
           Confira os perfis recomendados para sua vaga e escolha quem deseja
           convidar. O convite fica em andamento por até 30 minutos.
         </p>
@@ -275,13 +276,13 @@ export function ContratanteTop3() {
       {erro && (
         <div
           role="alert"
-          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-rose-500/40 bg-rose-500/10 p-4 text-sm text-rose-200"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-danger/40 bg-danger/10 p-4 text-sm text-danger"
         >
           <span>{erro}</span>
           <button
             type="button"
             onClick={() => void carregarMatches()}
-            className="rounded-lg border border-rose-300/30 px-3 py-1.5 text-xs font-bold hover:bg-rose-500/10"
+            className="rounded-lg border border-danger/30 px-3 py-1.5 text-xs font-bold hover:bg-danger/10"
           >
             Tentar novamente
           </button>
@@ -296,14 +297,14 @@ export function ContratanteTop3() {
           {[0, 1, 2].map((item) => (
             <div
               key={item}
-              className="h-80 animate-pulse rounded-2xl border border-zinc-800 bg-zinc-900"
+              className="h-80 animate-pulse rounded-2xl border border-borda bg-surface-2"
             />
           ))}
         </div>
       ) : matches.length === 0 ? (
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8 text-center">
-          <h2 className="font-bold text-white">Nenhuma rodada disponível</h2>
-          <p className="mt-2 text-sm text-zinc-400">
+        <div className="rounded-2xl border border-borda bg-surface-2 p-8 text-center">
+          <h2 className="font-bold text-fg">Nenhuma rodada disponível</h2>
+          <p className="mt-2 text-sm text-muted">
             Quando houver profissionais compatíveis com suas vagas, eles
             aparecerão aqui.
           </p>
@@ -320,20 +321,20 @@ export function ContratanteTop3() {
 
             return (
               <section key={match.vaga.id} className="space-y-4">
-                <div className="flex flex-wrap items-end justify-between gap-3 border-b border-zinc-800 pb-4">
+                <div className="flex flex-wrap items-end justify-between gap-3 border-b border-borda pb-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-emerald-400">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary">
                       {match.vaga.categoria} · {match.vaga.bairro}
                     </p>
-                    <h2 className="mt-1 text-lg font-bold text-white">
+                    <h2 className="mt-1 text-lg font-bold text-fg">
                       {match.vaga.titulo}
                     </h2>
-                    <p className="mt-1 text-xs text-zinc-400">
+                    <p className="mt-1 text-xs text-muted">
                       Rodada {match.rodada} · {interessadoCount} de{' '}
                       {match.profissionais.length} demonstraram interesse
                     </p>
                   </div>
-                  <p className="text-sm font-bold text-emerald-300">
+                  <p className="text-sm font-bold text-primary">
                     Orçamento {formatarValor(match.vaga.valor)}
                   </p>
                 </div>
@@ -342,18 +343,18 @@ export function ContratanteTop3() {
                   <div
                     role="status"
                     aria-live="polite"
-                    className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4"
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-warning/40 bg-warning/10 p-4"
                   >
                     <div>
-                      <p className="text-sm font-bold text-amber-200">
+                      <p className="text-sm font-bold text-warning">
                         Convite em andamento
                       </p>
-                      <p className="mt-1 text-xs text-amber-100/70">
+                      <p className="mt-1 text-xs text-warning/70">
                         As outras opções ficam indisponíveis até o convite ser
                         resolvido.
                       </p>
                     </div>
-                    <p className="font-mono text-xl font-extrabold text-amber-300">
+                    <p className="font-mono text-xl font-extrabold text-warning">
                       {formatarContagem(convite.prazo_em, agoraMs)}
                     </p>
                   </div>
@@ -362,7 +363,7 @@ export function ContratanteTop3() {
                 {conviteAceito && (
                   <div
                     role="status"
-                    className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm font-semibold text-emerald-200"
+                    className="rounded-xl border border-primary/40 bg-primary/10 p-4 text-sm font-semibold text-primary"
                   >
                     O convite foi aceito. Esta vaga já tem um profissional
                     escolhido.
@@ -375,7 +376,7 @@ export function ContratanteTop3() {
                   <div
                     role="status"
                     aria-live="polite"
-                    className="rounded-xl border border-sky-500/40 bg-sky-500/10 p-4 text-sm font-semibold text-sky-200"
+                    className="rounded-xl border border-info/40 bg-info/10 p-4 text-sm font-semibold text-info"
                   >
                     Os convites desta rodada falharam. A nova rodada está
                     disponível.

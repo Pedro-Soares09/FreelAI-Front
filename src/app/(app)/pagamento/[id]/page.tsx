@@ -72,7 +72,7 @@ export default function PaymentPage() {
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, [pagamento?.prazo_em, pagamento?.status]);
+  }, [pagamento]);
 
   const simularPagamento = async () => {
     if (!modoDemo) return;
