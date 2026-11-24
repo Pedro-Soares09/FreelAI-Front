@@ -4,6 +4,46 @@
  */
 
 export interface paths {
+    "/api/v1/admin/aprovacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Aprovacoes
+         * @description Fila unificada de aprovações; por padrão só os itens pendentes.
+         */
+        get: operations["admin_listar_aprovacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/aprovacoes/{tipo}/{item_id}/decisao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Aprovacao
+         * @description Aprova ou recusa (com motivo). Aprovar a verificação ativa a conta pendente.
+         */
+        post: operations["admin_decidir_aprovacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/configuracoes": {
         parameters: {
             query?: never;
@@ -144,6 +184,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/arquivos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Enviar Arquivo
+         * @description Valida tipo (jpg, png, pdf) e tamanho (até 10 MB), armazena com nome gerado e retorna URL.
+         */
+        post: operations["arquivos_enviar_arquivo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/arquivos/{tipo}/{nome}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Baixar Arquivo
+         * @description Serve o arquivo armazenado. Documento e selfie exigem ser o dono ou administrador.
+         */
+        get: operations["arquivos_baixar_arquivo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/login": {
         parameters: {
             query?: never;
@@ -250,6 +330,26 @@ export interface paths {
          * @description Categorias de serviço disponíveis para publicar uma vaga.
          */
         get: operations["vagas_listar_categorias"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/categorias/{slug}/seguranca": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Seguranca Da Categoria
+         * @description EPIs e checklist de segurança da categoria, exibidos no cadastro e ao criar vaga.
+         */
+        get: operations["perfis_consultar_seguranca_da_categoria"];
         put?: never;
         post?: never;
         delete?: never;
@@ -666,6 +766,101 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/perfis/contratante": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cadastrar Contratante
+         * @description Cadastra o perfil contratante, pessoa física ou jurídica (CNPJ opcional).
+         */
+        post: operations["perfis_cadastrar_contratante"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/perfis/contratante/meu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Consultar Meu Perfil Contratante */
+        get: operations["perfis_consultar_meu_perfil_contratante"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/perfis/profissional": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cadastrar Profissional
+         * @description Cadastra o perfil profissional com localização, categorias e experiências.
+         */
+        post: operations["perfis_cadastrar_profissional"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/perfis/profissional/meu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Consultar Meu Perfil Profissional */
+        get: operations["perfis_consultar_meu_perfil_profissional"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Atualizar Meu Perfil Profissional */
+        patch: operations["perfis_atualizar_meu_perfil_profissional"];
+        trace?: never;
+    };
+    "/api/v1/profissional/comprovacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Comprovacoes
+         * @description Experiências, qualificações e EPIs enviados, com o status de cada um.
+         */
+        get: operations["perfis_listar_comprovacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/profissional/convites": {
         parameters: {
             query?: never;
@@ -684,6 +879,117 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/disponibilidade": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Disponibilidade
+         * @description Situação atual do modo Disponível agora e do raio de busca.
+         */
+        get: operations["profissional_consultar_disponibilidade"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/disponivel-agora": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Alternar Disponivel Agora
+         * @description Liga o modo Disponível agora pela duração configurada, ou desliga.
+         */
+        post: operations["profissional_alternar_disponivel_agora"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/epis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enviar Epi */
+        post: operations["perfis_enviar_epi"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/experiencias": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enviar Experiencia */
+        post: operations["perfis_enviar_experiencia"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/qualificacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enviar Qualificacao */
+        post: operations["perfis_enviar_qualificacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/raio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Atualizar Raio
+         * @description Salva o raio de busca do mapa, limitado ao máximo configurado.
+         */
+        patch: operations["profissional_atualizar_raio"];
         trace?: never;
     };
     "/api/v1/usuarios/{usuario_id}/avaliacoes": {
@@ -998,6 +1304,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/verificacao/consentimento": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Aceitar Consentimento
+         * @description Registra o consentimento de uso de biometria (LGPD); idempotente.
+         */
+        post: operations["verificacao_aceitar_consentimento"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/verificacao/envio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Enviar Verificacao
+         * @description Envia o documento e a selfie (já enviados em /arquivos) para análise da administração.
+         */
+        post: operations["verificacao_enviar_verificacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/verificacao/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Status
+         * @description Estado da verificação do perfil ativo: pendente, em análise, verificado ou recusado.
+         */
+        get: operations["verificacao_consultar_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1015,6 +1381,56 @@ export interface components {
             contratante: boolean;
             /** Profissional */
             profissional: boolean;
+        };
+        /** ArquivoDaFila */
+        ArquivoDaFila: {
+            /** Tipo */
+            tipo: string;
+            /** Url */
+            url: string;
+        };
+        /**
+         * ArquivoEnviado
+         * @description Metadados e URL do arquivo armazenado após o upload.
+         * @example {
+         *       "criado_em": "2026-11-20T14:00:00Z",
+         *       "id": 12,
+         *       "mime_type": "image/jpeg",
+         *       "tamanho_bytes": 48210,
+         *       "tipo": "foto",
+         *       "url": "/api/v1/arquivos/foto/a1b2c3d4e5f60718293a4b5c6d7e8f90.jpg"
+         *     }
+         */
+        ArquivoEnviado: {
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Id */
+            id: number;
+            /** Mime Type */
+            mime_type: string;
+            /** Tamanho Bytes */
+            tamanho_bytes: number;
+            tipo: components["schemas"]["TipoArquivo"];
+            /**
+             * Url
+             * @description URL da API para acessar o arquivo armazenado.
+             */
+            url: string;
+        };
+        /** AtualizacaoProfissionalEntrada */
+        AtualizacaoProfissionalEntrada: {
+            caracteristicas?: components["schemas"]["CaracteristicasEntrada"] | null;
+            /** Categorias */
+            categorias?: string[] | null;
+            /** Foto Url */
+            foto_url?: string | null;
+            /** Raio Km */
+            raio_km?: number | null;
+            /** Telefone */
+            telefone?: string | null;
         };
         /**
          * AvaliacaoDetalhe
@@ -1131,6 +1547,16 @@ export interface components {
             /** Vaga Id */
             vaga_id: number;
         };
+        /** Body_arquivos_enviar_arquivo */
+        Body_arquivos_enviar_arquivo: {
+            /**
+             * Arquivo
+             * @description Arquivo em formato jpg, png ou pdf (até 10 MB).
+             */
+            arquivo: string;
+            /** @description Finalidade do arquivo: foto, selfie, documento, qualificacao, epi ou anexo. */
+            tipo: components["schemas"]["TipoArquivo"];
+        };
         /** Body_conversas_enviar_anexo */
         Body_conversas_enviar_anexo: {
             /**
@@ -1143,6 +1569,81 @@ export interface components {
              * @description Legenda opcional.
              */
             texto?: string | null;
+        };
+        /** CadastroContratanteEntrada */
+        CadastroContratanteEntrada: {
+            /**
+             * Documento
+             * @description CPF (pessoa física) ou CNPJ.
+             */
+            documento?: string | null;
+            /** Razao Social */
+            razao_social?: string | null;
+            /** Selfie Url */
+            selfie_url?: string | null;
+            /** Telefone */
+            telefone: string;
+            tipo_pessoa: components["schemas"]["TipoPessoa"];
+        };
+        /** CadastroProfissionalEntrada */
+        CadastroProfissionalEntrada: {
+            /** Bairro */
+            bairro: string;
+            caracteristicas?: components["schemas"]["CaracteristicasEntrada"] | null;
+            /**
+             * Categorias
+             * @description Slugs das categorias de atuação.
+             */
+            categorias: string[];
+            /** Cpf */
+            cpf: string;
+            /**
+             * Data Nascimento
+             * Format: date
+             */
+            data_nascimento: string;
+            /** Experiencias */
+            experiencias?: components["schemas"]["ExperienciaEntrada"][];
+            /** Foto Url */
+            foto_url?: string | null;
+            /** Latitude */
+            latitude: number;
+            /** Logradouro */
+            logradouro?: string | null;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Raio Km
+             * @default 5
+             */
+            raio_km: number;
+            /** Telefone */
+            telefone: string;
+        };
+        /**
+         * CaracteristicasEntrada
+         * @description Características autodeclaradas, de 1 a 5; informação complementar, sem peso no match.
+         */
+        CaracteristicasEntrada: {
+            /** Agilidade */
+            agilidade?: number | null;
+            /** Comunicacao */
+            comunicacao?: number | null;
+            /** Organizacao */
+            organizacao?: number | null;
+        };
+        /** CategoriaDoPerfil */
+        CategoriaDoPerfil: {
+            nivel_risco: components["schemas"]["RiscoCategoria"];
+            /** Nome */
+            nome: string;
+            /**
+             * Pendencias
+             * @description O que ainda falta aprovar para atuar na categoria.
+             */
+            pendencias: ("experiencia" | "qualificacao" | "epi")[];
+            /** Slug */
+            slug: string;
         };
         /** CategoriaResumo */
         CategoriaResumo: {
@@ -1184,6 +1685,25 @@ export interface components {
              * @description Total de notificações já visíveis e ainda não lidas.
              */
             nao_lidas: number;
+        };
+        /** ComprovacaoDetalhe */
+        ComprovacaoDetalhe: {
+            /** Arquivo Url */
+            arquivo_url?: string | null;
+            /** Categoria */
+            categoria: string | null;
+            /** Descricao */
+            descricao?: string | null;
+            /** Id */
+            id: number;
+            /** Motivo Recusa */
+            motivo_recusa?: string | null;
+            status: components["schemas"]["StatusAprovacao"];
+            /**
+             * Tipo
+             * @enum {string}
+             */
+            tipo: "experiencia" | "qualificacao" | "epi";
         };
         /** ConfiguracoesEfetivas */
         ConfiguracoesEfetivas: {
@@ -1390,6 +1910,16 @@ export interface components {
             /** Vestimenta */
             vestimenta?: string | null;
         };
+        /** DecisaoAprovacaoEntrada */
+        DecisaoAprovacaoEntrada: {
+            /**
+             * Decisao
+             * @enum {string}
+             */
+            decisao: "aprovar" | "recusar";
+            /** Motivo */
+            motivo?: string | null;
+        };
         /**
          * DecisaoDenunciaEntrada
          * @description Decisão administrativa sobre uma denúncia aberta (procedente ou improcedente + motivo).
@@ -1591,6 +2121,24 @@ export interface components {
             motivo: string;
             /** Vaga Id */
             vaga_id?: number | null;
+        };
+        /** DisponibilidadeProfissional */
+        DisponibilidadeProfissional: {
+            /** Bloqueios */
+            bloqueios?: {
+                [key: string]: unknown;
+            }[];
+            /** Disponivel Agora */
+            disponivel_agora: boolean;
+            /** Disponivel Ate */
+            disponivel_ate?: string | null;
+            /** Raio Km */
+            raio_km: number;
+        };
+        /** DisponivelAgoraEntrada */
+        DisponivelAgoraEntrada: {
+            /** Ativo */
+            ativo: boolean;
         };
         /**
          * DisputaAdminDetalhe
@@ -1842,6 +2390,13 @@ export interface components {
             /** Valor Total */
             valor_total: string;
         };
+        /** EpiEntrada */
+        EpiEntrada: {
+            /** Arquivo Url */
+            arquivo_url: string;
+            /** Categoria */
+            categoria: string;
+        };
         /** EscolhaEntrada */
         EscolhaEntrada: {
             /** Profissional Id */
@@ -1872,6 +2427,22 @@ export interface components {
          * @enum {string}
          */
         EstadoVaga: "publicada" | "aguardando_aceite" | "aceita" | "aguardando_pagamento" | "contratada" | "em_execucao" | "encerrada" | "concluida" | "liberada" | "liberada_parcial" | "expirada" | "cancelada" | "falta" | "em_disputa" | "reembolsada";
+        /** ExperienciaEntrada */
+        ExperienciaEntrada: {
+            /** Arquivo Url */
+            arquivo_url?: string | null;
+            /**
+             * Categoria
+             * @description Slug da categoria, se houver.
+             */
+            categoria?: string | null;
+            /** Descricao */
+            descricao: string;
+            /** Referencia Contato */
+            referencia_contato?: string | null;
+            /** Referencia Nome */
+            referencia_nome?: string | null;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -1881,6 +2452,34 @@ export interface components {
         InteresseEntrada: {
             /** Valor Proposto */
             valor_proposto?: number | null;
+        };
+        /** ItemChecklist */
+        ItemChecklist: {
+            /** Critico */
+            critico: boolean;
+            /** Texto */
+            texto: string;
+        };
+        /** ItemFilaAprovacao */
+        ItemFilaAprovacao: {
+            /** Arquivos */
+            arquivos?: components["schemas"]["ArquivoDaFila"][];
+            /** Descricao */
+            descricao: string;
+            /** Enviado Em */
+            enviado_em?: string | null;
+            /** Id */
+            id: number;
+            status: components["schemas"]["StatusAprovacao"];
+            /**
+             * Tipo
+             * @enum {string}
+             */
+            tipo: "profissional" | "contratante" | "experiencia" | "qualificacao" | "epi";
+            /** Usuario Id */
+            usuario_id: number;
+            /** Usuario Nome */
+            usuario_nome: string;
         };
         /**
          * LancamentoResumo
@@ -2163,6 +2762,72 @@ export interface components {
         PerfilAtivoEntrada: {
             perfil: components["schemas"]["TipoPerfil"];
         };
+        /** PerfilContratanteDetalhe */
+        PerfilContratanteDetalhe: {
+            /** Documento */
+            documento: string | null;
+            /** Id */
+            id: number;
+            /** Nome */
+            nome: string;
+            /** Razao Social */
+            razao_social: string | null;
+            /** Selfie Url */
+            selfie_url: string | null;
+            /** Telefone */
+            telefone: string;
+            tipo_pessoa: components["schemas"]["TipoPessoa"];
+            /** Usuario Id */
+            usuario_id: number;
+            /**
+             * Verificacao
+             * @enum {string}
+             */
+            verificacao: "pendente" | "em_analise" | "verificado" | "recusado";
+            /** Verificacao Motivo */
+            verificacao_motivo: string | null;
+        };
+        /** PerfilProfissionalDetalhe */
+        PerfilProfissionalDetalhe: {
+            /** Bairro */
+            bairro: string | null;
+            caracteristicas: components["schemas"]["CaracteristicasEntrada"];
+            /** Categorias */
+            categorias: components["schemas"]["CategoriaDoPerfil"][];
+            /** Cpf */
+            cpf: string;
+            /**
+             * Data Nascimento
+             * Format: date
+             */
+            data_nascimento: string;
+            experiencia_aprovada: components["schemas"]["StatusAprovacao"];
+            /** Foto Url */
+            foto_url: string | null;
+            /** Id */
+            id: number;
+            /** Latitude */
+            latitude: number | null;
+            /** Longitude */
+            longitude: number | null;
+            /** Nome */
+            nome: string;
+            /** Pro */
+            pro: boolean;
+            /** Raio Km */
+            raio_km: number;
+            /** Telefone */
+            telefone: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /**
+             * Verificacao
+             * @enum {string}
+             */
+            verificacao: "pendente" | "em_analise" | "verificado" | "recusado";
+            /** Verificacao Motivo */
+            verificacao_motivo: string | null;
+        };
         /**
          * PerfilResumo
          * @description Dados públicos de um perfil, exibidos em cards, listas e no chat.
@@ -2277,6 +2942,22 @@ export interface components {
             valor_proposto?: number | null;
             /** Verificado */
             verificado: boolean;
+        };
+        /** QualificacaoEntrada */
+        QualificacaoEntrada: {
+            /** Arquivo Url */
+            arquivo_url?: string | null;
+            /** Categoria */
+            categoria: string;
+            /** Referencia */
+            referencia?: string | null;
+            /** @default declaracao */
+            tipo: components["schemas"]["TipoQualificacao"];
+        };
+        /** RaioEntrada */
+        RaioEntrada: {
+            /** Raio Km */
+            raio_km: number;
         };
         /** RegistroEntrada */
         RegistroEntrada: {
@@ -2431,6 +3112,70 @@ export interface components {
             marcadas: number;
         };
         /**
+         * RiscoCategoria
+         * @enum {string}
+         */
+        RiscoCategoria: "baixo" | "medio" | "alto";
+        /** SegurancaDaCategoria */
+        SegurancaDaCategoria: {
+            /** Checklist */
+            checklist: components["schemas"]["ItemChecklist"][];
+            /** Epis */
+            epis: string[];
+            /** Exige Epi */
+            exige_epi: boolean;
+            /** Exige Qualificacao */
+            exige_qualificacao: boolean;
+            nivel_risco: components["schemas"]["RiscoCategoria"];
+            /** Nome */
+            nome: string;
+            /** Slug */
+            slug: string;
+        };
+        /**
+         * StatusAprovacao
+         * @enum {string}
+         */
+        StatusAprovacao: "pendente" | "aprovado" | "recusado";
+        /**
+         * StatusVerificacao
+         * @example {
+         *       "consentimento_biometria": true,
+         *       "documento_enviado": true,
+         *       "enviada_em": "2026-11-25T14:00:00Z",
+         *       "perfil": "profissional",
+         *       "selfie_enviada": true,
+         *       "status": "em_analise"
+         *     }
+         */
+        StatusVerificacao: {
+            /** Consentimento Biometria */
+            consentimento_biometria: boolean;
+            /** Documento Enviado */
+            documento_enviado: boolean;
+            /** Enviada Em */
+            enviada_em?: string | null;
+            /** Motivo */
+            motivo?: string | null;
+            /**
+             * Perfil
+             * @enum {string}
+             */
+            perfil: "profissional" | "contratante";
+            /** Selfie Enviada */
+            selfie_enviada: boolean;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pendente" | "em_analise" | "verificado" | "recusado";
+        };
+        /**
+         * TipoArquivo
+         * @enum {string}
+         */
+        TipoArquivo: "foto" | "selfie" | "documento" | "qualificacao" | "epi" | "anexo";
+        /**
          * TipoLancamento
          * @enum {string}
          */
@@ -2440,6 +3185,16 @@ export interface components {
          * @enum {string}
          */
         TipoPerfil: "profissional" | "contratante";
+        /**
+         * TipoPessoa
+         * @enum {string}
+         */
+        TipoPessoa: "pf" | "pj";
+        /**
+         * TipoQualificacao
+         * @enum {string}
+         */
+        TipoQualificacao: "certificado" | "registro" | "declaracao";
         /** Top3Contratacao */
         Top3Contratacao: {
             convite_atual?: components["schemas"]["ConviteContratante"] | null;
@@ -2583,6 +3338,19 @@ export interface components {
             /** Error Type */
             type: string;
         };
+        /** VerificacaoEntrada */
+        VerificacaoEntrada: {
+            /**
+             * Documento Arquivo Id
+             * @description Arquivo do tipo documento já enviado.
+             */
+            documento_arquivo_id: number;
+            /**
+             * Selfie Arquivo Id
+             * @description Arquivo do tipo selfie já enviado.
+             */
+            selfie_arquivo_id: number;
+        };
     };
     responses: never;
     parameters: never;
@@ -2592,6 +3360,74 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    admin_listar_aprovacoes: {
+        parameters: {
+            query?: {
+                tipo?: ("profissional" | "contratante" | "experiencia" | "qualificacao" | "epi") | null;
+                estado?: components["schemas"]["StatusAprovacao"] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemFilaAprovacao"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_decidir_aprovacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tipo: "profissional" | "contratante" | "experiencia" | "qualificacao" | "epi";
+                item_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisaoAprovacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemFilaAprovacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     admin_consultar_configuracoes: {
         parameters: {
             query?: never;
@@ -2796,6 +3632,71 @@ export interface operations {
             };
         };
     };
+    arquivos_enviar_arquivo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_arquivos_enviar_arquivo"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArquivoEnviado"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    arquivos_baixar_arquivo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tipo: components["schemas"]["TipoArquivo"];
+                nome: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     auth_entrar: {
         parameters: {
             query?: never;
@@ -2964,6 +3865,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CategoriaResumo"][];
+                };
+            };
+        };
+    };
+    perfis_consultar_seguranca_da_categoria: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SegurancaDaCategoria"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -3593,6 +4525,165 @@ export interface operations {
             };
         };
     };
+    perfis_cadastrar_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CadastroContratanteEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilContratanteDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_consultar_meu_perfil_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilContratanteDetalhe"];
+                };
+            };
+        };
+    };
+    perfis_cadastrar_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CadastroProfissionalEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_consultar_meu_perfil_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+        };
+    };
+    perfis_atualizar_meu_perfil_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AtualizacaoProfissionalEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_listar_comprovacoes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"][];
+                };
+            };
+        };
+    };
     vagas_listar_convites_do_profissional: {
         parameters: {
             query?: never;
@@ -3609,6 +4700,191 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConviteComVaga"][];
+                };
+            };
+        };
+    };
+    profissional_consultar_disponibilidade: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+        };
+    };
+    profissional_alternar_disponivel_agora: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DisponivelAgoraEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_enviar_epi: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EpiEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_enviar_experiencia: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExperienciaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_enviar_qualificacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QualificacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_atualizar_raio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RaioEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -4187,6 +5463,79 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verificacao_aceitar_consentimento: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusVerificacao"];
+                };
+            };
+        };
+    };
+    verificacao_enviar_verificacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerificacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusVerificacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verificacao_consultar_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusVerificacao"];
                 };
             };
         };
