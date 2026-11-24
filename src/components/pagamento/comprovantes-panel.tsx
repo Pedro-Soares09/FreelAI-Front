@@ -37,6 +37,8 @@ export function ComprovantesPanel({ vagaId, souContratante }: Props) {
   const [valor, setValor] = useState("");
   const [acordo, setAcordo] = useState("");
   const [arquivo, setArquivo] = useState<File | null>(null);
+  // Troca a chave para esvaziar o campo de arquivo depois de enviar.
+  const [chaveArquivo, setChaveArquivo] = useState(0);
   const [erros, setErros] = useState<Record<string, string>>({});
   const [enviando, setEnviando] = useState(false);
 
@@ -87,6 +89,7 @@ export function ComprovantesPanel({ vagaId, souContratante }: Props) {
       setValor("");
       setAcordo("");
       setArquivo(null);
+      setChaveArquivo((n) => n + 1);
       await carregar();
     } catch (err) {
       avisar(mensagemDeErro(err), "error");
@@ -221,6 +224,7 @@ export function ComprovantesPanel({ vagaId, souContratante }: Props) {
             <label className="grid gap-1 text-sm font-medium">
               Comprovante (PDF, JPG ou PNG, até {LIMITE_MB} MB)
               <input
+                key={chaveArquivo}
                 type="file"
                 accept="application/pdf,image/jpeg,image/png"
                 onChange={(e) => setArquivo(e.target.files?.[0] ?? null)}

@@ -1,7 +1,8 @@
 "use client";
 
+import { consultarCnpj, type ResultadoCnpj } from "@/services/geo";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { ApiError, mensagemDeErro } from "@/api/erro";
 import { CadastroShell } from "@/components/conta/cadastro-shell";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,25 @@ export default function CadastroContratantePage() {
   const [erros, setErros] = useState<Erros>({});
   const [erroGeral, setErroGeral] = useState<string>();
   const [enviando, setEnviando] = useState(false);
+  const [dadosCnpj, setDadosCnpj] = useState<ResultadoCnpj | "indisponivel" | "consultando" | null>(null);
+
+  // Consulta pública do CNPJ: só informa a pessoa e nunca bloqueia o cadastro.
+  useEffect(() => {
+    if (tipo !== "pj" || !cnpjValido(documento)) {
+      setDadosCnpj(null);
+      return;
+    }
+    let ativo = true;
+    setDadosCnpj("consultando");
+    consultarCnpj(documento).then((r) => {
+      if (!ativo) return;
+      setDadosCnpj(r ?? "indisponivel");
+      if (r) setRazaoSocial((atual) => atual.trim() || r.razaoSocial);
+    });
+    return () => {
+      ativo = false;
+    };
+  }, [tipo, documento]);
 
   function validar(): Erros {
     const e: Erros = {};
@@ -93,6 +113,17 @@ export default function CadastroContratantePage() {
           onChange={(e) => setDocumento(tipo === "pf" ? mascaraCpf(e.target.value) : mascaraCnpj(e.target.value))}
           error={erros.documento}
         />
+        {tipo === "pj" && dadosCnpj === "consultando" && (
+          <p role="status" className="text-xs text-muted">Consultando o CNPJ na Receita (BrasilAPI)...</p>
+        )}
+        {tipo === "pj" && dadosCnpj && typeof dadosCnpj === "object" && (
+          <p role="status" className={`rounded-lg border px-3 py-2 text-sm ${dadosCnpj.ativa ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}`}>
+            {dadosCnpj.razaoSocial}: situação cadastral {dadosCnpj.situacao.toLowerCase()}.
+          </p>
+        )}
+        {tipo === "pj" && dadosCnpj === "indisponivel" && (
+          <p role="status" className="text-xs text-muted">Não foi possível consultar o CNPJ agora. Você pode seguir com o cadastro.</p>
+        )}
         <Input label="Telefone com DDD" inputMode="tel" value={telefone} onChange={(e) => setTelefone(mascaraTelefone(e.target.value))} error={erros.telefone} hint="O telefone não aparece para os profissionais." />
 
         {erroGeral && <p role="alert" className="rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">{erroGeral}</p>}

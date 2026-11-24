@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
 import {
   DisponibilidadeProfissional,
@@ -71,6 +72,8 @@ const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
 export default function VagasPage() {
   const { usuario } = useSessao();
+  const router = useRouter();
+  const ehAdmin = !USA_MOCKS && usuario?.papel === 'admin';
   const [perfilSalvo, setPerfilSalvo] = useState<'profissional' | 'contratante' | 'admin'>(
     'profissional'
   );
@@ -84,6 +87,13 @@ export default function VagasPage() {
 
   // Com a API real, o perfil ativo vem da sessão; no mock, do que ficou salvo no navegador.
   const perfil = USA_MOCKS ? perfilSalvo : (usuario?.perfil_ativo ?? 'profissional');
+
+  // A administração não tem painel de vagas: vai direto para /admin, sem chamar rotas de profissional.
+  useEffect(() => {
+    if (ehAdmin) router.replace('/admin');
+  }, [ehAdmin, router]);
+
+  if (ehAdmin) return <Carregando rotulo="Abrindo a administração" />;
 
   return perfil === 'contratante' || perfil === 'admin' ? (
     <PainelContratante />

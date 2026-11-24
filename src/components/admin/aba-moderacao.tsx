@@ -16,6 +16,7 @@ import {
   type DecisaoDisputa,
   type DenunciaAdmin,
   type DisputaAdmin,
+  type UsuarioBanido,
 } from "@/services/admin-moderacao";
 
 type Estado<T> =
@@ -298,5 +299,42 @@ export function AbaDisputas({ onContagem }: { onContagem?: (n: number) => void }
         <Textarea label="Justificativa" value={motivo} onChange={(e) => setMotivo(e.target.value)} error={erro} />
       </Modal>
     </>
+  );
+}
+
+const buscarBanimentos = () => repositorioModeracao.listarBanimentos();
+
+export function AbaBanimentos({ onContagem }: { onContagem?: (n: number) => void }) {
+  const { estado, carregar } = useFila<UsuarioBanido>(buscarBanimentos);
+
+  useEffect(() => {
+    if (estado.tipo === "pronto") onContagem?.(estado.dados.length);
+  }, [estado, onContagem]);
+
+  return (
+    <EstadoDeLista
+      estado={estado}
+      onTentarNovamente={carregar}
+      vazio={{
+        titulo: "Nenhuma conta banida",
+        descricao: "Contas com duas denúncias procedentes aparecem aqui.",
+      }}
+    >
+      {(itens) => (
+        <ul className="grid gap-3">
+          {itens.map((u) => (
+            <li key={u.usuario_id}>
+              <Card className="flex flex-wrap items-center justify-between gap-3 p-4">
+                <div>
+                  <p className="font-semibold">{u.nome}</p>
+                  <p className="text-sm text-muted">{u.email}</p>
+                </div>
+                <Badge tom="danger">{u.penalidades} penalidades</Badge>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      )}
+    </EstadoDeLista>
   );
 }

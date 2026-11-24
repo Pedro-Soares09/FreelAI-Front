@@ -6,6 +6,7 @@ import type { components } from "@/api/schema";
 
 export type DenunciaAdmin = components["schemas"]["DenunciaFilaAdmin"];
 export type DisputaAdmin = components["schemas"]["DisputaAdminDetalhe"];
+export type UsuarioBanido = components["schemas"]["UsuarioBanido"];
 export type DecisaoDenuncia = "procedente" | "improcedente";
 export type DecisaoDisputa = "reembolso_total" | "reembolso_parcial" | "pagamento_integral";
 
@@ -78,6 +79,9 @@ export const repositorioModeracao = {
     }
     await chamar<DenunciaAdmin>(`/api/v1/admin/denuncias/${id}/decisao`, json({ decisao, motivo }));
   },
+
+  listarBanimentos: async (): Promise<UsuarioBanido[]> =>
+    USA_MOCKS ? [] : chamar<UsuarioBanido[]>("/api/v1/admin/banimentos"),
 
   listarDisputas: async (): Promise<DisputaAdmin[]> =>
     USA_MOCKS ? [] : chamar<DisputaAdmin[]>("/api/v1/admin/disputas?estado=aberta"),

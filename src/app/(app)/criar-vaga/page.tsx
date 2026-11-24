@@ -1,5 +1,7 @@
 "use client";
 
+import { SeletorLocal } from "@/components/shared/seletor-local";
+import type { Coordenada } from "@/services/geo";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { ApiError } from "@/api/erro";
@@ -38,6 +40,7 @@ export default function CreateJobPage() {
   const [duracao, setDuracao] = useState("");
   const [data, setData] = useState("");
   const [bairro, setBairro] = useState("");
+  const [coords, setCoords] = useState<Coordenada | null>(null);
   const [logradouro, setLogradouro] = useState("");
   const [erros, setErros] = useState<Erros>({});
   const [enviando, setEnviando] = useState(false);
@@ -102,8 +105,8 @@ export default function CreateJobPage() {
         data_inicio: new Date(data).toISOString(),
         bairro: local.nome,
         logradouro: logradouro.trim() || undefined,
-        latitude: local.latitude,
-        longitude: local.longitude,
+        latitude: coords?.lat ?? local.latitude,
+        longitude: coords?.lng ?? local.longitude,
         checklist: seguranca
           ? seguranca.checklist.map((i) => ({ item_id: i.id, atendido: Boolean(respostas[i.id]) }))
           : undefined,
@@ -161,13 +164,25 @@ export default function CreateJobPage() {
           <Select
             label="Bairro"
             value={bairro}
-            onChange={(e) => setBairro(e.target.value)}
+            onChange={(e) => {
+              setBairro(e.target.value);
+              setCoords(null);
+            }}
             placeholder="Selecione"
             opcoes={BAIRROS.map((b) => ({ valor: b.nome, rotulo: b.nome }))}
             error={erros.bairro}
           />
           <Input label="Rua e número (opcional)" value={logradouro} onChange={(e) => setLogradouro(e.target.value)} hint="Só aparece para o profissional depois do aceite." />
         </div>
+        <SeletorLocal
+          bairro={bairro}
+          coords={coords}
+          onChange={(m) => {
+            setCoords(m.coords);
+            if (m.bairro) setBairro(m.bairro);
+            if (m.logradouro) setLogradouro(m.logradouro);
+          }}
+        />
         <div className="flex justify-end">
           <Button type="submit" loading={enviando}>
             Publicar vaga
