@@ -2354,12 +2354,17 @@
             "title": "Critico",
             "type": "boolean"
           },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
           "texto": {
             "title": "Texto",
             "type": "string"
           }
         },
         "required": [
+          "id",
           "texto",
           "critico"
         ],
@@ -3681,6 +3686,24 @@
         "title": "ReputacaoDetalhe",
         "type": "object"
       },
+      "RespostaChecklist": {
+        "properties": {
+          "atendido": {
+            "title": "Atendido",
+            "type": "boolean"
+          },
+          "item_id": {
+            "title": "Item Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "item_id",
+          "atendido"
+        ],
+        "title": "RespostaChecklist",
+        "type": "object"
+      },
       "RespostaSaude": {
         "properties": {
           "perfil": {
@@ -4114,6 +4137,14 @@
             "description": "Slug da categoria, obtido em GET /categorias.",
             "title": "Categoria",
             "type": "string"
+          },
+          "checklist": {
+            "description": "Respostas do checklist de segurança; obrigatório nas categorias de risco médio ou alto (itens em GET /categorias/{slug}/seguranca).",
+            "items": {
+              "$ref": "#/components/schemas/RespostaChecklist"
+            },
+            "title": "Checklist",
+            "type": "array"
           },
           "data_inicio": {
             "format": "date-time",

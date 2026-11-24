@@ -2457,6 +2457,8 @@ export interface components {
         ItemChecklist: {
             /** Critico */
             critico: boolean;
+            /** Id */
+            id: number;
             /** Texto */
             texto: string;
         };
@@ -3061,6 +3063,13 @@ export interface components {
             /** Usuario Id */
             usuario_id: number;
         };
+        /** RespostaChecklist */
+        RespostaChecklist: {
+            /** Atendido */
+            atendido: boolean;
+            /** Item Id */
+            item_id: number;
+        };
         /** RespostaSaude */
         RespostaSaude: {
             /** Perfil */
@@ -3257,6 +3266,11 @@ export interface components {
              * @description Slug da categoria, obtido em GET /categorias.
              */
             categoria: string;
+            /**
+             * Checklist
+             * @description Respostas do checklist de segurança; obrigatório nas categorias de risco médio ou alto (itens em GET /categorias/{slug}/seguranca).
+             */
+            checklist?: components["schemas"]["RespostaChecklist"][];
             /**
              * Data Inicio
              * Format: date-time

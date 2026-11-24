@@ -166,6 +166,7 @@ export type NovaVaga = {
   logradouro?: string;
   latitude: number;
   longitude: number;
+  checklist?: { item_id: number; atendido: boolean }[];
 };
 
 const CATEGORIAS_MOCK: CategoriaVaga[] = [
