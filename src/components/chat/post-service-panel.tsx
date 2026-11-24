@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { ReviewModal } from "@/components/chat/review-modal";
 import { CONTEST_REASONS, CONTEST_WINDOW_HOURS } from "@/lib/constants";
@@ -62,6 +63,11 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       {agreement.status === "completed" && (
         <>
           <p role="status">Serviço concluído pelas duas partes.</p>
+          {iAmHirer && (
+            <Link href={`/pagamento/${agreement.id}`} className="cta">
+              Pagar o serviço (Pix)
+            </Link>
+          )}
           <button type="button" className="cta" onClick={() => setReviewOpen(true)}>
             Avaliar {otherName}
           </button>

@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { CancelModal } from "@/components/chat/cancel-modal";
 import { ModalShell } from "@/components/chat/modal-shell";
 import { CURRENT_USER_ID } from "@/mocks/conversations";
@@ -30,7 +29,6 @@ function toLocalInput(date: Date): string {
 }
 
 export function AgreementModal({ conversation, agreement, onClose, onChanged }: AgreementModalProps) {
-  const router = useRouter();
   const myRole = getMyRole(conversation);
   const iAmHirer = myRole === "contratante";
   const otherName = conversation.contact.name;
@@ -102,15 +100,6 @@ export function AgreementModal({ conversation, agreement, onClose, onChanged }: 
       setBusy(false);
     }
   }
-
-  // Contratante vai para o pagamento assim que as duas partes aceitarem.
-  const agreementAccepted = agreement?.status === "accepted";
-  const agreementId = agreement?.id;
-  useEffect(() => {
-    if (agreementAccepted && iAmHirer && agreementId) {
-      router.push(`/pagamento/${agreementId}`);
-    }
-  }, [agreementAccepted, iAmHirer, agreementId, router]);
 
   if (!agreement) {
     return (

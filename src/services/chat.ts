@@ -99,6 +99,7 @@ async function conversaDaApi(c: ConversaApi): Promise<Conversation> {
     lastMessageAt: c.ultima_mensagem?.enviada_em ?? new Date(0).toISOString(),
     unreadCount: c.nao_lidas,
     jobClosed: !c.aberta,
+    blocked: c.bloqueada ?? false,
   };
 }
 

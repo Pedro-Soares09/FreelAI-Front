@@ -13,3 +13,12 @@ export function SeloPro() {
     </Badge>
   );
 }
+
+export function SeloDestaque() {
+  return (
+    <Badge tom="success">
+      <IconStar width={12} height={12} />
+      Contratante destaque
+    </Badge>
+  );
+}

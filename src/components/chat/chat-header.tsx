@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AvatarVerified } from "@/components/shared/avatar-verified";
+import { SeloDestaque } from "@/components/ui/selos";
 import { formatCurrency } from "@/lib/format";
 import type { Conversation } from "@/types";
 
@@ -22,7 +23,9 @@ export function ChatHeader({ conversation, connection, onAgreementClick, onRepor
       </Link>
       <AvatarVerified name={contact.name} imageUrl={contact.avatarUrl} verified={contact.verified} />
       <div className="chat-header-info">
-        <strong>{contact.name}</strong>
+        <strong>
+          {contact.name} {contact.destaque && <SeloDestaque />}
+        </strong>
         <span className="text-xs text-muted">
           {contact.online ? "Online" : "Offline"} · {job.title}
         </span>

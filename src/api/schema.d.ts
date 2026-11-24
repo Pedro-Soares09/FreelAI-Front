@@ -44,6 +44,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/banimentos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Banimentos
+         * @description Contas banidas de forma permanente após duas denúncias procedentes.
+         */
+        get: operations["admin_listar_banimentos"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/configuracoes": {
         parameters: {
             query?: never;
@@ -1276,6 +1296,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/vagas/{vaga_id}/comprovantes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Comprovantes
+         * @description Comprovantes da vaga com totais e a taxa adicional da plataforma.
+         */
+        get: operations["comprovantes_listar_comprovantes"];
+        put?: never;
+        /**
+         * Anexar Comprovante
+         * @description Anexa o comprovante de pagamento. Horas extras e bônus pagam a taxa adicional.
+         */
+        post: operations["comprovantes_anexar_comprovante"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/comprovantes/{comprovante_id}/arquivo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Baixar Comprovante
+         * @description Serve o arquivo do comprovante às partes da vaga e à administração.
+         */
+        get: operations["comprovantes_baixar_comprovante"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vagas/{vaga_id}/conclusao": {
         parameters: {
             query?: never;
@@ -1693,6 +1757,26 @@ export interface components {
             /** @description Finalidade do arquivo: foto, selfie, documento, qualificacao, epi ou anexo. */
             tipo: components["schemas"]["TipoArquivo"];
         };
+        /** Body_comprovantes_anexar_comprovante */
+        Body_comprovantes_anexar_comprovante: {
+            /**
+             * Acordo Previo
+             * @description Registro do acordo prévio (obrigatório em horas extras).
+             */
+            acordo_previo?: string | null;
+            /**
+             * Arquivo
+             * @description Comprovante em jpg, png ou pdf.
+             */
+            arquivo: string;
+            /** @description servico, horas_extras ou bonus. */
+            tipo: components["schemas"]["TipoComprovante"];
+            /**
+             * Valor
+             * @description Valor pago, em reais.
+             */
+            valor: number | string;
+        };
         /** Body_conversas_enviar_anexo */
         Body_conversas_enviar_anexo: {
             /**
@@ -1841,6 +1925,40 @@ export interface components {
              */
             tipo: "experiencia" | "qualificacao" | "epi";
         };
+        /** ComprovanteDetalhe */
+        ComprovanteDetalhe: {
+            /** Acordo Previo */
+            acordo_previo?: string | null;
+            /**
+             * Arquivo Url
+             * @description Rota que serve o arquivo, restrita às partes e à admin.
+             */
+            arquivo_url: string;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Enviado Por Id */
+            enviado_por_id: number;
+            /** Id */
+            id: number;
+            /**
+             * Taxa Pct
+             * @description Percentual da plataforma sobre o valor adicional.
+             */
+            taxa_pct: string;
+            /**
+             * Taxa Plataforma
+             * @description Taxa da plataforma sobre este comprovante.
+             */
+            taxa_plataforma: string;
+            tipo: components["schemas"]["TipoComprovante"];
+            /** Vaga Id */
+            vaga_id: number;
+            /** Valor */
+            valor: string;
+        };
         /** ConfiguracoesEfetivas */
         ConfiguracoesEfetivas: {
             /** Perfil */
@@ -1863,6 +1981,16 @@ export interface components {
         };
         /** ContratanteResumo */
         ContratanteResumo: {
+            /**
+             * Adicionais Pagos
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /**
+             * Destaque
+             * @default false
+             */
+            destaque: boolean;
             /** Foto Url */
             foto_url?: string | null;
             /** Id */
@@ -1910,6 +2038,12 @@ export interface components {
              * @description Falso quando a vaga foi cancelada ou encerrada.
              */
             aberta: boolean;
+            /**
+             * Bloqueada
+             * @description Verdadeiro quando uma denúncia procedente bloqueou o envio de mensagens.
+             * @default false
+             */
+            bloqueada: boolean;
             /** Id */
             id: number;
             /**
@@ -2169,6 +2303,12 @@ export interface components {
              * @description Verdadeiro quando o tempo em horas úteis ultrapassou a meta de 48h úteis.
              */
             acima_da_meta: boolean;
+            /**
+             * Conversa Bloqueada
+             * @description Denúncia procedente: a troca de mensagens entre as partes está bloqueada.
+             * @default false
+             */
+            conversa_bloqueada: boolean;
             /** Conversa Id */
             conversa_id?: number | null;
             /**
@@ -2180,6 +2320,8 @@ export interface components {
             decidido_em?: string | null;
             /** Decisao Motivo */
             decisao_motivo?: string | null;
+            /** @description Situação atual da conta denunciada (banida após 2 penalidades). */
+            denunciado_estado?: components["schemas"]["EstadoConta"] | null;
             /** Denunciado Id */
             denunciado_id: number;
             /**
@@ -2907,6 +3049,16 @@ export interface components {
         };
         /** PerfilContratanteDetalhe */
         PerfilContratanteDetalhe: {
+            /**
+             * Adicionais Pagos
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /**
+             * Destaque
+             * @default false
+             */
+            destaque: boolean;
             /** Documento */
             documento: string | null;
             /** Id */
@@ -2976,6 +3128,18 @@ export interface components {
          * @description Dados públicos de um perfil, exibidos em cards, listas e no chat.
          */
         PerfilResumo: {
+            /**
+             * Adicionais Pagos
+             * @description Horas extras e bônus pagos (só contratantes).
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /**
+             * Destaque
+             * @description Contratante com adicionais pagos; sem efeito no match.
+             * @default false
+             */
+            destaque: boolean;
             /** Foto Url */
             foto_url?: string | null;
             /** Nome */
@@ -3261,6 +3425,30 @@ export interface components {
             /** Marcadas */
             marcadas: number;
         };
+        /** ResumoComprovantes */
+        ResumoComprovantes: {
+            /** Comprovantes */
+            comprovantes: components["schemas"]["ComprovanteDetalhe"][];
+            /** Liquido Adicional Profissional */
+            liquido_adicional_profissional: string;
+            /** Percentual Taxa Adicional */
+            percentual_taxa_adicional: string;
+            /** Taxa Adicional Plataforma */
+            taxa_adicional_plataforma: string;
+            /**
+             * Total Adicional
+             * @description Horas extras mais bônus.
+             */
+            total_adicional: string;
+            /** Total Bonus */
+            total_bonus: string;
+            /** Total Horas Extras */
+            total_horas_extras: string;
+            /** Total Servico */
+            total_servico: string;
+            /** Vaga Id */
+            vaga_id: number;
+        };
         /**
          * RiscoCategoria
          * @enum {string}
@@ -3331,7 +3519,12 @@ export interface components {
          * TipoArquivo
          * @enum {string}
          */
-        TipoArquivo: "foto" | "selfie" | "documento" | "qualificacao" | "epi" | "anexo";
+        TipoArquivo: "foto" | "selfie" | "documento" | "qualificacao" | "epi" | "anexo" | "comprovante";
+        /**
+         * TipoComprovante
+         * @enum {string}
+         */
+        TipoComprovante: "servico" | "horas_extras" | "bonus";
         /**
          * TipoLancamento
          * @enum {string}
@@ -3404,6 +3597,20 @@ export interface components {
              * @description Identidade do perfil ativo aprovada pela administração.
              */
             verificado: boolean;
+        };
+        /**
+         * UsuarioBanido
+         * @description Conta banida de forma permanente por reincidência em denúncias procedentes.
+         */
+        UsuarioBanido: {
+            /** Email */
+            email: string;
+            /** Nome */
+            nome: string;
+            /** Penalidades */
+            penalidades: number;
+            /** Usuario Id */
+            usuario_id: number;
         };
         /** VagaCriar */
         VagaCriar: {
@@ -3586,6 +3793,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_listar_banimentos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsuarioBanido"][];
                 };
             };
         };
@@ -5469,6 +5696,104 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AvaliacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    comprovantes_listar_comprovantes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResumoComprovantes"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    comprovantes_anexar_comprovante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_comprovantes_anexar_comprovante"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovanteDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    comprovantes_baixar_comprovante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+                comprovante_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */

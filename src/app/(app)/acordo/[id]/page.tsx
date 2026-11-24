@@ -125,13 +125,15 @@ export default function AcordoPage({ params }: AcordoPageProps) {
                 Li e aceito
               </Button>
             )}
-            {ambos && souContratante && (
-              <Link href={`/pagamento/${id}`} className={cn(baseBotao, variantesBotao.primary, tamanhosBotao.md)}>
-                Ir para o pagamento
-              </Link>
-            )}
-            {ambos && !souContratante && (
-              <p className="text-sm text-muted">Aguardando o contratante pagar o Pix.</p>
+            {ambos && (
+              <>
+                <p className="text-sm text-muted">
+                  Acordo fechado. O pagamento do serviço é feito depois da conclusão.
+                </p>
+                <Link href="/chat" className={cn(baseBotao, variantesBotao.primary, tamanhosBotao.md)}>
+                  Ir para a conversa
+                </Link>
+              </>
             )}
           </div>
         </section>

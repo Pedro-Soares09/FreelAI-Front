@@ -447,6 +447,52 @@
         "title": "Body_arquivos_enviar_arquivo",
         "type": "object"
       },
+      "Body_comprovantes_anexar_comprovante": {
+        "properties": {
+          "acordo_previo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Registro do acordo prévio (obrigatório em horas extras).",
+            "title": "Acordo Previo"
+          },
+          "arquivo": {
+            "contentMediaType": "application/octet-stream",
+            "description": "Comprovante em jpg, png ou pdf.",
+            "title": "Arquivo",
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoComprovante",
+            "description": "servico, horas_extras ou bonus."
+          },
+          "valor": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Valor pago, em reais.",
+            "title": "Valor"
+          }
+        },
+        "required": [
+          "tipo",
+          "valor",
+          "arquivo"
+        ],
+        "title": "Body_comprovantes_anexar_comprovante",
+        "type": "object"
+      },
       "Body_conversas_enviar_anexo": {
         "properties": {
           "arquivo": {
@@ -853,6 +899,73 @@
         "title": "ComprovacaoDetalhe",
         "type": "object"
       },
+      "ComprovanteDetalhe": {
+        "properties": {
+          "acordo_previo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acordo Previo"
+          },
+          "arquivo_url": {
+            "description": "Rota que serve o arquivo, restrita às partes e à admin.",
+            "title": "Arquivo Url",
+            "type": "string"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "enviado_por_id": {
+            "title": "Enviado Por Id",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "taxa_pct": {
+            "description": "Percentual da plataforma sobre o valor adicional.",
+            "title": "Taxa Pct",
+            "type": "string"
+          },
+          "taxa_plataforma": {
+            "description": "Taxa da plataforma sobre este comprovante.",
+            "title": "Taxa Plataforma",
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoComprovante"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "tipo",
+          "valor",
+          "taxa_pct",
+          "taxa_plataforma",
+          "enviado_por_id",
+          "arquivo_url",
+          "criado_em"
+        ],
+        "title": "ComprovanteDetalhe",
+        "type": "object"
+      },
       "ConfiguracoesEfetivas": {
         "properties": {
           "perfil": {
@@ -895,6 +1008,16 @@
       },
       "ContratanteResumo": {
         "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "destaque": {
+            "default": false,
+            "title": "Destaque",
+            "type": "boolean"
+          },
           "foto_url": {
             "anyOf": [
               {
@@ -969,6 +1092,12 @@
           "aberta": {
             "description": "Falso quando a vaga foi cancelada ou encerrada.",
             "title": "Aberta",
+            "type": "boolean"
+          },
+          "bloqueada": {
+            "default": false,
+            "description": "Verdadeiro quando uma denúncia procedente bloqueou o envio de mensagens.",
+            "title": "Bloqueada",
             "type": "boolean"
           },
           "id": {
@@ -1511,6 +1640,12 @@
             "title": "Acima Da Meta",
             "type": "boolean"
           },
+          "conversa_bloqueada": {
+            "default": false,
+            "description": "Denúncia procedente: a troca de mensagens entre as partes está bloqueada.",
+            "title": "Conversa Bloqueada",
+            "type": "boolean"
+          },
           "conversa_id": {
             "anyOf": [
               {
@@ -1549,6 +1684,17 @@
               }
             ],
             "title": "Decisao Motivo"
+          },
+          "denunciado_estado": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EstadoConta"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Situação atual da conta denunciada (banida após 2 penalidades)."
           },
           "denunciado_id": {
             "title": "Denunciado Id",
@@ -3061,6 +3207,16 @@
       },
       "PerfilContratanteDetalhe": {
         "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "destaque": {
+            "default": false,
+            "title": "Destaque",
+            "type": "boolean"
+          },
           "documento": {
             "anyOf": [
               {
@@ -3289,6 +3445,18 @@
       "PerfilResumo": {
         "description": "Dados públicos de um perfil, exibidos em cards, listas e no chat.",
         "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "description": "Horas extras e bônus pagos (só contratantes).",
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "destaque": {
+            "default": false,
+            "description": "Contratante com adicionais pagos; sem efeito no match.",
+            "title": "Destaque",
+            "type": "boolean"
+          },
           "foto_url": {
             "anyOf": [
               {
@@ -3879,6 +4047,63 @@
         "title": "ResultadoVisto",
         "type": "object"
       },
+      "ResumoComprovantes": {
+        "properties": {
+          "comprovantes": {
+            "items": {
+              "$ref": "#/components/schemas/ComprovanteDetalhe"
+            },
+            "title": "Comprovantes",
+            "type": "array"
+          },
+          "liquido_adicional_profissional": {
+            "title": "Liquido Adicional Profissional",
+            "type": "string"
+          },
+          "percentual_taxa_adicional": {
+            "title": "Percentual Taxa Adicional",
+            "type": "string"
+          },
+          "taxa_adicional_plataforma": {
+            "title": "Taxa Adicional Plataforma",
+            "type": "string"
+          },
+          "total_adicional": {
+            "description": "Horas extras mais bônus.",
+            "title": "Total Adicional",
+            "type": "string"
+          },
+          "total_bonus": {
+            "title": "Total Bonus",
+            "type": "string"
+          },
+          "total_horas_extras": {
+            "title": "Total Horas Extras",
+            "type": "string"
+          },
+          "total_servico": {
+            "title": "Total Servico",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "comprovantes",
+          "total_servico",
+          "total_horas_extras",
+          "total_bonus",
+          "total_adicional",
+          "percentual_taxa_adicional",
+          "taxa_adicional_plataforma",
+          "liquido_adicional_profissional"
+        ],
+        "title": "ResumoComprovantes",
+        "type": "object"
+      },
       "RiscoCategoria": {
         "enum": [
           "baixo",
@@ -4046,9 +4271,19 @@
           "documento",
           "qualificacao",
           "epi",
-          "anexo"
+          "anexo",
+          "comprovante"
         ],
         "title": "TipoArquivo",
+        "type": "string"
+      },
+      "TipoComprovante": {
+        "enum": [
+          "servico",
+          "horas_extras",
+          "bonus"
+        ],
+        "title": "TipoComprovante",
         "type": "string"
       },
       "TipoLancamento": {
@@ -4206,6 +4441,35 @@
           "verificado"
         ],
         "title": "UsuarioAtual",
+        "type": "object"
+      },
+      "UsuarioBanido": {
+        "description": "Conta banida de forma permanente por reincidência em denúncias procedentes.",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "penalidades": {
+            "title": "Penalidades",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "email",
+          "penalidades"
+        ],
+        "title": "UsuarioBanido",
         "type": "object"
       },
       "VagaCriar": {
@@ -4650,6 +4914,37 @@
           }
         ],
         "summary": "Decidir Aprovacao",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/banimentos": {
+      "get": {
+        "description": "Contas banidas de forma permanente após duas denúncias procedentes.",
+        "operationId": "admin_listar_banimentos",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioBanido"
+                  },
+                  "title": "Response Admin Listar Banimentos",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Banimentos",
         "tags": [
           "admin"
         ]
@@ -7555,6 +7850,165 @@
         "summary": "Avaliar Vaga",
         "tags": [
           "avaliacoes"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/comprovantes": {
+      "get": {
+        "description": "Comprovantes da vaga com totais e a taxa adicional da plataforma.",
+        "operationId": "comprovantes_listar_comprovantes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumoComprovantes"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Comprovantes",
+        "tags": [
+          "comprovantes"
+        ]
+      },
+      "post": {
+        "description": "Anexa o comprovante de pagamento. Horas extras e bônus pagam a taxa adicional.",
+        "operationId": "comprovantes_anexar_comprovante",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_comprovantes_anexar_comprovante"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComprovanteDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Anexar Comprovante",
+        "tags": [
+          "comprovantes"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/comprovantes/{comprovante_id}/arquivo": {
+      "get": {
+        "description": "Serve o arquivo do comprovante às partes da vaga e à administração.",
+        "operationId": "comprovantes_baixar_comprovante",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "comprovante_id",
+            "required": true,
+            "schema": {
+              "title": "Comprovante Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Baixar Comprovante",
+        "tags": [
+          "comprovantes"
         ]
       }
     },

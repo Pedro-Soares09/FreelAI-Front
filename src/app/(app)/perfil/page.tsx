@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Carregando, ErroComRetry } from "@/components/ui/estados";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { SeloDestaque } from "@/components/ui/selos";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/toast";
 import { mascaraTelefone } from "@/lib/bairros";
@@ -37,7 +38,10 @@ function VisaoContratante({ perfil }: { perfil: PerfilContratante }) {
     <Card>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold">{perfil.nome}</h2>
-        <Badge tom={TOM_VERIFICACAO[perfil.verificacao]}>{ROTULO_VERIFICACAO[perfil.verificacao]}</Badge>
+        <div className="flex flex-wrap items-center gap-2">
+          {perfil.destaque && <SeloDestaque />}
+          <Badge tom={TOM_VERIFICACAO[perfil.verificacao]}>{ROTULO_VERIFICACAO[perfil.verificacao]}</Badge>
+        </div>
       </div>
       <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
         <div><dt className="text-muted">Tipo</dt><dd>{perfil.tipo_pessoa === "pf" ? "Pessoa física" : "Empresa"}</dd></div>

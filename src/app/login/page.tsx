@@ -45,6 +45,8 @@ function FormularioLogin() {
     } catch (err) {
       if (err instanceof ApiError && Object.keys(err.campos).length > 0) {
         setErros(err.campos);
+      } else if (err instanceof ApiError && err.codigo === "conta_banida") {
+        setErroGeral("Conta banida de forma permanente após duas penalidades por denúncias validadas. Não é possível entrar na plataforma.");
       } else {
         setErroGeral(mensagemDeErro(err));
       }
