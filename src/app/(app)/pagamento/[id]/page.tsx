@@ -182,8 +182,11 @@ export default function PaymentPage() {
                 Pagamento Pix
               </p>
               <h1 className="mt-1 text-2xl font-bold text-white">
-                Cobrança da vaga
+                Pagamento do serviço
               </h1>
+              <p className="mt-1 text-xs text-zinc-400">
+                O pagamento é feito depois da conclusão do serviço, conforme o acordo.
+              </p>
             </div>
             {pagamento.status === 'aguardando' && (
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-right">
@@ -247,7 +250,7 @@ export default function PaymentPage() {
                 {pagamento.status === 'retido'
                   ? 'Pagamento confirmado. O valor está retido até a conclusão e validação.'
                   : pagamento.status === 'liberado'
-                  ? 'Valor liberado após a validação facial.'
+                  ? 'Pagamento confirmado. O valor foi liberado ao profissional.'
                   : 'O estado atual da cobrança é exibido neste painel.'}
               </p>
             </div>

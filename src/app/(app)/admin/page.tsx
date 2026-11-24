@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { AbaCadastros } from "@/components/admin/aba-cadastros";
-import { ListaVazia } from "@/components/ui/estados";
+import { AbaDenuncias, AbaDisputas } from "@/components/admin/aba-moderacao";
 import { Tabs } from "@/components/ui/tabs";
 
 export default function AdminPage() {
   const [pendentes, setPendentes] = useState<number | undefined>();
+  const [denuncias, setDenuncias] = useState<number | undefined>();
+  const [disputas, setDisputas] = useState<number | undefined>();
 
   return (
     <section className="page">
@@ -23,22 +25,14 @@ export default function AdminPage() {
           {
             id: "denuncias",
             rotulo: "Denúncias",
-            conteudo: (
-              <ListaVazia
-                titulo="Nenhuma denúncia aberta"
-                descricao="As denúncias recebidas aparecem aqui para análise."
-              />
-            ),
+            contagem: denuncias,
+            conteudo: <AbaDenuncias onContagem={setDenuncias} />,
           },
           {
             id: "disputas",
             rotulo: "Disputas",
-            conteudo: (
-              <ListaVazia
-                titulo="Nenhuma disputa aberta"
-                descricao="Disputas de pagamento aparecem aqui para decisão."
-              />
-            ),
+            contagem: disputas,
+            conteudo: <AbaDisputas onContagem={setDisputas} />,
           },
         ]}
       />

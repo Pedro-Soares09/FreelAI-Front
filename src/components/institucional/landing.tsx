@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { IconShield } from "@/components/ui/icons";
 import { baseBotao, tamanhosBotao, variantesBotao } from "@/components/ui/button";
+import { AvisoBeta } from "@/components/institucional/aviso-beta";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const CADASTRO_PROFISSIONAL = "/registro?tipo=profissional";
@@ -23,7 +24,7 @@ const PASSOS = [
 const DIFERENCIAIS = [
   { titulo: "Match inteligente", texto: "Uma vaga, três melhores profissionais. Sem enviar 50 propostas." },
   { titulo: "Preço justo", texto: "Sem leilão de preço. O valor é combinado de forma transparente." },
-  { titulo: "Contrato apoiado por IA", texto: "O acordo do serviço é gerado com apoio de IA e aceito pelas duas partes." },
+  { titulo: "Acordo claro entre as partes", texto: "O acordo do serviço é gerado pela plataforma e aceito pelas duas partes." },
 ];
 
 function BotoesDeCadastro() {
@@ -42,6 +43,9 @@ function BotoesDeCadastro() {
 export function Landing() {
   return (
     <div>
+      <div className="mx-auto max-w-6xl px-4 pt-3">
+        <AvisoBeta />
+      </div>
       <header className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
         <span className="text-xl font-extrabold tracking-tight text-primary">FreelAI</span>
         <nav aria-label="Principal" className="flex items-center gap-3 text-sm">

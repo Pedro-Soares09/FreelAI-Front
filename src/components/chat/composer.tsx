@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { ApiError } from "@/api/erro";
 import { MAX_ATTACHMENT_MB } from "@/lib/constants";
 import { sendMessage } from "@/services/api";
 import type { Message } from "@/types";
@@ -10,11 +11,13 @@ type ComposerProps = {
   text: string;
   onTextChange: (text: string) => void;
   onSent: (message: Message) => void;
+  /** Chamado quando o back recusa o envio porque o chat foi bloqueado. */
+  onBlocked?: () => void;
 };
 
 const ACCEPTED_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
 
-export function Composer({ conversationId, text, onTextChange, onSent }: ComposerProps) {
+export function Composer({ conversationId, text, onTextChange, onSent, onBlocked }: ComposerProps) {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -27,6 +30,7 @@ export function Composer({ conversationId, text, onTextChange, onSent }: Compose
       onTextChange("");
       onSent(message);
     } catch (err) {
+      if (err instanceof ApiError && err.codigo === "conversa_bloqueada") onBlocked?.();
       setError((err as Error).message);
     } finally {
       setSending(false);

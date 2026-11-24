@@ -79,7 +79,7 @@ export function RouteGuard({ children }: { children: ReactNode }) {
     return (
       <TelaDeConta
         titulo="Conta banida"
-        texto="Sua conta foi encerrada por violação das regras da plataforma."
+        texto="Sua conta foi banida de forma permanente após duas penalidades por denúncias validadas. Não é possível entrar nem contratar na plataforma."
       />
     );
   }

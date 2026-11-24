@@ -31,6 +31,9 @@ export interface ContratanteResumo {
   nota_media: number;
   total_avaliacoes: number;
   pro?: boolean;
+  /** Pagou horas extras ou bônus; não altera o match. */
+  destaque?: boolean;
+  adicionais_pagos?: number;
 }
 
 export interface ConviteVaga {
@@ -226,6 +229,8 @@ export type Conversation = {
   agreementId?: string;
   /** Vaga encerrada: a conversa vira somente leitura. */
   jobClosed?: boolean;
+  /** Denúncia procedente: a troca de mensagens entre as partes está bloqueada. */
+  blocked?: boolean;
 };
 
 export type Payment = {
@@ -246,6 +251,7 @@ export type ChatContact = {
   verified: boolean;
   online: boolean;
   role: ChatRole;
+  destaque?: boolean;
 };
 
 export type ChatJob = {
