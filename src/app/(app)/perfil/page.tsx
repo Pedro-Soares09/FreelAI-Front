@@ -169,7 +169,7 @@ export default function ProfileEditPage() {
   return (
     <section className="page max-w-4xl">
       {/* Top Banner com Ação para Ver Perfil Verificado */}
-      <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-8 p-5 sm:p-6 rounded-2xl bg-surface border border-borda shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <AvatarVerified
             name={isProf ? name : tradeName || corporateReason}
@@ -180,14 +180,14 @@ export default function ProfileEditPage() {
           />
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-fg tracking-tight">
                 {isProf ? name : tradeName || corporateReason}
               </h1>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-surface-2 text-fg">
                 {isProf ? "Perfil Profissional" : "Conta Empresa"}
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-muted mt-0.5">
               {isProf ? title : companyProfile.cnpj} · {isProf ? `${city}, ${stateUF}` : `${companyCity}, ${companyState}`}
             </p>
           </div>
@@ -198,7 +198,7 @@ export default function ProfileEditPage() {
           {isProf && (
             <Link
               href="/perfil/publico"
-              className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md"
+              className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-info hover:bg-info text-primary-fg font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md"
             >
               <ShieldCheckIcon className="w-4 h-4" />
               <span>Ver perfil verificado</span>
@@ -210,48 +210,48 @@ export default function ProfileEditPage() {
 
       {/* Cartão de Status de Verificação */}
       {isProf && (
-        <div className="mb-8 p-4 rounded-2xl border bg-slate-50 border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="mb-8 p-4 rounded-2xl border bg-surface-2 border-borda flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-surface border border-borda flex items-center justify-center shadow-xs">
               {verificationStatus === "verificado" && (
-                <ShieldCheckIcon className="w-6 h-6 text-blue-600" />
+                <ShieldCheckIcon className="w-6 h-6 text-info" />
               )}
               {verificationStatus === "em_analise" && (
-                <ClockIcon className="w-6 h-6 text-amber-600" />
+                <ClockIcon className="w-6 h-6 text-warning" />
               )}
               {verificationStatus === "recusado" && (
-                <ShieldAlertIcon className="w-6 h-6 text-rose-600" />
+                <ShieldAlertIcon className="w-6 h-6 text-danger" />
               )}
               {verificationStatus === "nao_verificado" && (
-                <UserIcon className="w-6 h-6 text-slate-400" />
+                <UserIcon className="w-6 h-6 text-muted" />
               )}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                <span className="text-xs font-bold uppercase tracking-wider text-fg">
                   Status da Verificação de Identidade:
                 </span>
                 <span
                   className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                     verificationStatus === "verificado"
-                      ? "bg-blue-100 text-blue-800"
+                      ? "bg-info/15 text-info"
                       : verificationStatus === "em_analise"
-                        ? "bg-amber-100 text-amber-800"
+                        ? "bg-warning/15 text-warning"
                         : verificationStatus === "recusado"
-                          ? "bg-rose-100 text-rose-800"
-                          : "bg-slate-200 text-slate-700"
+                          ? "bg-danger/15 text-danger"
+                          : "bg-surface-2 text-fg"
                   }`}
                 >
                   {verificationStatus === "verificado"
-                    ? "✓ Selo Verificado Ativo"
+                    ? "Selo Verificado Ativo"
                     : verificationStatus === "em_analise"
-                      ? "⏳ Em Análise"
+                      ? "Em Análise"
                       : verificationStatus === "recusado"
-                        ? "✕ Recusado"
+                        ? "Recusado"
                         : "Não Verificado"}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-muted mt-0.5">
                 {verificationStatus === "verificado"
                   ? "Sua identidade está validada. O selo verificado e suas avaliações estão visíveis no seu perfil público."
                   : "Envie CPF, documento oficial e selfie para liberar o selo verificado e aumentar suas contratações."}
@@ -261,7 +261,7 @@ export default function ProfileEditPage() {
 
           <Link
             href="/verificacao"
-            className="py-1.5 px-3.5 rounded-lg border border-indigo-200 bg-white hover:bg-indigo-50 text-indigo-700 font-semibold text-xs transition-colors shrink-0"
+            className="py-1.5 px-3.5 rounded-lg border border-primary/40 bg-surface hover:bg-primary/10 text-primary font-semibold text-xs transition-colors shrink-0"
           >
             Gerenciar Verificação
           </Link>
@@ -270,8 +270,8 @@ export default function ProfileEditPage() {
 
       {/* Alerta de Salvo */}
       {savedSuccess && (
-        <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2 shadow-xs">
-          <CheckIcon className="w-5 h-5 text-emerald-600 shrink-0" />
+        <div className="mb-6 p-4 rounded-xl bg-primary/15 border border-primary/40 text-primary text-sm flex items-center gap-2 shadow-xs">
+          <CheckIcon className="w-5 h-5 text-primary shrink-0" />
           <span>Alterações salvas com sucesso no seu perfil!</span>
         </div>
       )}
@@ -279,16 +279,16 @@ export default function ProfileEditPage() {
       {/* FORMULÁRIO DE EDIÇÃO DO PERFIL */}
       <form onSubmit={handleSaveProfile} className="space-y-8">
         {/* Seção 1: Dados Cadastrais Básicos */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-5">
-          <h2 className="text-base font-bold text-slate-900 pb-2 border-b border-slate-100 flex items-center gap-2">
-            <UserIcon className="w-4 h-4 text-indigo-600" />
+        <div className="p-6 sm:p-8 rounded-2xl bg-surface border border-borda shadow-xs space-y-5">
+          <h2 className="text-base font-bold text-fg pb-2 border-b border-borda flex items-center gap-2">
+            <UserIcon className="w-4 h-4 text-primary" />
             <span>Dados Pessoais & Apresentação</span>
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                Nome Completo <span className="text-rose-500">*</span>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
+                Nome Completo <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -297,12 +297,12 @@ export default function ProfileEditPage() {
                 onChange={(e) =>
                   isProf ? setName(e.target.value) : setCorporateReason(e.target.value)
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
                 {isProf ? "Título Profissional" : "Nome Fantasia"}
               </label>
               <input
@@ -311,7 +311,7 @@ export default function ProfileEditPage() {
                 onChange={(e) =>
                   isProf ? setTitle(e.target.value) : setTradeName(e.target.value)
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
           </div>
@@ -319,46 +319,46 @@ export default function ProfileEditPage() {
           {isProf && (
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                  Data de Nascimento <span className="text-rose-500">*</span>
+                <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
+                  Data de Nascimento <span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
                   required
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
                   E-mail
                 </label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
                   Telefone / WhatsApp
                 </label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(maskPhone(e.target.value))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
               {isProf ? "Biografia / Resumo Profissional" : "Descrição da Empresa"}
             </label>
             <textarea
@@ -367,12 +367,12 @@ export default function ProfileEditPage() {
               onChange={(e) =>
                 isProf ? setBio(e.target.value) : setCompanyDesc(e.target.value)
               }
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
               URL da Imagem de Perfil / Avatar
             </label>
             <input
@@ -380,34 +380,34 @@ export default function ProfileEditPage() {
               value={avatarUrl}
               onChange={(e) => setAvatarUrl(e.target.value)}
               placeholder="https://..."
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
         </div>
 
         {/* Seção 2: Localização Obrigatória */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <MapPinIcon className="w-4 h-4 text-indigo-600" />
+        <div className="p-6 sm:p-8 rounded-2xl bg-surface border border-borda shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-borda">
+            <h2 className="text-base font-bold text-fg flex items-center gap-2">
+              <MapPinIcon className="w-4 h-4 text-primary" />
               <span>Localização (Campo Obrigatório)</span>
             </h2>
-            <span className="text-[11px] font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">
+            <span className="text-[11px] font-semibold text-danger bg-danger/15 px-2 py-0.5 rounded">
               Obrigatória
             </span>
           </div>
 
           <div className="grid sm:grid-cols-4 gap-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                Estado (UF) <span className="text-rose-500">*</span>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
+                Estado (UF) <span className="text-danger">*</span>
               </label>
               <select
                 value={isProf ? stateUF : companyState}
                 onChange={(e) =>
                   isProf ? setStateUF(e.target.value) : setCompanyState(e.target.value)
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 bg-white"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg bg-surface"
               >
                 {["SP","RJ","MG","RS","PR","SC","BA","PE","CE","DF","GO","ES","AM","PA","MT","MS","MA","PB","RN","AL","SE","PI","RO","TO","AC","AP","RR"].map((uf) => (
                   <option key={uf} value={uf}>
@@ -418,8 +418,8 @@ export default function ProfileEditPage() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
-                Cidade <span className="text-rose-500">*</span>
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
+                Cidade <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -428,12 +428,12 @@ export default function ProfileEditPage() {
                 onChange={(e) =>
                   isProf ? setCity(e.target.value) : setCompanyCity(e.target.value)
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 font-medium"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg font-medium"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-1">
                 CEP
               </label>
               <input
@@ -441,7 +441,7 @@ export default function ProfileEditPage() {
                 value={cep}
                 onChange={(e) => setCep(maskCEP(e.target.value))}
                 placeholder="00000-000"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda text-sm text-fg"
               />
             </div>
           </div>
@@ -449,17 +449,17 @@ export default function ProfileEditPage() {
 
         {/* Seção 3: Características (Profissional) */}
         {isProf && (
-          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-6">
-            <h2 className="text-base font-bold text-slate-900 pb-2 border-b border-slate-100 flex items-center gap-2">
-              <SparklesIcon className="w-4 h-4 text-indigo-600" />
+          <div className="p-6 sm:p-8 rounded-2xl bg-surface border border-borda shadow-xs space-y-6">
+            <h2 className="text-base font-bold text-fg pb-2 border-b border-borda flex items-center gap-2">
+              <SparklesIcon className="w-4 h-4 text-primary" />
               <span>Características e Competências (4 Pilares)</span>
             </h2>
 
-            <div className="grid sm:grid-cols-3 gap-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <div className="grid sm:grid-cols-3 gap-6 p-4 rounded-xl bg-surface-2 border border-borda">
               {/* Comunicação */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <label className="text-xs font-bold uppercase tracking-wider text-fg">
                     Comunicação ({comunicacao}/5)
                   </label>
                 </div>
@@ -470,9 +470,9 @@ export default function ProfileEditPage() {
                   step="1"
                   value={comunicacao}
                   onChange={(e) => setComunicacao(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-surface-2 rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <span className="text-[11px] text-indigo-600 font-semibold block mt-1">
+                <span className="text-[11px] text-primary font-semibold block mt-1">
                   {comunicacao === 5 ? "Assertiva / Clara" : `${comunicacao} de 5`}
                 </span>
               </div>
@@ -480,7 +480,7 @@ export default function ProfileEditPage() {
               {/* Proatividade */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <label className="text-xs font-bold uppercase tracking-wider text-fg">
                     Proatividade ({proatividade}/5)
                   </label>
                 </div>
@@ -491,9 +491,9 @@ export default function ProfileEditPage() {
                   step="1"
                   value={proatividade}
                   onChange={(e) => setProatividade(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-surface-2 rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <span className="text-[11px] text-indigo-600 font-semibold block mt-1">
+                <span className="text-[11px] text-primary font-semibold block mt-1">
                   {proatividade === 5 ? "Alta Iniciativa" : `${proatividade} de 5`}
                 </span>
               </div>
@@ -501,7 +501,7 @@ export default function ProfileEditPage() {
               {/* Agilidade */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                  <label className="text-xs font-bold uppercase tracking-wider text-fg">
                     Agilidade ({agilidade}/5)
                   </label>
                 </div>
@@ -512,9 +512,9 @@ export default function ProfileEditPage() {
                   step="1"
                   value={agilidade}
                   onChange={(e) => setAgilidade(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-surface-2 rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <span className="text-[11px] text-indigo-600 font-semibold block mt-1">
+                <span className="text-[11px] text-primary font-semibold block mt-1">
                   {agilidade === 5 ? "Entregas Rápidas" : `${agilidade} de 5`}
                 </span>
               </div>
@@ -522,7 +522,7 @@ export default function ProfileEditPage() {
 
             {/* Conhecimento Técnico */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+              <label className="block text-xs font-bold uppercase tracking-wider text-muted mb-2">
                 Conhecimento Técnico / Hard Skills
               </label>
               <div className="flex gap-2 mb-3">
@@ -532,12 +532,12 @@ export default function ProfileEditPage() {
                   onChange={(e) => setCustomTech(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddTech())}
                   placeholder="Adicionar habilidade (ex: Docker, Python)..."
-                  className="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 text-xs"
+                  className="flex-1 px-3.5 py-2 rounded-xl border border-borda text-xs"
                 />
                 <button
                   type="button"
                   onClick={handleAddTech}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold"
+                  className="px-4 py-2 rounded-xl bg-surface-2 hover:bg-surface-2 text-fg text-xs font-semibold"
                 >
                   Adicionar
                 </button>
@@ -547,13 +547,13 @@ export default function ProfileEditPage() {
                 {selectedTechs.map((tech) => (
                   <span
                     key={tech}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/40 text-primary text-xs font-medium"
                   >
                     <span>{tech}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveTech(tech)}
-                      className="text-indigo-400 hover:text-indigo-800"
+                      className="text-primary hover:text-primary"
                     >
                       ×
                     </button>
@@ -566,37 +566,37 @@ export default function ProfileEditPage() {
 
         {/* Seção 4: Experiências (Profissional) */}
         {isProf && (
-          <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <BriefcaseIcon className="w-4 h-4 text-indigo-600" />
+          <div className="p-6 sm:p-8 rounded-2xl bg-surface border border-borda shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-borda">
+              <h2 className="text-base font-bold text-fg flex items-center gap-2">
+                <BriefcaseIcon className="w-4 h-4 text-primary" />
                 <span>Histórico de Experiências ({experiences.length})</span>
               </h2>
               <button
                 type="button"
                 onClick={() => setShowAddExp(!showAddExp)}
-                className="text-xs font-bold text-indigo-600 hover:text-indigo-800"
+                className="text-xs font-bold text-primary hover:text-primary"
               >
                 {showAddExp ? "Cancelar" : "+ Adicionar Experiência"}
               </button>
             </div>
 
             {showAddExp && (
-              <div className="p-4 rounded-xl border border-indigo-200 bg-indigo-50/30 space-y-3">
+              <div className="p-4 rounded-xl border border-primary/40 bg-primary/30 space-y-3">
                 <div className="grid sm:grid-cols-2 gap-3">
                   <input
                     type="text"
                     placeholder="Cargo"
                     value={expTitle}
                     onChange={(e) => setExpTitle(e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                    className="px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                   />
                   <input
                     type="text"
                     placeholder="Empresa / Projeto"
                     value={expCompany}
                     onChange={(e) => setExpCompany(e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                    className="px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                   />
                 </div>
                 <input
@@ -604,19 +604,19 @@ export default function ProfileEditPage() {
                   placeholder="Período (ex: 2023 - 2025)"
                   value={expPeriod}
                   onChange={(e) => setExpPeriod(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                  className="w-full px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                 />
                 <textarea
                   rows={2}
                   placeholder="Descrição das entregas..."
                   value={expDesc}
                   onChange={(e) => setExpDesc(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                  className="w-full px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                 />
                 <button
                   type="button"
                   onClick={handleAddExperience}
-                  className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs"
+                  className="px-3 py-1.5 rounded-lg bg-primary hover:brightness-110 text-primary-fg font-semibold text-xs"
                 >
                   Salvar Experiência
                 </button>
@@ -627,19 +627,19 @@ export default function ProfileEditPage() {
               {experiences.map((exp) => (
                 <div
                   key={exp.id}
-                  className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex items-start justify-between gap-3"
+                  className="p-4 rounded-xl border border-borda bg-surface-2/50 flex items-start justify-between gap-3"
                 >
                   <div>
-                    <h4 className="font-bold text-slate-900 text-sm">
-                      {exp.title} · <span className="text-slate-600 font-normal">{exp.company}</span>
+                    <h4 className="font-bold text-fg text-sm">
+                      {exp.title} · <span className="text-muted font-normal">{exp.company}</span>
                     </h4>
-                    <span className="text-xs text-indigo-600 font-medium">{exp.period}</span>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed">{exp.description}</p>
+                    <span className="text-xs text-primary font-medium">{exp.period}</span>
+                    <p className="text-xs text-muted mt-1 leading-relaxed">{exp.description}</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => handleRemoveExperience(exp.id)}
-                    className="text-slate-400 hover:text-rose-600 p-1"
+                    className="text-muted hover:text-danger p-1"
                     title="Remover"
                   >
                     <XIcon className="w-4 h-4" />
@@ -655,7 +655,7 @@ export default function ProfileEditPage() {
           {isProf ? (
             <Link
               href="/perfil/publico"
-              className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1.5"
+              className="text-xs font-bold text-info hover:underline flex items-center gap-1.5"
             >
               <ShieldCheckIcon className="w-4 h-4" />
               <span>Ver como meu perfil é exibido publicamente (&quot;Ver perfil verificado&quot;)</span>
@@ -666,7 +666,7 @@ export default function ProfileEditPage() {
 
           <button
             type="submit"
-            className="w-full sm:w-auto py-3 px-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto py-3 px-8 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
           >
             <CheckIcon className="w-4 h-4" />
             <span>Salvar Alterações do Perfil</span>

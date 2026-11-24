@@ -134,13 +134,13 @@ export default function VerificationPage() {
   return (
     <section className="page max-w-4xl">
       {/* Banner de Demonstração / Seletor Rápido de Status */}
-      <div className="mb-8 p-4 rounded-2xl bg-indigo-50/80 border border-indigo-200/90 shadow-xs">
+      <div className="mb-8 p-4 rounded-2xl bg-primary/10 border border-primary/30 shadow-xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-indigo-900 block">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary block">
               Simulador de Status da Verificação (Painel de Avaliação)
             </span>
-            <p className="text-xs text-indigo-700 mt-0.5">
+            <p className="text-xs text-primary mt-0.5">
               Alternar entre os 3 status solicitados para visualizar a interface em cada cenário:
             </p>
           </div>
@@ -154,8 +154,8 @@ export default function VerificationPage() {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 verificationStatus === "nao_verificado"
-                  ? "bg-slate-800 text-white shadow-xs"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+                  ? "bg-surface-2 text-fg shadow-xs"
+                  : "bg-surface text-fg border border-borda hover:bg-surface-2"
               }`}
             >
               Formulário / Pendente
@@ -169,11 +169,11 @@ export default function VerificationPage() {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 verificationStatus === "em_analise"
-                  ? "bg-amber-600 text-white shadow-xs"
-                  : "bg-white text-amber-800 border border-amber-200 hover:bg-amber-50"
+                  ? "bg-warning/15 text-fg shadow-xs"
+                  : "bg-surface text-warning border border-warning/40 hover:bg-warning/15"
               }`}
             >
-              ⏳ Em Análise
+              Em Análise
             </button>
 
             <button
@@ -184,11 +184,11 @@ export default function VerificationPage() {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 verificationStatus === "verificado"
-                  ? "bg-blue-600 text-white shadow-xs"
-                  : "bg-white text-blue-800 border border-blue-200 hover:bg-blue-50"
+                  ? "bg-info/15 text-fg shadow-xs"
+                  : "bg-surface text-info border border-info/40 hover:bg-info/15"
               }`}
             >
-              ✓ Verificado
+              Verificado
             </button>
 
             <button
@@ -202,11 +202,11 @@ export default function VerificationPage() {
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 verificationStatus === "recusado"
-                  ? "bg-rose-600 text-white shadow-xs"
-                  : "bg-white text-rose-800 border border-rose-200 hover:bg-rose-50"
+                  ? "bg-danger/15 text-fg shadow-xs"
+                  : "bg-surface text-danger border border-danger/40 hover:bg-danger/15"
               }`}
             >
-              ✕ Recusado
+              Recusado
             </button>
           </div>
         </div>
@@ -214,14 +214,14 @@ export default function VerificationPage() {
 
       {/* Cabeçalho da Página */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-700 mb-2">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-info mb-2">
           <ShieldCheckIcon className="w-4 h-4" />
           <span>Selo de Confiança FreelAI</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight">
           Verificação de Identidade
         </h1>
-        <p className="text-slate-600 text-sm mt-1 max-w-2xl">
+        <p className="text-muted text-sm mt-1 max-w-2xl">
           Esta tela alimenta o selo oficial <strong>&quot;Verificado&quot;</strong>. Com a validação de CPF,
           documento oficial com foto e selfie biométrica, seu perfil ganha prioridade absoluta
           em contratações e libera todas as ferramentas da plataforma.
@@ -233,7 +233,7 @@ export default function VerificationPage() {
       {/* ============================================================== */}
       {verificationStatus === "verificado" && (
         <div className="space-y-6">
-          <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-blue-50 via-white to-blue-50/50 border-2 border-blue-200 shadow-xs">
+          <div className="p-6 sm:p-8 rounded-2xl bg-primary/10 border-2 border-primary/40 shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <AvatarVerified
@@ -243,14 +243,14 @@ export default function VerificationPage() {
                   size="xl"
                 />
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-bold shadow-xs">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-info text-primary-fg text-xs font-bold shadow-xs">
                     <CheckIcon className="w-3.5 h-3.5" />
                     <span>Selo Verificado Ativo</span>
                   </div>
-                  <h2 className="text-xl font-bold text-slate-900 mt-2">
+                  <h2 className="text-xl font-bold text-fg mt-2">
                     {professionalProfile.name}
                   </h2>
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-muted">
                     CPF regular · Documento Oficial Aprovado · Biometria Facial Confirmada
                   </p>
                 </div>
@@ -258,31 +258,31 @@ export default function VerificationPage() {
 
               <Link
                 href="/perfil/publico"
-                className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 transition-colors shadow-xs"
+                className="py-2.5 px-4 rounded-xl bg-info hover:bg-info text-primary-fg font-semibold text-xs sm:text-sm flex items-center gap-2 transition-colors shadow-xs"
               >
                 <span>Ver Perfil Verificado</span>
                 <ArrowRightIcon className="w-4 h-4" />
               </Link>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-blue-100 grid sm:grid-cols-3 gap-4">
-              <div className="p-4 rounded-xl bg-white border border-blue-100 shadow-2xs">
-                <span className="text-xs font-bold text-blue-900 block">3x Mais Visibilidade</span>
-                <p className="text-xs text-slate-600 mt-1">
+            <div className="mt-8 pt-6 border-t border-info grid sm:grid-cols-3 gap-4">
+              <div className="p-4 rounded-xl bg-surface border border-info shadow-2xs">
+                <span className="text-xs font-bold text-info block">3x Mais Visibilidade</span>
+                <p className="text-xs text-muted mt-1">
                   Perfis com selo verificado aparecem no topo das buscas das empresas contratantes.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-blue-100 shadow-2xs">
-                <span className="text-xs font-bold text-blue-900 block">Proteção de Pagamento</span>
-                <p className="text-xs text-slate-600 mt-1">
+              <div className="p-4 rounded-xl bg-surface border border-info shadow-2xs">
+                <span className="text-xs font-bold text-info block">Proteção de Pagamento</span>
+                <p className="text-xs text-muted mt-1">
                   Saques e transferências de custódia liberados de forma imediata após conclusão do projeto.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-blue-100 shadow-2xs">
-                <span className="text-xs font-bold text-blue-900 block">Garantia Contra Fraudes</span>
-                <p className="text-xs text-slate-600 mt-1">
+              <div className="p-4 rounded-xl bg-surface border border-info shadow-2xs">
+                <span className="text-xs font-bold text-info block">Garantia Contra Fraudes</span>
+                <p className="text-xs text-muted mt-1">
                   Sua identidade foi certificada de acordo com as normas da LGPD e Termos do FreelAI.
                 </p>
               </div>
@@ -296,31 +296,31 @@ export default function VerificationPage() {
       {/* ============================================================== */}
       {verificationStatus === "em_analise" && (
         <div className="space-y-6">
-          <div className="p-6 sm:p-8 rounded-2xl bg-amber-50/80 border-2 border-amber-200 shadow-xs">
+          <div className="p-6 sm:p-8 rounded-2xl bg-warning/80 border-2 border-warning shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-2xl shadow-xs">
-                  <ClockIcon className="w-8 h-8 text-amber-600" />
+                <div className="w-16 h-16 rounded-2xl bg-warning/15 text-warning flex items-center justify-center font-bold text-2xl shadow-xs">
+                  <ClockIcon className="w-8 h-8 text-warning" />
                 </div>
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-200 text-amber-900 text-xs font-bold">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-warning/15 text-warning text-xs font-bold">
                     <span>Status: Em Análise</span>
                   </div>
-                  <h2 className="text-xl font-bold text-slate-900 mt-2">
+                  <h2 className="text-xl font-bold text-fg mt-2">
                     Documentos sob Análise de Segurança
                   </h2>
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-muted">
                     Protocolo: FL-{Math.floor(100000 + Math.random() * 900000)} · Prazo estimado: até 24 horas úteis
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 p-4 rounded-xl bg-white border border-amber-200/80 text-xs text-slate-700 space-y-2">
-              <p className="font-semibold text-slate-900">
+            <div className="mt-6 p-4 rounded-xl bg-surface border border-warning/80 text-xs text-fg space-y-2">
+              <p className="font-semibold text-fg">
                 O que acontece agora?
               </p>
-              <ul className="space-y-1 list-disc list-inside text-slate-600">
+              <ul className="space-y-1 list-disc list-inside text-muted">
                 <li>
                   Nosso sistema automatizado e equipe de conformidade estão conferindo a regularidade do CPF informado:{" "}
                   <strong>{professionalProfile.verification.cpf || "Registrado"}</strong>
@@ -345,20 +345,20 @@ export default function VerificationPage() {
       {/* ============================================================== */}
       {verificationStatus === "recusado" && !isEditingAfterRejection && (
         <div className="space-y-6">
-          <div className="p-6 sm:p-8 rounded-2xl bg-rose-50/80 border-2 border-rose-200 shadow-xs">
+          <div className="p-6 sm:p-8 rounded-2xl bg-danger/80 border-2 border-danger shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-2xl shadow-xs">
-                  <ShieldAlertIcon className="w-8 h-8 text-rose-600" />
+                <div className="w-16 h-16 rounded-2xl bg-danger/15 text-danger flex items-center justify-center font-bold text-2xl shadow-xs">
+                  <ShieldAlertIcon className="w-8 h-8 text-danger" />
                 </div>
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-200 text-rose-900 text-xs font-bold">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-danger/15 text-danger text-xs font-bold">
                     <span>Status: Verificação Recusada</span>
                   </div>
-                  <h2 className="text-xl font-bold text-slate-900 mt-2">
+                  <h2 className="text-xl font-bold text-fg mt-2">
                     Não foi possível validar seus documentos
                   </h2>
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-muted">
                     A análise identificou divergências ou problemas de legibilidade no material enviado.
                   </p>
                 </div>
@@ -367,7 +367,7 @@ export default function VerificationPage() {
               <button
                 type="button"
                 onClick={() => setIsEditingAfterRejection(true)}
-                className="py-2.5 px-5 rounded-xl bg-rose-700 hover:bg-rose-800 text-white font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors shadow-xs"
+                className="py-2.5 px-5 rounded-xl bg-danger hover:bg-danger text-primary-fg font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors shadow-xs"
               >
                 <span>Corrigir e Reenviar Documentos</span>
                 <ArrowRightIcon className="w-4 h-4" />
@@ -375,15 +375,15 @@ export default function VerificationPage() {
             </div>
 
             {/* Motivo da Recusa Detalhado */}
-            <div className="mt-6 p-4 rounded-xl bg-white border border-rose-200 text-xs space-y-2">
-              <span className="font-bold text-rose-900 uppercase tracking-wider block">
+            <div className="mt-6 p-4 rounded-xl bg-surface border border-danger text-xs space-y-2">
+              <span className="font-bold text-danger uppercase tracking-wider block">
                 Motivo Apontado pela Análise:
               </span>
-              <p className="text-slate-800 font-medium bg-rose-50 p-3 rounded-lg border border-rose-100 leading-relaxed">
+              <p className="text-primary-fg font-medium bg-danger p-3 rounded-lg border border-danger leading-relaxed">
                 {rejectionReason ||
                   "A foto do documento está ilegível ou cortada, ou a selfie não possui iluminação suficiente para validação biométrica."}
               </p>
-              <p className="text-slate-500 pt-1">
+              <p className="text-muted pt-1">
                 Dica: Certifique-se de que a selfie seja tirada em ambiente bem iluminado, sem boné ou óculos escuros,
                 e que todos os 4 cantos do documento estejam visíveis.
               </p>
@@ -396,21 +396,21 @@ export default function VerificationPage() {
       {/* FORMULÁRIO DE ENVIO: CPF, DOCUMENTO E SELFIE */}
       {/* ============================================================== */}
       {showForm && (
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
-          <div className="mb-6 pb-4 border-b border-slate-100">
-            <h2 className="text-lg font-bold text-slate-900">
+        <div className="bg-surface rounded-2xl border border-borda/80 p-6 sm:p-8 shadow-xs">
+          <div className="mb-6 pb-4 border-b border-borda">
+            <h2 className="text-lg font-bold text-fg">
               {verificationStatus === "recusado"
                 ? "Reenvio de Documentação Corrigida"
                 : "Envio de Documentos para Concessão do Selo"}
             </h2>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted mt-1">
               Envie fotos nítidas do seu documento e faça uma selfie para liberar o selo verificado.
             </p>
           </div>
 
           {formError && (
-            <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center gap-2">
-              <AlertCircleIcon className="w-5 h-5 text-rose-600 shrink-0" />
+            <div className="mb-6 p-4 rounded-xl bg-danger/15 border border-danger/40 text-danger text-sm flex items-center gap-2">
+              <AlertCircleIcon className="w-5 h-5 text-danger shrink-0" />
               <span>{formError}</span>
             </div>
           )}
@@ -419,13 +419,13 @@ export default function VerificationPage() {
             {/* 1. CPF com Máscara e Validação */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-sm font-semibold text-slate-700">
-                  1. CPF do Profissional <span className="text-rose-500">* (Com Máscara e Validação)</span>
+                <label className="block text-sm font-semibold text-fg">
+                  1. CPF do Profissional <span className="text-danger">* (Com Máscara e Validação)</span>
                 </label>
                 <button
                   type="button"
                   onClick={handleApplySampleCPF}
-                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 hover:underline"
+                  className="text-xs font-semibold text-primary hover:text-primary hover:underline"
                 >
                   + Preencher CPF Válido de Teste
                 </button>
@@ -442,36 +442,36 @@ export default function VerificationPage() {
                   className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-mono tracking-wider focus:outline-none focus:ring-2 ${
                     isCpfFilled
                       ? isCpfValid
-                        ? "border-emerald-500 focus:ring-emerald-500 bg-emerald-50/20 text-slate-900"
-                        : "border-rose-400 focus:ring-rose-500 bg-rose-50/20 text-slate-900"
-                      : "border-slate-300 focus:ring-indigo-500 text-slate-900"
+                        ? "border-primary focus:ring-primary bg-primary/20 text-fg"
+                        : "border-danger focus:ring-danger bg-danger/20 text-fg"
+                      : "border-borda focus:ring-primary/50 text-fg"
                   }`}
                 />
 
                 {isCpfFilled && (
                   <div className="absolute right-3 top-2.5 flex items-center">
                     {isCpfValid ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md">
+                      <span className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/15 px-2 py-0.5 rounded-md">
                         <CheckIcon className="w-3.5 h-3.5" />
                         <span>Válido</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-md">
+                      <span className="inline-flex items-center gap-1 text-xs font-bold text-danger bg-danger/15 px-2 py-0.5 rounded-md">
                         <span>Inválido</span>
                       </span>
                     )}
                   </div>
                 )}
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 O CPF deve pertencer ao mesmo titular cadastrado na plataforma.
               </p>
             </div>
 
             {/* 2. Documento Oficial com Foto */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                2. Envio de Documento Oficial com Foto <span className="text-rose-500">*</span>
+              <label className="block text-sm font-semibold text-fg mb-2">
+                2. Envio de Documento Oficial com Foto <span className="text-danger">*</span>
               </label>
 
               {/* Seletor de Tipo de Documento */}
@@ -489,8 +489,8 @@ export default function VerificationPage() {
                     }
                     className={`py-2 px-3 rounded-xl border text-xs font-semibold transition-all ${
                       documentType === item.id
-                        ? "border-indigo-600 bg-indigo-50 text-indigo-700 shadow-xs"
-                        : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                        ? "border-primary bg-primary/10 text-primary shadow-xs"
+                        : "border-borda bg-surface text-muted hover:border-borda"
                     }`}
                   >
                     {item.label}
@@ -501,18 +501,18 @@ export default function VerificationPage() {
               {/* Área de Upload do Documento */}
               <label
                 htmlFor="document-file-input"
-                className="block border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-6 text-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-indigo-50/30"
+                className="block border-2 border-dashed border-borda hover:border-primary rounded-2xl p-6 text-center cursor-pointer transition-colors bg-surface-2/50 hover:bg-primary/30"
               >
                 <div className="flex flex-col items-center justify-center">
-                  <div className="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-2">
                     <FileTextIcon className="w-6 h-6" />
                   </div>
-                  <span className="text-sm font-bold text-slate-800">
+                  <span className="text-sm font-bold text-fg">
                     {documentFileName
                       ? `Arquivo selecionado: ${documentFileName}`
                       : "Clique para selecionar ou arraste o arquivo do documento"}
                   </span>
-                  <span className="text-xs text-slate-500 mt-1">
+                  <span className="text-xs text-muted mt-1">
                     Formatos aceitos: JPG, PNG ou PDF (frente e verso nítidos, até 15MB)
                   </span>
                 </div>
@@ -529,13 +529,13 @@ export default function VerificationPage() {
             {/* 3. Envio de Selfie Biométrica */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-semibold text-slate-700">
-                  3. Envio de Selfie de Validação <span className="text-rose-500">*</span>
+                <label className="block text-sm font-semibold text-fg">
+                  3. Envio de Selfie de Validação <span className="text-danger">*</span>
                 </label>
                 <button
                   type="button"
                   onClick={handleSimulateSelfieCapture}
-                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 hover:underline"
+                  className="text-xs font-semibold text-primary hover:text-primary hover:underline"
                 >
                   + Simular Captura via Câmera
                 </button>
@@ -544,18 +544,18 @@ export default function VerificationPage() {
               <div className="grid sm:grid-cols-2 gap-4 items-center">
                 <label
                   htmlFor="selfie-file-input"
-                  className="block border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-2xl p-6 text-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-indigo-50/30"
+                  className="block border-2 border-dashed border-borda hover:border-primary rounded-2xl p-6 text-center cursor-pointer transition-colors bg-surface-2/50 hover:bg-primary/30"
                 >
                   <div className="flex flex-col items-center justify-center">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2">
+                    <div className="w-12 h-12 rounded-xl bg-primary/15 text-primary flex items-center justify-center mb-2">
                       <CameraIcon className="w-6 h-6" />
                     </div>
-                    <span className="text-sm font-bold text-slate-800">
+                    <span className="text-sm font-bold text-fg">
                       {selfieFileName
                         ? `Selfie: ${selfieFileName}`
                         : "Enviar Foto de Rosto (Selfie)"}
                     </span>
-                    <span className="text-xs text-slate-500 mt-1">
+                    <span className="text-xs text-muted mt-1">
                       Rosto descoberto, boa luz, sem óculos escuros
                     </span>
                   </div>
@@ -569,21 +569,21 @@ export default function VerificationPage() {
                 </label>
 
                 {/* Pré-visualização da Selfie */}
-                <div className="flex items-center justify-center p-4 rounded-2xl bg-slate-100 border border-slate-200 min-h-[140px]">
+                <div className="flex items-center justify-center p-4 rounded-2xl bg-surface-2 border border-borda min-h-[140px]">
                   {selfiePreview ? (
                     <div className="text-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={selfiePreview}
                         alt="Pré-visualização da Selfie"
-                        className="w-24 h-24 rounded-full object-cover mx-auto border-4 border-white shadow-md"
+                        className="w-24 h-24 rounded-full object-cover mx-auto border-4 border-borda shadow-md"
                       />
-                      <span className="text-[11px] font-semibold text-emerald-700 mt-2 block">
-                        ✓ Selfie pronta para validação
+                      <span className="text-[11px] font-semibold text-primary mt-2 block">
+                        Selfie pronta para validação
                       </span>
                     </div>
                   ) : (
-                    <div className="text-center text-slate-400">
+                    <div className="text-center text-muted">
                       <CameraIcon className="w-8 h-8 mx-auto mb-1 opacity-50" />
                       <span className="text-xs">Nenhuma selfie anexada ainda</span>
                     </div>
@@ -593,19 +593,19 @@ export default function VerificationPage() {
             </div>
 
             {/* Aviso de Privacidade */}
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-              <p className="font-semibold text-slate-800 mb-0.5">
+            <div className="p-3.5 rounded-xl bg-surface-2 border border-borda text-xs text-muted">
+              <p className="font-semibold text-fg mb-0.5">
                 Segurança e Privacidade Garantidas (LGPD):
               </p>
               Seus documentos são utilizados exclusivamente para checagem cadastral contra fraudes
               e permanecem armazenados com criptografia de ponta a ponta.
             </div>
 
-            <div className="pt-4 border-t border-slate-200 flex items-center justify-end">
+            <div className="pt-4 border-t border-borda flex items-center justify-end">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="py-3 px-8 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm flex items-center gap-2 transition-colors disabled:opacity-60"
+                className="py-3 px-8 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors disabled:opacity-60"
               >
                 {isSubmitting ? (
                   <span>Enviando Documentos...</span>

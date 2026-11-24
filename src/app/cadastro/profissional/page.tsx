@@ -225,21 +225,21 @@ export default function ProfessionalRegisterPage() {
       <div className="mb-8">
         <Link
           href="/login"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-fg transition-colors mb-4"
         >
           <ArrowLeftIcon className="w-3.5 h-3.5" />
           <span>Voltar ao Login</span>
         </Link>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight">
           Cadastro de Profissional Freelancer
         </h1>
-        <p className="text-slate-600 text-sm mt-1">
+        <p className="text-muted text-sm mt-1">
           Complete as etapas para configurar seu perfil e enviar para verificação de identidade.
         </p>
       </div>
 
       {/* Indicador de Etapas (Stepper) */}
-      <div className="mb-8 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+      <div className="mb-8 bg-surface p-4 rounded-2xl border border-borda/80 shadow-xs">
         <div className="grid grid-cols-4 gap-2 text-center">
           {[
             { num: 1, label: "Dados Pessoais", icon: UserIcon },
@@ -256,10 +256,10 @@ export default function ProfessionalRegisterPage() {
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs transition-all ${
                     isDone
-                      ? "bg-emerald-600 text-white shadow-xs"
+                      ? "bg-primary text-primary-fg shadow-xs"
                       : isCurrent
-                        ? "bg-indigo-600 text-white shadow-sm ring-4 ring-indigo-50"
-                        : "bg-slate-100 text-slate-400"
+                        ? "bg-primary text-primary-fg shadow-sm ring-4 ring-primary/30"
+                        : "bg-surface-2 text-muted"
                   }`}
                 >
                   {isDone ? <CheckIcon className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
@@ -267,10 +267,10 @@ export default function ProfessionalRegisterPage() {
                 <span
                   className={`mt-2 text-[11px] sm:text-xs font-medium truncate max-w-full ${
                     isCurrent
-                      ? "text-indigo-700 font-bold"
+                      ? "text-primary font-bold"
                       : isDone
-                        ? "text-slate-800"
-                        : "text-slate-400"
+                        ? "text-fg"
+                        : "text-muted"
                   }`}
                 >
                   {item.label}
@@ -283,30 +283,30 @@ export default function ProfessionalRegisterPage() {
 
       {/* Alerta de Erro */}
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center gap-2">
-          <AlertCircleIcon className="w-5 h-5 text-rose-600 shrink-0" />
+        <div className="mb-6 p-4 rounded-xl bg-danger/15 border border-danger/40 text-danger text-sm flex items-center gap-2">
+          <AlertCircleIcon className="w-5 h-5 text-danger shrink-0" />
           <span>{errorMsg}</span>
         </div>
       )}
 
       {/* Conteúdo das Etapas */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+      <div className="bg-surface rounded-2xl border border-borda/80 p-6 sm:p-8 shadow-xs">
         {/* ETAPA 1: Dados Pessoais (Nome & Nascimento) */}
         {step === 1 && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <UserIcon className="w-5 h-5 text-indigo-600" />
+              <h2 className="text-lg font-bold text-fg flex items-center gap-2">
+                <UserIcon className="w-5 h-5 text-primary" />
                 <span>Etapa 1: Nome e Dados Pessoais</span>
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Seus dados serão confrontados com a documentação na etapa de verificação.
               </p>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Nome Completo <span className="text-rose-500">*</span>
+              <label className="block text-sm font-semibold text-fg mb-1">
+                Nome Completo <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -314,30 +314,30 @@ export default function ProfessionalRegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ex: Lucas Mendes de Oliveira"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Data de Nascimento <span className="text-rose-500">*</span>
+              <label className="block text-sm font-semibold text-fg mb-1">
+                Data de Nascimento <span className="text-danger">*</span>
               </label>
               <input
                 type="date"
                 required
                 value={birthDate}
                 onChange={(e) => setBirthDate(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
               />
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Idade mínima de 18 anos exigida pelos termos da plataforma.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  E-mail de Contato <span className="text-rose-500">*</span>
+                <label className="block text-sm font-semibold text-fg mb-1">
+                  E-mail de Contato <span className="text-danger">*</span>
                 </label>
                 <input
                   type="email"
@@ -345,12 +345,12 @@ export default function ProfessionalRegisterPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="lucas@exemplo.com.br"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-fg mb-1">
                   Telefone / WhatsApp
                 </label>
                 <input
@@ -358,13 +358,13 @@ export default function ProfessionalRegisterPage() {
                   value={phone}
                   onChange={(e) => setPhone(maskPhone(e.target.value))}
                   placeholder="(11) 98765-4321"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
+              <label className="block text-sm font-semibold text-fg mb-1">
                 Biografia / Resumo Profissional
               </label>
               <textarea
@@ -372,7 +372,7 @@ export default function ProfessionalRegisterPage() {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Conte um pouco sobre sua trajetória, projetos favoritos e objetivos profissionais..."
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
               />
             </div>
           </div>
@@ -382,19 +382,19 @@ export default function ProfessionalRegisterPage() {
         {step === 2 && (
           <div className="space-y-5">
             <div>
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <BriefcaseIcon className="w-5 h-5 text-indigo-600" />
+              <h2 className="text-lg font-bold text-fg flex items-center gap-2">
+                <BriefcaseIcon className="w-5 h-5 text-primary" />
                 <span>Etapa 2: Experiências Profissionais</span>
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Adicione seu título principal e histórico de projetos para que empresas conheçam seu portfólio.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Cargo / Título Profissional Principal <span className="text-rose-500">*</span>
+                <label className="block text-sm font-semibold text-fg mb-1">
+                  Cargo / Título Profissional Principal <span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
@@ -402,18 +402,18 @@ export default function ProfessionalRegisterPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ex: Desenvolvedor Full Stack Sênior"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-fg mb-1">
                   Nível de Senioridade
                 </label>
                 <select
                   value={seniority}
                   onChange={(e) => setSeniority(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900 bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg bg-surface"
                 >
                   <option value="Júnior">Júnior</option>
                   <option value="Pleno">Pleno</option>
@@ -426,13 +426,13 @@ export default function ProfessionalRegisterPage() {
             {/* Lista de Experiências */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <label className="text-sm font-semibold text-slate-700">
+                <label className="text-sm font-semibold text-fg">
                   Histórico de Experiências Cadastradas ({experiences.length})
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowAddExp(!showAddExp)}
-                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+                  className="text-xs font-semibold text-primary hover:text-primary transition-colors"
                 >
                   {showAddExp ? "Fechar Formulário" : "+ Adicionar Outra"}
                 </button>
@@ -442,19 +442,19 @@ export default function ProfessionalRegisterPage() {
                 {experiences.map((exp) => (
                   <div
                     key={exp.id}
-                    className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex items-start justify-between gap-3"
+                    className="p-3.5 rounded-xl border border-borda bg-surface-2/70 flex items-start justify-between gap-3"
                   >
                     <div>
-                      <h4 className="font-semibold text-slate-900 text-sm">
-                        {exp.title} · <span className="text-slate-600 font-normal">{exp.company}</span>
+                      <h4 className="font-semibold text-fg text-sm">
+                        {exp.title} · <span className="text-muted font-normal">{exp.company}</span>
                       </h4>
-                      <p className="text-xs text-indigo-600 font-medium mt-0.5">{exp.period}</p>
-                      <p className="text-xs text-slate-600 mt-1 line-clamp-2">{exp.description}</p>
+                      <p className="text-xs text-primary font-medium mt-0.5">{exp.period}</p>
+                      <p className="text-xs text-muted mt-1 line-clamp-2">{exp.description}</p>
                     </div>
                     <button
                       type="button"
                       onClick={() => handleRemoveExperience(exp.id)}
-                      className="text-slate-400 hover:text-rose-600 p-1"
+                      className="text-muted hover:text-danger p-1"
                       title="Remover experiência"
                     >
                       <XIcon className="w-4 h-4" />
@@ -465,8 +465,8 @@ export default function ProfessionalRegisterPage() {
 
               {/* Formulário para Adicionar Experiência */}
               {showAddExp && (
-                <div className="mt-4 p-4 rounded-xl border border-indigo-200 bg-indigo-50/40 space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-900">
+                <div className="mt-4 p-4 rounded-xl border border-primary/40 bg-primary/40 space-y-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Nova Experiência
                   </h4>
                   <div className="grid sm:grid-cols-2 gap-3">
@@ -475,14 +475,14 @@ export default function ProfessionalRegisterPage() {
                       placeholder="Cargo (ex: Frontend Engineer)"
                       value={newExpTitle}
                       onChange={(e) => setNewExpTitle(e.target.value)}
-                      className="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                      className="px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                     />
                     <input
                       type="text"
                       placeholder="Empresa ou Projeto"
                       value={newExpCompany}
                       onChange={(e) => setNewExpCompany(e.target.value)}
-                      className="px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                      className="px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                     />
                   </div>
                   <input
@@ -490,19 +490,19 @@ export default function ProfessionalRegisterPage() {
                     placeholder="Período (ex: 2022 - 2024)"
                     value={newExpPeriod}
                     onChange={(e) => setNewExpPeriod(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                   />
                   <textarea
                     rows={2}
                     placeholder="Descrição das entregas e resultados alcançados..."
                     value={newExpDesc}
                     onChange={(e) => setNewExpDesc(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-borda text-xs bg-surface"
                   />
                   <button
                     type="button"
                     onClick={handleAddExperience}
-                    className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs"
+                    className="px-3 py-1.5 rounded-lg bg-primary hover:brightness-110 text-primary-fg font-semibold text-xs"
                   >
                     Salvar Experiência
                   </button>
@@ -516,24 +516,24 @@ export default function ProfessionalRegisterPage() {
         {step === 3 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <SparklesIcon className="w-5 h-5 text-indigo-600" />
+              <h2 className="text-lg font-bold text-fg flex items-center gap-2">
+                <SparklesIcon className="w-5 h-5 text-primary" />
                 <span>Etapa 3: Características e Competências</span>
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted mt-1">
                 Avalie seus pilares de atuação. Essas informações são usadas nos algoritmos de Match e exibidas no seu perfil público.
               </p>
             </div>
 
             {/* Os 4 Pilares Expressos */}
-            <div className="space-y-5 p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <div className="space-y-5 p-4 rounded-xl bg-surface-2 border border-borda">
               {/* 1. Comunicação */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-sm font-bold text-slate-800">
+                  <label className="text-sm font-bold text-fg">
                     1. Comunicação: {comunicacao}/5
                   </label>
-                  <span className="text-xs font-semibold text-indigo-600">
+                  <span className="text-xs font-semibold text-primary">
                     {comunicacao === 5
                       ? "Excepcional / Assertiva"
                       : comunicacao >= 4
@@ -550,9 +550,9 @@ export default function ProfessionalRegisterPage() {
                   step="1"
                   value={comunicacao}
                   onChange={(e) => setComunicacao(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-surface-2 rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <div className="flex justify-between text-[10px] text-muted mt-0.5">
                   <span>1 - Básica</span>
                   <span>3 - Equilibrada</span>
                   <span>5 - Clara e Assertiva</span>
@@ -562,10 +562,10 @@ export default function ProfessionalRegisterPage() {
               {/* 2. Proatividade */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-sm font-bold text-slate-800">
+                  <label className="text-sm font-bold text-fg">
                     2. Proatividade: {proatividade}/5
                   </label>
-                  <span className="text-xs font-semibold text-indigo-600">
+                  <span className="text-xs font-semibold text-primary">
                     {proatividade === 5
                       ? "Alta Iniciativa e Antecipação"
                       : proatividade >= 4
@@ -582,9 +582,9 @@ export default function ProfessionalRegisterPage() {
                   step="1"
                   value={proatividade}
                   onChange={(e) => setProatividade(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-surface-2 rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <div className="flex justify-between text-[10px] text-muted mt-0.5">
                   <span>1 - Guiada</span>
                   <span>3 - Moderada</span>
                   <span>5 - Antecipa Problemas</span>
@@ -594,10 +594,10 @@ export default function ProfessionalRegisterPage() {
               {/* 3. Agilidade */}
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <label className="text-sm font-bold text-slate-800">
+                  <label className="text-sm font-bold text-fg">
                     3. Agilidade: {agilidade}/5
                   </label>
-                  <span className="text-xs font-semibold text-indigo-600">
+                  <span className="text-xs font-semibold text-primary">
                     {agilidade === 5
                       ? "Entregas Ultrarrápidas & Alta Pressão"
                       : agilidade >= 4
@@ -614,9 +614,9 @@ export default function ProfessionalRegisterPage() {
                   step="1"
                   value={agilidade}
                   onChange={(e) => setAgilidade(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-surface-2 rounded-lg appearance-none cursor-pointer accent-primary"
                 />
-                <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <div className="flex justify-between text-[10px] text-muted mt-0.5">
                   <span>1 - Moderado</span>
                   <span>3 - Pontual</span>
                   <span>5 - Entregas Rápidas</span>
@@ -626,7 +626,7 @@ export default function ProfessionalRegisterPage() {
 
             {/* 4. Conhecimento Técnico */}
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-fg mb-2">
                 4. Conhecimento Técnico (Selecione ou Adicione Suas Hard Skills)
               </label>
 
@@ -641,11 +641,11 @@ export default function ProfessionalRegisterPage() {
                       onClick={() => toggleTech(tech)}
                       className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
                         isSelected
-                          ? "bg-indigo-600 text-white shadow-xs font-semibold"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                          ? "bg-primary text-primary-fg shadow-xs font-semibold"
+                          : "bg-surface-2 text-muted hover:bg-surface-2"
                       }`}
                     >
-                      {isSelected ? `✓ ${tech}` : `+ ${tech}`}
+                      {isSelected ? tech : `+ ${tech}`}
                     </button>
                   );
                 })}
@@ -659,12 +659,12 @@ export default function ProfessionalRegisterPage() {
                   onChange={(e) => setCustomTechInput(e.target.value)}
                   onKeyDown={handleAddCustomTech}
                   placeholder="Digitar outra competência (ex: Vue, Rust, Kubernetes)..."
-                  className="flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-900"
+                  className="flex-1 px-3 py-2 rounded-xl border border-borda text-xs text-fg"
                 />
                 <button
                   type="button"
                   onClick={handleAddCustomTech}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold"
+                  className="px-4 py-2 rounded-xl bg-surface-2 hover:bg-surface-2 text-fg text-xs font-semibold"
                 >
                   Adicionar
                 </button>
@@ -672,20 +672,20 @@ export default function ProfessionalRegisterPage() {
 
               {/* Tags Selecionadas */}
               <div className="mt-3">
-                <span className="text-xs font-medium text-slate-500">
+                <span className="text-xs font-medium text-muted">
                   Selecionadas ({selectedTechs.length}):
                 </span>
                 <div className="flex flex-wrap gap-1.5 mt-1.5">
                   {selectedTechs.map((tech) => (
                     <span
                       key={tech}
-                      className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-medium"
+                      className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-primary/10 border border-primary/40 text-primary text-xs font-medium"
                     >
                       <span>{tech}</span>
                       <button
                         type="button"
                         onClick={() => toggleTech(tech)}
-                        className="text-indigo-400 hover:text-indigo-700"
+                        className="text-primary hover:text-primary"
                       >
                         ×
                       </button>
@@ -702,13 +702,13 @@ export default function ProfessionalRegisterPage() {
           <form onSubmit={handleFinishRegister} className="space-y-5">
             <div>
               <div className="flex items-center gap-2">
-                <MapPinIcon className="w-5 h-5 text-indigo-600" />
-                <h2 className="text-lg font-bold text-slate-900">
+                <MapPinIcon className="w-5 h-5 text-primary" />
+                <h2 className="text-lg font-bold text-fg">
                   Etapa 4: Localização Obrigatória
                 </h2>
               </div>
-              <div className="mt-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
-                <AlertCircleIcon className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div className="mt-2 p-3 rounded-xl bg-warning/15 border border-warning/40 text-warning text-xs flex items-start gap-2">
+                <AlertCircleIcon className="w-4 h-4 text-warning shrink-0 mt-0.5" />
                 <span>
                   <strong>Atenção:</strong> A localização é obrigatória para conectar você a
                   oportunidades regionais, modelos híbridos de trabalho e para a conformidade fiscal dos contratos.
@@ -718,14 +718,14 @@ export default function ProfessionalRegisterPage() {
 
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Estado (UF) <span className="text-rose-500">*</span>
+                <label className="block text-sm font-semibold text-fg mb-1">
+                  Estado (UF) <span className="text-danger">*</span>
                 </label>
                 <select
                   required
                   value={stateUF}
                   onChange={(e) => setStateUF(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900 bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg bg-surface"
                 >
                   {["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"].map((uf) => (
                     <option key={uf} value={uf}>
@@ -736,8 +736,8 @@ export default function ProfessionalRegisterPage() {
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Cidade <span className="text-rose-500">* (Obrigatória)</span>
+                <label className="block text-sm font-semibold text-fg mb-1">
+                  Cidade <span className="text-danger">* (Obrigatória)</span>
                 </label>
                 <input
                   type="text"
@@ -745,14 +745,14 @@ export default function ProfessionalRegisterPage() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="Ex: São Paulo, Campinas, Curitiba..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900 font-medium"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg font-medium"
                 />
               </div>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-fg mb-1">
                   CEP
                 </label>
                 <input
@@ -760,12 +760,12 @@ export default function ProfessionalRegisterPage() {
                   value={cep}
                   onChange={(e) => setCep(maskCEP(e.target.value))}
                   placeholder="00000-000"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                <label className="block text-sm font-semibold text-fg mb-1">
                   Bairro
                 </label>
                 <input
@@ -773,13 +773,13 @@ export default function ProfessionalRegisterPage() {
                   value={neighborhood}
                   onChange={(e) => setNeighborhood(e.target.value)}
                   placeholder="Ex: Centro, Pinheiros, Savassi..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-900"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm text-fg"
                 />
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600">
-              <p className="font-semibold text-slate-800 mb-1">Resumo das Etapas Preenchidas:</p>
+            <div className="p-4 rounded-xl bg-surface-2 border border-borda text-xs text-muted">
+              <p className="font-semibold text-fg mb-1">Resumo das Etapas Preenchidas:</p>
               <ul className="space-y-0.5 list-disc list-inside">
                 <li>Nome: {name || "(Pendente)"} ({birthDate ? "Data válida" : "Pendente"})</li>
                 <li>Título: {title || "(Pendente)"} · {experiences.length} experiência(s)</li>
@@ -788,11 +788,11 @@ export default function ProfessionalRegisterPage() {
               </ul>
             </div>
 
-            <div className="pt-4 flex items-center justify-between border-t border-slate-200">
+            <div className="pt-4 flex items-center justify-between border-t border-borda">
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-sm flex items-center gap-1.5 transition-colors"
+                className="py-2.5 px-4 rounded-xl border border-borda text-fg hover:bg-surface-2 font-semibold text-sm flex items-center gap-1.5 transition-colors"
               >
                 <ArrowLeftIcon className="w-4 h-4" />
                 <span>Voltar</span>
@@ -800,7 +800,7 @@ export default function ProfessionalRegisterPage() {
 
               <button
                 type="submit"
-                className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
+                className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
               >
                 <span>Concluir Cadastro & Verificar Identidade</span>
                 <ArrowRightIcon className="w-4 h-4" />
@@ -811,12 +811,12 @@ export default function ProfessionalRegisterPage() {
 
         {/* Botões de Navegação das Etapas 1, 2 e 3 */}
         {step < 4 && (
-          <div className="mt-8 pt-6 border-t border-slate-200 flex items-center justify-between">
+          <div className="mt-8 pt-6 border-t border-borda flex items-center justify-between">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={() => setStep((prev) => (prev - 1) as 1 | 2 | 3)}
-                className="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-sm flex items-center gap-1.5 transition-colors"
+                className="py-2.5 px-4 rounded-xl border border-borda text-fg hover:bg-surface-2 font-semibold text-sm flex items-center gap-1.5 transition-colors"
               >
                 <ArrowLeftIcon className="w-4 h-4" />
                 <span>Voltar</span>
@@ -828,7 +828,7 @@ export default function ProfessionalRegisterPage() {
             <button
               type="button"
               onClick={handleNextStep}
-              className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm flex items-center gap-2 transition-colors"
+              className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-semibold text-sm shadow-sm flex items-center gap-2 transition-colors"
             >
               <span>Avançar para Etapa {step + 1}</span>
               <ArrowRightIcon className="w-4 h-4" />

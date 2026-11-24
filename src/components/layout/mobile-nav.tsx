@@ -1,47 +1,26 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  BriefcaseIcon,
-  SparklesIcon,
-  ShieldCheckIcon,
-  UserIcon,
-  LockIcon,
-} from "@/components/ui/icons";
+import { useSessao } from "@/lib/session";
+import { itensDeNavegacao } from "@/lib/rotas";
+import { NavLink } from "./nav-link";
 
 export function MobileNav() {
-  const pathname = usePathname();
-
-  const links = [
-    { href: "/vagas", label: "Vagas", icon: BriefcaseIcon },
-    { href: "/match", label: "Match", icon: SparklesIcon },
-    { href: "/verificacao", label: "Verificar", icon: ShieldCheckIcon },
-    { href: "/perfil", label: "Perfil", icon: UserIcon },
-    { href: "/politica", label: "Políticas", icon: LockIcon },
-  ];
-
+  const { usuario } = useSessao();
   return (
-    <nav className="mobile-nav" aria-label="Navegação móvel">
-      {links.map((link) => {
-        const Icon = link.icon;
-        const isActive =
-          pathname === link.href ||
-          (link.href !== "/" && pathname.startsWith(link.href + "/"));
-
-        return (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`flex flex-col items-center gap-1 text-xs font-medium transition-colors ${
-              isActive ? "text-indigo-600 font-semibold" : "text-slate-500 hover:text-slate-900"
-            }`}
-          >
-            <Icon className="w-5 h-5" />
-            <span>{link.label}</span>
-          </Link>
-        );
-      })}
+    <nav
+      className="fixed inset-x-0 bottom-0 z-40 flex justify-around border-t border-borda bg-surface px-2 py-2 md:hidden"
+      aria-label="Navegação móvel"
+    >
+      {itensDeNavegacao(usuario).map((i) => (
+        <NavLink
+          key={i.href}
+          href={i.href}
+          className="rounded-md px-2 py-2 text-xs font-medium text-muted"
+          ativoClasse="text-primary"
+        >
+          {i.rotulo}
+        </NavLink>
+      ))}
     </nav>
   );
 }

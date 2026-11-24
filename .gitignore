@@ -5,3 +5,26 @@ coverage/
 .env*
 !.env.example
 *.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE and editor files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Deployment and runtime
+.vercel/
+*.pid
+*.seed
+*.pid.lock

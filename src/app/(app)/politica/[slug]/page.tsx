@@ -31,7 +31,7 @@ export default async function PolicyDetailPage({
       <div className="mb-6">
         <Link
           href="/politica"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-fg transition-colors"
         >
           <ArrowLeftIcon className="w-3.5 h-3.5" />
           <span>Voltar para todas as Políticas</span>
@@ -39,21 +39,21 @@ export default async function PolicyDetailPage({
       </div>
 
       {/* Cabeçalho do Documento */}
-      <header className="mb-8 p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs">
+      <header className="mb-8 p-6 sm:p-8 rounded-2xl bg-surface border border-borda shadow-xs">
         <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-200/80 px-2.5 py-1 rounded-md">
+          <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/80 px-2.5 py-1 rounded-md">
             {policy.badge}
           </span>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-muted">
             Última revisão: {policy.lastUpdated}
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight">
           {policy.title}
         </h1>
 
-        <div className="mt-4 p-4 rounded-xl bg-slate-50 border-l-4 border-indigo-600 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+        <div className="mt-4 p-4 rounded-xl bg-surface-2 border-l-4 border-primary text-xs sm:text-sm text-fg leading-relaxed font-medium">
           {policy.summary}
         </div>
       </header>
@@ -63,14 +63,14 @@ export default async function PolicyDetailPage({
         {policy.sections.map((section, idx) => (
           <section
             key={idx}
-            className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs"
+            className="p-6 sm:p-8 rounded-2xl bg-surface border border-borda shadow-xs"
           >
-            <h2 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
-              <FileTextIcon className="w-5 h-5 text-indigo-600" />
+            <h2 className="text-lg font-bold text-fg mb-4 pb-2 border-b border-borda flex items-center gap-2">
+              <FileTextIcon className="w-5 h-5 text-primary" />
               <span>{section.title}</span>
             </h2>
 
-            <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+            <div className="space-y-3 text-sm text-fg leading-relaxed">
               {section.content.map((paragraph, pIdx) => (
                 <p key={pIdx}>{paragraph}</p>
               ))}
@@ -80,8 +80,8 @@ export default async function PolicyDetailPage({
       </div>
 
       {/* Navegação entre outras Políticas */}
-      <div className="mt-10 p-6 rounded-2xl bg-slate-100 border border-slate-200">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">
+      <div className="mt-10 p-6 rounded-2xl bg-surface-2 border border-borda">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-muted mb-3">
           Explore as Demais Políticas do FreelAI:
         </h3>
         <div className="grid sm:grid-cols-2 gap-2.5">
@@ -89,21 +89,21 @@ export default async function PolicyDetailPage({
             <Link
               key={other.slug}
               href={`/politica/${other.slug}`}
-              className="p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-400 hover:shadow-xs transition-all flex items-center justify-between text-xs font-semibold text-slate-800"
+              className="p-3 rounded-xl bg-surface border border-borda hover:border-primary hover:shadow-xs transition-all flex items-center justify-between text-xs font-semibold text-fg"
             >
               <div className="flex items-center gap-2 truncate">
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
                 <span className="truncate">{other.title}</span>
               </div>
-              <ChevronRightIcon className="w-4 h-4 text-slate-400 shrink-0" />
+              <ChevronRightIcon className="w-4 h-4 text-muted shrink-0" />
             </Link>
           ))}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-slate-200 flex items-center justify-between">
+        <div className="mt-6 pt-4 border-t border-borda flex items-center justify-between">
           <Link
             href="/politica"
-            className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
           >
             <ArrowLeftIcon className="w-3.5 h-3.5" />
             <span>Retornar à Central e Confirmar Termos</span>
@@ -111,7 +111,7 @@ export default async function PolicyDetailPage({
 
           <Link
             href="/verificacao"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-fg text-xs font-bold hover:brightness-110 transition-colors"
           >
             <ShieldCheckIcon className="w-3.5 h-3.5" />
             <span>Verificar Minha Identidade</span>

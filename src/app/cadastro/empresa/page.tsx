@@ -111,45 +111,45 @@ export default function CompanyRegisterPage() {
       {/* Voltar */}
       <Link
         href="/login"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors mb-4"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-fg transition-colors mb-4"
       >
         <ArrowLeftIcon className="w-3.5 h-3.5" />
         <span>Voltar ao Login</span>
       </Link>
 
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-3">
-          <BuildingIcon className="w-4 h-4 text-emerald-700" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 border border-primary/40 text-primary text-xs font-semibold mb-3">
+          <BuildingIcon className="w-4 h-4 text-primary" />
           <span>Cadastro de Empresa Contratante</span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-fg tracking-tight">
           Crie a Conta da sua Empresa
         </h1>
-        <p className="text-slate-600 text-sm mt-1">
+        <p className="text-muted text-sm mt-1">
           Informe a Razão Social e o CNPJ para contratar profissionais verificados com segurança.
         </p>
       </div>
 
       {errorMsg && (
-        <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center gap-2">
-          <AlertCircleIcon className="w-5 h-5 text-rose-600 shrink-0" />
+        <div className="mb-6 p-4 rounded-xl bg-danger/15 border border-danger/40 text-danger text-sm flex items-center gap-2">
+          <AlertCircleIcon className="w-5 h-5 text-danger shrink-0" />
           <span>{errorMsg}</span>
         </div>
       )}
 
       {successMsg && (
-        <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center gap-2">
-          <CheckIcon className="w-5 h-5 text-emerald-600 shrink-0" />
+        <div className="mb-6 p-4 rounded-xl bg-primary/15 border border-primary/40 text-primary text-sm flex items-center gap-2">
+          <CheckIcon className="w-5 h-5 text-primary shrink-0" />
           <span>{successMsg}</span>
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+      <div className="bg-surface rounded-2xl border border-borda/80 p-6 sm:p-8 shadow-xs">
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Razão Social (Obrigatório) */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">
-              Razão Social <span className="text-rose-500">* (Obrigatório)</span>
+            <label className="block text-sm font-semibold text-fg mb-1">
+              Razão Social <span className="text-danger">* (Obrigatório)</span>
             </label>
             <input
               type="text"
@@ -157,13 +157,13 @@ export default function CompanyRegisterPage() {
               value={corporateReason}
               onChange={(e) => setCorporateReason(e.target.value)}
               placeholder="Ex: Alfa Tecnologia & Serviços de Internet Ltda"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900 font-medium"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg font-medium"
             />
           </div>
 
           {/* Nome Fantasia */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">
+            <label className="block text-sm font-semibold text-fg mb-1">
               Nome Fantasia / Nome Público
             </label>
             <input
@@ -171,20 +171,20 @@ export default function CompanyRegisterPage() {
               value={tradeName}
               onChange={(e) => setTradeName(e.target.value)}
               placeholder="Ex: Alfa Tech"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg"
             />
           </div>
 
           {/* CNPJ com Máscara e Validação */}
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-sm font-semibold text-slate-700">
-                CNPJ <span className="text-rose-500">* (Com Máscara e Validação)</span>
+              <label className="block text-sm font-semibold text-fg">
+                CNPJ <span className="text-danger">* (Com Máscara e Validação)</span>
               </label>
               <button
                 type="button"
                 onClick={handleApplySampleCNPJ}
-                className="text-xs font-semibold text-emerald-700 hover:text-emerald-900 hover:underline"
+                className="text-xs font-semibold text-primary hover:text-primary hover:underline"
               >
                 + Usar CNPJ Válido de Teste
               </button>
@@ -201,21 +201,21 @@ export default function CompanyRegisterPage() {
                 className={`w-full px-3.5 py-2.5 rounded-xl border text-sm font-mono tracking-wide focus:outline-none focus:ring-2 ${
                   isCnpjFilled
                     ? isCnpjValid
-                      ? "border-emerald-500 focus:ring-emerald-500 bg-emerald-50/20 text-slate-900"
-                      : "border-rose-400 focus:ring-rose-500 bg-rose-50/20 text-slate-900"
-                    : "border-slate-300 focus:ring-emerald-500 text-slate-900"
+                      ? "border-primary focus:ring-primary bg-primary/20 text-fg"
+                      : "border-danger focus:ring-danger bg-danger/20 text-fg"
+                    : "border-borda focus:ring-primary text-fg"
                 }`}
               />
 
               {isCnpjFilled && (
                 <div className="absolute right-3 top-2.5 flex items-center">
                   {isCnpjValid ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/15 px-2 py-0.5 rounded-md">
                       <CheckIcon className="w-3.5 h-3.5" />
                       <span>Válido</span>
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-md">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-danger bg-danger/15 px-2 py-0.5 rounded-md">
                       <span>Inválido</span>
                     </span>
                   )}
@@ -225,16 +225,16 @@ export default function CompanyRegisterPage() {
 
             {/* Dica de validação do CNPJ */}
             <div className="mt-1.5 flex items-center justify-between text-xs">
-              <span className="text-slate-500">
+              <span className="text-muted">
                 Máscara automática: 00.000.000/0000-00
               </span>
               {cnpj && !isCnpjFilled && (
-                <span className="text-amber-600 font-medium">
+                <span className="text-warning font-medium">
                   {14 - cnpj.replace(/\D/g, "").length} dígitos restantes
                 </span>
               )}
               {isCnpjFilled && !isCnpjValid && (
-                <span className="text-rose-600 font-medium">
+                <span className="text-danger font-medium">
                   Dígitos verificadores incorretos
                 </span>
               )}
@@ -244,8 +244,8 @@ export default function CompanyRegisterPage() {
           {/* E-mail e Telefone */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                E-mail Corporativo <span className="text-rose-500">*</span>
+              <label className="block text-sm font-semibold text-fg mb-1">
+                E-mail Corporativo <span className="text-danger">*</span>
               </label>
               <input
                 type="email"
@@ -253,12 +253,12 @@ export default function CompanyRegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="contato@empresa.com.br"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
+              <label className="block text-sm font-semibold text-fg mb-1">
                 Telefone Comercial
               </label>
               <input
@@ -266,20 +266,20 @@ export default function CompanyRegisterPage() {
                 value={phone}
                 onChange={(e) => setPhone(maskPhone(e.target.value))}
                 placeholder="(11) 3222-1000"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg"
               />
             </div>
           </div>
 
           {/* Ramo / Setor */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">
+            <label className="block text-sm font-semibold text-fg mb-1">
               Setor de Atuação
             </label>
             <select
               value={industry}
               onChange={(e) => setIndustry(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900 bg-white"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg bg-surface"
             >
               <option value="Tecnologia da Informação & Software">
                 Tecnologia da Informação & Software
@@ -304,13 +304,13 @@ export default function CompanyRegisterPage() {
           {/* Localização da Empresa */}
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Estado (UF) <span className="text-rose-500">*</span>
+              <label className="block text-sm font-semibold text-fg mb-1">
+                Estado (UF) <span className="text-danger">*</span>
               </label>
               <select
                 value={stateUF}
                 onChange={(e) => setStateUF(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900 bg-white"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg bg-surface"
               >
                 {["SP","RJ","MG","RS","PR","SC","BA","PE","CE","DF","GO","ES","AM","PA","MT","MS","MA","PB","RN","AL","SE","PI","RO","TO","AC","AP","RR"].map((uf) => (
                   <option key={uf} value={uf}>
@@ -321,8 +321,8 @@ export default function CompanyRegisterPage() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Cidade Sede <span className="text-rose-500">*</span>
+              <label className="block text-sm font-semibold text-fg mb-1">
+                Cidade Sede <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -330,14 +330,14 @@ export default function CompanyRegisterPage() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Ex: São Paulo"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg"
               />
             </div>
           </div>
 
           {/* Descrição */}
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">
+            <label className="block text-sm font-semibold text-fg mb-1">
               Sobre a Empresa / Perfil dos Projetos
             </label>
             <textarea
@@ -345,30 +345,30 @@ export default function CompanyRegisterPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Descreva as principais soluções da empresa e o perfil de profissionais que costumam contratar..."
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm text-slate-900"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-borda focus:outline-none focus:ring-2 focus:ring-primary text-sm text-fg"
             />
           </div>
 
           {/* Garantia de Segurança */}
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3 text-xs text-slate-600">
-            <ShieldCheckIcon className="w-5 h-5 text-emerald-600 shrink-0" />
+          <div className="p-3.5 rounded-xl bg-surface-2 border border-borda flex items-center gap-3 text-xs text-muted">
+            <ShieldCheckIcon className="w-5 h-5 text-primary shrink-0" />
             <span>
               Ao cadastrar sua empresa, seus dados de CNPJ passam por conferência automatizada
               para assegurar contratos legítimos e faturas transparentes.
             </span>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
+          <div className="pt-4 border-t border-borda flex items-center justify-between">
             <Link
               href="/login"
-              className="text-sm font-medium text-slate-600 hover:text-slate-900"
+              className="text-sm font-medium text-muted hover:text-fg"
             >
               Cancelar
             </Link>
 
             <button
               type="submit"
-              className="py-2.5 px-6 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
+              className="py-2.5 px-6 rounded-xl bg-primary hover:brightness-110 text-primary-fg font-bold text-sm shadow-sm flex items-center gap-2 transition-colors"
             >
               <span>Concluir Cadastro da Empresa</span>
               <ArrowRightIcon className="w-4 h-4" />
