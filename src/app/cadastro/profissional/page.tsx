@@ -1,5 +1,7 @@
 "use client";
 
+import { SeletorLocal } from "@/components/shared/seletor-local";
+import type { Coordenada } from "@/services/geo";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { ApiError, mensagemDeErro } from "@/api/erro";
@@ -58,6 +60,7 @@ export default function CadastroProfissionalPage() {
   const [telefone, setTelefone] = useState("");
   const [bairro, setBairro] = useState("");
   const [logradouro, setLogradouro] = useState("");
+  const [coords, setCoords] = useState<Coordenada | null>(null);
   const [raio, setRaio] = useState("5");
   const [categorias, setCategorias] = useState<string[]>([]);
   const [comunicacao, setComunicacao] = useState("");
@@ -166,8 +169,8 @@ export default function CadastroProfissionalPage() {
         telefone,
         bairro: local.nome,
         logradouro: logradouro.trim() || null,
-        latitude: local.latitude,
-        longitude: local.longitude,
+        latitude: coords?.lat ?? local.latitude,
+        longitude: coords?.lng ?? local.longitude,
         raio_km: Number(raio),
         categorias,
         caracteristicas: {
@@ -208,8 +211,9 @@ export default function CadastroProfissionalPage() {
 
         {etapa === 2 && (
           <div className="grid gap-4">
-            <Select label="Bairro" value={bairro} onChange={(e) => setBairro(e.target.value)} placeholder="Selecione" opcoes={BAIRROS.map((b) => ({ valor: b.nome, rotulo: b.nome }))} error={erros.bairro} />
+            <Select label="Bairro" value={bairro} onChange={(e) => { setBairro(e.target.value); setCoords(null); }} placeholder="Selecione" opcoes={BAIRROS.map((b) => ({ valor: b.nome, rotulo: b.nome }))} error={erros.bairro} />
             <Input label="Rua e número (opcional)" value={logradouro} onChange={(e) => setLogradouro(e.target.value)} />
+            <SeletorLocal bairro={bairro} coords={coords} onChange={(m) => { setCoords(m.coords); if (m.bairro) setBairro(m.bairro); if (m.logradouro) setLogradouro(m.logradouro); }} />
             <Input label="Raio de atuação (km)" type="number" min="1" max="15" value={raio} onChange={(e) => setRaio(e.target.value)} error={erros.raio} hint="Você recebe convites de vagas dentro deste raio, até 15 km." />
           </div>
         )}

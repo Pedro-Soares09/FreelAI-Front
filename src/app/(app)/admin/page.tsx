@@ -2,18 +2,19 @@
 
 import { useState } from "react";
 import { AbaCadastros } from "@/components/admin/aba-cadastros";
-import { AbaDenuncias, AbaDisputas } from "@/components/admin/aba-moderacao";
+import { AbaBanimentos, AbaDenuncias, AbaDisputas } from "@/components/admin/aba-moderacao";
 import { Tabs } from "@/components/ui/tabs";
 
 export default function AdminPage() {
   const [pendentes, setPendentes] = useState<number | undefined>();
   const [denuncias, setDenuncias] = useState<number | undefined>();
   const [disputas, setDisputas] = useState<number | undefined>();
+  const [banimentos, setBanimentos] = useState<number | undefined>();
 
   return (
     <section className="page">
       <h1 className="text-3xl font-bold">Administração</h1>
-      <p className="mt-1 mb-6 text-muted">Fila de cadastros, denúncias e disputas.</p>
+      <p className="mt-1 mb-6 text-muted">Fila de cadastros, denúncias, disputas e banimentos.</p>
       <Tabs
         abas={[
           {
@@ -33,6 +34,12 @@ export default function AdminPage() {
             rotulo: "Disputas",
             contagem: disputas,
             conteudo: <AbaDisputas onContagem={setDisputas} />,
+          },
+          {
+            id: "banimentos",
+            rotulo: "Banimentos",
+            contagem: banimentos,
+            conteudo: <AbaBanimentos onContagem={setBanimentos} />,
           },
         ]}
       />

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
+import { ComprovantesPanel } from '@/components/pagamento/comprovantes-panel';
 import { PagamentoPix, StatusPagamento } from '@/types';
 
 const statusConfig: Record<
@@ -365,6 +366,8 @@ export default function PaymentPage() {
               </div>
             </section>
           )}
+
+          <ComprovantesPanel vagaId={vagaId} souContratante />
         </aside>
       </div>
     </div>

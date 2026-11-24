@@ -1,5 +1,7 @@
 "use client";
 
+import { AvisoChuva } from "@/components/shared/aviso-chuva";
+import { InfoDeslocamento } from "@/components/shared/info-deslocamento";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -15,7 +17,7 @@ const MapaVagas = dynamic(() => import("@/components/vagas/mapa-vagas"), {
   loading: () => <Carregando rotulo="Carregando mapa" />,
 });
 
-const CENTRO = { lat: -8.0476, lng: -34.877 };
+const CENTRO_PADRAO = { lat: -8.0476, lng: -34.877 };
 const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 export default function MapaOfertasPage() {
@@ -25,6 +27,7 @@ export default function MapaOfertasPage() {
   const [soCompativeis, setSoCompativeis] = useState(true);
   const [raioKm, setRaioKm] = useState(10);
   const [selecionada, setSelecionada] = useState<string | null>(null);
+  const [centro, setCentro] = useState(CENTRO_PADRAO);
   const [estado, setEstado] = useState<"carregando" | "ok" | "erro">("carregando");
 
   useEffect(() => {
@@ -33,10 +36,15 @@ export default function MapaOfertasPage() {
     Promise.all([
       freelaiApi.listarVagasProximas({ raio_km: raioKm }),
       USA_MOCKS ? Promise.resolve([]) : contaApi.listarComprovacoes().catch(() => []),
+      USA_MOCKS ? Promise.resolve(null) : contaApi.obterPerfilProfissional().catch(() => null),
     ])
-      .then(([lista, comprovacoes]) => {
+      .then(([lista, comprovacoes, perfil]) => {
         if (!ativo) return;
         setVagas(lista);
+        // O mapa e o cálculo de deslocamento partem do endereço do perfil, o mesmo da distância listada.
+        if (perfil?.latitude != null && perfil?.longitude != null) {
+          setCentro({ lat: perfil.latitude, lng: perfil.longitude });
+        }
         setExperiencias(
           comprovacoes
             .filter((c) => c.tipo === "experiencia" && c.status !== "recusado" && c.categoria)
@@ -119,7 +127,7 @@ export default function MapaOfertasPage() {
       ) : (
         <div className="relative z-0 h-[460px] w-full overflow-hidden rounded-card border border-borda bg-surface">
           <MapaVagas
-            centro={CENTRO}
+            centro={centro}
             raioKm={raioKm}
             vagas={visiveis}
             selecionadaId={selecionada}
@@ -135,6 +143,14 @@ export default function MapaOfertasPage() {
             {vaga.categoria} · {vaga.bairro} · {vaga.distancia_km.toFixed(1)} km
           </p>
           <p className="mt-1 font-bold text-primary">R$ {vaga.valor.toFixed(2).replace(".", ",")}</p>
+          <InfoDeslocamento de={centro} para={{ lat: vaga.latitude, lng: vaga.longitude }} />
+          <AvisoChuva
+            categoria={vaga.categoria}
+            titulo={vaga.titulo}
+            lat={vaga.latitude}
+            lng={vaga.longitude}
+            inicioIso={vaga.data_inicio}
+          />
           <Link href={`/vagas/${vaga.id}`} className="cta mt-3 inline-block">
             Ver vaga
           </Link>
