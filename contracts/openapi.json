@@ -1,0 +1,5753 @@
+{
+  "components": {
+    "schemas": {
+      "AceiteResposta": {
+        "properties": {
+          "conversa_id": {
+            "title": "Conversa Id",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "conversa_id"
+        ],
+        "title": "AceiteResposta",
+        "type": "object"
+      },
+      "AceitesAcordo": {
+        "properties": {
+          "contratante": {
+            "title": "Contratante",
+            "type": "boolean"
+          },
+          "profissional": {
+            "title": "Profissional",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "profissional",
+          "contratante"
+        ],
+        "title": "AceitesAcordo",
+        "type": "object"
+      },
+      "AvaliacaoDetalhe": {
+        "description": "Avaliação registrada. Só fica visível quando ambos avaliam ou o prazo de 48h encerra.",
+        "examples": [
+          {
+            "avaliado_id": 7,
+            "avaliador_id": 3,
+            "comentario": "Pontual e cuidadoso.",
+            "criado_em": "2026-11-20T18:30:00Z",
+            "id": 15,
+            "nota": 5,
+            "vaga_id": 42,
+            "visivel": true,
+            "visivel_em": "2026-11-20T19:00:00Z"
+          }
+        ],
+        "properties": {
+          "avaliado_id": {
+            "title": "Avaliado Id",
+            "type": "integer"
+          },
+          "avaliador_id": {
+            "title": "Avaliador Id",
+            "type": "integer"
+          },
+          "comentario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comentario"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "nota": {
+            "title": "Nota",
+            "type": "integer"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "visivel": {
+            "description": "Verdadeiro quando ambos já avaliaram ou o prazo de 48h encerrou.",
+            "title": "Visivel",
+            "type": "boolean"
+          },
+          "visivel_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Visivel Em"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "avaliador_id",
+          "avaliado_id",
+          "nota",
+          "criado_em",
+          "visivel"
+        ],
+        "title": "AvaliacaoDetalhe",
+        "type": "object"
+      },
+      "AvaliacaoEntrada": {
+        "description": "Nota de 1 a 5 e comentário opcional enviados por um participante após a conclusão.",
+        "properties": {
+          "comentario": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Comentário sobre o serviço prestado ou contratado.",
+            "examples": [
+              "Pontual e cuidadoso."
+            ],
+            "title": "Comentario"
+          },
+          "nota": {
+            "description": "Nota de 1 a 5 atribuída à outra parte.",
+            "examples": [
+              5
+            ],
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Nota",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "nota"
+        ],
+        "title": "AvaliacaoEntrada",
+        "type": "object"
+      },
+      "AvaliacoesDaVaga": {
+        "description": "Estado das avaliações de uma vaga para quem consulta.",
+        "examples": [
+          {
+            "avaliacao_recebida": {
+              "avaliado_id": 3,
+              "avaliador_id": 7,
+              "comentario": "Contratante claro e organizado.",
+              "criado_em": "2026-11-20T19:00:00Z",
+              "id": 16,
+              "nota": 5,
+              "vaga_id": 42,
+              "visivel": true,
+              "visivel_em": "2026-11-20T19:00:00Z"
+            },
+            "avaliacoes": [],
+            "minha_avaliacao": {
+              "avaliado_id": 7,
+              "avaliador_id": 3,
+              "comentario": "Pontual e cuidadoso.",
+              "criado_em": "2026-11-20T18:30:00Z",
+              "id": 15,
+              "nota": 5,
+              "vaga_id": 42,
+              "visivel": true,
+              "visivel_em": "2026-11-20T19:00:00Z"
+            },
+            "prazo_em": "2026-11-22T17:00:00Z",
+            "reveladas": true,
+            "vaga_id": 42
+          }
+        ],
+        "properties": {
+          "avaliacao_recebida": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AvaliacaoDetalhe"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Avaliação da outra parte; permanece nula enquanto ainda estiver oculta."
+          },
+          "avaliacoes": {
+            "description": "Avaliações já visíveis publicamente desta vaga.",
+            "items": {
+              "$ref": "#/components/schemas/AvaliacaoDetalhe"
+            },
+            "title": "Avaliacoes",
+            "type": "array"
+          },
+          "minha_avaliacao": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AvaliacaoDetalhe"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Avaliação feita pelo próprio usuário que consulta (quando autenticada)."
+          },
+          "prazo_em": {
+            "description": "Fim da janela de 48h para avaliar.",
+            "format": "date-time",
+            "title": "Prazo Em",
+            "type": "string"
+          },
+          "reveladas": {
+            "description": "Verdadeiro quando ambos já avaliaram ou o prazo de 48h encerrou.",
+            "title": "Reveladas",
+            "type": "boolean"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "prazo_em",
+          "reveladas",
+          "avaliacoes"
+        ],
+        "title": "AvaliacoesDaVaga",
+        "type": "object"
+      },
+      "Body_conversas_enviar_anexo": {
+        "properties": {
+          "arquivo": {
+            "contentMediaType": "application/octet-stream",
+            "description": "Imagem JPG/PNG ou PDF até 10 MB.",
+            "title": "Arquivo",
+            "type": "string"
+          },
+          "texto": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Legenda opcional.",
+            "title": "Texto"
+          }
+        },
+        "required": [
+          "arquivo"
+        ],
+        "title": "Body_conversas_enviar_anexo",
+        "type": "object"
+      },
+      "CategoriaResumo": {
+        "properties": {
+          "nivel_risco": {
+            "enum": [
+              "baixo",
+              "medio",
+              "alto"
+            ],
+            "title": "Nivel Risco",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome",
+          "nivel_risco"
+        ],
+        "title": "CategoriaResumo",
+        "type": "object"
+      },
+      "CentralNotificacoes": {
+        "description": "Resposta do polling REST da central de notificações: lista visível e total de não lidas.",
+        "examples": [
+          {
+            "itens": [
+              {
+                "criado_em": "2026-11-20T14:00:00Z",
+                "id": 10,
+                "lida": false,
+                "mensagem": "Sua conta está entre os 3 profissionais sugeridos para a vaga.",
+                "tipo": "selecionado_top3",
+                "titulo": "Você foi selecionado para uma vaga",
+                "usuario_id": 7,
+                "vaga_id": 42,
+                "visivel_em": "2026-11-20T14:02:00Z"
+              }
+            ],
+            "nao_lidas": 1
+          }
+        ],
+        "properties": {
+          "itens": {
+            "items": {
+              "$ref": "#/components/schemas/NotificacaoDetalhe"
+            },
+            "title": "Itens",
+            "type": "array"
+          },
+          "nao_lidas": {
+            "description": "Total de notificações já visíveis e ainda não lidas.",
+            "title": "Nao Lidas",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "nao_lidas",
+          "itens"
+        ],
+        "title": "CentralNotificacoes",
+        "type": "object"
+      },
+      "ConfiguracoesEfetivas": {
+        "properties": {
+          "perfil": {
+            "title": "Perfil",
+            "type": "string"
+          },
+          "valores": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Valores",
+            "type": "object"
+          }
+        },
+        "required": [
+          "perfil",
+          "valores"
+        ],
+        "title": "ConfiguracoesEfetivas",
+        "type": "object"
+      },
+      "ContagemNaoLidas": {
+        "description": "Quantidade de notificações visíveis ainda não lidas pelo usuário.",
+        "examples": [
+          {
+            "nao_lidas": 2
+          }
+        ],
+        "properties": {
+          "nao_lidas": {
+            "title": "Nao Lidas",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "nao_lidas"
+        ],
+        "title": "ContagemNaoLidas",
+        "type": "object"
+      },
+      "ContratanteResumo": {
+        "properties": {
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "title": "Nota Media",
+            "type": "number"
+          },
+          "pro": {
+            "default": false,
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "total_avaliacoes": {
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "verificado",
+          "nota_media",
+          "total_avaliacoes"
+        ],
+        "title": "ContratanteResumo",
+        "type": "object"
+      },
+      "ConversaResumo": {
+        "description": "Conversa ligada a uma vaga. Só existe depois que o convite é aceito.",
+        "examples": [
+          {
+            "aberta": true,
+            "id": 9,
+            "nao_lidas": 1,
+            "outra_parte": {
+              "nome": "Ana Souza",
+              "novo": true,
+              "pro": false,
+              "total_avaliacoes": 0,
+              "usuario_id": 7,
+              "verificado": true
+            },
+            "ultima_mensagem": {
+              "autor_id": 7,
+              "enviada_em": "2026-11-19T18:30:00Z",
+              "texto": "Chego às 14h."
+            },
+            "vaga_id": 42
+          }
+        ],
+        "properties": {
+          "aberta": {
+            "description": "Falso quando a vaga foi cancelada ou encerrada.",
+            "title": "Aberta",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "nao_lidas": {
+            "default": 0,
+            "title": "Nao Lidas",
+            "type": "integer"
+          },
+          "outra_parte": {
+            "$ref": "#/components/schemas/PerfilResumo"
+          },
+          "ultima_mensagem": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MensagemResumo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "aberta",
+          "outra_parte"
+        ],
+        "title": "ConversaResumo",
+        "type": "object"
+      },
+      "ConviteComVaga": {
+        "properties": {
+          "convite": {
+            "$ref": "#/components/schemas/ConviteVaga"
+          },
+          "vaga": {
+            "$ref": "#/components/schemas/VagaDetalhe"
+          }
+        },
+        "required": [
+          "convite",
+          "vaga"
+        ],
+        "title": "ConviteComVaga",
+        "type": "object"
+      },
+      "ConviteContratante": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "prazo_em": {
+            "format": "date-time",
+            "title": "Prazo Em",
+            "type": "string"
+          },
+          "profissional_id": {
+            "title": "Profissional Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "em_andamento",
+              "aceito"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "profissional_id",
+          "status",
+          "prazo_em"
+        ],
+        "title": "ConviteContratante",
+        "type": "object"
+      },
+      "ConviteVaga": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "prazo_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prazo Em"
+          },
+          "profissional_id": {
+            "title": "Profissional Id",
+            "type": "string"
+          },
+          "rodada": {
+            "title": "Rodada",
+            "type": "integer"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "string"
+          },
+          "valor_proposto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Proposto"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "profissional_id",
+          "status",
+          "rodada"
+        ],
+        "title": "ConviteVaga",
+        "type": "object"
+      },
+      "DadosAcordo": {
+        "description": "Resumo do acordo: o que chega ao pagamento e ao botão Li e aceito.",
+        "examples": [
+          {
+            "aceites": {
+              "contratante": false,
+              "profissional": true
+            },
+            "atribuicoes": "Levar as próprias ferramentas.",
+            "condicoes_avaliacao": "Avaliação mútua de 1 a 5 em até 48h.",
+            "condicoes_pagamento": "Pix retido e liberado após a conclusão.",
+            "contratante": {
+              "nome": "Bia Lima",
+              "nota_media": 4.8,
+              "novo": false,
+              "pro": false,
+              "total_avaliacoes": 12,
+              "usuario_id": 3,
+              "verificado": true
+            },
+            "duracao_minutos": 180,
+            "escopo": "Montar guarda-roupa de 6 portas, com fixação na parede.",
+            "inicio_em": "2026-11-20T14:00:00Z",
+            "local_bairro": "Várzea",
+            "profissional": {
+              "nome": "Ana Souza",
+              "novo": true,
+              "pro": false,
+              "total_avaliacoes": 0,
+              "usuario_id": 7,
+              "verificado": true
+            },
+            "regras_cancelamento": "Cancelamento com menos de 4h gera advertência.",
+            "servico": "Montagem de guarda-roupa",
+            "taxa_plataforma": "15.00",
+            "vaga_id": 42,
+            "valor_liquido_profissional": "135.00",
+            "valor_total": "150.00",
+            "versao_termos": "1.0",
+            "vestimenta": "Camisa e calça"
+          }
+        ],
+        "properties": {
+          "aceites": {
+            "$ref": "#/components/schemas/AceitesAcordo"
+          },
+          "atribuicoes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Atribuicoes"
+          },
+          "condicoes_avaliacao": {
+            "title": "Condicoes Avaliacao",
+            "type": "string"
+          },
+          "condicoes_pagamento": {
+            "title": "Condicoes Pagamento",
+            "type": "string"
+          },
+          "contratante": {
+            "$ref": "#/components/schemas/PerfilResumo"
+          },
+          "duracao_minutos": {
+            "title": "Duracao Minutos",
+            "type": "integer"
+          },
+          "endereco_completo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preenchido somente para o profissional contratado.",
+            "title": "Endereco Completo"
+          },
+          "escopo": {
+            "title": "Escopo",
+            "type": "string"
+          },
+          "inicio_em": {
+            "format": "date-time",
+            "title": "Inicio Em",
+            "type": "string"
+          },
+          "local_bairro": {
+            "title": "Local Bairro",
+            "type": "string"
+          },
+          "profissional": {
+            "$ref": "#/components/schemas/PerfilResumo"
+          },
+          "regras_cancelamento": {
+            "title": "Regras Cancelamento",
+            "type": "string"
+          },
+          "servico": {
+            "title": "Servico",
+            "type": "string"
+          },
+          "taxa_plataforma": {
+            "title": "Taxa Plataforma",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "valor_liquido_profissional": {
+            "title": "Valor Liquido Profissional",
+            "type": "string"
+          },
+          "valor_total": {
+            "title": "Valor Total",
+            "type": "string"
+          },
+          "versao_termos": {
+            "title": "Versao Termos",
+            "type": "string"
+          },
+          "vestimenta": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vestimenta"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "servico",
+          "escopo",
+          "inicio_em",
+          "duracao_minutos",
+          "local_bairro",
+          "valor_total",
+          "taxa_plataforma",
+          "valor_liquido_profissional",
+          "condicoes_pagamento",
+          "regras_cancelamento",
+          "condicoes_avaliacao",
+          "versao_termos",
+          "profissional",
+          "contratante",
+          "aceites"
+        ],
+        "title": "DadosAcordo",
+        "type": "object"
+      },
+      "DecisaoDenunciaEntrada": {
+        "description": "Decisão administrativa sobre uma denúncia aberta (procedente ou improcedente + motivo).",
+        "properties": {
+          "decisao": {
+            "description": "Resultado da análise da denúncia.",
+            "enum": [
+              "procedente",
+              "improcedente"
+            ],
+            "examples": [
+              "procedente"
+            ],
+            "title": "Decisao",
+            "type": "string"
+          },
+          "motivo": {
+            "description": "Justificativa obrigatória da decisão administrativa.",
+            "examples": [
+              "Confirmada tentativa de negociação fora da plataforma no histórico."
+            ],
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Motivo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "decisao",
+          "motivo"
+        ],
+        "title": "DecisaoDenunciaEntrada",
+        "type": "object"
+      },
+      "DecisaoDisputaEntrada": {
+        "description": "Decisão administrativa sobre uma disputa aberta (reembolso total, parcial ou integral).",
+        "properties": {
+          "decisao": {
+            "description": "Resultado da disputa: `reembolso_total` (estorna 100%), `reembolso_parcial` (libera parcela ao profissional e estorna o resto) ou `pagamento_integral` (libera 100% ao profissional).",
+            "enum": [
+              "reembolso_total",
+              "reembolso_parcial",
+              "pagamento_integral"
+            ],
+            "examples": [
+              "reembolso_parcial"
+            ],
+            "title": "Decisao",
+            "type": "string"
+          },
+          "motivo": {
+            "description": "Justificativa obrigatória da decisão administrativa.",
+            "examples": [
+              "Metade do serviço foi comprovadamente executada pelas fotos do chat."
+            ],
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Motivo",
+            "type": "string"
+          },
+          "percentual_profissional": {
+            "anyOf": [
+              {
+                "maximum": 99.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Alternativa a `percentual_reembolso`: percentual (de 1 a 99) liberado ao profissional em `reembolso_parcial` (o resto é estornado).",
+            "examples": [
+              60
+            ],
+            "title": "Percentual Profissional"
+          },
+          "percentual_reembolso": {
+            "anyOf": [
+              {
+                "maximum": 99.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Percentual (de 1 a 99) estornado ao contratante quando `decisao = reembolso_parcial`. O restante `(100 - percentual_reembolso)%` é liberado ao profissional.",
+            "examples": [
+              40
+            ],
+            "title": "Percentual Reembolso"
+          }
+        },
+        "required": [
+          "decisao",
+          "motivo"
+        ],
+        "title": "DecisaoDisputaEntrada",
+        "type": "object"
+      },
+      "DenunciaEntrada": {
+        "description": "Dados enviados por um usuário para denunciar outro (a partir do perfil, vaga ou chat).",
+        "properties": {
+          "conversa_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID da conversa do chat relacionada à denúncia, quando houver.",
+            "examples": [
+              9
+            ],
+            "title": "Conversa Id"
+          },
+          "denunciado_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID do usuário denunciado. Opcional quando `conversa_id` ou `vaga_id` for informado (inferido automaticamente como a outra parte).",
+            "examples": [
+              7
+            ],
+            "title": "Denunciado Id"
+          },
+          "descricao": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Relato detalhado do ocorrido.",
+            "examples": [
+              "Solicitou pagamento por fora da plataforma durante a conversa."
+            ],
+            "title": "Descricao"
+          },
+          "motivo": {
+            "description": "Motivo principal da denúncia.",
+            "examples": [
+              "comportamento_inadequado"
+            ],
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Motivo",
+            "type": "string"
+          },
+          "vaga_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "ID da vaga relacionada à denúncia, quando houver.",
+            "examples": [
+              42
+            ],
+            "title": "Vaga Id"
+          }
+        },
+        "required": [
+          "motivo"
+        ],
+        "title": "DenunciaEntrada",
+        "type": "object"
+      },
+      "DenunciaFilaAdmin": {
+        "description": "Item da fila de denúncias na administração, com tempo em espera e meta de 48h úteis.",
+        "examples": [
+          {
+            "acima_da_meta": false,
+            "conversa_id": 9,
+            "criado_em": "2026-11-20T14:00:00Z",
+            "denunciado_id": 7,
+            "denunciante_id": 3,
+            "denuncias_procedentes_acumuladas": 0,
+            "descricao": "Solicitou pagamento por fora da plataforma.",
+            "estado": "aberta",
+            "id": 1,
+            "meta_horas_uteis": 48,
+            "motivo": "comportamento_inadequado",
+            "origem": "usuario",
+            "tempo_espera_horas_uteis": 2.0,
+            "tempo_espera_minutos": 120,
+            "vaga_id": 42
+          }
+        ],
+        "properties": {
+          "acima_da_meta": {
+            "description": "Verdadeiro quando o tempo em horas úteis ultrapassou a meta de 48h úteis.",
+            "title": "Acima Da Meta",
+            "type": "boolean"
+          },
+          "conversa_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversa Id"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "decidido_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decidido Em"
+          },
+          "decisao_motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decisao Motivo"
+          },
+          "denunciado_id": {
+            "title": "Denunciado Id",
+            "type": "integer"
+          },
+          "denunciante_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Autor da denúncia (nulo quando gerada automaticamente pelo chat).",
+            "title": "Denunciante Id"
+          },
+          "denuncias_procedentes_acumuladas": {
+            "default": 0,
+            "description": "Total de denúncias procedentes acumuladas pelo denunciado.",
+            "title": "Denuncias Procedentes Acumuladas",
+            "type": "integer"
+          },
+          "descricao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Descricao"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoDenuncia"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "meta_horas_uteis": {
+            "default": 48,
+            "description": "Meta de atendimento da fila em horas úteis (48h úteis).",
+            "title": "Meta Horas Uteis",
+            "type": "integer"
+          },
+          "motivo": {
+            "title": "Motivo",
+            "type": "string"
+          },
+          "origem": {
+            "$ref": "#/components/schemas/OrigemDenuncia"
+          },
+          "tempo_espera_horas_uteis": {
+            "description": "Horas úteis acumuladas em espera (segunda a sexta-feira).",
+            "title": "Tempo Espera Horas Uteis",
+            "type": "number"
+          },
+          "tempo_espera_minutos": {
+            "description": "Tempo total em espera (em minutos) desde a abertura até a decisão ou agora.",
+            "title": "Tempo Espera Minutos",
+            "type": "integer"
+          },
+          "vaga_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vaga Id"
+          }
+        },
+        "required": [
+          "id",
+          "denunciado_id",
+          "origem",
+          "motivo",
+          "estado",
+          "criado_em",
+          "tempo_espera_minutos",
+          "tempo_espera_horas_uteis",
+          "acima_da_meta"
+        ],
+        "title": "DenunciaFilaAdmin",
+        "type": "object"
+      },
+      "DenunciaPublicaResumo": {
+        "description": "Visão da denúncia para usuários comuns. Nunca expõe `denunciante_id` ao denunciado.",
+        "examples": [
+          {
+            "conversa_id": 9,
+            "criado_em": "2026-11-20T14:00:00Z",
+            "denunciado_id": 7,
+            "descricao": "Solicitou pagamento por fora da plataforma.",
+            "estado": "aberta",
+            "id": 1,
+            "motivo": "comportamento_inadequado",
+            "vaga_id": 42
+          }
+        ],
+        "properties": {
+          "conversa_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversa Id"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "decidido_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decidido Em"
+          },
+          "decisao_motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decisao Motivo"
+          },
+          "denunciado_id": {
+            "title": "Denunciado Id",
+            "type": "integer"
+          },
+          "descricao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Descricao"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoDenuncia"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "motivo": {
+            "title": "Motivo",
+            "type": "string"
+          },
+          "vaga_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vaga Id"
+          }
+        },
+        "required": [
+          "id",
+          "denunciado_id",
+          "motivo",
+          "estado",
+          "criado_em"
+        ],
+        "title": "DenunciaPublicaResumo",
+        "type": "object"
+      },
+      "DisputaAdminDetalhe": {
+        "description": "Visão completa da aba de disputas no admin: disputa, pagamento, chat e anexos da vaga.",
+        "examples": [
+          {
+            "aberta_por_id": 3,
+            "acima_da_meta": false,
+            "anexos": [
+              "/api/v1/arquivos/anexo/foto1.jpg"
+            ],
+            "chat": [
+              {
+                "anexo_url": "/api/v1/arquivos/anexo/foto1.jpg",
+                "autor_id": 3,
+                "conversa_id": 9,
+                "enviada_em": "2026-11-20T17:50:00Z",
+                "id": 1,
+                "texto": "Segue foto de como ficou."
+              }
+            ],
+            "contratante_usuario_id": 3,
+            "conversa_id": 9,
+            "criado_em": "2026-11-20T18:00:00Z",
+            "descricao": "Serviço interrompido pela metade.",
+            "estado": "aberta",
+            "id": 3,
+            "meta_horas_uteis": 48,
+            "pagamento": {
+              "atualizado_em": "2026-11-20T18:10:00Z",
+              "codigo_pix": "PIX-SIM-000005-1A2B3C4D5E6F7A8B9C0D",
+              "criado_em": "2026-11-20T13:50:00Z",
+              "divisao": {
+                "percentual_taxa": "10",
+                "taxa_plataforma": "15.00",
+                "valor_liquido_profissional": "135.00",
+                "valor_total": "150.00"
+              },
+              "estado": "liberado",
+              "expira_em": "2026-11-20T14:05:00Z",
+              "id": 5,
+              "lancamentos": [
+                {
+                  "criado_em": "2026-11-20T13:50:00Z",
+                  "descricao": "Pix recebido e retido até a conclusão do serviço",
+                  "id": 1,
+                  "tipo": "retencao",
+                  "valor": "150.00"
+                },
+                {
+                  "criado_em": "2026-11-20T18:10:00Z",
+                  "descricao": "Liberação integral",
+                  "id": 2,
+                  "tipo": "liberacao_profissional",
+                  "valor": "135.00"
+                },
+                {
+                  "criado_em": "2026-11-20T18:10:00Z",
+                  "descricao": "Taxa da plataforma",
+                  "id": 3,
+                  "tipo": "taxa_plataforma",
+                  "valor": "15.00"
+                }
+              ],
+              "metodo": "pix",
+              "saldo_retido": "0.00",
+              "vaga_estado": "liberada",
+              "vaga_id": 42
+            },
+            "profissional_usuario_id": 7,
+            "tempo_espera_horas_uteis": 1.0,
+            "tempo_espera_minutos": 60,
+            "vaga_estado": "em_disputa",
+            "vaga_id": 42,
+            "vaga_titulo": "Montagem de guarda-roupa"
+          }
+        ],
+        "properties": {
+          "aberta_por_id": {
+            "title": "Aberta Por Id",
+            "type": "integer"
+          },
+          "acima_da_meta": {
+            "description": "Verdadeiro quando o tempo em horas úteis ultrapassou a meta de 48h úteis.",
+            "title": "Acima Da Meta",
+            "type": "boolean"
+          },
+          "anexos": {
+            "description": "Lista de URLs de anexos enviados na conversa da vaga.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Anexos",
+            "type": "array"
+          },
+          "chat": {
+            "description": "Histórico completo de mensagens da conversa da vaga.",
+            "items": {
+              "$ref": "#/components/schemas/MensagemDisputaAdmin"
+            },
+            "title": "Chat",
+            "type": "array"
+          },
+          "contratante_usuario_id": {
+            "title": "Contratante Usuario Id",
+            "type": "integer"
+          },
+          "conversa_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversa Id"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "decidido_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decidido Em"
+          },
+          "decisao_motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decisao Motivo"
+          },
+          "descricao": {
+            "title": "Descricao",
+            "type": "string"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoDisputa"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "meta_horas_uteis": {
+            "default": 48,
+            "title": "Meta Horas Uteis",
+            "type": "integer"
+          },
+          "pagamento": {
+            "$ref": "#/components/schemas/PagamentoDetalhe"
+          },
+          "percentual_reembolso": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percentual Reembolso"
+          },
+          "profissional_usuario_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profissional Usuario Id"
+          },
+          "tempo_espera_horas_uteis": {
+            "description": "Horas úteis acumuladas em espera (meta de 48h úteis).",
+            "title": "Tempo Espera Horas Uteis",
+            "type": "number"
+          },
+          "tempo_espera_minutos": {
+            "description": "Tempo em espera (em minutos) desde a abertura até a decisão ou agora.",
+            "title": "Tempo Espera Minutos",
+            "type": "integer"
+          },
+          "vaga_estado": {
+            "$ref": "#/components/schemas/EstadoVaga"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "vaga_titulo": {
+            "title": "Vaga Titulo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "vaga_titulo",
+          "vaga_estado",
+          "contratante_usuario_id",
+          "aberta_por_id",
+          "descricao",
+          "estado",
+          "criado_em",
+          "tempo_espera_minutos",
+          "tempo_espera_horas_uteis",
+          "acima_da_meta",
+          "chat",
+          "anexos",
+          "pagamento"
+        ],
+        "title": "DisputaAdminDetalhe",
+        "type": "object"
+      },
+      "DisputaDetalhe": {
+        "description": "Estado da disputa de uma vaga e o pagamento associado.",
+        "examples": [
+          {
+            "aberta_por_id": 3,
+            "criado_em": "2026-11-20T18:00:00Z",
+            "descricao": "Serviço interrompido pela metade.",
+            "estado": "aberta",
+            "id": 3,
+            "pagamento": {
+              "atualizado_em": "2026-11-20T18:10:00Z",
+              "codigo_pix": "PIX-SIM-000005-1A2B3C4D5E6F7A8B9C0D",
+              "criado_em": "2026-11-20T13:50:00Z",
+              "divisao": {
+                "percentual_taxa": "10",
+                "taxa_plataforma": "15.00",
+                "valor_liquido_profissional": "135.00",
+                "valor_total": "150.00"
+              },
+              "estado": "liberado",
+              "expira_em": "2026-11-20T14:05:00Z",
+              "id": 5,
+              "lancamentos": [
+                {
+                  "criado_em": "2026-11-20T13:50:00Z",
+                  "descricao": "Pix recebido e retido até a conclusão do serviço",
+                  "id": 1,
+                  "tipo": "retencao",
+                  "valor": "150.00"
+                },
+                {
+                  "criado_em": "2026-11-20T18:10:00Z",
+                  "descricao": "Liberação integral",
+                  "id": 2,
+                  "tipo": "liberacao_profissional",
+                  "valor": "135.00"
+                },
+                {
+                  "criado_em": "2026-11-20T18:10:00Z",
+                  "descricao": "Taxa da plataforma",
+                  "id": 3,
+                  "tipo": "taxa_plataforma",
+                  "valor": "15.00"
+                }
+              ],
+              "metodo": "pix",
+              "saldo_retido": "0.00",
+              "vaga_estado": "liberada",
+              "vaga_id": 42
+            },
+            "vaga_estado": "em_disputa",
+            "vaga_id": 42
+          }
+        ],
+        "properties": {
+          "aberta_por_id": {
+            "title": "Aberta Por Id",
+            "type": "integer"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "decidido_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decidido Em"
+          },
+          "decisao_motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decisao Motivo"
+          },
+          "descricao": {
+            "title": "Descricao",
+            "type": "string"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoDisputa"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "pagamento": {
+            "$ref": "#/components/schemas/PagamentoDetalhe"
+          },
+          "percentual_reembolso": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Percentual Reembolso"
+          },
+          "vaga_estado": {
+            "$ref": "#/components/schemas/EstadoVaga"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "vaga_estado",
+          "aberta_por_id",
+          "descricao",
+          "estado",
+          "criado_em",
+          "pagamento"
+        ],
+        "title": "DisputaDetalhe",
+        "type": "object"
+      },
+      "DisputaEntrada": {
+        "description": "Relato enviado pelo contratante para contestar o serviço dentro das 24h de confirmação.",
+        "properties": {
+          "descricao": {
+            "description": "Motivo detalhado da contestação do serviço.",
+            "examples": [
+              "O serviço foi interrompido pela metade e parte do móvel ficou desmontada."
+            ],
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Descricao",
+            "type": "string"
+          }
+        },
+        "required": [
+          "descricao"
+        ],
+        "title": "DisputaEntrada",
+        "type": "object"
+      },
+      "DivisaoValores": {
+        "description": "Como o valor total se reparte entre profissional e plataforma.",
+        "examples": [
+          {
+            "percentual_taxa": "10",
+            "taxa_plataforma": "15.00",
+            "valor_liquido_profissional": "135.00",
+            "valor_total": "150.00"
+          }
+        ],
+        "properties": {
+          "percentual_taxa": {
+            "description": "Taxa da plataforma, de 0 a 100.",
+            "title": "Percentual Taxa",
+            "type": "string"
+          },
+          "taxa_plataforma": {
+            "title": "Taxa Plataforma",
+            "type": "string"
+          },
+          "valor_liquido_profissional": {
+            "title": "Valor Liquido Profissional",
+            "type": "string"
+          },
+          "valor_total": {
+            "title": "Valor Total",
+            "type": "string"
+          }
+        },
+        "required": [
+          "valor_total",
+          "percentual_taxa",
+          "taxa_plataforma",
+          "valor_liquido_profissional"
+        ],
+        "title": "DivisaoValores",
+        "type": "object"
+      },
+      "EscolhaEntrada": {
+        "properties": {
+          "profissional_id": {
+            "title": "Profissional Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "profissional_id"
+        ],
+        "title": "EscolhaEntrada",
+        "type": "object"
+      },
+      "EstadoConta": {
+        "enum": [
+          "pendente",
+          "ativa",
+          "suspensa",
+          "banida"
+        ],
+        "title": "EstadoConta",
+        "type": "string"
+      },
+      "EstadoDenuncia": {
+        "enum": [
+          "aberta",
+          "procedente",
+          "improcedente"
+        ],
+        "title": "EstadoDenuncia",
+        "type": "string"
+      },
+      "EstadoDisputa": {
+        "enum": [
+          "aberta",
+          "reembolso_total",
+          "reembolso_parcial",
+          "pagamento_integral"
+        ],
+        "title": "EstadoDisputa",
+        "type": "string"
+      },
+      "EstadoPagamento": {
+        "enum": [
+          "aguardando",
+          "retido",
+          "liberado",
+          "liberado_parcial",
+          "estornado",
+          "expirado"
+        ],
+        "title": "EstadoPagamento",
+        "type": "string"
+      },
+      "EstadoVaga": {
+        "enum": [
+          "publicada",
+          "aguardando_aceite",
+          "aceita",
+          "aguardando_pagamento",
+          "contratada",
+          "em_execucao",
+          "encerrada",
+          "concluida",
+          "liberada",
+          "liberada_parcial",
+          "expirada",
+          "cancelada",
+          "falta",
+          "em_disputa",
+          "reembolsada"
+        ],
+        "title": "EstadoVaga",
+        "type": "string"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "InteresseEntrada": {
+        "properties": {
+          "valor_proposto": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Proposto"
+          }
+        },
+        "title": "InteresseEntrada",
+        "type": "object"
+      },
+      "LancamentoResumo": {
+        "examples": [
+          {
+            "criado_em": "2026-11-20T13:50:00Z",
+            "descricao": "Pix recebido e retido até a conclusão do serviço",
+            "id": 1,
+            "tipo": "retencao",
+            "valor": "150.00"
+          }
+        ],
+        "properties": {
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "descricao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Descricao"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoLancamento"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tipo",
+          "valor",
+          "criado_em"
+        ],
+        "title": "LancamentoResumo",
+        "type": "object"
+      },
+      "LoginEntrada": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "senha": {
+            "maxLength": 72,
+            "minLength": 1,
+            "title": "Senha",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "senha"
+        ],
+        "title": "LoginEntrada",
+        "type": "object"
+      },
+      "MensagemDetalhe": {
+        "description": "Mensagem persistida no histórico de uma conversa.",
+        "examples": [
+          {
+            "autor_id": 7,
+            "conversa_id": 9,
+            "enviada_em": "2026-11-19T18:30:00Z",
+            "id": 101,
+            "texto": "Chego às 14h."
+          }
+        ],
+        "properties": {
+          "anexo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anexo Url"
+          },
+          "autor_id": {
+            "title": "Autor Id",
+            "type": "integer"
+          },
+          "conversa_id": {
+            "title": "Conversa Id",
+            "type": "integer"
+          },
+          "enviada_em": {
+            "format": "date-time",
+            "title": "Enviada Em",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "lida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lida Em"
+          },
+          "texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texto"
+          }
+        },
+        "required": [
+          "id",
+          "conversa_id",
+          "autor_id",
+          "enviada_em"
+        ],
+        "title": "MensagemDetalhe",
+        "type": "object"
+      },
+      "MensagemDisputaAdmin": {
+        "description": "Mensagem do histórico do chat da vaga exibida na aba de disputas do admin.",
+        "properties": {
+          "anexo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Anexo Url"
+          },
+          "autor_id": {
+            "title": "Autor Id",
+            "type": "integer"
+          },
+          "conversa_id": {
+            "title": "Conversa Id",
+            "type": "integer"
+          },
+          "enviada_em": {
+            "format": "date-time",
+            "title": "Enviada Em",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "lida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lida Em"
+          },
+          "texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texto"
+          }
+        },
+        "required": [
+          "id",
+          "conversa_id",
+          "autor_id",
+          "enviada_em"
+        ],
+        "title": "MensagemDisputaAdmin",
+        "type": "object"
+      },
+      "MensagemEntrada": {
+        "description": "Conteúdo enviado pelo participante no chat (texto, anexo ou ambos).",
+        "properties": {
+          "anexo_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "URL de anexo enviado em `/api/v1/conversas/{conversa_id}/anexos`.",
+            "examples": [
+              "/api/v1/conversas/1/anexos/a1b2c3d4e5f60718293a4b5c6d7e8f90.png"
+            ],
+            "title": "Anexo Url"
+          },
+          "texto": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Texto da mensagem.",
+            "examples": [
+              "Chego às 14h."
+            ],
+            "title": "Texto"
+          }
+        },
+        "title": "MensagemEntrada",
+        "type": "object"
+      },
+      "MensagemResumo": {
+        "properties": {
+          "autor_id": {
+            "title": "Autor Id",
+            "type": "integer"
+          },
+          "enviada_em": {
+            "format": "date-time",
+            "title": "Enviada Em",
+            "type": "string"
+          },
+          "texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texto"
+          }
+        },
+        "required": [
+          "autor_id",
+          "texto",
+          "enviada_em"
+        ],
+        "title": "MensagemResumo",
+        "type": "object"
+      },
+      "NotificacaoDetalhe": {
+        "description": "Notificação já visível ao usuário na central do aplicativo.",
+        "examples": [
+          {
+            "criado_em": "2026-11-20T14:00:00Z",
+            "id": 10,
+            "lida": false,
+            "mensagem": "Sua conta está entre os 3 profissionais sugeridos para a vaga.",
+            "tipo": "selecionado_top3",
+            "titulo": "Você foi selecionado para uma vaga",
+            "usuario_id": 7,
+            "vaga_id": 42,
+            "visivel_em": "2026-11-20T14:02:00Z"
+          }
+        ],
+        "properties": {
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "lida": {
+            "description": "Verdadeiro quando `lida_em` está preenchido.",
+            "title": "Lida",
+            "type": "boolean"
+          },
+          "lida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lida Em"
+          },
+          "mensagem": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mensagem"
+          },
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
+          },
+          "titulo": {
+            "title": "Titulo",
+            "type": "string"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "vaga_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vaga Id"
+          },
+          "visivel_em": {
+            "format": "date-time",
+            "title": "Visivel Em",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "usuario_id",
+          "tipo",
+          "titulo",
+          "visivel_em",
+          "lida",
+          "criado_em"
+        ],
+        "title": "NotificacaoDetalhe",
+        "type": "object"
+      },
+      "OrigemDenuncia": {
+        "enum": [
+          "usuario",
+          "automatica"
+        ],
+        "title": "OrigemDenuncia",
+        "type": "string"
+      },
+      "PagamentoDetalhe": {
+        "description": "Estado da cobrança Pix de uma vaga, com a divisão prevista e o livro de lançamentos.",
+        "examples": [
+          {
+            "atualizado_em": "2026-11-20T18:10:00Z",
+            "codigo_pix": "PIX-SIM-000005-1A2B3C4D5E6F7A8B9C0D",
+            "criado_em": "2026-11-20T13:50:00Z",
+            "divisao": {
+              "percentual_taxa": "10",
+              "taxa_plataforma": "15.00",
+              "valor_liquido_profissional": "135.00",
+              "valor_total": "150.00"
+            },
+            "estado": "liberado",
+            "expira_em": "2026-11-20T14:05:00Z",
+            "id": 5,
+            "lancamentos": [
+              {
+                "criado_em": "2026-11-20T13:50:00Z",
+                "descricao": "Pix recebido e retido até a conclusão do serviço",
+                "id": 1,
+                "tipo": "retencao",
+                "valor": "150.00"
+              },
+              {
+                "criado_em": "2026-11-20T18:10:00Z",
+                "descricao": "Liberação integral",
+                "id": 2,
+                "tipo": "liberacao_profissional",
+                "valor": "135.00"
+              },
+              {
+                "criado_em": "2026-11-20T18:10:00Z",
+                "descricao": "Taxa da plataforma",
+                "id": 3,
+                "tipo": "taxa_plataforma",
+                "valor": "15.00"
+              }
+            ],
+            "metodo": "pix",
+            "saldo_retido": "0.00",
+            "vaga_estado": "liberada",
+            "vaga_id": 42
+          }
+        ],
+        "properties": {
+          "atualizado_em": {
+            "format": "date-time",
+            "title": "Atualizado Em",
+            "type": "string"
+          },
+          "codigo_pix": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Código copia e cola exibido ao contratante.",
+            "title": "Codigo Pix"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "divisao": {
+            "$ref": "#/components/schemas/DivisaoValores"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoPagamento"
+          },
+          "expira_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Limite para confirmar o Pix.",
+            "title": "Expira Em"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "lancamentos": {
+            "items": {
+              "$ref": "#/components/schemas/LancamentoResumo"
+            },
+            "title": "Lancamentos",
+            "type": "array"
+          },
+          "metodo": {
+            "const": "pix",
+            "default": "pix",
+            "title": "Metodo",
+            "type": "string"
+          },
+          "saldo_retido": {
+            "description": "Valor ainda retido; zero depois do estado final.",
+            "title": "Saldo Retido",
+            "type": "string"
+          },
+          "vaga_estado": {
+            "$ref": "#/components/schemas/EstadoVaga"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "vaga_estado",
+          "estado",
+          "codigo_pix",
+          "expira_em",
+          "divisao",
+          "saldo_retido",
+          "lancamentos",
+          "criado_em",
+          "atualizado_em"
+        ],
+        "title": "PagamentoDetalhe",
+        "type": "object"
+      },
+      "PapelUsuario": {
+        "enum": [
+          "usuario",
+          "admin"
+        ],
+        "title": "PapelUsuario",
+        "type": "string"
+      },
+      "ParDeTokens": {
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "expira_em_segundos": {
+            "description": "Validade do token de acesso, em segundos.",
+            "title": "Expira Em Segundos",
+            "type": "integer"
+          },
+          "refresh_token": {
+            "title": "Refresh Token",
+            "type": "string"
+          },
+          "token_type": {
+            "default": "bearer",
+            "title": "Token Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_token",
+          "refresh_token",
+          "expira_em_segundos"
+        ],
+        "title": "ParDeTokens",
+        "type": "object"
+      },
+      "PerfilAtivoEntrada": {
+        "properties": {
+          "perfil": {
+            "$ref": "#/components/schemas/TipoPerfil"
+          }
+        },
+        "required": [
+          "perfil"
+        ],
+        "title": "PerfilAtivoEntrada",
+        "type": "object"
+      },
+      "PerfilResumo": {
+        "description": "Dados públicos de um perfil, exibidos em cards, listas e no chat.",
+        "properties": {
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Média das avaliações, de 1 a 5.",
+            "title": "Nota Media"
+          },
+          "novo": {
+            "description": "Ainda exibe o selo Novo.",
+            "title": "Novo",
+            "type": "boolean"
+          },
+          "pro": {
+            "description": "Assinante do plano Pro.",
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "total_avaliacoes": {
+            "default": 0,
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "verificado": {
+            "description": "Identidade aprovada pela administração.",
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "verificado",
+          "novo",
+          "pro"
+        ],
+        "title": "PerfilResumo",
+        "type": "object"
+      },
+      "PontoMapa": {
+        "description": "Ponto genérico do mapa: serve a vagas e a profissionais.",
+        "examples": [
+          {
+            "bairro": "Várzea",
+            "categoria": "montagem-de-moveis",
+            "distancia_km": 1.2,
+            "id": 42,
+            "latitude": -8.0505,
+            "longitude": -34.95,
+            "tipo": "vaga",
+            "titulo": "Montagem de guarda-roupa",
+            "valor": "150.00"
+          }
+        ],
+        "properties": {
+          "bairro": {
+            "title": "Bairro",
+            "type": "string"
+          },
+          "categoria": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categoria"
+          },
+          "distancia_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distancia Km"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "tipo": {
+            "enum": [
+              "vaga",
+              "profissional"
+            ],
+            "title": "Tipo",
+            "type": "string"
+          },
+          "titulo": {
+            "title": "Titulo",
+            "type": "string"
+          },
+          "valor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Valor da vaga, quando for uma vaga.",
+            "title": "Valor"
+          }
+        },
+        "required": [
+          "id",
+          "tipo",
+          "titulo",
+          "latitude",
+          "longitude",
+          "bairro"
+        ],
+        "title": "PontoMapa",
+        "type": "object"
+      },
+      "ProfissionalRecomendado": {
+        "properties": {
+          "demonstrou_interesse": {
+            "title": "Demonstrou Interesse",
+            "type": "boolean"
+          },
+          "distancia_km": {
+            "title": "Distancia Km",
+            "type": "number"
+          },
+          "estado": {
+            "enum": [
+              "disponivel",
+              "falhou"
+            ],
+            "title": "Estado",
+            "type": "string"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "habilidades": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Habilidades",
+            "type": "array"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "title": "Nota Media",
+            "type": "number"
+          },
+          "novo": {
+            "title": "Novo",
+            "type": "boolean"
+          },
+          "pro": {
+            "default": false,
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "resumo": {
+            "title": "Resumo",
+            "type": "string"
+          },
+          "total_avaliacoes": {
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "valor_proposto": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Proposto"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "verificado",
+          "nota_media",
+          "total_avaliacoes",
+          "distancia_km",
+          "novo",
+          "demonstrou_interesse",
+          "resumo",
+          "habilidades",
+          "estado"
+        ],
+        "title": "ProfissionalRecomendado",
+        "type": "object"
+      },
+      "RegistroEntrada": {
+        "properties": {
+          "email": {
+            "examples": [
+              "ana@example.com"
+            ],
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "nome": {
+            "examples": [
+              "Ana Souza"
+            ],
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Nome",
+            "type": "string"
+          },
+          "senha": {
+            "description": "Entre 8 e 72 caracteres, com no máximo 72 bytes em UTF-8.",
+            "examples": [
+              "senha-segura-123"
+            ],
+            "maxLength": 72,
+            "minLength": 8,
+            "title": "Senha",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nome",
+          "email",
+          "senha"
+        ],
+        "title": "RegistroEntrada",
+        "type": "object"
+      },
+      "RenovacaoEntrada": {
+        "properties": {
+          "refresh_token": {
+            "title": "Refresh Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "refresh_token"
+        ],
+        "title": "RenovacaoEntrada",
+        "type": "object"
+      },
+      "ReputacaoDetalhe": {
+        "description": "Reputação 70/20/10 de um usuário, detalhando cada componente e o selo Novo.",
+        "examples": [
+          {
+            "amostra_compromissos": 20,
+            "cancelamentos_tardios_ultimos_20": 1,
+            "denuncias_procedentes": 1,
+            "media_considerada": 4.5,
+            "nota_cancelamentos": 4.75,
+            "nota_denuncias": 3.0,
+            "nota_media": 4.5,
+            "novo": true,
+            "reputacao": 4.4,
+            "servicos_concluidos": 4,
+            "taxa_cancelamento_tardio": 0.05,
+            "total_avaliacoes": 4,
+            "usuario_id": 7
+          }
+        ],
+        "properties": {
+          "amostra_compromissos": {
+            "description": "Quantidade de compromissos considerados na janela (máximo 20).",
+            "title": "Amostra Compromissos",
+            "type": "integer"
+          },
+          "cancelamentos_tardios_ultimos_20": {
+            "title": "Cancelamentos Tardios Ultimos 20",
+            "type": "integer"
+          },
+          "denuncias_procedentes": {
+            "title": "Denuncias Procedentes",
+            "type": "integer"
+          },
+          "media_considerada": {
+            "description": "Média usada na fórmula (4,0 neutra quando não há avaliações visíveis).",
+            "title": "Media Considerada",
+            "type": "number"
+          },
+          "nota_cancelamentos": {
+            "description": "Parcela de cancelamentos (0 a 5): 5 * (1 - taxa_cancelamento_tardio).",
+            "title": "Nota Cancelamentos",
+            "type": "number"
+          },
+          "nota_denuncias": {
+            "description": "Parcela de denúncias (0 a 5): max(0, 5 - 2 * denuncias_procedentes).",
+            "title": "Nota Denuncias",
+            "type": "number"
+          },
+          "nota_media": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Média real das avaliações visíveis, ou nulo quando ainda não há avaliações.",
+            "title": "Nota Media"
+          },
+          "novo": {
+            "description": "Exibe o selo Novo enquanto tiver até 5 serviços concluídos; cai no 6º.",
+            "title": "Novo",
+            "type": "boolean"
+          },
+          "reputacao": {
+            "description": "Nota final de 0 a 5 pela fórmula 70/20/10.",
+            "title": "Reputacao",
+            "type": "number"
+          },
+          "servicos_concluidos": {
+            "description": "Serviços concluídos como profissional (0 quando não possui perfil).",
+            "title": "Servicos Concluidos",
+            "type": "integer"
+          },
+          "taxa_cancelamento_tardio": {
+            "description": "Proporção (0 a 1) de cancelamentos tardios nos últimos 20 compromissos.",
+            "title": "Taxa Cancelamento Tardio",
+            "type": "number"
+          },
+          "total_avaliacoes": {
+            "description": "Quantidade de avaliações visíveis recebidas.",
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "reputacao",
+          "media_considerada",
+          "total_avaliacoes",
+          "nota_cancelamentos",
+          "taxa_cancelamento_tardio",
+          "cancelamentos_tardios_ultimos_20",
+          "amostra_compromissos",
+          "nota_denuncias",
+          "denuncias_procedentes",
+          "servicos_concluidos",
+          "novo"
+        ],
+        "title": "ReputacaoDetalhe",
+        "type": "object"
+      },
+      "RespostaSaude": {
+        "properties": {
+          "perfil": {
+            "title": "Perfil",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "perfil"
+        ],
+        "title": "RespostaSaude",
+        "type": "object"
+      },
+      "ResultadoLeituraTodas": {
+        "description": "Quantidade de notificações visíveis marcadas como lidas em lote.",
+        "examples": [
+          {
+            "lida_em": "2026-11-20T14:10:00Z",
+            "marcadas": 3
+          }
+        ],
+        "properties": {
+          "lida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lida Em"
+          },
+          "marcadas": {
+            "title": "Marcadas",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "marcadas"
+        ],
+        "title": "ResultadoLeituraTodas",
+        "type": "object"
+      },
+      "ResultadoVarredura": {
+        "properties": {
+          "alteracoes": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "description": "Registros alterados por varredura.",
+            "title": "Alteracoes",
+            "type": "object"
+          },
+          "executado_em": {
+            "title": "Executado Em",
+            "type": "string"
+          }
+        },
+        "required": [
+          "executado_em",
+          "alteracoes"
+        ],
+        "title": "ResultadoVarredura",
+        "type": "object"
+      },
+      "ResultadoVisto": {
+        "description": "Quantidade de mensagens recebidas marcadas como vistas.",
+        "examples": [
+          {
+            "conversa_id": 9,
+            "lida_em": "2026-11-19T18:35:00Z",
+            "marcadas": 2
+          }
+        ],
+        "properties": {
+          "conversa_id": {
+            "title": "Conversa Id",
+            "type": "integer"
+          },
+          "lida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lida Em"
+          },
+          "marcadas": {
+            "title": "Marcadas",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "conversa_id",
+          "marcadas"
+        ],
+        "title": "ResultadoVisto",
+        "type": "object"
+      },
+      "TipoLancamento": {
+        "enum": [
+          "retencao",
+          "liberacao_profissional",
+          "taxa_plataforma",
+          "estorno"
+        ],
+        "title": "TipoLancamento",
+        "type": "string"
+      },
+      "TipoPerfil": {
+        "enum": [
+          "profissional",
+          "contratante"
+        ],
+        "title": "TipoPerfil",
+        "type": "string"
+      },
+      "Top3Contratacao": {
+        "properties": {
+          "convite_atual": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConviteContratante"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "profissionais": {
+            "items": {
+              "$ref": "#/components/schemas/ProfissionalRecomendado"
+            },
+            "title": "Profissionais",
+            "type": "array"
+          },
+          "rodada": {
+            "title": "Rodada",
+            "type": "integer"
+          },
+          "vaga": {
+            "$ref": "#/components/schemas/VagaDetalhe"
+          }
+        },
+        "required": [
+          "vaga",
+          "rodada",
+          "profissionais"
+        ],
+        "title": "Top3Contratacao",
+        "type": "object"
+      },
+      "UsuarioAtual": {
+        "description": "Conta autenticada e seus perfis.",
+        "examples": [
+          {
+            "email": "ana@example.com",
+            "estado": "ativa",
+            "id": 7,
+            "nome": "Ana Souza",
+            "papel": "usuario",
+            "perfil_ativo": "profissional",
+            "perfis": [
+              "profissional",
+              "contratante"
+            ],
+            "verificado": true
+          }
+        ],
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/EstadoConta"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "papel": {
+            "$ref": "#/components/schemas/PapelUsuario"
+          },
+          "perfil_ativo": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TipoPerfil"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Perfil usado nas ações atuais; nulo até o primeiro perfil ser cadastrado."
+          },
+          "perfis": {
+            "description": "Perfis já cadastrados nesta conta.",
+            "items": {
+              "$ref": "#/components/schemas/TipoPerfil"
+            },
+            "title": "Perfis",
+            "type": "array"
+          },
+          "suspensa_ate": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suspensa Ate"
+          },
+          "verificado": {
+            "description": "Identidade do perfil ativo aprovada pela administração.",
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "nome",
+          "email",
+          "estado",
+          "papel",
+          "perfil_ativo",
+          "perfis",
+          "verificado"
+        ],
+        "title": "UsuarioAtual",
+        "type": "object"
+      },
+      "VagaCriar": {
+        "properties": {
+          "bairro": {
+            "maxLength": 80,
+            "minLength": 2,
+            "title": "Bairro",
+            "type": "string"
+          },
+          "categoria": {
+            "description": "Slug da categoria, obtido em GET /categorias.",
+            "title": "Categoria",
+            "type": "string"
+          },
+          "data_inicio": {
+            "format": "date-time",
+            "title": "Data Inicio",
+            "type": "string"
+          },
+          "descricao": {
+            "minLength": 5,
+            "title": "Descricao",
+            "type": "string"
+          },
+          "duracao_horas": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 24.0,
+            "title": "Duracao Horas",
+            "type": "number"
+          },
+          "latitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "logradouro": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logradouro"
+          },
+          "longitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "titulo": {
+            "maxLength": 120,
+            "minLength": 3,
+            "title": "Titulo",
+            "type": "string"
+          },
+          "valor": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 100000.0,
+            "title": "Valor",
+            "type": "number"
+          }
+        },
+        "required": [
+          "titulo",
+          "descricao",
+          "categoria",
+          "valor",
+          "duracao_horas",
+          "data_inicio",
+          "bairro",
+          "latitude",
+          "longitude"
+        ],
+        "title": "VagaCriar",
+        "type": "object"
+      },
+      "VagaDetalhe": {
+        "properties": {
+          "bairro": {
+            "title": "Bairro",
+            "type": "string"
+          },
+          "categoria": {
+            "title": "Categoria",
+            "type": "string"
+          },
+          "contratante": {
+            "$ref": "#/components/schemas/ContratanteResumo"
+          },
+          "data_inicio": {
+            "format": "date-time",
+            "title": "Data Inicio",
+            "type": "string"
+          },
+          "descricao": {
+            "title": "Descricao",
+            "type": "string"
+          },
+          "distancia_km": {
+            "title": "Distancia Km",
+            "type": "number"
+          },
+          "duracao_horas": {
+            "title": "Duracao Horas",
+            "type": "number"
+          },
+          "endereco_completo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endereco Completo"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "meu_convite": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConviteVaga"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nivel_risco": {
+            "enum": [
+              "baixo",
+              "medio",
+              "alto"
+            ],
+            "title": "Nivel Risco",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "titulo": {
+            "title": "Titulo",
+            "type": "string"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "titulo",
+          "descricao",
+          "categoria",
+          "nivel_risco",
+          "valor",
+          "duracao_horas",
+          "data_inicio",
+          "bairro",
+          "distancia_km",
+          "latitude",
+          "longitude",
+          "status",
+          "contratante"
+        ],
+        "title": "VagaDetalhe",
+        "type": "object"
+      },
+      "ValidacaoFacialEntrada": {
+        "properties": {
+          "selfie_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Imagem enviada para o reconhecimento; opcional na simulação.",
+            "examples": [
+              "https://arquivos.exemplo/selfies/42.jpg"
+            ],
+            "title": "Selfie Url"
+          }
+        },
+        "title": "ValidacaoFacialEntrada",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "description": "Token de acesso obtido no login.",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "description": "API do FreelAI: contratantes e profissionais em serviços pontuais.",
+    "title": "FreelAI Back",
+    "version": "1.0.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/admin/configuracoes": {
+      "get": {
+        "description": "Prazos, pesos e limites em vigor para o perfil de execução atual.",
+        "operationId": "admin_consultar_configuracoes",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfiguracoesEfetivas"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Configuracoes",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/denuncias": {
+      "get": {
+        "description": "Fila de denúncias (manuais e automáticas) com tempo em espera e meta de 48h úteis.",
+        "operationId": "admin_listar_fila_de_denuncias",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "estado",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EstadoDenuncia"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Estado"
+            }
+          },
+          {
+            "in": "query",
+            "name": "origem",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/OrigemDenuncia"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Origem"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DenunciaFilaAdmin"
+                  },
+                  "title": "Response Admin Listar Fila De Denuncias",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Fila De Denuncias",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/denuncias/{denuncia_id}/decisao": {
+      "post": {
+        "description": "Decide uma denúncia da fila como procedente ou improcedente, registrando o motivo.",
+        "operationId": "admin_decidir_denuncia",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "denuncia_id",
+            "required": true,
+            "schema": {
+              "title": "Denuncia Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisaoDenunciaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DenunciaFilaAdmin"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decidir Denuncia",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/disputas": {
+      "get": {
+        "description": "Aba de disputas do admin: lista as contestações com o chat e os anexos de cada vaga.",
+        "operationId": "admin_listar_disputas",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "estado",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EstadoDisputa"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Estado"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DisputaAdminDetalhe"
+                  },
+                  "title": "Response Admin Listar Disputas",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Disputas",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/disputas/{disputa_id}": {
+      "get": {
+        "description": "Detalhe de uma disputa na aba do admin, com histórico do chat, anexos e pagamento.",
+        "operationId": "admin_detalhar_disputa_admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "disputa_id",
+            "required": true,
+            "schema": {
+              "title": "Disputa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisputaAdminDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Detalhar Disputa Admin",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/disputas/{disputa_id}/decisao": {
+      "post": {
+        "description": "Decide a disputa (reembolso total, parcial ou pagamento integral) e gera os lançamentos.",
+        "operationId": "admin_decidir_disputa",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "disputa_id",
+            "required": true,
+            "schema": {
+              "title": "Disputa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisaoDisputaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisputaAdminDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decidir Disputa",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/prazos/varrer": {
+      "post": {
+        "description": "Força a verificação imediata de tudo que depende de prazo (expirações e liberações).",
+        "operationId": "admin_varrer_prazos",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoVarredura"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Varrer Prazos",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "auth_entrar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParDeTokens"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Entrar",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "auth_consultar_conta",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioAtual"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Conta",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/perfil-ativo": {
+      "put": {
+        "description": "Alterna entre os perfis profissional e contratante da mesma conta.",
+        "operationId": "auth_alternar_perfil",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PerfilAtivoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioAtual"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Alternar Perfil",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "description": "Troca um token de renovação válido por um novo par de tokens.",
+        "operationId": "auth_renovar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenovacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParDeTokens"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Renovar",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/registro": {
+      "post": {
+        "description": "Cria a conta. Ela nasce pendente e é ativada depois da verificação de identidade.",
+        "operationId": "auth_registrar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistroEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioAtual"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Registrar",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/categorias": {
+      "get": {
+        "description": "Categorias de serviço disponíveis para publicar uma vaga.",
+        "operationId": "vagas_listar_categorias",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CategoriaResumo"
+                  },
+                  "title": "Response Vagas Listar Categorias",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Categorias",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratante/top3": {
+      "get": {
+        "description": "Top 3 atual de cada vaga do contratante que ainda está em busca de profissional.",
+        "operationId": "vagas_listar_top3",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Top3Contratacao"
+                  },
+                  "title": "Response Vagas Listar Top3",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Top3",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratante/vagas": {
+      "get": {
+        "description": "Vagas publicadas pelo contratante, da mais recente para a mais antiga.",
+        "operationId": "vagas_listar_minhas_vagas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VagaDetalhe"
+                  },
+                  "title": "Response Vagas Listar Minhas Vagas",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Minhas Vagas",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratante/vagas/{vaga_id}/escolher": {
+      "post": {
+        "description": "Escolhe um dos três profissionais e abre a janela de aceite.",
+        "operationId": "vagas_escolher_profissional",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EscolhaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Top3Contratacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Escolher Profissional",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/conversas": {
+      "get": {
+        "description": "Lista as conversas do usuário com a outra parte, última mensagem e total de não lidas.",
+        "operationId": "conversas_listar_conversas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConversaResumo"
+                  },
+                  "title": "Response Conversas Listar Conversas",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Conversas",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}": {
+      "get": {
+        "description": "Resumo de uma conversa, com o id da vaga a que pertence.",
+        "operationId": "conversas_detalhar_conversa",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversaResumo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Detalhar Conversa",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}/anexos": {
+      "post": {
+        "description": "Recebe um anexo (JPG, PNG ou PDF), cria a mensagem no chat e transmite em tempo real.",
+        "operationId": "conversas_enviar_anexo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_conversas_enviar_anexo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MensagemDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Anexo",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}/anexos/{nome}": {
+      "get": {
+        "description": "Entrega o conteúdo de um anexo do chat somente para os participantes da conversa.",
+        "operationId": "conversas_baixar_anexo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "nome",
+            "required": true,
+            "schema": {
+              "title": "Nome",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Baixar Anexo",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}/mensagens": {
+      "get": {
+        "description": "Histórico completo de mensagens da conversa em ordem cronológica.",
+        "operationId": "conversas_listar_mensagens",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MensagemDetalhe"
+                  },
+                  "title": "Response Conversas Listar Mensagens",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Mensagens",
+        "tags": [
+          "conversas"
+        ]
+      },
+      "post": {
+        "description": "Persiste uma mensagem na conversa e transmite em tempo real aos conectados no WebSocket.",
+        "operationId": "conversas_enviar_mensagem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MensagemEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MensagemDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Mensagem",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/conversas/{conversa_id}/visto": {
+      "post": {
+        "description": "Marca como vistas as mensagens enviadas pela outra parte na conversa.",
+        "operationId": "conversas_marcar_conversa_como_vista",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "conversa_id",
+            "required": true,
+            "schema": {
+              "title": "Conversa Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoVisto"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Marcar Conversa Como Vista",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/convites/{convite_id}/aceitar": {
+      "post": {
+        "description": "Aceita o convite em que o contratante escolheu o profissional e abre a conversa.",
+        "operationId": "vagas_aceitar_convite",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "convite_id",
+            "required": true,
+            "schema": {
+              "title": "Convite Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AceiteResposta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Convite",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/convites/{convite_id}/recusar": {
+      "post": {
+        "description": "Recusa o convite. Se o contratante já tinha escolhido o profissional, a vaga reabre.",
+        "operationId": "vagas_recusar_convite",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "convite_id",
+            "required": true,
+            "schema": {
+              "title": "Convite Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Recusar Convite",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/denuncias": {
+      "get": {
+        "description": "Lista denúncias ligadas ao usuário, sem jamais expor quem denunciou (`denunciante_id`).",
+        "operationId": "denuncias_listar_minhas_denuncias",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DenunciaPublicaResumo"
+                  },
+                  "title": "Response Denuncias Listar Minhas Denuncias",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Minhas Denuncias",
+        "tags": [
+          "denuncias"
+        ]
+      },
+      "post": {
+        "description": "Registra uma denúncia a partir de um perfil, vaga ou conversa. Entra na fila do admin.",
+        "operationId": "denuncias_registrar_denuncia",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DenunciaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DenunciaPublicaResumo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Registrar Denuncia",
+        "tags": [
+          "denuncias"
+        ]
+      }
+    },
+    "/api/v1/denuncias/{denuncia_id}": {
+      "get": {
+        "description": "Consulta o estado de uma denúncia sem revelar o autor ao denunciado.",
+        "operationId": "denuncias_detalhar_denuncia",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "denuncia_id",
+            "required": true,
+            "schema": {
+              "title": "Denuncia Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DenunciaPublicaResumo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Detalhar Denuncia",
+        "tags": [
+          "denuncias"
+        ]
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "description": "Indica que a API está no ar e qual perfil de execução está ativo.",
+        "operationId": "saude_verificar_saude",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaSaude"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Verificar Saude",
+        "tags": [
+          "saude"
+        ]
+      }
+    },
+    "/api/v1/mapa/pontos": {
+      "get": {
+        "description": "Pontos para o mapa, de vagas ou de profissionais (resposta de exemplo).",
+        "operationId": "mapa_listar_pontos_do_mapa",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tipo",
+            "required": false,
+            "schema": {
+              "default": "vaga",
+              "enum": [
+                "vaga",
+                "profissional"
+              ],
+              "title": "Tipo",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Latitude do centro da busca.",
+            "in": "query",
+            "name": "latitude",
+            "required": false,
+            "schema": {
+              "default": -8.0476,
+              "description": "Latitude do centro da busca.",
+              "title": "Latitude",
+              "type": "number"
+            }
+          },
+          {
+            "description": "Longitude do centro da busca.",
+            "in": "query",
+            "name": "longitude",
+            "required": false,
+            "schema": {
+              "default": -34.877,
+              "description": "Longitude do centro da busca.",
+              "title": "Longitude",
+              "type": "number"
+            }
+          },
+          {
+            "description": "Raio da busca, de 1 a 15 km.",
+            "in": "query",
+            "name": "raio_km",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "description": "Raio da busca, de 1 a 15 km.",
+              "maximum": 15,
+              "minimum": 1,
+              "title": "Raio Km",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PontoMapa"
+                  },
+                  "title": "Response Mapa Listar Pontos Do Mapa",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar Pontos Do Mapa",
+        "tags": [
+          "mapa"
+        ]
+      }
+    },
+    "/api/v1/notificacoes": {
+      "get": {
+        "description": "Polling REST da central de notificações (exibe somente as cujo `visivel_em <= agora()`).",
+        "operationId": "notificacoes_listar_notificacoes",
+        "parameters": [
+          {
+            "description": "Quando verdadeiro, retorna apenas as notificações ainda não lidas.",
+            "in": "query",
+            "name": "apenas_nao_lidas",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Quando verdadeiro, retorna apenas as notificações ainda não lidas.",
+              "title": "Apenas Nao Lidas",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CentralNotificacoes"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Notificacoes",
+        "tags": [
+          "notificacoes"
+        ]
+      }
+    },
+    "/api/v1/notificacoes/ler-todas": {
+      "post": {
+        "description": "Marca como lidas todas as notificações já visíveis do usuário.",
+        "operationId": "notificacoes_marcar_todas_lidas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultadoLeituraTodas"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Marcar Todas Lidas",
+        "tags": [
+          "notificacoes"
+        ]
+      }
+    },
+    "/api/v1/notificacoes/nao-lidas": {
+      "get": {
+        "description": "Quantidade de notificações já visíveis e ainda não lidas pelo usuário.",
+        "operationId": "notificacoes_consultar_contagem_nao_lidas",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContagemNaoLidas"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Contagem Nao Lidas",
+        "tags": [
+          "notificacoes"
+        ]
+      }
+    },
+    "/api/v1/notificacoes/{notificacao_id}/lida": {
+      "post": {
+        "description": "Marca uma notificação visível como lida e registra `lida_em`.",
+        "operationId": "notificacoes_marcar_notificacao_como_lida",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "notificacao_id",
+            "required": true,
+            "schema": {
+              "title": "Notificacao Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificacaoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Marcar Notificacao Como Lida",
+        "tags": [
+          "notificacoes"
+        ]
+      }
+    },
+    "/api/v1/pagamentos/{pagamento_id}/simular-confirmacao": {
+      "post": {
+        "description": "Simula a confirmação do Pix pelo provedor. Disponível apenas no perfil de demonstração.",
+        "operationId": "pagamentos_simular_confirmacao",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "pagamento_id",
+            "required": true,
+            "schema": {
+              "title": "Pagamento Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagamentoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Simular Confirmacao",
+        "tags": [
+          "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/profissional/convites": {
+      "get": {
+        "description": "Convites em que o contratante já escolheu o profissional e o prazo de aceite segue aberto.",
+        "operationId": "vagas_listar_convites_do_profissional",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConviteComVaga"
+                  },
+                  "title": "Response Vagas Listar Convites Do Profissional",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Convites Do Profissional",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/usuarios/{usuario_id}/avaliacoes": {
+      "get": {
+        "description": "Avaliações já visíveis recebidas pelo usuário.",
+        "operationId": "avaliacoes_listar_avaliacoes_do_usuario",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvaliacaoDetalhe"
+                  },
+                  "title": "Response Avaliacoes Listar Avaliacoes Do Usuario",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Listar Avaliacoes Do Usuario",
+        "tags": [
+          "avaliacoes"
+        ]
+      }
+    },
+    "/api/v1/usuarios/{usuario_id}/reputacao": {
+      "get": {
+        "description": "Cálculo da reputação 70/20/10 e estado do selo Novo (até 5 serviços concluídos).",
+        "operationId": "avaliacoes_consultar_reputacao_do_usuario",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReputacaoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Consultar Reputacao Do Usuario",
+        "tags": [
+          "avaliacoes"
+        ]
+      }
+    },
+    "/api/v1/vagas": {
+      "post": {
+        "description": "Publica uma vaga e já gera a primeira rodada do top 3.",
+        "operationId": "vagas_criar_vaga",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VagaCriar"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VagaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Criar Vaga",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/vagas/oportunidades": {
+      "get": {
+        "description": "Vagas publicadas dentro do raio do profissional, da mais próxima para a mais distante.",
+        "operationId": "vagas_listar_oportunidades",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "raio_km",
+            "required": false,
+            "schema": {
+              "default": 5,
+              "maximum": 15,
+              "minimum": 1,
+              "title": "Raio Km",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "categoria",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Categoria"
+            }
+          },
+          {
+            "in": "query",
+            "name": "data",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^(hoje|amanha)$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Data"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VagaDetalhe"
+                  },
+                  "title": "Response Vagas Listar Oportunidades",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Oportunidades",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}": {
+      "get": {
+        "description": "Detalhe de uma vaga. O endereço completo só aparece para as partes da contratação.",
+        "operationId": "vagas_detalhar_vaga",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VagaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Detalhar Vaga",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/acordo": {
+      "get": {
+        "description": "Termos do acordo e situação dos aceites. Restrito às duas partes da vaga.",
+        "operationId": "acordo_consultar_acordo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DadosAcordo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Acordo",
+        "tags": [
+          "acordo"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/acordo/aceite": {
+      "post": {
+        "description": "Registra o \"Li e aceito\" do usuário. O contrato é congelado no primeiro aceite.",
+        "operationId": "acordo_aceitar_acordo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DadosAcordo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Acordo",
+        "tags": [
+          "acordo"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/avaliacoes": {
+      "get": {
+        "description": "Avaliações da vaga. A nota do outro lado fica oculta até ambos avaliarem ou o prazo.",
+        "operationId": "avaliacoes_consultar_avaliacoes_da_vaga",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvaliacoesDaVaga"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Avaliacoes Da Vaga",
+        "tags": [
+          "avaliacoes"
+        ]
+      },
+      "post": {
+        "description": "Registra a avaliação mútua (1 a 5 e comentário) dentro das 48h após a conclusão.",
+        "operationId": "avaliacoes_avaliar_vaga",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvaliacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvaliacaoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Avaliar Vaga",
+        "tags": [
+          "avaliacoes"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/conclusao": {
+      "post": {
+        "description": "O contratante confirma a conclusão do serviço depois do fim previsto.",
+        "operationId": "pagamentos_confirmar_conclusao",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagamentoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Confirmar Conclusao",
+        "tags": [
+          "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/conversa": {
+      "get": {
+        "description": "Ponto de integração entre `vaga_id` e `conversa_id`: devolve a conversa aberta no aceite.",
+        "operationId": "conversas_consultar_conversa_da_vaga",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversaResumo"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Conversa Da Vaga",
+        "tags": [
+          "conversas"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/disputa": {
+      "get": {
+        "description": "Consulta o estado da disputa da vaga e os lançamentos do pagamento.",
+        "operationId": "disputas_consultar_disputa",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisputaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Disputa",
+        "tags": [
+          "disputas"
+        ]
+      },
+      "post": {
+        "description": "Abre a contestação dentro das 24h de confirmação e trava a vaga em `em_disputa`.",
+        "operationId": "disputas_contestar_servico",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisputaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisputaDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Contestar Servico",
+        "tags": [
+          "disputas"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/falta": {
+      "post": {
+        "description": "O contratante registra a falta do profissional após a tolerância; o valor é estornado.",
+        "operationId": "pagamentos_registrar_falta",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagamentoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Registrar Falta",
+        "tags": [
+          "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/interesse": {
+      "post": {
+        "description": "Marca o convite do profissional como interessado, com contraproposta opcional.",
+        "operationId": "vagas_manifestar_interesse",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InteresseEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConviteVaga"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Manifestar Interesse",
+        "tags": [
+          "vagas"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/pagamento": {
+      "get": {
+        "description": "Estado da cobrança, divisão entre profissional e plataforma e lançamentos.",
+        "operationId": "pagamentos_consultar_pagamento",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagamentoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Pagamento",
+        "tags": [
+          "pagamentos"
+        ]
+      },
+      "post": {
+        "description": "Abre a cobrança Pix da vaga aceita. O valor fica retido até a conclusão do serviço.",
+        "operationId": "pagamentos_abrir_cobranca",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagamentoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Abrir Cobranca",
+        "tags": [
+          "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/validacao-facial": {
+      "post": {
+        "description": "Validação facial do contratante; aprovada, libera o valor integral ao profissional.",
+        "operationId": "pagamentos_validar_facial",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ValidacaoFacialEntrada"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Entrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagamentoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Validar Facial",
+        "tags": [
+          "pagamentos"
+        ]
+      }
+    }
+  }
+}
