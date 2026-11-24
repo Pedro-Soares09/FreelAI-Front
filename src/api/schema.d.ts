@@ -224,6 +224,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/assinatura/pro": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Assinatura
+         * @description Situação do plano Pro e o valor mensal (simulado).
+         */
+        get: operations["conta_consultar_assinatura"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assinatura/pro/assinar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Assinar
+         * @description Ativa o plano Pro: notificações imediatas e selo; não altera a pontuação do match.
+         */
+        post: operations["conta_assinar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assinatura/pro/cancelar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancelar
+         * @description Cancela a renovação; o plano segue valendo até o fim do período pago.
+         */
+        post: operations["conta_cancelar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/login": {
         parameters: {
             query?: never;
@@ -352,6 +412,26 @@ export interface paths {
         get: operations["perfis_consultar_seguranca_da_categoria"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conta/exclusao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Excluir Conta
+         * @description Exclui a conta (anonimiza os dados pessoais) depois de confirmar a senha.
+         */
+        post: operations["conta_excluir_conta"];
         delete?: never;
         options?: never;
         head?: never;
@@ -992,6 +1072,46 @@ export interface paths {
         patch: operations["profissional_atualizar_raio"];
         trace?: never;
     };
+    "/api/v1/termos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Termos
+         * @description Versão atual dos termos e se a conta já a aceitou.
+         */
+        get: operations["conta_consultar_termos"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/termos/aceite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Aceitar Termos
+         * @description Registra o aceite da versão atual dos termos, com data e hora.
+         */
+        post: operations["conta_aceitar_termos"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/usuarios/{usuario_id}/avaliacoes": {
         parameters: {
             query?: never;
@@ -1375,6 +1495,11 @@ export interface components {
             /** Vaga Id */
             vaga_id: string;
         };
+        /** AceiteTermosEntrada */
+        AceiteTermosEntrada: {
+            /** Versao */
+            versao: string;
+        };
         /** AceitesAcordo */
         AceitesAcordo: {
             /** Contratante */
@@ -1419,6 +1544,17 @@ export interface components {
              * @description URL da API para acessar o arquivo armazenado.
              */
             url: string;
+        };
+        /** AssinaturaProDetalhe */
+        AssinaturaProDetalhe: {
+            /** Ativo */
+            ativo: boolean;
+            /** Renovacao Automatica */
+            renovacao_automatica: boolean;
+            /** Valido Ate */
+            valido_ate?: string | null;
+            /** Valor Mensal */
+            valor_mensal: number;
         };
         /** AtualizacaoProfissionalEntrada */
         AtualizacaoProfissionalEntrada: {
@@ -2427,6 +2563,11 @@ export interface components {
          * @enum {string}
          */
         EstadoVaga: "publicada" | "aguardando_aceite" | "aceita" | "aguardando_pagamento" | "contratada" | "em_execucao" | "encerrada" | "concluida" | "liberada" | "liberada_parcial" | "expirada" | "cancelada" | "falta" | "em_disputa" | "reembolsada";
+        /** ExclusaoContaEntrada */
+        ExclusaoContaEntrada: {
+            /** Senha */
+            senha: string;
+        };
         /** ExperienciaEntrada */
         ExperienciaEntrada: {
             /** Arquivo Url */
@@ -3141,6 +3282,13 @@ export interface components {
             /** Slug */
             slug: string;
         };
+        /** SituacaoTermos */
+        SituacaoTermos: {
+            /** Aceito */
+            aceito: boolean;
+            /** Versao Atual */
+            versao_atual: string;
+        };
         /**
          * StatusAprovacao
          * @enum {string}
@@ -3711,6 +3859,66 @@ export interface operations {
             };
         };
     };
+    conta_consultar_assinatura: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
+    conta_assinar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
+    conta_cancelar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
     auth_entrar: {
         parameters: {
             query?: never;
@@ -3902,6 +4110,37 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["SegurancaDaCategoria"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conta_excluir_conta: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExclusaoContaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {
@@ -4890,6 +5129,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conta_consultar_termos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoTermos"];
+                };
+            };
+        };
+    };
+    conta_aceitar_termos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AceiteTermosEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoTermos"];
                 };
             };
             /** @description Validation Error */

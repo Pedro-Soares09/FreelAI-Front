@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { mensagemDeErro } from "@/api/erro";
+import { useSessao } from "@/lib/session";
+import { contaApi } from "@/services/conta";
 import { useUser } from "@/context/user-context";
 import { policiesData } from "@/mocks/policies";
 import {
@@ -13,7 +17,16 @@ import {
   FileTextIcon,
 } from "@/components/ui/icons";
 
+const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
+
 export default function PolicyMainPage() {
+  const router = useRouter();
+  const { sair } = useSessao();
+  const [erroApi, setErroApi] = useState<string | null>(null);
+  const [versaoTermos, setVersaoTermos] = useState<string | null>(null);
+  const [confirmandoExclusao, setConfirmandoExclusao] = useState(false);
+  const [senhaExclusao, setSenhaExclusao] = useState("");
+  const [excluindo, setExcluindo] = useState(false);
   const {
     policiesAccepted,
     setPoliciesAccepted,
@@ -24,6 +37,36 @@ export default function PolicyMainPage() {
   const [hasAgreedCheckbox, setHasAgreedCheckbox] = useState(policiesAccepted);
   const [notificationToggle, setNotificationToggle] = useState(notificationsEnabled);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+
+  // Com a API real, o aceite vem da conta e é gravado com a versão dos termos.
+  useEffect(() => {
+    if (USA_MOCKS) return;
+    contaApi
+      .obterTermos()
+      .then((t) => {
+        setVersaoTermos(t.versao_atual);
+        if (t.aceito) {
+          setHasAgreedCheckbox(true);
+          setPoliciesAccepted(true);
+        }
+      })
+      .catch((e) => setErroApi(mensagemDeErro(e)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function excluirConta() {
+    setExcluindo(true);
+    setErroApi(null);
+    try {
+      await contaApi.excluirConta(senhaExclusao);
+      sair();
+      router.replace("/login");
+    } catch (e) {
+      setErroApi(mensagemDeErro(e));
+    } finally {
+      setExcluindo(false);
+    }
+  }
 
   const handleToggleNotifications = () => {
     const nextVal = !notificationToggle;
@@ -40,8 +83,17 @@ export default function PolicyMainPage() {
     }
   };
 
-  const handleConfirmAction = () => {
+  const handleConfirmAction = async () => {
     if (!hasAgreedCheckbox) return;
+    if (!USA_MOCKS && versaoTermos) {
+      try {
+        await contaApi.aceitarTermos(versaoTermos);
+        setErroApi(null);
+      } catch (e) {
+        setErroApi(mensagemDeErro(e));
+        return;
+      }
+    }
     setPoliciesAccepted(true);
     setShowSuccessToast(true);
     setTimeout(() => {
@@ -238,7 +290,63 @@ export default function PolicyMainPage() {
             <span>Confirmar e Salvar Políticas</span>
           </button>
         </div>
+        {erroApi && (
+          <p role="alert" className="rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
+            {erroApi}
+          </p>
+        )}
       </div>
+
+      {!USA_MOCKS && (
+        <div className="mt-6 space-y-3 rounded-2xl border-2 border-danger/40 bg-surface p-6">
+          <h2 className="text-lg font-bold text-fg">Excluir conta</h2>
+          <p className="text-xs text-muted">
+            Seus dados pessoais são anonimizados e o acesso é encerrado. O histórico financeiro das
+            vagas é mantido, como exige a lei. Não é possível excluir com vagas em andamento.
+          </p>
+          {!confirmandoExclusao ? (
+            <button
+              type="button"
+              onClick={() => setConfirmandoExclusao(true)}
+              className="rounded-xl border border-danger/60 px-4 py-2 text-sm font-semibold text-danger"
+            >
+              Excluir minha conta
+            </button>
+          ) : (
+            <div className="grid gap-3 sm:max-w-sm">
+              <label className="grid gap-1 text-sm">
+                <span className="font-semibold">Confirme com a sua senha</span>
+                <input
+                  type="password"
+                  value={senhaExclusao}
+                  onChange={(e) => setSenhaExclusao(e.target.value)}
+                  className="h-10 rounded-lg border border-borda bg-surface-2 px-3"
+                />
+              </label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={!senhaExclusao || excluindo}
+                  onClick={excluirConta}
+                  className="rounded-xl bg-danger px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+                >
+                  {excluindo ? "Excluindo..." : "Excluir definitivamente"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConfirmandoExclusao(false);
+                    setSenhaExclusao("");
+                  }}
+                  className="rounded-xl border border-borda px-4 py-2 text-sm"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 }
