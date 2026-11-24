@@ -98,6 +98,61 @@ function notificacaoDaApi(n: NotificacaoApi): Notificacao {
   };
 }
 
+type Top3Api = {
+  vaga: { id: string };
+  profissionais: { demonstrou_interesse?: boolean }[];
+};
+
+const PAINEL_POR_STATUS: Record<
+  string,
+  { estado: ItemPainelContratante['estado']; acao: ItemPainelContratante['proxima_acao'] }
+> = {
+  publicada: { estado: 'publicada', acao: 'escolher' },
+  em_contratacao: { estado: 'em_contratacao', acao: null },
+  aceita: { estado: 'contratada', acao: 'acordar' },
+  aguardando_pagamento: { estado: 'contratada', acao: 'pagar' },
+  contratada: { estado: 'contratada', acao: null },
+  em_execucao: { estado: 'em_execucao', acao: null },
+  aguardando_confirmacao: { estado: 'aguardando_confirmacao', acao: 'validar' },
+  em_disputa: { estado: 'aguardando_confirmacao', acao: null },
+  concluida: { estado: 'concluida', acao: 'avaliar' },
+  cancelada: { estado: 'encerradas', acao: null },
+  expirada: { estado: 'encerradas', acao: null },
+};
+
+/** Painel do contratante montado a partir das vagas, do top 3 e das conversas da API. */
+async function painelDaApi(): Promise<ItemPainelContratante[]> {
+  const [vagas, top3] = await Promise.all([
+    request<Vaga[]>('/api/v1/contratante/vagas'),
+    request<Top3Api[]>('/api/v1/contratante/top3').catch(() => [] as Top3Api[]),
+  ]);
+  const interessados = new Map(
+    top3.map((t) => [
+      String(t.vaga.id),
+      t.profissionais.filter((p) => p.demonstrou_interesse).length,
+    ])
+  );
+  return Promise.all(
+    vagas.map(async (vaga) => {
+      const regra = PAINEL_POR_STATUS[vaga.status] ?? { estado: 'encerradas' as const, acao: null };
+      let conversaId: string | null = null;
+      if (!['publicada', 'em_contratacao', 'cancelada', 'expirada'].includes(vaga.status)) {
+        conversaId = await request<{ id: number }>(`/api/v1/vagas/${vaga.id}/conversa`)
+          .then((c) => String(c.id))
+          .catch(() => null);
+      }
+      return {
+        vaga,
+        estado: regra.estado,
+        interessados_count: interessados.get(String(vaga.id)) ?? 0,
+        proxima_acao: regra.acao,
+        conversa_id: conversaId,
+        pagamento_id: regra.acao === 'pagar' ? String(vaga.id) : null,
+      } satisfies ItemPainelContratante;
+    })
+  );
+}
+
 export type CategoriaVaga = { slug: string; nome: string; nivel_risco: 'baixo' | 'medio' | 'alto' };
 
 export type NovaVaga = {
@@ -148,7 +203,9 @@ export const freelaiApi = {
       : request<Vaga>('/api/v1/vagas', { method: 'POST', body: JSON.stringify(dados) }),
 
   listarPainelContratante: () =>
-    request<ItemPainelContratante[]>('/api/v1/contratante/painel'),
+    USE_MOCKS
+      ? request<ItemPainelContratante[]>('/api/v1/contratante/painel')
+      : painelDaApi(),
 
   obterPagamentoPix: (vagaId: string) =>
     USE_MOCKS

@@ -18,6 +18,7 @@ const MapaVagas = dynamic(() => import('@/components/vagas/mapa-vagas'), {
   loading: () => <Carregando rotulo="Carregando mapa" />,
 });
 import { useToast } from '@/components/ui/toast';
+import { useSessao } from '@/lib/session';
 
 const RECIFE_CENTER = { lat: -8.0476, lng: -34.877 };
 const CATEGORIAS = [
@@ -66,17 +67,23 @@ function EstadoBadge({ estado }: { estado: EstadoPainelVaga }) {
   );
 }
 
+const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
+
 export default function VagasPage() {
-  const [perfil, setPerfil] = useState<'profissional' | 'contratante' | 'admin'>(
+  const { usuario } = useSessao();
+  const [perfilSalvo, setPerfilSalvo] = useState<'profissional' | 'contratante' | 'admin'>(
     'profissional'
   );
 
   useEffect(() => {
     const salvo = localStorage.getItem('freelai_perfil_ativo');
     if (salvo === 'contratante' || salvo === 'admin') {
-      setPerfil(salvo);
+      setPerfilSalvo(salvo);
     }
   }, []);
+
+  // Com a API real, o perfil ativo vem da sessão; no mock, do que ficou salvo no navegador.
+  const perfil = USA_MOCKS ? perfilSalvo : (usuario?.perfil_ativo ?? 'profissional');
 
   return perfil === 'contratante' || perfil === 'admin' ? (
     <PainelContratante />
@@ -206,6 +213,14 @@ function PainelContratante() {
                               className="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-zinc-950"
                             >
                               Ver 3 melhores
+                            </Link>
+                          )}
+                          {proxima_acao === 'acordar' && (
+                            <Link
+                              href={`/acordo/${vaga.id}`}
+                              className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950"
+                            >
+                              Fechar acordo
                             </Link>
                           )}
                           {proxima_acao === 'pagar' && pagamento_id && (

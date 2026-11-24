@@ -111,7 +111,7 @@ export interface ItemPainelContratante {
   vaga: Vaga;
   estado: EstadoPainelVaga;
   interessados_count: number;
-  proxima_acao: 'escolher' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
+  proxima_acao: 'escolher' | 'acordar' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
   conversa_id?: string | null;
   pagamento_id?: string | null;
 }
