@@ -76,6 +76,11 @@ export const contaApi = {
   segurancaDaCategoria: (slug: string) =>
     chamar<SegurancaCategoria>(`/api/v1/categorias/${encodeURIComponent(slug)}/seguranca`),
 
+  obterTermos: () => chamar<{ versao_atual: string; aceito: boolean }>("/api/v1/termos"),
+  aceitarTermos: (versao: string) =>
+    chamar<{ versao_atual: string; aceito: boolean }>("/api/v1/termos/aceite", json("POST", { versao })),
+  excluirConta: (senha: string) => chamar<void>("/api/v1/conta/exclusao", json("POST", { senha })),
+
   listarAprovacoes: (estado: "pendente" | "aprovado" | "recusado" = "pendente") =>
     chamar<ItemFila[]>(`/api/v1/admin/aprovacoes?estado=${estado}`),
   decidirAprovacao: (tipo: ItemFila["tipo"], id: number, decisao: "aprovar" | "recusar", motivo?: string) =>

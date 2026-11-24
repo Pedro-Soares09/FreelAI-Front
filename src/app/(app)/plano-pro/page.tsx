@@ -5,49 +5,49 @@ import { useRouter } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
 import { AssinaturaPro } from '@/types';
 import { IconCheck } from '@/components/ui/icons';
+import { mensagemDeErro } from '@/api/erro';
+import { formatDateTime } from '@/lib/format';
 
 export default function PlanoProPage() {
   const router = useRouter();
   const [assinatura, setAssinatura] = useState<AssinaturaPro | null>(null);
   const [loading, setLoading] = useState(true);
   const [processando, setProcessando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
     freelaiApi
       .obterAssinaturaPro()
       .then(setAssinatura)
-      .catch(() =>
-        setAssinatura({
-          ativo: false,
-          valor_mensal: 19.9,
-          valido_ate: null,
-          renovacao_automatica: false,
-        })
-      )
+      .catch((e) => setErro(mensagemDeErro(e)))
       .finally(() => setLoading(false));
   }, []);
 
   const handleAssinar = async () => {
     setProcessando(true);
+    setErro(null);
     try {
-      const novaAssinatura = await freelaiApi.assinarPlanoPro();
-      setAssinatura(novaAssinatura);
-      router.push('/perfil');
-    } catch {
-      const validade = new Date(
-        Date.now() + 30 * 24 * 60 * 60 * 1000
-      ).toISOString();
-      setAssinatura({
-        ativo: true,
-        valor_mensal: 19.9,
-        valido_ate: validade,
-        renovacao_automatica: true,
-      });
-      router.push('/perfil');
+      setAssinatura(await freelaiApi.assinarPlanoPro());
+    } catch (e) {
+      setErro(mensagemDeErro(e));
     } finally {
       setProcessando(false);
     }
   };
+
+  const handleCancelar = async () => {
+    setProcessando(true);
+    setErro(null);
+    try {
+      setAssinatura(await freelaiApi.cancelarPlanoPro());
+    } catch (e) {
+      setErro(mensagemDeErro(e));
+    } finally {
+      setProcessando(false);
+    }
+  };
+
+  const valorFormatado = (assinatura?.valor_mensal ?? 0).toFixed(2).replace('.', ',');
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-4 md:p-8">
@@ -65,7 +65,7 @@ export default function PlanoProPage() {
         </p>
 
         <div className="my-6 flex items-baseline gap-1 border-y border-borda py-5">
-          <span className="text-4xl font-black text-primary">R$ 19,90</span>
+          <span className="text-4xl font-black text-primary">R$ {valorFormatado}</span>
           <span className="text-sm text-muted">/ mês (Pix simulado)</span>
         </div>
 
@@ -98,14 +98,37 @@ export default function PlanoProPage() {
           do match (40% localização, 30% habilidades, 20% reputação, 10% preço).
         </p>
 
+        {erro && (
+          <p role="alert" className="mt-4 rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
+            {erro}
+          </p>
+        )}
+
         <div className="mt-6">
           {loading ? (
             <div className="h-12 animate-pulse rounded-xl bg-surface-2" />
           ) : assinatura?.ativo ? (
             <div className="space-y-3">
               <div className="rounded-xl border border-primary/40 bg-primary/10 p-3 text-center text-sm font-semibold text-primary">
-                Você já é assinante Plano Pro!
+                {assinatura.renovacao_automatica
+                  ? 'Você já é assinante Plano Pro!'
+                  : 'Renovação cancelada.'}
+                {assinatura.valido_ate && (
+                  <span className="block text-xs font-normal">
+                    Válido até {formatDateTime(assinatura.valido_ate)}
+                  </span>
+                )}
               </div>
+              {assinatura.renovacao_automatica && (
+                <button
+                  type="button"
+                  disabled={processando}
+                  onClick={handleCancelar}
+                  className="w-full rounded-xl border border-borda bg-surface-2 py-3 text-sm font-semibold text-fg disabled:opacity-50"
+                >
+                  Cancelar renovação
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => router.push('/perfil')}

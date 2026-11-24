@@ -19,6 +19,21 @@
         "title": "AceiteResposta",
         "type": "object"
       },
+      "AceiteTermosEntrada": {
+        "properties": {
+          "versao": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Versao",
+            "type": "string"
+          }
+        },
+        "required": [
+          "versao"
+        ],
+        "title": "AceiteTermosEntrada",
+        "type": "object"
+      },
       "AceitesAcordo": {
         "properties": {
           "contratante": {
@@ -103,6 +118,41 @@
           "criado_em"
         ],
         "title": "ArquivoEnviado",
+        "type": "object"
+      },
+      "AssinaturaProDetalhe": {
+        "properties": {
+          "ativo": {
+            "title": "Ativo",
+            "type": "boolean"
+          },
+          "renovacao_automatica": {
+            "title": "Renovacao Automatica",
+            "type": "boolean"
+          },
+          "valido_ate": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valido Ate"
+          },
+          "valor_mensal": {
+            "title": "Valor Mensal",
+            "type": "number"
+          }
+        },
+        "required": [
+          "ativo",
+          "valor_mensal",
+          "renovacao_automatica"
+        ],
+        "title": "AssinaturaProDetalhe",
         "type": "object"
       },
       "AtualizacaoProfissionalEntrada": {
@@ -2254,6 +2304,21 @@
         "title": "EstadoVaga",
         "type": "string"
       },
+      "ExclusaoContaEntrada": {
+        "properties": {
+          "senha": {
+            "maxLength": 72,
+            "minLength": 1,
+            "title": "Senha",
+            "type": "string"
+          }
+        },
+        "required": [
+          "senha"
+        ],
+        "title": "ExclusaoContaEntrada",
+        "type": "object"
+      },
       "ExperienciaEntrada": {
         "properties": {
           "arquivo_url": {
@@ -3871,6 +3936,24 @@
         "title": "SegurancaDaCategoria",
         "type": "object"
       },
+      "SituacaoTermos": {
+        "properties": {
+          "aceito": {
+            "title": "Aceito",
+            "type": "boolean"
+          },
+          "versao_atual": {
+            "title": "Versao Atual",
+            "type": "string"
+          }
+        },
+        "required": [
+          "versao_atual",
+          "aceito"
+        ],
+        "title": "SituacaoTermos",
+        "type": "object"
+      },
       "StatusAprovacao": {
         "enum": [
           "pendente",
@@ -5025,6 +5108,87 @@
         ]
       }
     },
+    "/api/v1/assinatura/pro": {
+      "get": {
+        "description": "Situação do plano Pro e o valor mensal (simulado).",
+        "operationId": "conta_consultar_assinatura",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssinaturaProDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Assinatura",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/assinatura/pro/assinar": {
+      "post": {
+        "description": "Ativa o plano Pro: notificações imediatas e selo; não altera a pontuação do match.",
+        "operationId": "conta_assinar",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssinaturaProDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Assinar",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/assinatura/pro/cancelar": {
+      "post": {
+        "description": "Cancela a renovação; o plano segue valendo até o fim do período pago.",
+        "operationId": "conta_cancelar",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssinaturaProDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancelar",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
     "/api/v1/auth/login": {
       "post": {
         "operationId": "auth_entrar",
@@ -5299,6 +5463,46 @@
         "summary": "Consultar Seguranca Da Categoria",
         "tags": [
           "perfis"
+        ]
+      }
+    },
+    "/api/v1/conta/exclusao": {
+      "post": {
+        "description": "Exclui a conta (anonimiza os dados pessoais) depois de confirmar a senha.",
+        "operationId": "conta_excluir_conta",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExclusaoContaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Excluir Conta",
+        "tags": [
+          "conta"
         ]
       }
     },
@@ -6804,6 +7008,80 @@
         "summary": "Atualizar Raio",
         "tags": [
           "profissional"
+        ]
+      }
+    },
+    "/api/v1/termos": {
+      "get": {
+        "description": "Versão atual dos termos e se a conta já a aceitou.",
+        "operationId": "conta_consultar_termos",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SituacaoTermos"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Termos",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/termos/aceite": {
+      "post": {
+        "description": "Registra o aceite da versão atual dos termos, com data e hora.",
+        "operationId": "conta_aceitar_termos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AceiteTermosEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SituacaoTermos"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Termos",
+        "tags": [
+          "conta"
         ]
       }
     },
