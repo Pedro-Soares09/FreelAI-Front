@@ -1,4 +1,6 @@
 import { IconAlert, IconCheck, IconClock } from "@/components/ui/icons";
+import { urlDoArquivo } from "@/lib/arquivos";
+import { estiloDaCor } from "@/lib/cores-perfil";
 import type { VerificationStatus } from "@/types";
 
 type Tamanho = "sm" | "md" | "lg" | "xl";
@@ -8,6 +10,8 @@ type AvatarVerifiedProps = {
   imageUrl?: string;
   verified?: boolean;
   status?: VerificationStatus;
+  /** Cor da paleta de perfil usada nas iniciais quando não há foto. */
+  cor?: string | null;
   /** Tamanho nomeado ou em pixels. */
   size?: Tamanho | number;
   showLabel?: boolean;
@@ -20,6 +24,7 @@ export function AvatarVerified({
   imageUrl,
   verified = false,
   status,
+  cor,
   size = "md",
   showLabel = false,
 }: AvatarVerifiedProps) {
@@ -46,7 +51,7 @@ export function AvatarVerified({
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={imageUrl}
+            src={urlDoArquivo(imageUrl)}
             alt={`Foto de ${name}`}
             width={px}
             height={px}
@@ -55,8 +60,10 @@ export function AvatarVerified({
         ) : (
           <span
             aria-hidden="true"
-            className="flex h-full w-full items-center justify-center rounded-full bg-primary/20 font-bold text-primary"
-            style={{ fontSize: Math.max(12, px * 0.4) }}
+            className={`flex h-full w-full items-center justify-center rounded-full font-bold ${
+              cor ? "cor-perfil cor-perfil-fundo" : "bg-primary/20 text-primary"
+            }`}
+            style={{ fontSize: Math.max(12, px * 0.4), ...(cor ? estiloDaCor(cor) : {}) }}
           >
             {name.slice(0, 1).toUpperCase()}
           </span>

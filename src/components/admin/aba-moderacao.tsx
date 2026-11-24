@@ -9,6 +9,7 @@ import { EstadoDeLista } from "@/components/ui/estados";
 import { Modal } from "@/components/ui/modal";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/toast";
+import { formatCurrency } from "@/lib/format";
 import {
   repositorioModeracao,
   rotuloMotivo,
@@ -27,6 +28,42 @@ type Estado<T> =
 function tempo(minutos: number): string {
   if (minutos < 60) return `${minutos} min`;
   return `${Math.floor(minutos / 60)} h ${minutos % 60} min`;
+}
+
+type Filtro = "abertas" | "decididas";
+
+function Filtros({ valor, onMudar, abertas, decididas }: { valor: Filtro; onMudar: (f: Filtro) => void; abertas: number; decididas: number }) {
+  const opcoes: { id: Filtro; rotulo: string; n: number }[] = [
+    { id: "abertas", rotulo: "Abertas", n: abertas },
+    { id: "decididas", rotulo: "Decididas", n: decididas },
+  ];
+  return (
+    <div role="group" aria-label="Filtrar por situação" className="mb-4 flex gap-2">
+      {opcoes.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          aria-pressed={valor === o.id}
+          onClick={() => onMudar(o.id)}
+          className={`rounded-full border px-3 py-1 text-sm transition ${valor === o.id ? "border-primary bg-primary/15 font-semibold text-primary" : "border-borda text-muted hover:border-primary/60"}`}
+        >
+          {o.rotulo} ({o.n})
+        </button>
+      ))}
+    </div>
+  );
+}
+
+const ROTULO_ESTADO_DENUNCIA: Record<string, string> = { procedente: "Procedente", improcedente: "Improcedente" };
+const ROTULO_ESTADO_DISPUTA: Record<string, string> = {
+  reembolso_total: "Reembolso total",
+  reembolso_parcial: "Reembolso parcial",
+  pagamento_integral: "Pagamento integral",
+};
+
+function valorDaDisputa(d: DisputaAdmin): number | null {
+  const bruto = d.pagamento?.divisao?.valor_total ?? (d as unknown as { valor_total?: number }).valor_total;
+  return bruto === undefined || bruto === null ? null : Number(bruto);
 }
 
 function useFila<T>(buscar: () => Promise<T[]>) {
@@ -56,8 +93,10 @@ export function AbaDenuncias({ onContagem }: { onContagem?: (n: number) => void 
   const [ocupado, setOcupado] = useState(false);
   const { avisar } = useToast();
 
+  const [filtro, setFiltro] = useState<Filtro>("abertas");
+
   useEffect(() => {
-    if (estado.tipo === "pronto") onContagem?.(estado.dados.length);
+    if (estado.tipo === "pronto") onContagem?.(estado.dados.filter((d) => d.estado === "aberta").length);
   }, [estado, onContagem]);
 
   function fechar() {
@@ -95,9 +134,15 @@ export function AbaDenuncias({ onContagem }: { onContagem?: (n: number) => void 
       <EstadoDeLista
         estado={estado}
         onTentarNovamente={carregar}
-        vazio={{ titulo: "Nenhuma denúncia aberta", descricao: "As denúncias recebidas aparecem aqui para análise." }}
+        vazio={{ titulo: "Nenhuma denúncia registrada", descricao: "As denúncias recebidas aparecem aqui para análise." }}
       >
-        {(itens) => (
+        {(todas) => {
+          const abertas = todas.filter((d) => d.estado === "aberta");
+          const itens = filtro === "abertas" ? abertas : todas.filter((d) => d.estado !== "aberta");
+          return (
+          <>
+          <Filtros valor={filtro} onMudar={setFiltro} abertas={abertas.length} decididas={todas.length - abertas.length} />
+          {itens.length === 0 && <p className="text-sm text-muted">Nada por aqui.</p>}
           <ul className="grid gap-3">
             {itens.map((d) => (
               <li key={d.id}>
@@ -107,16 +152,30 @@ export function AbaDenuncias({ onContagem }: { onContagem?: (n: number) => void 
                       <p className="font-semibold">{rotuloMotivo(d.motivo)}</p>
                       <p className="text-sm text-muted">{d.descricao ?? "Sem descrição."}</p>
                       <p className="mt-1 text-xs text-muted">
-                        Denunciado: usuário {d.denunciado_id}
+                        Denunciado: {d.denunciado_nome ?? `usuário ${d.denunciado_id}`}
+                        {d.denunciante_nome ? ` · Denunciante: ${d.denunciante_nome}` : ""}
                         {d.vaga_id ? ` · Vaga ${d.vaga_id}` : ""}
                       </p>
+                      {d.estado !== "aberta" && d.decisao_motivo && (
+                        <p className="mt-2 text-sm">
+                          <strong>Decisão:</strong> {d.decisao_motivo}
+                        </p>
+                      )}
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                       {d.origem === "automatica" && <Badge tom="info">Automática</Badge>}
-                      <Badge tom={d.acima_da_meta ? "warning" : "neutral"}>
-                        {d.acima_da_meta ? "Acima de 48 h úteis: " : "Em fila: "}
-                        {tempo(d.tempo_espera_minutos)}
-                      </Badge>
+                      {d.estado === "aberta" ? (
+                        <Badge tom={d.acima_da_meta ? "warning" : "neutral"}>
+                          {d.acima_da_meta ? "Acima de 48 h úteis: " : "Em fila: "}
+                          {tempo(d.tempo_espera_minutos)}
+                        </Badge>
+                      ) : (
+                        <Badge tom={d.estado === "procedente" ? "danger" : "success"}>
+                          {ROTULO_ESTADO_DENUNCIA[d.estado] ?? d.estado}
+                        </Badge>
+                      )}
+                      {d.conversa_bloqueada && <Badge tom="warning">Chat bloqueado</Badge>}
+                      {d.denunciado_estado === "banida" && <Badge tom="danger">Conta banida</Badge>}
                       {(d.denuncias_procedentes_acumuladas ?? 0) > 0 && (
                         <Badge tom="danger">
                           {d.denuncias_procedentes_acumuladas} penalidade(s) anterior(es)
@@ -124,22 +183,28 @@ export function AbaDenuncias({ onContagem }: { onContagem?: (n: number) => void 
                       )}
                     </div>
                   </div>
-                  <p className="mt-3 text-xs text-muted">
-                    Ao validar, o chat entre as partes é bloqueado. Na segunda penalidade o usuário é banido.
-                  </p>
-                  <div className="mt-3 flex gap-2">
-                    <Button size="sm" variant="danger" onClick={() => setDecidindo({ item: d, decisao: "procedente" })}>
-                      Validar denúncia
-                    </Button>
-                    <Button size="sm" variant="secondary" onClick={() => setDecidindo({ item: d, decisao: "improcedente" })}>
-                      Recusar
-                    </Button>
-                  </div>
+                  {d.estado === "aberta" && (
+                    <>
+                      <p className="mt-3 text-xs text-muted">
+                        Ao validar, o chat entre as partes é bloqueado. Na segunda penalidade o usuário é banido.
+                      </p>
+                      <div className="mt-3 flex gap-2">
+                        <Button size="sm" variant="danger" onClick={() => setDecidindo({ item: d, decisao: "procedente" })}>
+                          Validar denúncia
+                        </Button>
+                        <Button size="sm" variant="secondary" onClick={() => setDecidindo({ item: d, decisao: "improcedente" })}>
+                          Recusar
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </Card>
               </li>
             ))}
           </ul>
-        )}
+          </>
+          );
+        }}
       </EstadoDeLista>
 
       <Modal
@@ -182,8 +247,10 @@ export function AbaDisputas({ onContagem }: { onContagem?: (n: number) => void }
   const [ocupado, setOcupado] = useState(false);
   const { avisar } = useToast();
 
+  const [filtro, setFiltro] = useState<Filtro>("abertas");
+
   useEffect(() => {
-    if (estado.tipo === "pronto") onContagem?.(estado.dados.length);
+    if (estado.tipo === "pronto") onContagem?.(estado.dados.filter((d) => d.estado === "aberta").length);
   }, [estado, onContagem]);
 
   function fechar() {
@@ -221,22 +288,49 @@ export function AbaDisputas({ onContagem }: { onContagem?: (n: number) => void }
       <EstadoDeLista
         estado={estado}
         onTentarNovamente={carregar}
-        vazio={{ titulo: "Nenhuma disputa aberta", descricao: "Disputas de pagamento aparecem aqui para decisão." }}
+        vazio={{ titulo: "Nenhuma disputa registrada", descricao: "Disputas de pagamento aparecem aqui para decisão." }}
       >
-        {(itens) => (
+        {(todas) => {
+          const abertas = todas.filter((d) => d.estado === "aberta");
+          const itens = filtro === "abertas" ? abertas : todas.filter((d) => d.estado !== "aberta");
+          const nomes: Record<number, string> = {};
+          return (
+          <>
+          <Filtros valor={filtro} onMudar={setFiltro} abertas={abertas.length} decididas={todas.length - abertas.length} />
+          {itens.length === 0 && <p className="text-sm text-muted">Nada por aqui.</p>}
           <ul className="grid gap-3">
-            {itens.map((d) => (
+            {itens.map((d) => {
+              nomes[d.contratante_usuario_id] = d.contratante_nome ?? `Usuário ${d.contratante_usuario_id}`;
+              if (d.profissional_usuario_id) nomes[d.profissional_usuario_id] = d.profissional_nome ?? `Usuário ${d.profissional_usuario_id}`;
+              return (
               <li key={d.id}>
                 <Card className={d.acima_da_meta ? "border-warning/60" : undefined}>
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="font-semibold">{d.vaga_titulo}</p>
                       <p className="text-sm text-muted">{d.descricao}</p>
+                      <p className="mt-1 text-xs text-muted">
+                        Contratante: {d.contratante_nome ?? `usuário ${d.contratante_usuario_id}`}
+                        {d.profissional_nome ? ` · Profissional: ${d.profissional_nome}` : ""}
+                        {valorDaDisputa(d) !== null ? ` · Valor: ${formatCurrency(valorDaDisputa(d) ?? 0)}` : ""}
+                      </p>
+                      {d.estado !== "aberta" && d.decisao_motivo && (
+                        <p className="mt-2 text-sm">
+                          <strong>Decisão:</strong> {d.decisao_motivo}
+                        </p>
+                      )}
                     </div>
-                    <Badge tom={d.acima_da_meta ? "warning" : "neutral"}>
-                      {d.acima_da_meta ? "Acima da meta: " : "Em fila: "}
-                      {tempo(d.tempo_espera_minutos)}
-                    </Badge>
+                    {d.estado === "aberta" ? (
+                      <Badge tom={d.acima_da_meta ? "warning" : "neutral"}>
+                        {d.acima_da_meta ? "Acima da meta: " : "Em fila: "}
+                        {tempo(d.tempo_espera_minutos)}
+                      </Badge>
+                    ) : (
+                      <Badge tom="success">
+                        {ROTULO_ESTADO_DISPUTA[d.estado] ?? d.estado}
+                        {d.estado === "reembolso_parcial" && d.percentual_reembolso ? ` (${d.percentual_reembolso}% ao contratante)` : ""}
+                      </Badge>
+                    )}
                   </div>
                   {d.chat.length > 0 && (
                     <details className="mt-3 text-sm">
@@ -244,28 +338,33 @@ export function AbaDisputas({ onContagem }: { onContagem?: (n: number) => void }
                       <ul className="mt-2 grid gap-1 text-muted">
                         {d.chat.map((m) => (
                           <li key={m.id}>
-                            <strong className="text-fg">Usuário {m.autor_id}:</strong> {m.texto ?? "Anexo enviado"}
+                            <strong className="text-fg">{nomes[m.autor_id] ?? `Usuário ${m.autor_id}`}:</strong> {m.texto ?? "Anexo enviado"}
                           </li>
                         ))}
                       </ul>
                     </details>
                   )}
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <Button size="sm" onClick={() => setDecidindo({ item: d, decisao: "pagamento_integral" })}>
-                      Pagar profissional
-                    </Button>
-                    <Button size="sm" variant="secondary" onClick={() => setDecidindo({ item: d, decisao: "reembolso_parcial" })}>
-                      Reembolso parcial
-                    </Button>
-                    <Button size="sm" variant="danger" onClick={() => setDecidindo({ item: d, decisao: "reembolso_total" })}>
-                      Reembolso total
-                    </Button>
-                  </div>
+                  {d.estado === "aberta" && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Button size="sm" onClick={() => setDecidindo({ item: d, decisao: "pagamento_integral" })}>
+                        Pagar profissional
+                      </Button>
+                      <Button size="sm" variant="secondary" onClick={() => setDecidindo({ item: d, decisao: "reembolso_parcial" })}>
+                        Reembolso parcial
+                      </Button>
+                      <Button size="sm" variant="danger" onClick={() => setDecidindo({ item: d, decisao: "reembolso_total" })}>
+                        Reembolso total
+                      </Button>
+                    </div>
+                  )}
                 </Card>
               </li>
-            ))}
+              );
+            })}
           </ul>
-        )}
+          </>
+          );
+        }}
       </EstadoDeLista>
 
       <Modal

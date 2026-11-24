@@ -10,17 +10,13 @@ import { Card } from "@/components/ui/card";
 import { Carregando, ErroComRetry } from "@/components/ui/estados";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { SeloDestaque } from "@/components/ui/selos";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/toast";
 import { mascaraTelefone } from "@/lib/bairros";
 import { useSessao } from "@/lib/session";
-import {
-  contaApi,
-  type Comprovacao,
-  type PerfilContratante,
-  type PerfilProfissional,
-} from "@/services/conta";
+import { PerfilContratanteEditavel } from "@/components/contratante/perfil-editavel";
+import { contratanteApi, type PerfilContratanteDetalhe } from "@/services/contratante";
+import { contaApi, type Comprovacao, type PerfilProfissional } from "@/services/conta";
 
 const ROTULO_VERIFICACAO = {
   pendente: "Verificação pendente",
@@ -32,32 +28,6 @@ const TOM_VERIFICACAO = { pendente: "warning", em_analise: "info", verificado: "
 const TOM_STATUS = { pendente: "warning", aprovado: "success", recusado: "danger" } as const;
 const ROTULO_PENDENCIA = { experiencia: "experiência", qualificacao: "qualificação", epi: "EPI" } as const;
 const ROTULO_COMPROVACAO = { experiencia: "Experiência", qualificacao: "Qualificação", epi: "EPI" } as const;
-
-function VisaoContratante({ perfil }: { perfil: PerfilContratante }) {
-  return (
-    <Card>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold">{perfil.nome}</h2>
-        <div className="flex flex-wrap items-center gap-2">
-          {perfil.destaque && <SeloDestaque />}
-          <Badge tom={TOM_VERIFICACAO[perfil.verificacao]}>{ROTULO_VERIFICACAO[perfil.verificacao]}</Badge>
-        </div>
-      </div>
-      <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
-        <div><dt className="text-muted">Tipo</dt><dd>{perfil.tipo_pessoa === "pf" ? "Pessoa física" : "Empresa"}</dd></div>
-        {perfil.razao_social && <div><dt className="text-muted">Razão social</dt><dd>{perfil.razao_social}</dd></div>}
-        {perfil.documento && <div><dt className="text-muted">Documento</dt><dd>{perfil.documento}</dd></div>}
-        <div><dt className="text-muted">Telefone</dt><dd>{mascaraTelefone(perfil.telefone)}</dd></div>
-      </dl>
-      {perfil.verificacao !== "verificado" && (
-        <p className="mt-4 text-sm">
-          {perfil.verificacao === "recusado" && perfil.verificacao_motivo ? `Motivo da recusa: ${perfil.verificacao_motivo}. ` : ""}
-          <Link href="/verificacao" className="font-semibold text-primary hover:underline">Abrir verificação de identidade</Link>
-        </p>
-      )}
-    </Card>
-  );
-}
 
 function VisaoProfissional({ inicial, recarregar }: { inicial: PerfilProfissional; recarregar: () => void }) {
   const { avisar } = useToast();
@@ -232,14 +202,14 @@ function VisaoProfissional({ inicial, recarregar }: { inicial: PerfilProfissiona
 export default function PerfilPage() {
   const { usuario } = useSessao();
   const [profissional, setProfissional] = useState<PerfilProfissional | null>(null);
-  const [contratante, setContratante] = useState<PerfilContratante | null>(null);
+  const [contratante, setContratante] = useState<PerfilContratanteDetalhe | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [carregando, setCarregando] = useState(true);
 
   const carregar = useCallback(async () => {
     if (!usuario) return;
     try {
-      if (usuario.perfil_ativo === "contratante") setContratante(await contaApi.obterPerfilContratante());
+      if (usuario.perfil_ativo === "contratante") setContratante(await contratanteApi.obterMeu());
       else if (usuario.perfil_ativo === "profissional") setProfissional(await contaApi.obterPerfilProfissional());
       setErro(null);
     } catch (e) {
@@ -260,7 +230,7 @@ export default function PerfilPage() {
       ) : erro ? (
         <ErroComRetry mensagem={erro} onTentarNovamente={() => void carregar()} />
       ) : usuario?.perfil_ativo === "contratante" && contratante ? (
-        <VisaoContratante perfil={contratante} />
+        <PerfilContratanteEditavel perfil={contratante} usuarioId={contratante.usuario_id} recarregar={() => void carregar()} />
       ) : profissional ? (
         <VisaoProfissional inicial={profissional} recarregar={() => void carregar()} />
       ) : (

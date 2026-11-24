@@ -518,6 +518,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/contratantes/{usuario_id}/perfil": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Perfil Publico Do Contratante
+         * @description Visão pública do contratante, sem dados sensíveis, para quem está logado.
+         */
+        get: operations["perfis_consultar_perfil_publico_do_contratante"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/conversas": {
         parameters: {
             query?: never;
@@ -900,7 +920,11 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /**
+         * Atualizar Meu Perfil Contratante
+         * @description Edita bio, bairro, horário de contato, preferências, cor de destaque e avatar.
+         */
+        patch: operations["perfis_atualizar_meu_perfil_contratante"];
         trace?: never;
     };
     "/api/v1/perfis/profissional": {
@@ -1049,6 +1073,26 @@ export interface paths {
         put?: never;
         /** Enviar Experiencia */
         post: operations["perfis_enviar_experiencia"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/mapa-ofertas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Mapa De Ofertas
+         * @description Ofertas abertas perto do profissional, filtradas pelas categorias e experiências dele.
+         */
+        get: operations["profissional_mapa_de_ofertas"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1620,6 +1664,31 @@ export interface components {
             /** Valor Mensal */
             valor_mensal: number;
         };
+        /**
+         * AtualizacaoContratanteEntrada
+         * @description Campos opcionais da personalização; só o que for enviado é alterado.
+         */
+        AtualizacaoContratanteEntrada: {
+            /** Aceita Notificacoes */
+            aceita_notificacoes?: boolean | null;
+            /**
+             * Avatar Arquivo Id
+             * @description Arquivo do tipo foto já enviado; 0 remove o avatar.
+             */
+            avatar_arquivo_id?: number | null;
+            /** Bairro */
+            bairro?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Categorias Interesse */
+            categorias_interesse?: string[] | null;
+            /** Cor Destaque */
+            cor_destaque?: ("lilas" | "azul" | "verde" | "rosa" | "laranja" | "grafite") | null;
+            /** Exigir Verificado */
+            exigir_verificado?: boolean | null;
+            /** Horario Contato */
+            horario_contato?: string | null;
+        };
         /** AtualizacaoProfissionalEntrada */
         AtualizacaoProfissionalEntrada: {
             caracteristicas?: components["schemas"]["CaracteristicasEntrada"] | null;
@@ -1690,6 +1759,22 @@ export interface components {
              * @example 5
              */
             nota: number;
+        };
+        /** AvaliacaoPublica */
+        AvaliacaoPublica: {
+            /** Avaliador Nome */
+            avaliador_nome: string;
+            /** Comentario */
+            comentario?: string | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Nota */
+            nota: number;
+            /** Vaga Titulo */
+            vaga_titulo: string;
         };
         /**
          * AvaliacoesDaVaga
@@ -1826,12 +1911,15 @@ export interface components {
             experiencias?: components["schemas"]["ExperienciaEntrada"][];
             /** Foto Url */
             foto_url?: string | null;
-            /** Latitude */
-            latitude: number;
+            /**
+             * Latitude
+             * @description Opcional: deduzida do bairro quando ausente.
+             */
+            latitude?: number | null;
             /** Logradouro */
             logradouro?: string | null;
             /** Longitude */
-            longitude: number;
+            longitude?: number | null;
             /**
              * Raio Km
              * @default 5
@@ -1851,6 +1939,13 @@ export interface components {
             comunicacao?: number | null;
             /** Organizacao */
             organizacao?: number | null;
+        };
+        /** CategoriaDeInteresse */
+        CategoriaDeInteresse: {
+            /** Nome */
+            nome: string;
+            /** Slug */
+            slug: string;
         };
         /** CategoriaDoPerfil */
         CategoriaDoPerfil: {
@@ -1986,6 +2081,8 @@ export interface components {
              * @default 0
              */
             adicionais_pagos: number;
+            /** Cor Destaque */
+            cor_destaque?: string | null;
             /**
              * Destaque
              * @default false
@@ -2006,6 +2103,8 @@ export interface components {
             pro: boolean;
             /** Total Avaliacoes */
             total_avaliacoes: number;
+            /** Usuario Id */
+            usuario_id?: number | null;
             /** Verificado */
             verificado: boolean;
         };
@@ -2324,11 +2423,15 @@ export interface components {
             denunciado_estado?: components["schemas"]["EstadoConta"] | null;
             /** Denunciado Id */
             denunciado_id: number;
+            /** Denunciado Nome */
+            denunciado_nome?: string | null;
             /**
              * Denunciante Id
              * @description Autor da denúncia (nulo quando gerada automaticamente pelo chat).
              */
             denunciante_id?: number | null;
+            /** Denunciante Nome */
+            denunciante_nome?: string | null;
             /**
              * Denuncias Procedentes Acumuladas
              * @description Total de denúncias procedentes acumuladas pelo denunciado.
@@ -2511,6 +2614,8 @@ export interface components {
              * @description Histórico completo de mensagens da conversa da vaga.
              */
             chat: components["schemas"]["MensagemDisputaAdmin"][];
+            /** Contratante Nome */
+            contratante_nome?: string | null;
             /** Contratante Usuario Id */
             contratante_usuario_id: number;
             /** Conversa Id */
@@ -2537,6 +2642,8 @@ export interface components {
             pagamento: components["schemas"]["PagamentoDetalhe"];
             /** Percentual Reembolso */
             percentual_reembolso?: number | null;
+            /** Profissional Nome */
+            profissional_nome?: string | null;
             /** Profissional Usuario Id */
             profissional_usuario_id?: number | null;
             /**
@@ -2800,6 +2907,22 @@ export interface components {
             /** Senha */
             senha: string;
         };
+        /** MapaDeOfertas */
+        MapaDeOfertas: {
+            /**
+             * Categorias Do Perfil
+             * @description Slugs das categorias de atuação e de experiência usadas no filtro.
+             */
+            categorias_do_perfil: string[];
+            /** Centro Latitude */
+            centro_latitude: number;
+            /** Centro Longitude */
+            centro_longitude: number;
+            /** Ofertas */
+            ofertas: components["schemas"]["OfertaNoMapa"][];
+            /** Raio Km */
+            raio_km: number;
+        };
         /**
          * MensagemDetalhe
          * @description Mensagem persistida no histórico de uma conversa.
@@ -2929,6 +3052,39 @@ export interface components {
              */
             visivel_em: string;
         };
+        /** OfertaNoMapa */
+        OfertaNoMapa: {
+            /** Bairro */
+            bairro: string;
+            /** Categoria Nome */
+            categoria_nome: string;
+            /** Categoria Slug */
+            categoria_slug: string;
+            /** Distancia Km */
+            distancia_km: number;
+            /** Inicio Em */
+            inicio_em: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Pendencias
+             * @description O que falta aprovar: experiencia, qualificacao, epi.
+             */
+            pendencias?: string[];
+            /**
+             * Pode Atuar
+             * @description Verdadeiro quando o perfil já cumpre as regras de risco.
+             */
+            pode_atuar: boolean;
+            /** Titulo */
+            titulo: string;
+            /** Vaga Id */
+            vaga_id: number;
+            /** Valor */
+            valor: string;
+        };
         /**
          * OrigemDenuncia
          * @enum {string}
@@ -3050,10 +3206,28 @@ export interface components {
         /** PerfilContratanteDetalhe */
         PerfilContratanteDetalhe: {
             /**
+             * Aceita Notificacoes
+             * @default true
+             */
+            aceita_notificacoes: boolean;
+            /**
              * Adicionais Pagos
              * @default 0
              */
             adicionais_pagos: number;
+            /** Avatar Url */
+            avatar_url?: string | null;
+            /** Bairro */
+            bairro?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Categorias Interesse */
+            categorias_interesse?: string[];
+            /**
+             * Cor Destaque
+             * @default lilas
+             */
+            cor_destaque: string;
             /**
              * Destaque
              * @default false
@@ -3061,6 +3235,13 @@ export interface components {
             destaque: boolean;
             /** Documento */
             documento: string | null;
+            /**
+             * Exigir Verificado
+             * @default false
+             */
+            exigir_verificado: boolean;
+            /** Horario Contato */
+            horario_contato?: string | null;
             /** Id */
             id: number;
             /** Nome */
@@ -3124,6 +3305,73 @@ export interface components {
             verificacao_motivo: string | null;
         };
         /**
+         * PerfilPublicoContratante
+         * @description Visão pública do contratante, sem documento, telefone, selfie nem e-mail.
+         */
+        PerfilPublicoContratante: {
+            /**
+             * Adicionais Pagos
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /** Avaliacoes */
+            avaliacoes?: components["schemas"]["AvaliacaoPublica"][];
+            /** Avatar Url */
+            avatar_url?: string | null;
+            /** Bairro */
+            bairro?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Categorias Interesse */
+            categorias_interesse?: components["schemas"]["CategoriaDeInteresse"][];
+            /**
+             * Cor Destaque
+             * @default lilas
+             */
+            cor_destaque: string;
+            /**
+             * Destaque
+             * @default false
+             */
+            destaque: boolean;
+            /**
+             * Exigir Verificado
+             * @default false
+             */
+            exigir_verificado: boolean;
+            /** Horario Contato */
+            horario_contato?: string | null;
+            /**
+             * Membro Desde
+             * Format: date-time
+             */
+            membro_desde: string;
+            /** Nome */
+            nome: string;
+            /** Nota Media */
+            nota_media?: number | null;
+            /**
+             * Servicos Concluidos
+             * @default 0
+             */
+            servicos_concluidos: number;
+            tipo_pessoa: components["schemas"]["TipoPessoa"];
+            /**
+             * Total Avaliacoes
+             * @default 0
+             */
+            total_avaliacoes: number;
+            /** Usuario Id */
+            usuario_id: number;
+            /**
+             * Vagas Publicadas
+             * @default 0
+             */
+            vagas_publicadas: number;
+            /** Verificado */
+            verificado: boolean;
+        };
+        /**
          * PerfilResumo
          * @description Dados públicos de um perfil, exibidos em cards, listas e no chat.
          */
@@ -3134,6 +3382,11 @@ export interface components {
              * @default 0
              */
             adicionais_pagos: number;
+            /**
+             * Cor Destaque
+             * @description Cor de destaque escolhida pelo contratante.
+             */
+            cor_destaque?: string | null;
             /**
              * Destaque
              * @description Contratante com adicionais pagos; sem efeito no match.
@@ -3635,12 +3888,15 @@ export interface components {
             descricao: string;
             /** Duracao Horas */
             duracao_horas: number;
-            /** Latitude */
-            latitude: number;
+            /**
+             * Latitude
+             * @description Opcional: deduzida do bairro quando ausente.
+             */
+            latitude?: number | null;
             /** Logradouro */
             logradouro?: string | null;
             /** Longitude */
-            longitude: number;
+            longitude?: number | null;
             /** Titulo */
             titulo: string;
             /** Valor */
@@ -4455,6 +4711,37 @@ export interface operations {
             };
         };
     };
+    perfis_consultar_perfil_publico_do_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilPublicoContratante"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     conversas_listar_conversas: {
         parameters: {
             query?: never;
@@ -5058,6 +5345,39 @@ export interface operations {
             };
         };
     };
+    perfis_atualizar_meu_perfil_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AtualizacaoContratanteEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilContratanteDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     perfis_cadastrar_profissional: {
         parameters: {
             query?: never;
@@ -5290,6 +5610,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_mapa_de_ofertas: {
+        parameters: {
+            query?: {
+                raio_km?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MapaDeOfertas"];
                 };
             };
             /** @description Validation Error */

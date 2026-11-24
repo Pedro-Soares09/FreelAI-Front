@@ -25,6 +25,8 @@ export type NivelRisco = 'baixo' | 'medio' | 'alto';
 
 export interface ContratanteResumo {
   id: string;
+  usuario_id?: number | null;
+  cor_destaque?: string | null;
   nome: string;
   foto_url?: string;
   verificado: boolean;
@@ -252,6 +254,7 @@ export type ChatContact = {
   online: boolean;
   role: ChatRole;
   destaque?: boolean;
+  corDestaque?: string;
 };
 
 export type ChatJob = {

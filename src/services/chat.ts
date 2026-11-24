@@ -94,6 +94,8 @@ async function conversaDaApi(c: ConversaApi): Promise<Conversation> {
       verified: true,
       online: false,
       role: meuPerfil === "profissional" ? "contratante" : "profissional",
+      destaque: c.outra_parte.destaque ?? false,
+      corDestaque: c.outra_parte.cor_destaque ?? undefined,
     },
     job: { id: String(c.vaga_id), title: titulo, amount: valor },
     lastMessageAt: c.ultima_mensagem?.enviada_em ?? new Date(0).toISOString(),
