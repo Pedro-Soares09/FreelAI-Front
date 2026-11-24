@@ -75,6 +75,29 @@ function pagamentoParaPix(d: PagamentoDetalhe): PagamentoPix {
   };
 }
 
+type NotificacaoApi = {
+  id: number;
+  tipo: string;
+  titulo: string;
+  mensagem?: string | null;
+  lida: boolean;
+  criado_em: string;
+  vaga_id?: number | null;
+};
+
+/** Adapta a notificação da API ao formato usado pelo sino. */
+function notificacaoDaApi(n: NotificacaoApi): Notificacao {
+  return {
+    id: String(n.id),
+    tipo: n.tipo as Notificacao['tipo'],
+    titulo: n.titulo,
+    mensagem: n.mensagem ?? '',
+    lida: n.lida,
+    criada_em: n.criado_em,
+    referencia_id: n.vaga_id != null ? String(n.vaga_id) : undefined,
+  };
+}
+
 export type CategoriaVaga = { slug: string; nome: string; nivel_risco: 'baixo' | 'medio' | 'alto' };
 
 export type NovaVaga = {
@@ -258,13 +281,22 @@ export const freelaiApi = {
       method: 'POST',
     }),
 
-  listarNotificacoes: () =>
-    request<{ itens: Notificacao[]; nao_lidas: number }>(
+  listarNotificacoes: async () => {
+    if (USE_MOCKS) {
+      return request<{ itens: Notificacao[]; nao_lidas: number }>('/api/v1/notificacoes');
+    }
+    const dados = await request<{ itens: NotificacaoApi[]; nao_lidas: number }>(
       '/api/v1/notificacoes'
-    ),
+    );
+    return { itens: dados.itens.map(notificacaoDaApi), nao_lidas: dados.nao_lidas };
+  },
 
   marcarNotificacaoLida: (id: string) =>
-    request<void>(`/api/v1/notificacoes/${id}/lida`, { method: 'PATCH' }),
+    USE_MOCKS
+      ? request<void>(`/api/v1/notificacoes/${id}/lida`, { method: 'PATCH' })
+      : request<unknown>(`/api/v1/notificacoes/${id}/lida`, { method: 'POST' }).then(
+          () => undefined
+        ),
 
   marcarTodasNotificacoesLidas: () =>
     request<void>('/api/v1/notificacoes/ler-todas', { method: 'POST' }),
