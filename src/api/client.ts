@@ -86,7 +86,10 @@ export async function chamar<T>(promessa: Promise<Resultado<T>>): Promise<T> {
 export async function fetchAutenticado(caminho: string, init?: RequestInit): Promise<Response> {
   const montar = () => {
     const headers = new Headers(init?.headers);
-    if (!headers.has("Content-Type") && init?.body) headers.set("Content-Type", "application/json");
+    // Com FormData o navegador define o Content-Type (com o boundary do multipart).
+    if (!headers.has("Content-Type") && init?.body && !(init.body instanceof FormData)) {
+      headers.set("Content-Type", "application/json");
+    }
     const tokens = lerTokens();
     if (tokens) headers.set("Authorization", `Bearer ${tokens.access}`);
     return fetch(`${BASE_URL}${caminho}`, { ...init, headers });
