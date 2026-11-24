@@ -24,6 +24,106 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/denuncias": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Fila De Denuncias
+         * @description Fila de denúncias (manuais e automáticas) com tempo em espera e meta de 48h úteis.
+         */
+        get: operations["admin_listar_fila_de_denuncias"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/denuncias/{denuncia_id}/decisao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Denuncia
+         * @description Decide uma denúncia da fila como procedente ou improcedente, registrando o motivo.
+         */
+        post: operations["admin_decidir_denuncia"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/disputas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Disputas
+         * @description Aba de disputas do admin: lista as contestações com o chat e os anexos de cada vaga.
+         */
+        get: operations["admin_listar_disputas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/disputas/{disputa_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Detalhar Disputa Admin
+         * @description Detalhe de uma disputa na aba do admin, com histórico do chat, anexos e pagamento.
+         */
+        get: operations["admin_detalhar_disputa_admin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/disputas/{disputa_id}/decisao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Disputa
+         * @description Decide a disputa (reembolso total, parcial ou pagamento integral) e gera os lançamentos.
+         */
+        post: operations["admin_decidir_disputa"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/prazos/varrer": {
         parameters: {
             query?: never;
@@ -227,7 +327,7 @@ export interface paths {
         };
         /**
          * Listar Conversas
-         * @description Conversas do usuário nos dois perfis, da mais recente para a mais antiga.
+         * @description Lista as conversas do usuário com a outra parte, última mensagem e total de não lidas.
          */
         get: operations["conversas_listar_conversas"];
         put?: never;
@@ -245,7 +345,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Detalhar Conversa */
+        /**
+         * Detalhar Conversa
+         * @description Resumo de uma conversa, com o id da vaga a que pertence.
+         */
         get: operations["conversas_detalhar_conversa"];
         put?: never;
         post?: never;
@@ -255,7 +358,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/conversas/{conversa_id}/lida": {
+    "/api/v1/conversas/{conversa_id}/anexos": {
         parameters: {
             query?: never;
             header?: never;
@@ -265,10 +368,30 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Marcar Como Lida
-         * @description Marca como lidas as mensagens recebidas pelo usuário na conversa.
+         * Enviar Anexo
+         * @description Recebe um anexo (JPG, PNG ou PDF), cria a mensagem no chat e transmite em tempo real.
          */
-        post: operations["conversas_marcar_como_lida"];
+        post: operations["conversas_enviar_anexo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conversas/{conversa_id}/anexos/{nome}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Baixar Anexo
+         * @description Entrega o conteúdo de um anexo do chat somente para os participantes da conversa.
+         */
+        get: operations["conversas_baixar_anexo"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -282,11 +405,37 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Listar Mensagens */
+        /**
+         * Listar Mensagens
+         * @description Histórico completo de mensagens da conversa em ordem cronológica.
+         */
         get: operations["conversas_listar_mensagens"];
         put?: never;
-        /** Enviar Mensagem */
+        /**
+         * Enviar Mensagem
+         * @description Persiste uma mensagem na conversa e transmite em tempo real aos conectados no WebSocket.
+         */
         post: operations["conversas_enviar_mensagem"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conversas/{conversa_id}/visto": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Marcar Conversa Como Vista
+         * @description Marca como vistas as mensagens enviadas pela outra parte na conversa.
+         */
+        post: operations["conversas_marcar_conversa_como_vista"];
         delete?: never;
         options?: never;
         head?: never;
@@ -333,6 +482,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/denuncias": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Minhas Denuncias
+         * @description Lista denúncias ligadas ao usuário, sem jamais expor quem denunciou (`denunciante_id`).
+         */
+        get: operations["denuncias_listar_minhas_denuncias"];
+        put?: never;
+        /**
+         * Registrar Denuncia
+         * @description Registra uma denúncia a partir de um perfil, vaga ou conversa. Entra na fila do admin.
+         */
+        post: operations["denuncias_registrar_denuncia"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/denuncias/{denuncia_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Detalhar Denuncia
+         * @description Consulta o estado de uma denúncia sem revelar o autor ao denunciado.
+         */
+        get: operations["denuncias_detalhar_denuncia"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/health": {
         parameters: {
             query?: never;
@@ -373,6 +566,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/notificacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Notificacoes
+         * @description Polling REST da central de notificações (exibe somente as cujo `visivel_em <= agora()`).
+         */
+        get: operations["notificacoes_listar_notificacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notificacoes/ler-todas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Marcar Todas Lidas
+         * @description Marca como lidas todas as notificações já visíveis do usuário.
+         */
+        post: operations["notificacoes_marcar_todas_lidas"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notificacoes/nao-lidas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Contagem Nao Lidas
+         * @description Quantidade de notificações já visíveis e ainda não lidas pelo usuário.
+         */
+        get: operations["notificacoes_consultar_contagem_nao_lidas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notificacoes/{notificacao_id}/lida": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Marcar Notificacao Como Lida
+         * @description Marca uma notificação visível como lida e registra `lida_em`.
+         */
+        post: operations["notificacoes_marcar_notificacao_como_lida"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/pagamentos/{pagamento_id}/simular-confirmacao": {
         parameters: {
             query?: never;
@@ -405,6 +678,46 @@ export interface paths {
          * @description Convites em que o contratante já escolheu o profissional e o prazo de aceite segue aberto.
          */
         get: operations["vagas_listar_convites_do_profissional"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/usuarios/{usuario_id}/avaliacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Avaliacoes Do Usuario
+         * @description Avaliações já visíveis recebidas pelo usuário.
+         */
+        get: operations["avaliacoes_listar_avaliacoes_do_usuario"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/usuarios/{usuario_id}/reputacao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Reputacao Do Usuario
+         * @description Cálculo da reputação 70/20/10 e estado do selo Novo (até 5 serviços concluídos).
+         */
+        get: operations["avaliacoes_consultar_reputacao_do_usuario"];
         put?: never;
         post?: never;
         delete?: never;
@@ -513,6 +826,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/vagas/{vaga_id}/avaliacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Avaliacoes Da Vaga
+         * @description Avaliações da vaga. A nota do outro lado fica oculta até ambos avaliarem ou o prazo.
+         */
+        get: operations["avaliacoes_consultar_avaliacoes_da_vaga"];
+        put?: never;
+        /**
+         * Avaliar Vaga
+         * @description Registra a avaliação mútua (1 a 5 e comentário) dentro das 48h após a conclusão.
+         */
+        post: operations["avaliacoes_avaliar_vaga"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vagas/{vaga_id}/conclusao": {
         parameters: {
             query?: never;
@@ -527,6 +864,50 @@ export interface paths {
          * @description O contratante confirma a conclusão do serviço depois do fim previsto.
          */
         post: operations["pagamentos_confirmar_conclusao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/conversa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Conversa Da Vaga
+         * @description Ponto de integração entre `vaga_id` e `conversa_id`: devolve a conversa aberta no aceite.
+         */
+        get: operations["conversas_consultar_conversa_da_vaga"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/disputa": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Disputa
+         * @description Consulta o estado da disputa da vaga e os lançamentos do pagamento.
+         */
+        get: operations["disputas_consultar_disputa"];
+        put?: never;
+        /**
+         * Contestar Servico
+         * @description Abre a contestação dentro das 24h de confirmação e trava a vaga em `em_disputa`.
+         */
+        post: operations["disputas_contestar_servico"];
         delete?: never;
         options?: never;
         head?: never;
@@ -635,6 +1016,134 @@ export interface components {
             /** Profissional */
             profissional: boolean;
         };
+        /**
+         * AvaliacaoDetalhe
+         * @description Avaliação registrada. Só fica visível quando ambos avaliam ou o prazo de 48h encerra.
+         * @example {
+         *       "avaliado_id": 7,
+         *       "avaliador_id": 3,
+         *       "comentario": "Pontual e cuidadoso.",
+         *       "criado_em": "2026-11-20T18:30:00Z",
+         *       "id": 15,
+         *       "nota": 5,
+         *       "vaga_id": 42,
+         *       "visivel": true,
+         *       "visivel_em": "2026-11-20T19:00:00Z"
+         *     }
+         */
+        AvaliacaoDetalhe: {
+            /** Avaliado Id */
+            avaliado_id: number;
+            /** Avaliador Id */
+            avaliador_id: number;
+            /** Comentario */
+            comentario?: string | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Id */
+            id: number;
+            /** Nota */
+            nota: number;
+            /** Vaga Id */
+            vaga_id: number;
+            /**
+             * Visivel
+             * @description Verdadeiro quando ambos já avaliaram ou o prazo de 48h encerrou.
+             */
+            visivel: boolean;
+            /** Visivel Em */
+            visivel_em?: string | null;
+        };
+        /**
+         * AvaliacaoEntrada
+         * @description Nota de 1 a 5 e comentário opcional enviados por um participante após a conclusão.
+         */
+        AvaliacaoEntrada: {
+            /**
+             * Comentario
+             * @description Comentário sobre o serviço prestado ou contratado.
+             * @example Pontual e cuidadoso.
+             */
+            comentario?: string | null;
+            /**
+             * Nota
+             * @description Nota de 1 a 5 atribuída à outra parte.
+             * @example 5
+             */
+            nota: number;
+        };
+        /**
+         * AvaliacoesDaVaga
+         * @description Estado das avaliações de uma vaga para quem consulta.
+         * @example {
+         *       "avaliacao_recebida": {
+         *         "avaliado_id": 3,
+         *         "avaliador_id": 7,
+         *         "comentario": "Contratante claro e organizado.",
+         *         "criado_em": "2026-11-20T19:00:00Z",
+         *         "id": 16,
+         *         "nota": 5,
+         *         "vaga_id": 42,
+         *         "visivel": true,
+         *         "visivel_em": "2026-11-20T19:00:00Z"
+         *       },
+         *       "avaliacoes": [],
+         *       "minha_avaliacao": {
+         *         "avaliado_id": 7,
+         *         "avaliador_id": 3,
+         *         "comentario": "Pontual e cuidadoso.",
+         *         "criado_em": "2026-11-20T18:30:00Z",
+         *         "id": 15,
+         *         "nota": 5,
+         *         "vaga_id": 42,
+         *         "visivel": true,
+         *         "visivel_em": "2026-11-20T19:00:00Z"
+         *       },
+         *       "prazo_em": "2026-11-22T17:00:00Z",
+         *       "reveladas": true,
+         *       "vaga_id": 42
+         *     }
+         */
+        AvaliacoesDaVaga: {
+            /** @description Avaliação da outra parte; permanece nula enquanto ainda estiver oculta. */
+            avaliacao_recebida?: components["schemas"]["AvaliacaoDetalhe"] | null;
+            /**
+             * Avaliacoes
+             * @description Avaliações já visíveis publicamente desta vaga.
+             */
+            avaliacoes: components["schemas"]["AvaliacaoDetalhe"][];
+            /** @description Avaliação feita pelo próprio usuário que consulta (quando autenticada). */
+            minha_avaliacao?: components["schemas"]["AvaliacaoDetalhe"] | null;
+            /**
+             * Prazo Em
+             * Format: date-time
+             * @description Fim da janela de 48h para avaliar.
+             */
+            prazo_em: string;
+            /**
+             * Reveladas
+             * @description Verdadeiro quando ambos já avaliaram ou o prazo de 48h encerrou.
+             */
+            reveladas: boolean;
+            /** Vaga Id */
+            vaga_id: number;
+        };
+        /** Body_conversas_enviar_anexo */
+        Body_conversas_enviar_anexo: {
+            /**
+             * Arquivo
+             * @description Imagem JPG/PNG ou PDF até 10 MB.
+             */
+            arquivo: string;
+            /**
+             * Texto
+             * @description Legenda opcional.
+             */
+            texto?: string | null;
+        };
         /** CategoriaResumo */
         CategoriaResumo: {
             /**
@@ -647,6 +1156,35 @@ export interface components {
             /** Slug */
             slug: string;
         };
+        /**
+         * CentralNotificacoes
+         * @description Resposta do polling REST da central de notificações: lista visível e total de não lidas.
+         * @example {
+         *       "itens": [
+         *         {
+         *           "criado_em": "2026-11-20T14:00:00Z",
+         *           "id": 10,
+         *           "lida": false,
+         *           "mensagem": "Sua conta está entre os 3 profissionais sugeridos para a vaga.",
+         *           "tipo": "selecionado_top3",
+         *           "titulo": "Você foi selecionado para uma vaga",
+         *           "usuario_id": 7,
+         *           "vaga_id": 42,
+         *           "visivel_em": "2026-11-20T14:02:00Z"
+         *         }
+         *       ],
+         *       "nao_lidas": 1
+         *     }
+         */
+        CentralNotificacoes: {
+            /** Itens */
+            itens: components["schemas"]["NotificacaoDetalhe"][];
+            /**
+             * Nao Lidas
+             * @description Total de notificações já visíveis e ainda não lidas.
+             */
+            nao_lidas: number;
+        };
         /** ConfiguracoesEfetivas */
         ConfiguracoesEfetivas: {
             /** Perfil */
@@ -656,26 +1194,16 @@ export interface components {
                 [key: string]: number;
             };
         };
-        /** ContatoChat */
-        ContatoChat: {
-            /** Avatarurl */
-            avatarUrl?: string | null;
-            /** Id */
-            id: string;
-            /** Name */
-            name: string;
-            /**
-             * Online
-             * @default false
-             */
-            online: boolean;
-            /**
-             * Role
-             * @enum {string}
-             */
-            role: "contratante" | "profissional";
-            /** Verified */
-            verified: boolean;
+        /**
+         * ContagemNaoLidas
+         * @description Quantidade de notificações visíveis ainda não lidas pelo usuário.
+         * @example {
+         *       "nao_lidas": 2
+         *     }
+         */
+        ContagemNaoLidas: {
+            /** Nao Lidas */
+            nao_lidas: number;
         };
         /** ContratanteResumo */
         ContratanteResumo: {
@@ -697,28 +1225,46 @@ export interface components {
             /** Verificado */
             verificado: boolean;
         };
-        /** ConversaChat */
-        ConversaChat: {
-            contact: components["schemas"]["ContatoChat"];
+        /**
+         * ConversaResumo
+         * @description Conversa ligada a uma vaga. Só existe depois que o convite é aceito.
+         * @example {
+         *       "aberta": true,
+         *       "id": 9,
+         *       "nao_lidas": 1,
+         *       "outra_parte": {
+         *         "nome": "Ana Souza",
+         *         "novo": true,
+         *         "pro": false,
+         *         "total_avaliacoes": 0,
+         *         "usuario_id": 7,
+         *         "verificado": true
+         *       },
+         *       "ultima_mensagem": {
+         *         "autor_id": 7,
+         *         "enviada_em": "2026-11-19T18:30:00Z",
+         *         "texto": "Chego às 14h."
+         *       },
+         *       "vaga_id": 42
+         *     }
+         */
+        ConversaResumo: {
+            /**
+             * Aberta
+             * @description Falso quando a vaga foi cancelada ou encerrada.
+             */
+            aberta: boolean;
             /** Id */
-            id: string;
-            job: components["schemas"]["VagaDaConversa"];
+            id: number;
             /**
-             * Jobclosed
-             * @default false
+             * Nao Lidas
+             * @default 0
              */
-            jobClosed: boolean;
-            /** Lastmessage */
-            lastMessage?: string | null;
-            /**
-             * Lastmessageat
-             * Format: date-time
-             */
-            lastMessageAt: string;
-            /** Participantids */
-            participantIds: string[];
-            /** Unreadcount */
-            unreadCount: number;
+            nao_lidas: number;
+            outra_parte: components["schemas"]["PerfilResumo"];
+            ultima_mensagem?: components["schemas"]["MensagemResumo"] | null;
+            /** Vaga Id */
+            vaga_id: number;
         };
         /** ConviteComVaga */
         ConviteComVaga: {
@@ -845,6 +1391,435 @@ export interface components {
             vestimenta?: string | null;
         };
         /**
+         * DecisaoDenunciaEntrada
+         * @description Decisão administrativa sobre uma denúncia aberta (procedente ou improcedente + motivo).
+         */
+        DecisaoDenunciaEntrada: {
+            /**
+             * Decisao
+             * @description Resultado da análise da denúncia.
+             * @example procedente
+             * @enum {string}
+             */
+            decisao: "procedente" | "improcedente";
+            /**
+             * Motivo
+             * @description Justificativa obrigatória da decisão administrativa.
+             * @example Confirmada tentativa de negociação fora da plataforma no histórico.
+             */
+            motivo: string;
+        };
+        /**
+         * DecisaoDisputaEntrada
+         * @description Decisão administrativa sobre uma disputa aberta (reembolso total, parcial ou integral).
+         */
+        DecisaoDisputaEntrada: {
+            /**
+             * Decisao
+             * @description Resultado da disputa: `reembolso_total` (estorna 100%), `reembolso_parcial` (libera parcela ao profissional e estorna o resto) ou `pagamento_integral` (libera 100% ao profissional).
+             * @example reembolso_parcial
+             * @enum {string}
+             */
+            decisao: "reembolso_total" | "reembolso_parcial" | "pagamento_integral";
+            /**
+             * Motivo
+             * @description Justificativa obrigatória da decisão administrativa.
+             * @example Metade do serviço foi comprovadamente executada pelas fotos do chat.
+             */
+            motivo: string;
+            /**
+             * Percentual Profissional
+             * @description Alternativa a `percentual_reembolso`: percentual (de 1 a 99) liberado ao profissional em `reembolso_parcial` (o resto é estornado).
+             * @example 60
+             */
+            percentual_profissional?: number | null;
+            /**
+             * Percentual Reembolso
+             * @description Percentual (de 1 a 99) estornado ao contratante quando `decisao = reembolso_parcial`. O restante `(100 - percentual_reembolso)%` é liberado ao profissional.
+             * @example 40
+             */
+            percentual_reembolso?: number | null;
+        };
+        /**
+         * DenunciaEntrada
+         * @description Dados enviados por um usuário para denunciar outro (a partir do perfil, vaga ou chat).
+         */
+        DenunciaEntrada: {
+            /**
+             * Conversa Id
+             * @description ID da conversa do chat relacionada à denúncia, quando houver.
+             * @example 9
+             */
+            conversa_id?: number | null;
+            /**
+             * Denunciado Id
+             * @description ID do usuário denunciado. Opcional quando `conversa_id` ou `vaga_id` for informado (inferido automaticamente como a outra parte).
+             * @example 7
+             */
+            denunciado_id?: number | null;
+            /**
+             * Descricao
+             * @description Relato detalhado do ocorrido.
+             * @example Solicitou pagamento por fora da plataforma durante a conversa.
+             */
+            descricao?: string | null;
+            /**
+             * Motivo
+             * @description Motivo principal da denúncia.
+             * @example comportamento_inadequado
+             */
+            motivo: string;
+            /**
+             * Vaga Id
+             * @description ID da vaga relacionada à denúncia, quando houver.
+             * @example 42
+             */
+            vaga_id?: number | null;
+        };
+        /**
+         * DenunciaFilaAdmin
+         * @description Item da fila de denúncias na administração, com tempo em espera e meta de 48h úteis.
+         * @example {
+         *       "acima_da_meta": false,
+         *       "conversa_id": 9,
+         *       "criado_em": "2026-11-20T14:00:00Z",
+         *       "denunciado_id": 7,
+         *       "denunciante_id": 3,
+         *       "denuncias_procedentes_acumuladas": 0,
+         *       "descricao": "Solicitou pagamento por fora da plataforma.",
+         *       "estado": "aberta",
+         *       "id": 1,
+         *       "meta_horas_uteis": 48,
+         *       "motivo": "comportamento_inadequado",
+         *       "origem": "usuario",
+         *       "tempo_espera_horas_uteis": 2,
+         *       "tempo_espera_minutos": 120,
+         *       "vaga_id": 42
+         *     }
+         */
+        DenunciaFilaAdmin: {
+            /**
+             * Acima Da Meta
+             * @description Verdadeiro quando o tempo em horas úteis ultrapassou a meta de 48h úteis.
+             */
+            acima_da_meta: boolean;
+            /** Conversa Id */
+            conversa_id?: number | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Decidido Em */
+            decidido_em?: string | null;
+            /** Decisao Motivo */
+            decisao_motivo?: string | null;
+            /** Denunciado Id */
+            denunciado_id: number;
+            /**
+             * Denunciante Id
+             * @description Autor da denúncia (nulo quando gerada automaticamente pelo chat).
+             */
+            denunciante_id?: number | null;
+            /**
+             * Denuncias Procedentes Acumuladas
+             * @description Total de denúncias procedentes acumuladas pelo denunciado.
+             * @default 0
+             */
+            denuncias_procedentes_acumuladas: number;
+            /** Descricao */
+            descricao?: string | null;
+            estado: components["schemas"]["EstadoDenuncia"];
+            /** Id */
+            id: number;
+            /**
+             * Meta Horas Uteis
+             * @description Meta de atendimento da fila em horas úteis (48h úteis).
+             * @default 48
+             */
+            meta_horas_uteis: number;
+            /** Motivo */
+            motivo: string;
+            origem: components["schemas"]["OrigemDenuncia"];
+            /**
+             * Tempo Espera Horas Uteis
+             * @description Horas úteis acumuladas em espera (segunda a sexta-feira).
+             */
+            tempo_espera_horas_uteis: number;
+            /**
+             * Tempo Espera Minutos
+             * @description Tempo total em espera (em minutos) desde a abertura até a decisão ou agora.
+             */
+            tempo_espera_minutos: number;
+            /** Vaga Id */
+            vaga_id?: number | null;
+        };
+        /**
+         * DenunciaPublicaResumo
+         * @description Visão da denúncia para usuários comuns. Nunca expõe `denunciante_id` ao denunciado.
+         * @example {
+         *       "conversa_id": 9,
+         *       "criado_em": "2026-11-20T14:00:00Z",
+         *       "denunciado_id": 7,
+         *       "descricao": "Solicitou pagamento por fora da plataforma.",
+         *       "estado": "aberta",
+         *       "id": 1,
+         *       "motivo": "comportamento_inadequado",
+         *       "vaga_id": 42
+         *     }
+         */
+        DenunciaPublicaResumo: {
+            /** Conversa Id */
+            conversa_id?: number | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Decidido Em */
+            decidido_em?: string | null;
+            /** Decisao Motivo */
+            decisao_motivo?: string | null;
+            /** Denunciado Id */
+            denunciado_id: number;
+            /** Descricao */
+            descricao?: string | null;
+            estado: components["schemas"]["EstadoDenuncia"];
+            /** Id */
+            id: number;
+            /** Motivo */
+            motivo: string;
+            /** Vaga Id */
+            vaga_id?: number | null;
+        };
+        /**
+         * DisputaAdminDetalhe
+         * @description Visão completa da aba de disputas no admin: disputa, pagamento, chat e anexos da vaga.
+         * @example {
+         *       "aberta_por_id": 3,
+         *       "acima_da_meta": false,
+         *       "anexos": [
+         *         "/api/v1/arquivos/anexo/foto1.jpg"
+         *       ],
+         *       "chat": [
+         *         {
+         *           "anexo_url": "/api/v1/arquivos/anexo/foto1.jpg",
+         *           "autor_id": 3,
+         *           "conversa_id": 9,
+         *           "enviada_em": "2026-11-20T17:50:00Z",
+         *           "id": 1,
+         *           "texto": "Segue foto de como ficou."
+         *         }
+         *       ],
+         *       "contratante_usuario_id": 3,
+         *       "conversa_id": 9,
+         *       "criado_em": "2026-11-20T18:00:00Z",
+         *       "descricao": "Serviço interrompido pela metade.",
+         *       "estado": "aberta",
+         *       "id": 3,
+         *       "meta_horas_uteis": 48,
+         *       "pagamento": {
+         *         "atualizado_em": "2026-11-20T18:10:00Z",
+         *         "codigo_pix": "PIX-SIM-000005-1A2B3C4D5E6F7A8B9C0D",
+         *         "criado_em": "2026-11-20T13:50:00Z",
+         *         "divisao": {
+         *           "percentual_taxa": "10",
+         *           "taxa_plataforma": "15.00",
+         *           "valor_liquido_profissional": "135.00",
+         *           "valor_total": "150.00"
+         *         },
+         *         "estado": "liberado",
+         *         "expira_em": "2026-11-20T14:05:00Z",
+         *         "id": 5,
+         *         "lancamentos": [
+         *           {
+         *             "criado_em": "2026-11-20T13:50:00Z",
+         *             "descricao": "Pix recebido e retido até a conclusão do serviço",
+         *             "id": 1,
+         *             "tipo": "retencao",
+         *             "valor": "150.00"
+         *           },
+         *           {
+         *             "criado_em": "2026-11-20T18:10:00Z",
+         *             "descricao": "Liberação integral",
+         *             "id": 2,
+         *             "tipo": "liberacao_profissional",
+         *             "valor": "135.00"
+         *           },
+         *           {
+         *             "criado_em": "2026-11-20T18:10:00Z",
+         *             "descricao": "Taxa da plataforma",
+         *             "id": 3,
+         *             "tipo": "taxa_plataforma",
+         *             "valor": "15.00"
+         *           }
+         *         ],
+         *         "metodo": "pix",
+         *         "saldo_retido": "0.00",
+         *         "vaga_estado": "liberada",
+         *         "vaga_id": 42
+         *       },
+         *       "profissional_usuario_id": 7,
+         *       "tempo_espera_horas_uteis": 1,
+         *       "tempo_espera_minutos": 60,
+         *       "vaga_estado": "em_disputa",
+         *       "vaga_id": 42,
+         *       "vaga_titulo": "Montagem de guarda-roupa"
+         *     }
+         */
+        DisputaAdminDetalhe: {
+            /** Aberta Por Id */
+            aberta_por_id: number;
+            /**
+             * Acima Da Meta
+             * @description Verdadeiro quando o tempo em horas úteis ultrapassou a meta de 48h úteis.
+             */
+            acima_da_meta: boolean;
+            /**
+             * Anexos
+             * @description Lista de URLs de anexos enviados na conversa da vaga.
+             */
+            anexos: string[];
+            /**
+             * Chat
+             * @description Histórico completo de mensagens da conversa da vaga.
+             */
+            chat: components["schemas"]["MensagemDisputaAdmin"][];
+            /** Contratante Usuario Id */
+            contratante_usuario_id: number;
+            /** Conversa Id */
+            conversa_id?: number | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Decidido Em */
+            decidido_em?: string | null;
+            /** Decisao Motivo */
+            decisao_motivo?: string | null;
+            /** Descricao */
+            descricao: string;
+            estado: components["schemas"]["EstadoDisputa"];
+            /** Id */
+            id: number;
+            /**
+             * Meta Horas Uteis
+             * @default 48
+             */
+            meta_horas_uteis: number;
+            pagamento: components["schemas"]["PagamentoDetalhe"];
+            /** Percentual Reembolso */
+            percentual_reembolso?: number | null;
+            /** Profissional Usuario Id */
+            profissional_usuario_id?: number | null;
+            /**
+             * Tempo Espera Horas Uteis
+             * @description Horas úteis acumuladas em espera (meta de 48h úteis).
+             */
+            tempo_espera_horas_uteis: number;
+            /**
+             * Tempo Espera Minutos
+             * @description Tempo em espera (em minutos) desde a abertura até a decisão ou agora.
+             */
+            tempo_espera_minutos: number;
+            vaga_estado: components["schemas"]["EstadoVaga"];
+            /** Vaga Id */
+            vaga_id: number;
+            /** Vaga Titulo */
+            vaga_titulo: string;
+        };
+        /**
+         * DisputaDetalhe
+         * @description Estado da disputa de uma vaga e o pagamento associado.
+         * @example {
+         *       "aberta_por_id": 3,
+         *       "criado_em": "2026-11-20T18:00:00Z",
+         *       "descricao": "Serviço interrompido pela metade.",
+         *       "estado": "aberta",
+         *       "id": 3,
+         *       "pagamento": {
+         *         "atualizado_em": "2026-11-20T18:10:00Z",
+         *         "codigo_pix": "PIX-SIM-000005-1A2B3C4D5E6F7A8B9C0D",
+         *         "criado_em": "2026-11-20T13:50:00Z",
+         *         "divisao": {
+         *           "percentual_taxa": "10",
+         *           "taxa_plataforma": "15.00",
+         *           "valor_liquido_profissional": "135.00",
+         *           "valor_total": "150.00"
+         *         },
+         *         "estado": "liberado",
+         *         "expira_em": "2026-11-20T14:05:00Z",
+         *         "id": 5,
+         *         "lancamentos": [
+         *           {
+         *             "criado_em": "2026-11-20T13:50:00Z",
+         *             "descricao": "Pix recebido e retido até a conclusão do serviço",
+         *             "id": 1,
+         *             "tipo": "retencao",
+         *             "valor": "150.00"
+         *           },
+         *           {
+         *             "criado_em": "2026-11-20T18:10:00Z",
+         *             "descricao": "Liberação integral",
+         *             "id": 2,
+         *             "tipo": "liberacao_profissional",
+         *             "valor": "135.00"
+         *           },
+         *           {
+         *             "criado_em": "2026-11-20T18:10:00Z",
+         *             "descricao": "Taxa da plataforma",
+         *             "id": 3,
+         *             "tipo": "taxa_plataforma",
+         *             "valor": "15.00"
+         *           }
+         *         ],
+         *         "metodo": "pix",
+         *         "saldo_retido": "0.00",
+         *         "vaga_estado": "liberada",
+         *         "vaga_id": 42
+         *       },
+         *       "vaga_estado": "em_disputa",
+         *       "vaga_id": 42
+         *     }
+         */
+        DisputaDetalhe: {
+            /** Aberta Por Id */
+            aberta_por_id: number;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Decidido Em */
+            decidido_em?: string | null;
+            /** Decisao Motivo */
+            decisao_motivo?: string | null;
+            /** Descricao */
+            descricao: string;
+            estado: components["schemas"]["EstadoDisputa"];
+            /** Id */
+            id: number;
+            pagamento: components["schemas"]["PagamentoDetalhe"];
+            /** Percentual Reembolso */
+            percentual_reembolso?: number | null;
+            vaga_estado: components["schemas"]["EstadoVaga"];
+            /** Vaga Id */
+            vaga_id: number;
+        };
+        /**
+         * DisputaEntrada
+         * @description Relato enviado pelo contratante para contestar o serviço dentro das 24h de confirmação.
+         */
+        DisputaEntrada: {
+            /**
+             * Descricao
+             * @description Motivo detalhado da contestação do serviço.
+             * @example O serviço foi interrompido pela metade e parte do móvel ficou desmontada.
+             */
+            descricao: string;
+        };
+        /**
          * DivisaoValores
          * @description Como o valor total se reparte entre profissional e plataforma.
          * @example {
@@ -877,6 +1852,16 @@ export interface components {
          * @enum {string}
          */
         EstadoConta: "pendente" | "ativa" | "suspensa" | "banida";
+        /**
+         * EstadoDenuncia
+         * @enum {string}
+         */
+        EstadoDenuncia: "aberta" | "procedente" | "improcedente";
+        /**
+         * EstadoDisputa
+         * @enum {string}
+         */
+        EstadoDisputa: "aberta" | "reembolso_total" | "reembolso_parcial" | "pagamento_integral";
         /**
          * EstadoPagamento
          * @enum {string}
@@ -931,32 +1916,140 @@ export interface components {
             /** Senha */
             senha: string;
         };
-        /** MensagemChat */
-        MensagemChat: {
-            /** Conversationid */
-            conversationId: string;
+        /**
+         * MensagemDetalhe
+         * @description Mensagem persistida no histórico de uma conversa.
+         * @example {
+         *       "autor_id": 7,
+         *       "conversa_id": 9,
+         *       "enviada_em": "2026-11-19T18:30:00Z",
+         *       "id": 101,
+         *       "texto": "Chego às 14h."
+         *     }
+         */
+        MensagemDetalhe: {
+            /** Anexo Url */
+            anexo_url?: string | null;
+            /** Autor Id */
+            autor_id: number;
+            /** Conversa Id */
+            conversa_id: number;
             /**
-             * Createdat
+             * Enviada Em
              * Format: date-time
              */
-            createdAt: string;
+            enviada_em: string;
             /** Id */
-            id: string;
-            /** Senderid */
-            senderId: string;
+            id: number;
+            /** Lida Em */
+            lida_em?: string | null;
+            /** Texto */
+            texto?: string | null;
+        };
+        /**
+         * MensagemDisputaAdmin
+         * @description Mensagem do histórico do chat da vaga exibida na aba de disputas do admin.
+         */
+        MensagemDisputaAdmin: {
+            /** Anexo Url */
+            anexo_url?: string | null;
+            /** Autor Id */
+            autor_id: number;
+            /** Conversa Id */
+            conversa_id: number;
             /**
-             * Status
-             * @enum {string}
+             * Enviada Em
+             * Format: date-time
              */
-            status: "sent" | "seen";
-            /** Text */
-            text?: string | null;
+            enviada_em: string;
+            /** Id */
+            id: number;
+            /** Lida Em */
+            lida_em?: string | null;
+            /** Texto */
+            texto?: string | null;
         };
-        /** MensagemEntrada */
+        /**
+         * MensagemEntrada
+         * @description Conteúdo enviado pelo participante no chat (texto, anexo ou ambos).
+         */
         MensagemEntrada: {
-            /** Text */
-            text: string;
+            /**
+             * Anexo Url
+             * @description URL de anexo enviado em `/api/v1/conversas/{conversa_id}/anexos`.
+             * @example /api/v1/conversas/1/anexos/a1b2c3d4e5f60718293a4b5c6d7e8f90.png
+             */
+            anexo_url?: string | null;
+            /**
+             * Texto
+             * @description Texto da mensagem.
+             * @example Chego às 14h.
+             */
+            texto?: string | null;
         };
+        /** MensagemResumo */
+        MensagemResumo: {
+            /** Autor Id */
+            autor_id: number;
+            /**
+             * Enviada Em
+             * Format: date-time
+             */
+            enviada_em: string;
+            /** Texto */
+            texto: string | null;
+        };
+        /**
+         * NotificacaoDetalhe
+         * @description Notificação já visível ao usuário na central do aplicativo.
+         * @example {
+         *       "criado_em": "2026-11-20T14:00:00Z",
+         *       "id": 10,
+         *       "lida": false,
+         *       "mensagem": "Sua conta está entre os 3 profissionais sugeridos para a vaga.",
+         *       "tipo": "selecionado_top3",
+         *       "titulo": "Você foi selecionado para uma vaga",
+         *       "usuario_id": 7,
+         *       "vaga_id": 42,
+         *       "visivel_em": "2026-11-20T14:02:00Z"
+         *     }
+         */
+        NotificacaoDetalhe: {
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Id */
+            id: number;
+            /**
+             * Lida
+             * @description Verdadeiro quando `lida_em` está preenchido.
+             */
+            lida: boolean;
+            /** Lida Em */
+            lida_em?: string | null;
+            /** Mensagem */
+            mensagem?: string | null;
+            /** Tipo */
+            tipo: string;
+            /** Titulo */
+            titulo: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /** Vaga Id */
+            vaga_id?: number | null;
+            /**
+             * Visivel Em
+             * Format: date-time
+             */
+            visivel_em: string;
+        };
+        /**
+         * OrigemDenuncia
+         * @enum {string}
+         */
+        OrigemDenuncia: "usuario" | "automatica";
         /**
          * PagamentoDetalhe
          * @description Estado da cobrança Pix de uma vaga, com a divisão prevista e o livro de lançamentos.
@@ -1210,12 +2303,103 @@ export interface components {
             /** Refresh Token */
             refresh_token: string;
         };
+        /**
+         * ReputacaoDetalhe
+         * @description Reputação 70/20/10 de um usuário, detalhando cada componente e o selo Novo.
+         * @example {
+         *       "amostra_compromissos": 20,
+         *       "cancelamentos_tardios_ultimos_20": 1,
+         *       "denuncias_procedentes": 1,
+         *       "media_considerada": 4.5,
+         *       "nota_cancelamentos": 4.75,
+         *       "nota_denuncias": 3,
+         *       "nota_media": 4.5,
+         *       "novo": true,
+         *       "reputacao": 4.4,
+         *       "servicos_concluidos": 4,
+         *       "taxa_cancelamento_tardio": 0.05,
+         *       "total_avaliacoes": 4,
+         *       "usuario_id": 7
+         *     }
+         */
+        ReputacaoDetalhe: {
+            /**
+             * Amostra Compromissos
+             * @description Quantidade de compromissos considerados na janela (máximo 20).
+             */
+            amostra_compromissos: number;
+            /** Cancelamentos Tardios Ultimos 20 */
+            cancelamentos_tardios_ultimos_20: number;
+            /** Denuncias Procedentes */
+            denuncias_procedentes: number;
+            /**
+             * Media Considerada
+             * @description Média usada na fórmula (4,0 neutra quando não há avaliações visíveis).
+             */
+            media_considerada: number;
+            /**
+             * Nota Cancelamentos
+             * @description Parcela de cancelamentos (0 a 5): 5 * (1 - taxa_cancelamento_tardio).
+             */
+            nota_cancelamentos: number;
+            /**
+             * Nota Denuncias
+             * @description Parcela de denúncias (0 a 5): max(0, 5 - 2 * denuncias_procedentes).
+             */
+            nota_denuncias: number;
+            /**
+             * Nota Media
+             * @description Média real das avaliações visíveis, ou nulo quando ainda não há avaliações.
+             */
+            nota_media?: number | null;
+            /**
+             * Novo
+             * @description Exibe o selo Novo enquanto tiver até 5 serviços concluídos; cai no 6º.
+             */
+            novo: boolean;
+            /**
+             * Reputacao
+             * @description Nota final de 0 a 5 pela fórmula 70/20/10.
+             */
+            reputacao: number;
+            /**
+             * Servicos Concluidos
+             * @description Serviços concluídos como profissional (0 quando não possui perfil).
+             */
+            servicos_concluidos: number;
+            /**
+             * Taxa Cancelamento Tardio
+             * @description Proporção (0 a 1) de cancelamentos tardios nos últimos 20 compromissos.
+             */
+            taxa_cancelamento_tardio: number;
+            /**
+             * Total Avaliacoes
+             * @description Quantidade de avaliações visíveis recebidas.
+             */
+            total_avaliacoes: number;
+            /** Usuario Id */
+            usuario_id: number;
+        };
         /** RespostaSaude */
         RespostaSaude: {
             /** Perfil */
             perfil: string;
             /** Status */
             status: string;
+        };
+        /**
+         * ResultadoLeituraTodas
+         * @description Quantidade de notificações visíveis marcadas como lidas em lote.
+         * @example {
+         *       "lida_em": "2026-11-20T14:10:00Z",
+         *       "marcadas": 3
+         *     }
+         */
+        ResultadoLeituraTodas: {
+            /** Lida Em */
+            lida_em?: string | null;
+            /** Marcadas */
+            marcadas: number;
         };
         /** ResultadoVarredura */
         ResultadoVarredura: {
@@ -1228,6 +2412,23 @@ export interface components {
             };
             /** Executado Em */
             executado_em: string;
+        };
+        /**
+         * ResultadoVisto
+         * @description Quantidade de mensagens recebidas marcadas como vistas.
+         * @example {
+         *       "conversa_id": 9,
+         *       "lida_em": "2026-11-19T18:35:00Z",
+         *       "marcadas": 2
+         *     }
+         */
+        ResultadoVisto: {
+            /** Conversa Id */
+            conversa_id: number;
+            /** Lida Em */
+            lida_em?: string | null;
+            /** Marcadas */
+            marcadas: number;
         };
         /**
          * TipoLancamento
@@ -1321,15 +2522,6 @@ export interface components {
             /** Valor */
             valor: number;
         };
-        /** VagaDaConversa */
-        VagaDaConversa: {
-            /** Amount */
-            amount: number;
-            /** Id */
-            id: string;
-            /** Title */
-            title: string;
-        };
         /** VagaDetalhe */
         VagaDetalhe: {
             /** Bairro */
@@ -1416,6 +2608,170 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConfiguracoesEfetivas"];
+                };
+            };
+        };
+    };
+    admin_listar_fila_de_denuncias: {
+        parameters: {
+            query?: {
+                estado?: components["schemas"]["EstadoDenuncia"] | null;
+                origem?: components["schemas"]["OrigemDenuncia"] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DenunciaFilaAdmin"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_decidir_denuncia: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                denuncia_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisaoDenunciaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DenunciaFilaAdmin"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_listar_disputas: {
+        parameters: {
+            query?: {
+                estado?: components["schemas"]["EstadoDisputa"] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisputaAdminDetalhe"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_detalhar_disputa_admin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                disputa_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisputaAdminDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_decidir_disputa: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                disputa_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisaoDisputaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisputaAdminDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -1702,7 +3058,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ConversaChat"][];
+                    "application/json": components["schemas"]["ConversaResumo"][];
                 };
             };
         };
@@ -1724,7 +3080,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ConversaChat"];
+                    "application/json": components["schemas"]["ConversaResumo"];
                 };
             };
             /** @description Validation Error */
@@ -1738,7 +3094,7 @@ export interface operations {
             };
         };
     };
-    conversas_marcar_como_lida: {
+    conversas_enviar_anexo: {
         parameters: {
             query?: never;
             header?: never;
@@ -1747,14 +3103,52 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_conversas_enviar_anexo"];
+            };
+        };
         responses: {
             /** @description Successful Response */
-            204: {
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["MensagemDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_baixar_anexo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversa_id: number;
+                nome: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
             };
             /** @description Validation Error */
             422: {
@@ -1784,7 +3178,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["MensagemChat"][];
+                    "application/json": components["schemas"]["MensagemDetalhe"][];
                 };
             };
             /** @description Validation Error */
@@ -1819,7 +3213,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["MensagemChat"];
+                    "application/json": components["schemas"]["MensagemDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_marcar_conversa_como_vista: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                conversa_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResultadoVisto"];
                 };
             };
             /** @description Validation Error */
@@ -1893,6 +3318,90 @@ export interface operations {
             };
         };
     };
+    denuncias_listar_minhas_denuncias: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DenunciaPublicaResumo"][];
+                };
+            };
+        };
+    };
+    denuncias_registrar_denuncia: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DenunciaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DenunciaPublicaResumo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    denuncias_detalhar_denuncia: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                denuncia_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DenunciaPublicaResumo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     saude_verificar_saude: {
         parameters: {
             query?: never;
@@ -1937,6 +3446,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PontoMapa"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    notificacoes_listar_notificacoes: {
+        parameters: {
+            query?: {
+                /** @description Quando verdadeiro, retorna apenas as notificações ainda não lidas. */
+                apenas_nao_lidas?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CentralNotificacoes"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    notificacoes_marcar_todas_lidas: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResultadoLeituraTodas"];
+                };
+            };
+        };
+    };
+    notificacoes_consultar_contagem_nao_lidas: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContagemNaoLidas"];
+                };
+            };
+        };
+    };
+    notificacoes_marcar_notificacao_como_lida: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                notificacao_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotificacaoDetalhe"];
                 };
             };
             /** @description Validation Error */
@@ -1997,6 +3609,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConviteComVaga"][];
+                };
+            };
+        };
+    };
+    avaliacoes_listar_avaliacoes_do_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvaliacaoDetalhe"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    avaliacoes_consultar_reputacao_do_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReputacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2160,6 +3834,72 @@ export interface operations {
             };
         };
     };
+    avaliacoes_consultar_avaliacoes_da_vaga: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvaliacoesDaVaga"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    avaliacoes_avaliar_vaga: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AvaliacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvaliacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     pagamentos_confirmar_conclusao: {
         parameters: {
             query?: never;
@@ -2178,6 +3918,103 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PagamentoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conversas_consultar_conversa_da_vaga: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversaResumo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    disputas_consultar_disputa: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisputaDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    disputas_contestar_servico: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DisputaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisputaDetalhe"];
                 };
             };
             /** @description Validation Error */
