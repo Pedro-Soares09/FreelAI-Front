@@ -52,6 +52,7 @@ export default function PaymentPage() {
   useEffect(() => {
     setModoDemo(
       localStorage.getItem('freelai_perfil_demo') === 'true' ||
+        process.env.NEXT_PUBLIC_MODO_DEMO === 'true' ||
         process.env.NEXT_PUBLIC_USE_MOCKS !== 'false' ||
         process.env.NODE_ENV !== 'production'
     );

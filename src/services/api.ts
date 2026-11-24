@@ -13,6 +13,7 @@ import {
 import { mockRouter } from '@/mocks/freelai-mock';
 import { fetchAutenticado } from '@/api/client';
 import { ApiError, erroDeResposta } from '@/api/erro';
+import type { DadosAcordo, PagamentoDetalhe } from '@/api/tipos';
 
 const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
@@ -42,17 +43,107 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+/** Cobrança Pix da vaga na API real; abre a cobrança na primeira visita. */
+async function cobrancaPix(vagaId: string): Promise<PagamentoDetalhe> {
+  const caminho = `/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento`;
+  try {
+    return await request<PagamentoDetalhe>(caminho);
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 404) {
+      return request<PagamentoDetalhe>(caminho, { method: 'POST' });
+    }
+    throw e;
+  }
+}
+
+/** Adapta o pagamento da API ao formato usado pela tela de Pix. */
+function pagamentoParaPix(d: PagamentoDetalhe): PagamentoPix {
+  const retido = d.estado === 'retido';
+  return {
+    id: String(d.id),
+    vaga_id: String(d.vaga_id),
+    status: d.estado === 'liberado_parcial' ? 'parcial' : d.estado,
+    total: Number(d.divisao.valor_total),
+    taxa: Number(d.divisao.taxa_plataforma),
+    liquido: Number(d.divisao.valor_liquido_profissional),
+    qr_codigo: d.codigo_pix ?? '',
+    copia_e_cola: d.codigo_pix ?? '',
+    prazo_em: d.expira_em ?? d.atualizado_em,
+    lancamentos: [],
+    conclusao_confirmada: !retido && d.estado !== 'aguardando' && d.estado !== 'expirado',
+    liberacao_validada: false,
+  };
+}
+
+export type CategoriaVaga = { slug: string; nome: string; nivel_risco: 'baixo' | 'medio' | 'alto' };
+
+export type NovaVaga = {
+  titulo: string;
+  descricao: string;
+  categoria: string;
+  valor: number;
+  duracao_horas: number;
+  data_inicio: string;
+  bairro: string;
+  logradouro?: string;
+  latitude: number;
+  longitude: number;
+};
+
+const CATEGORIAS_MOCK: CategoriaVaga[] = [
+  { slug: 'montagem', nome: 'Montagem de móveis', nivel_risco: 'baixo' },
+  { slug: 'limpeza', nome: 'Limpeza', nivel_risco: 'baixo' },
+  { slug: 'eletrica', nome: 'Elétrica', nivel_risco: 'alto' },
+  { slug: 'pintura', nome: 'Pintura', nivel_risco: 'medio' },
+];
+
 export const freelaiApi = {
+  obterAcordo: (vagaId: string) => request<DadosAcordo>(`/api/v1/vagas/${vagaId}/acordo`),
+
+  aceitarAcordo: (vagaId: string) =>
+    request<DadosAcordo>(`/api/v1/vagas/${vagaId}/acordo/aceite`, { method: 'POST' }),
+
+  obterPagamento: (vagaId: string) =>
+    request<PagamentoDetalhe>(`/api/v1/vagas/${vagaId}/pagamento`),
+
+  abrirCobranca: (vagaId: string) =>
+    request<PagamentoDetalhe>(`/api/v1/vagas/${vagaId}/pagamento`, { method: 'POST' }),
+
+  simularPagamento: (pagamentoId: number) =>
+    request<PagamentoDetalhe>(`/api/v1/pagamentos/${pagamentoId}/simular-confirmacao`, {
+      method: 'POST',
+    }),
+
+  listarCategorias: () =>
+    USE_MOCKS
+      ? Promise.resolve(CATEGORIAS_MOCK)
+      : request<CategoriaVaga[]>('/api/v1/categorias'),
+
+  criarVaga: (dados: NovaVaga) =>
+    USE_MOCKS
+      ? Promise.resolve({ id: 'mock-nova-vaga', titulo: dados.titulo } as unknown as Vaga)
+      : request<Vaga>('/api/v1/vagas', { method: 'POST', body: JSON.stringify(dados) }),
+
   listarPainelContratante: () =>
     request<ItemPainelContratante[]>('/api/v1/contratante/painel'),
 
   obterPagamentoPix: (vagaId: string) =>
-    request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix`),
+    USE_MOCKS
+      ? request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix`)
+      : cobrancaPix(vagaId).then(pagamentoParaPix),
 
   simularPagamentoPix: (vagaId: string) =>
-    request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix/simular`, {
-      method: 'POST',
-    }),
+    USE_MOCKS
+      ? request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix/simular`, {
+          method: 'POST',
+        })
+      : cobrancaPix(vagaId)
+          .then((p) =>
+            request<PagamentoDetalhe>(`/api/v1/pagamentos/${p.id}/simular-confirmacao`, {
+              method: 'POST',
+            })
+          )
+          .then(pagamentoParaPix),
 
   validarLiberacaoFacial: (vagaId: string) =>
     request<ResultadoValidacaoFacial>(
