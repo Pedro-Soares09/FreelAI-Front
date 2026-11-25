@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { IconShield } from "@/components/ui/icons";
 import { baseBotao, tamanhosBotao, variantesBotao } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -59,71 +58,150 @@ export function Landing() {
       </header>
 
       <main>
-        <section className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-4 py-16 md:py-24">
-          <p className="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-            Recife, PE
-          </p>
-          <h1 className="max-w-3xl text-4xl font-extrabold leading-tight md:text-6xl">
-            Seu próximo <span className="text-primary">freela</span> está aqui.
-          </h1>
-          <p className="max-w-2xl text-lg text-muted">
-            Bicos rápidos e serviços pontuais. Você descreve o que precisa e a FREELAI encontra os três melhores
-            profissionais perto de você.
-          </p>
-          <BotoesDeCadastro />
-        </section>
+        
+<section className="relative mx-auto flex w-full max-w-6xl flex-col items-start gap-7 overflow-hidden px-4 py-24 md:py-32">
+  <div className="absolute right-0 top-10 -z-10 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
 
-        <section id="como-funciona" className="border-y border-borda bg-surface">
-          <div className="mx-auto w-full max-w-6xl px-4 py-16">
-            <h2 className="text-3xl font-bold">Do pedido ao match em três passos</h2>
-            <ol className="mt-8 grid gap-4 md:grid-cols-3">
-              {PASSOS.map((p) => (
-                <li key={p.n} className="rounded-card border border-borda bg-bg p-6">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-fg font-bold">
-                    {p.n}
-                  </span>
-                  <h3 className="mt-4 text-lg font-bold">{p.titulo}</h3>
-                  <p className="mt-1 text-sm text-muted">{p.texto}</p>
-                </li>
-              ))}
-            </ol>
-            <ul className="mt-8 grid gap-4 md:grid-cols-3">
-              {DIFERENCIAIS.map((d) => (
-                <li key={d.titulo} className="flex gap-3">
-                  <IconShield className="mt-0.5 shrink-0 text-success" />
-                  <div>
-                    <p className="font-semibold">{d.titulo}</p>
-                    <p className="text-sm text-muted">{d.texto}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+  <p className="rounded-full border border-primary/40 bg-primary/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-primary">
+    Conectando talentos e oportunidades
+  </p>
 
-        <section id="quem-somos" className="mx-auto w-full max-w-6xl px-4 py-16">
-          <h2 className="text-3xl font-bold">Quem somos</h2>
-          <p className="mt-4 max-w-3xl text-muted">
-            Não é falta de talento, é falta de conexão. Quem contrata precisa resolver hoje e recebe propostas
-            demais ou não encontra alguém confiável. Quem trabalha tem habilidade, mas perde horas procurando
-            clientes. A FREELAI conecta as duas pontas de forma rápida, começando por Recife.
+  <h1 className="max-w-4xl text-5xl font-extrabold leading-tight tracking-tight md:text-7xl">
+    Seu próximo{" "}
+    <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+      freela
+    </span>{" "}
+    está aqui.
+  </h1>
+
+  <p className="max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+    Encontre profissionais para realizar seus serviços ou descubra novas
+    oportunidades de trabalho. A FreelAI aproxima talentos e clientes
+    por meio de conexões inteligentes.
+  </p>
+
+  <BotoesDeCadastro />
+
+  <p className="text-sm text-muted">
+    Tecnologia e oportunidades trabalhando juntas.
+  </p>
+</section>
+
+
+
+<section id="como-funciona" className="border-y border-borda bg-surface">
+  <div className="mx-auto w-full max-w-6xl px-4 py-20">
+    <div className="mx-auto max-w-2xl text-center">
+      <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
+        Simples e inteligente
+      </p>
+
+      <h2 className="text-3xl font-extrabold md:text-4xl">
+        Como funciona a FreelAI?
+      </h2>
+
+      <p className="mt-4 text-muted">
+        Da sua necessidade até a conexão com o profissional ideal,
+        tudo acontece em três etapas.
+      </p>
+    </div>
+
+    <ol className="mt-12 grid gap-6 md:grid-cols-3">
+      {PASSOS.map((p) => (
+        <li
+          key={p.n}
+          className="group rounded-2xl border border-borda bg-bg p-7 transition duration-300 hover:-translate-y-2 hover:border-primary/60 hover:shadow-neon"
+        >
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-xl font-extrabold text-primary">
+            0{p.n}
+          </span>
+
+          <h3 className="mt-6 text-xl font-bold">
+            {p.titulo}
+          </h3>
+
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            {p.texto}
           </p>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <div className="rounded-card border border-borda bg-surface p-6">
-              <h3 className="text-lg font-bold">Taxa de 10% por serviço fechado</h3>
-              <p className="mt-1 text-sm text-muted">
-                Só cobramos quando o serviço acontece. Em um serviço de R$ 150, a FREELAI recebe R$ 15.
-              </p>
-            </div>
-            <div className="rounded-card border border-borda bg-surface p-6">
-              <h3 className="text-lg font-bold">FREELAI Pro</h3>
-              <p className="mt-1 text-sm text-muted">
-                Destaque e prioridade para profissionais que querem ser encontrados primeiro. Valores e
-                condições do plano estão em definição.
-              </p>
-            </div>
-          </div>
-        </section>
+        </li>
+      ))}
+    </ol>
+
+    <div className="mt-20">
+      <div className="text-center">
+        <p className="text-sm font-bold uppercase tracking-widest text-accent">
+          Por que escolher a FreelAI?
+        </p>
+
+        <h3 className="mt-3 text-2xl font-bold">
+          Uma experiência feita para conectar melhor.
+        </h3>
+      </div>
+
+      <ul className="mt-8 grid gap-6 md:grid-cols-3">
+        {DIFERENCIAIS.map((d) => (
+          <li
+            key={d.titulo}
+            className="rounded-xl border border-borda bg-bg p-6 transition hover:border-accent/50"
+          >
+            <h4 className="font-bold text-primary">
+              {d.titulo}
+            </h4>
+
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              {d.texto}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+
+        <section id="quem-somos" className="mx-auto w-full max-w-6xl px-4 py-20">
+  <div className="grid items-center gap-12 md:grid-cols-2">
+    <div>
+      <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
+        Conheça a FreelAI
+      </p>
+
+      <h2 className="text-3xl font-extrabold leading-tight md:text-4xl">
+        Mais que uma plataforma, uma conexão entre talentos e oportunidades.
+      </h2>
+
+      <p className="mt-6 leading-relaxed text-muted">
+        A FreelAI nasceu para aproximar pessoas que precisam de serviços de
+        profissionais que sabem realizá-los. Utilizando tecnologia e inteligência
+        artificial, buscamos tornar essa conexão mais simples, rápida e eficiente.
+      </p>
+
+      <p className="mt-4 leading-relaxed text-muted">
+        Nossa proposta é facilitar a contratação, valorizar profissionais e
+        transformar a maneira como oportunidades de trabalho são encontradas.
+      </p>
+    </div>
+
+    <div className="grid gap-4 sm:grid-cols-2">
+      <div className="rounded-2xl border border-primary/30 bg-surface p-6">
+        <span className="text-3xl font-extrabold text-primary">10%</span>
+        <h3 className="mt-3 text-lg font-bold">Taxa por serviço</h3>
+        <p className="mt-2 text-sm text-muted">
+          A FreelAI recebe uma taxa de 10% por serviço fechado.
+        </p>
+      </div>
+
+      <div className="rounded-2xl border border-accent/30 bg-surface p-6 sm:translate-y-8">
+        <span className="text-3xl font-extrabold text-accent">Pro</span>
+        <h3 className="mt-3 text-lg font-bold">FreelAI Pro</h3>
+        <p className="mt-2 text-sm text-muted">
+          Mais destaque e prioridade para profissionais na plataforma.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
         <section className="border-t border-borda bg-surface">
           <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-5 px-4 py-14">
