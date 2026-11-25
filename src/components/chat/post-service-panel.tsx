@@ -124,6 +124,12 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       {agreement.status === "completed" && (
         <>
           <p role="status">Serviço concluído pelas duas partes.</p>
+          {!iAmHirer && (
+            <p>
+              O pagamento é feito pelo contratante via Pix. O valor fica retido até a validação facial e só é liberado
+              depois dela.
+            </p>
+          )}
           {iAmHirer && (
             <Link href={`/pagamento/${agreement.id}`} className="cta">
               Pagar o serviço (Pix)
