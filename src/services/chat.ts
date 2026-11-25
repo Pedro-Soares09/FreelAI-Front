@@ -630,9 +630,10 @@ export async function confirmCompletion(
     agreement.completedAt = new Date().toISOString();
     const concluidoEm = Date.parse(agreement.completedAt);
     agreement.contestDeadline = new Date(concluidoEm + CONTEST_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
-    // Regra da tela de pagamento: revisão em 48 h; após 72 h, decisão automática.
-    agreement.reviewDeadline = new Date(concluidoEm + 48 * 60 * 60 * 1000).toISOString();
-    agreement.autoDecisionDeadline = new Date(concluidoEm + 72 * 60 * 60 * 1000).toISOString();
+    // Valores do back (app/services/configuracao.py, perfil producao): avaliação em 48 h e
+    // liberação parcial de 50% em 72 h após o fim. O mock usa a conclusão como referência.
+    agreement.avaliacaoDeadline = new Date(concluidoEm + 48 * 60 * 60 * 1000).toISOString();
+    agreement.liberacaoParcialDeadline = new Date(concluidoEm + 72 * 60 * 60 * 1000).toISOString();
     addEvent(agreement, "Serviço concluído");
   }
   return structuredClone(agreement);

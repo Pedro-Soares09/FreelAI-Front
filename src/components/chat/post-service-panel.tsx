@@ -149,7 +149,7 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
         <ReviewModal agreement={agreement} targetName={otherName} onClose={() => setReviewOpen(false)} />
       )}
 
-      {agreement.status === "completed" && (agreement.contestDeadline || agreement.reviewDeadline || agreement.autoDecisionDeadline) && (
+      {agreement.status === "completed" && (agreement.contestDeadline || agreement.avaliacaoDeadline || agreement.liberacaoParcialDeadline) && (
         <ul className="prazos">
           {agreement.contestDeadline && (
             <li>
@@ -157,16 +157,18 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
               <time dateTime={agreement.contestDeadline}>{formatDateTime(agreement.contestDeadline)}</time>
             </li>
           )}
-          {agreement.reviewDeadline && (
+          {agreement.avaliacaoDeadline && (
             <li>
-              Prazo de revisão (48 h):{" "}
-              <time dateTime={agreement.reviewDeadline}>{formatDateTime(agreement.reviewDeadline)}</time>
+              Prazo para avaliar (48 h):{" "}
+              <time dateTime={agreement.avaliacaoDeadline}>{formatDateTime(agreement.avaliacaoDeadline)}</time>
             </li>
           )}
-          {agreement.autoDecisionDeadline && (
+          {agreement.liberacaoParcialDeadline && (
             <li>
-              Decisão automática (72 h):{" "}
-              <time dateTime={agreement.autoDecisionDeadline}>{formatDateTime(agreement.autoDecisionDeadline)}</time>
+              Liberação parcial de 50% sem validação facial (72 h):{" "}
+              <time dateTime={agreement.liberacaoParcialDeadline}>
+                {formatDateTime(agreement.liberacaoParcialDeadline)}
+              </time>
             </li>
           )}
         </ul>

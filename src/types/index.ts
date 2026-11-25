@@ -338,10 +338,10 @@ export type Agreement = AgreementTerms & {
   completionNote?: string;
   /** Nomes dos anexos enviados na confirmação (só mock; a API ainda não recebe). */
   completionAttachments?: string[];
-  /** Prazo de revisão (48 h após a conclusão), informado pela API. */
-  reviewDeadline?: string;
-  /** Decisão automática (72 h após a conclusão), informada pela API. */
-  autoDecisionDeadline?: string;
+  /** Prazo para as partes avaliarem (48 h após o fim previsto), informado pela API. */
+  avaliacaoDeadline?: string;
+  /** Liberação parcial de 50% sem validação facial (72 h após o fim previsto), informada pela API. */
+  liberacaoParcialDeadline?: string;
   contestedAt?: string;
   contestReason?: ContestReason;
   contestDetails?: string;
