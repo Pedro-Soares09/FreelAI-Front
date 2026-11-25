@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ReviewModal } from "@/components/chat/review-modal";
 import { CONTEST_REASONS, CONTEST_WINDOW_HOURS } from "@/lib/constants";
@@ -23,6 +24,7 @@ type PostServicePanelProps = {
 
 /** Confirmação de conclusão, contestação e linha do tempo do serviço. */
 export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged }: PostServicePanelProps) {
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [contesting, setContesting] = useState(false);
@@ -48,16 +50,27 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   const iConfirmed = iAmHirer ? agreement.completionByHirer : agreement.completionByWorker;
   const events = getAgreementEvents(agreement);
 
-  async function run(action: () => Promise<Agreement>) {
+  async function run(action: () => Promise<Agreement>): Promise<Agreement | null> {
     setError(null);
     setBusy(true);
     try {
-      onChanged(await action());
+      const updated = await action();
+      onChanged(updated);
       setContesting(false);
+      return updated;
     } catch (err) {
       setError((err as Error).message);
+      return null;
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function confirmarConclusao() {
+    const updated = await run(() => confirmCompletion(agreement.id));
+    // Serviço concluído pelas duas partes: o contratante segue para a validação facial (US42).
+    if (updated?.status === "completed" && iAmHirer) {
+      router.push(`/pagamento/${agreement.id}?validar=1`);
     }
   }
 
@@ -66,7 +79,7 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       <h3>Serviço</h3>
 
       {agreement.status === "accepted" && !iConfirmed && (
-        <button type="button" className="cta" disabled={busy} onClick={() => void run(() => confirmCompletion(agreement.id))}>
+        <button type="button" className="cta" disabled={busy} onClick={() => void confirmarConclusao()}>
           {busy ? "Confirmando..." : "Confirmar conclusão do serviço"}
         </button>
       )}
