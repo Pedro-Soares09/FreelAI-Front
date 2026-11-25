@@ -84,6 +84,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/contestacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar Contestacoes */
+        get: operations["admin_listar_contestacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/contestacoes/{contestacao_id}/decisao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Contestacao
+         * @description Aceita (reativa a conta) ou recusa a contestação, com motivo.
+         */
+        post: operations["admin_decidir_contestacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/denuncias": {
         parameters: {
             query?: never;
@@ -204,6 +241,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/sancoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Sancoes
+         * @description Suspensões e banimentos; por padrão só os vigentes.
+         */
+        get: operations["admin_listar_sancoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usuarios/{usuario_id}/banimento": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Banir Usuario
+         * @description Bane a conta de forma permanente, com motivo.
+         */
+        post: operations["admin_banir_usuario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usuarios/{usuario_id}/reativacao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reativar Usuario
+         * @description Encerra a sanção vigente e devolve a conta ao estado ativo.
+         */
+        post: operations["admin_reativar_usuario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usuarios/{usuario_id}/suspensao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Suspender Usuario
+         * @description Suspende a conta por alguns dias, com motivo.
+         */
+        post: operations["admin_suspender_usuario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/arquivos": {
         parameters: {
             query?: never;
@@ -304,6 +421,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/contestacao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Contestar Sancao
+         * @description Envia a contestação da sanção vigente (uma por caso, dentro do prazo).
+         */
+        post: operations["sancoes_contestar_sancao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/login": {
         parameters: {
             query?: never;
@@ -392,6 +529,26 @@ export interface paths {
          * @description Cria a conta. Ela nasce pendente e é ativada depois da verificação de identidade.
          */
         post: operations["auth_registrar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sancao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Consultar Sancao
+         * @description Situação da conta bloqueada: motivo, data de retorno e andamento da contestação.
+         */
+        post: operations["sancoes_consultar_sancao"];
         delete?: never;
         options?: never;
         head?: never;
@@ -965,6 +1122,47 @@ export interface paths {
         patch: operations["perfis_atualizar_meu_perfil_profissional"];
         trace?: never;
     };
+    "/api/v1/profissional/agenda/bloqueios": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Bloqueios
+         * @description Períodos bloqueados que ainda não terminaram.
+         */
+        get: operations["profissional_listar_bloqueios"];
+        put?: never;
+        /**
+         * Criar Bloqueio
+         * @description Bloqueia um período: o profissional não recebe convites que o atravessem.
+         */
+        post: operations["profissional_criar_bloqueio"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/agenda/bloqueios/{bloqueio_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remover Bloqueio */
+        delete: operations["profissional_remover_bloqueio"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/profissional/comprovacoes": {
         parameters: {
             query?: never;
@@ -1014,7 +1212,7 @@ export interface paths {
         };
         /**
          * Consultar Disponibilidade
-         * @description Situação atual do modo Disponível agora e do raio de busca.
+         * @description Situação atual do modo Disponível agora, do raio de busca e da agenda.
          */
         get: operations["profissional_consultar_disponibilidade"];
         put?: never;
@@ -1334,6 +1532,30 @@ export interface paths {
          * @description Registra a avaliação mútua (1 a 5 e comentário) dentro das 48h após a conclusão.
          */
         post: operations["avaliacoes_avaliar_vaga"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/cancelamento": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Cancelamento
+         * @description Mostra se a vaga pode ser cancelada agora e se isso gera advertência.
+         */
+        get: operations["cancelamento_consultar_cancelamento"];
+        put?: never;
+        /**
+         * Cancelar Vaga
+         * @description Cancela a vaga; cancelamento tardio gera advertência e pode suspender a conta.
+         */
+        post: operations["cancelamento_cancelar_vaga"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1876,6 +2098,38 @@ export interface components {
             /** Vaga Id */
             vaga_id: number;
         };
+        /** BloqueioDaAgenda */
+        BloqueioDaAgenda: {
+            /**
+             * Fim
+             * Format: date-time
+             */
+            fim: string;
+            /** Id */
+            id: string;
+            /**
+             * Inicio
+             * Format: date-time
+             */
+            inicio: string;
+            /** Motivo */
+            motivo?: string | null;
+        };
+        /** BloqueioEntrada */
+        BloqueioEntrada: {
+            /**
+             * Fim
+             * Format: date-time
+             */
+            fim: string;
+            /**
+             * Inicio
+             * Format: date-time
+             */
+            inicio: string;
+            /** Motivo */
+            motivo?: string | null;
+        };
         /** Body_arquivos_enviar_arquivo */
         Body_arquivos_enviar_arquivo: {
             /**
@@ -1974,6 +2228,24 @@ export interface components {
             raio_km: number;
             /** Telefone */
             telefone: string;
+        };
+        /** CancelamentoEntrada */
+        CancelamentoEntrada: {
+            /** Motivo */
+            motivo: string;
+        };
+        /** CancelamentoResposta */
+        CancelamentoResposta: {
+            /** Advertencia Aplicada */
+            advertencia_aplicada: boolean;
+            /** Advertencias No Periodo */
+            advertencias_no_periodo: number;
+            /** Estado */
+            estado: string;
+            /** Suspensa Ate */
+            suspensa_ate?: string | null;
+            /** Valor Estornado */
+            valor_estornado: boolean;
         };
         /**
          * CaracteristicasEntrada
@@ -2145,6 +2417,60 @@ export interface components {
         ContagemNaoLidas: {
             /** Nao Lidas */
             nao_lidas: number;
+        };
+        /** ContestacaoDaFila */
+        ContestacaoDaFila: {
+            /** Aceita */
+            aceita?: boolean | null;
+            /**
+             * Criada Em
+             * Format: date-time
+             */
+            criada_em: string;
+            /** Decidida Em */
+            decidida_em?: string | null;
+            /** Id */
+            id: number;
+            /** Motivo Decisao */
+            motivo_decisao?: string | null;
+            /** Sancao Motivo */
+            sancao_motivo: string;
+            /** Sancao Tipo */
+            sancao_tipo: string;
+            /** Texto */
+            texto: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /** Usuario Nome */
+            usuario_nome: string;
+        };
+        /** ContestacaoDetalhe */
+        ContestacaoDetalhe: {
+            /** Aceita */
+            aceita?: boolean | null;
+            /**
+             * Criada Em
+             * Format: date-time
+             */
+            criada_em: string;
+            /** Decidida Em */
+            decidida_em?: string | null;
+            /** Motivo Decisao */
+            motivo_decisao?: string | null;
+            /** Texto */
+            texto: string;
+        };
+        /** ContestacaoEntrada */
+        ContestacaoEntrada: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** Senha */
+            senha: string;
+            /** Texto */
+            texto: string;
         };
         /** ContratanteResumo */
         ContratanteResumo: {
@@ -2360,6 +2686,13 @@ export interface components {
             decisao: "aprovar" | "recusar";
             /** Motivo */
             motivo?: string | null;
+        };
+        /** DecisaoContestacaoEntrada */
+        DecisaoContestacaoEntrada: {
+            /** Aceita */
+            aceita: boolean;
+            /** Motivo */
+            motivo: string;
         };
         /**
          * DecisaoDenunciaEntrada
@@ -2578,9 +2911,7 @@ export interface components {
         /** DisponibilidadeProfissional */
         DisponibilidadeProfissional: {
             /** Bloqueios */
-            bloqueios?: {
-                [key: string]: unknown;
-            }[];
+            bloqueios?: components["schemas"]["BloqueioDaAgenda"][];
             /** Disponivel Agora */
             disponivel_agora: boolean;
             /** Disponivel Ate */
@@ -3078,6 +3409,11 @@ export interface components {
             /** Texto */
             texto: string | null;
         };
+        /** MotivoEntrada */
+        MotivoEntrada: {
+            /** Motivo */
+            motivo: string;
+        };
         /**
          * NotificacaoDetalhe
          * @description Notificação já visível ao usuário na central do aplicativo.
@@ -3540,6 +3876,21 @@ export interface components {
              */
             valor?: string | null;
         };
+        /** PreviaCancelamento */
+        PreviaCancelamento: {
+            /** Advertencias No Periodo */
+            advertencias_no_periodo: number;
+            /** Advertencias Para Suspensao */
+            advertencias_para_suspensao: number;
+            /** Gera Advertencia */
+            gera_advertencia: boolean;
+            /** Horas Para Inicio */
+            horas_para_inicio: number;
+            /** Limite Horas */
+            limite_horas: number;
+            /** Pode Cancelar */
+            pode_cancelar: boolean;
+        };
         /** ProfissionalRecomendado */
         ProfissionalRecomendado: {
             /** Demonstrou Interesse */
@@ -3781,6 +4132,67 @@ export interface components {
          * @enum {string}
          */
         RiscoCategoria: "baixo" | "medio" | "alto";
+        /** SancaoDaFila */
+        SancaoDaFila: {
+            /** Ativa */
+            ativa: boolean;
+            /** Contestada */
+            contestada: boolean;
+            /** Id */
+            id: number;
+            /**
+             * Inicio Em
+             * Format: date-time
+             */
+            inicio_em: string;
+            /** Motivo */
+            motivo: string;
+            /** Origem */
+            origem: string;
+            /** Retorno Em */
+            retorno_em?: string | null;
+            /** Tipo */
+            tipo: string;
+            /** Usuario Email */
+            usuario_email: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /** Usuario Nome */
+            usuario_nome: string;
+        };
+        /** SancaoDetalhe */
+        SancaoDetalhe: {
+            /**
+             * Contestavel Ate
+             * Format: date-time
+             */
+            contestavel_ate: string;
+            /** Id */
+            id: number;
+            /**
+             * Inicio Em
+             * Format: date-time
+             */
+            inicio_em: string;
+            /** Motivo */
+            motivo: string;
+            /** Pode Contestar */
+            pode_contestar: boolean;
+            /** Retorno Em */
+            retorno_em?: string | null;
+            /** Tipo */
+            tipo: string;
+        };
+        /** SancaoManualEntrada */
+        SancaoManualEntrada: {
+            /**
+             * Dias
+             * @default 30
+             */
+            dias: number;
+            /** Motivo */
+            motivo: string;
+        };
         /** SegurancaDaCategoria */
         SegurancaDaCategoria: {
             /** Checklist */
@@ -3796,6 +4208,13 @@ export interface components {
             nome: string;
             /** Slug */
             slug: string;
+        };
+        /** SituacaoDaConta */
+        SituacaoDaConta: {
+            contestacao?: components["schemas"]["ContestacaoDetalhe"] | null;
+            /** Estado */
+            estado: string;
+            sancao?: components["schemas"]["SancaoDetalhe"] | null;
         };
         /** SituacaoTermos */
         SituacaoTermos: {
@@ -4174,6 +4593,72 @@ export interface operations {
             };
         };
     };
+    admin_listar_contestacoes: {
+        parameters: {
+            query?: {
+                estado?: "abertas" | "decididas";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContestacaoDaFila"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_decidir_contestacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contestacao_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisaoContestacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContestacaoDaFila"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     admin_listar_fila_de_denuncias: {
         parameters: {
             query?: {
@@ -4358,6 +4843,136 @@ export interface operations {
             };
         };
     };
+    admin_listar_sancoes: {
+        parameters: {
+            query?: {
+                ativas?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SancaoDaFila"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_banir_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MotivoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SancaoDaFila"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_reativar_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_suspender_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SancaoManualEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SancaoDaFila"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     arquivos_enviar_arquivo: {
         parameters: {
             query?: never;
@@ -4479,6 +5094,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
+    sancoes_contestar_sancao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContestacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoDaConta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -4622,6 +5270,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UsuarioAtual"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sancoes_consultar_sancao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoDaConta"];
                 };
             };
             /** @description Validation Error */
@@ -5545,6 +6226,88 @@ export interface operations {
             };
         };
     };
+    profissional_listar_bloqueios: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BloqueioDaAgenda"][];
+                };
+            };
+        };
+    };
+    profissional_criar_bloqueio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BloqueioEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BloqueioDaAgenda"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_remover_bloqueio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                bloqueio_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     perfis_listar_comprovacoes: {
         parameters: {
             query?: never;
@@ -6128,6 +6891,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AvaliacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancelamento_consultar_cancelamento: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreviaCancelamento"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancelamento_cancelar_vaga: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CancelamentoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CancelamentoResposta"];
                 };
             };
             /** @description Validation Error */

@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useSessao } from '@/lib/session';
 import { freelaiApi } from '@/services/api';
 import { PerfilAtivo, Vaga } from '@/types';
+import { CancelarVaga } from '@/components/vagas/cancelar-vaga';
 import { CheckinPanel } from '@/components/vagas/checkin-panel';
 
 export default function DetalheVagaPage() {
@@ -336,6 +337,12 @@ export default function DetalheVagaPage() {
         vaga={vaga}
         perfilAtivo={perfilAtivo}
         onAtualizar={carregarVaga}
+      />
+
+      <CancelarVaga
+        vagaId={vaga.id}
+        status={vaga.status}
+        onCancelada={carregarVaga}
       />
     </div>
   );

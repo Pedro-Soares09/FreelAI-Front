@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AbaCadastros } from "@/components/admin/aba-cadastros";
+import { AbaContestacoes } from "@/components/admin/aba-contestacoes";
 import { AbaBanimentos, AbaDenuncias, AbaDisputas } from "@/components/admin/aba-moderacao";
 import { Tabs } from "@/components/ui/tabs";
 
@@ -10,6 +11,7 @@ export default function AdminPage() {
   const [denuncias, setDenuncias] = useState<number | undefined>();
   const [disputas, setDisputas] = useState<number | undefined>();
   const [banimentos, setBanimentos] = useState<number | undefined>();
+  const [contestacoes, setContestacoes] = useState<number | undefined>();
 
   return (
     <section className="page">
@@ -40,6 +42,12 @@ export default function AdminPage() {
             rotulo: "Banimentos",
             contagem: banimentos,
             conteudo: <AbaBanimentos onContagem={setBanimentos} />,
+          },
+          {
+            id: "contestacoes",
+            rotulo: "Contestações",
+            contagem: contestacoes,
+            conteudo: <AbaContestacoes onContagem={setContestacoes} />,
           },
         ]}
       />

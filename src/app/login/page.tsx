@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ApiError, mensagemDeErro } from "@/api/erro";
 import { AuthShell } from "@/components/conta/auth-shell";
+import { ContaBloqueada } from "@/components/conta/conta-bloqueada";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSessao } from "@/lib/session";
@@ -22,6 +23,11 @@ function FormularioLogin() {
   const [erros, setErros] = useState<Record<string, string>>({});
   const [erroGeral, setErroGeral] = useState<string>();
   const [enviando, setEnviando] = useState(false);
+  const [bloqueio, setBloqueio] = useState<{
+    tipo: "conta_suspensa" | "conta_banida";
+    email: string;
+    senha: string;
+  }>();
 
   const destino = destinoSeguro(params.get("next"));
 
@@ -45,14 +51,31 @@ function FormularioLogin() {
     } catch (err) {
       if (err instanceof ApiError && Object.keys(err.campos).length > 0) {
         setErros(err.campos);
-      } else if (err instanceof ApiError && err.codigo === "conta_banida") {
-        setErroGeral("Conta banida de forma permanente após duas penalidades por denúncias validadas. Não é possível entrar na plataforma.");
+      } else if (
+        err instanceof ApiError &&
+        (err.codigo === "conta_banida" || err.codigo === "conta_suspensa")
+      ) {
+        setBloqueio({ tipo: err.codigo, email: email.trim(), senha });
       } else {
         setErroGeral(mensagemDeErro(err));
       }
     } finally {
       setEnviando(false);
     }
+  }
+
+  if (bloqueio) {
+    return (
+      <ContaBloqueada
+        tipo={bloqueio.tipo}
+        email={bloqueio.email}
+        senha={bloqueio.senha}
+        onVoltar={() => {
+          setBloqueio(undefined);
+          setSenha("");
+        }}
+      />
+    );
   }
 
   return (
