@@ -6,6 +6,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
 import { ComprovantesPanel } from '@/components/pagamento/comprovantes-panel';
 import { PagamentoPix, StatusPagamento } from '@/types';
+import { MODO_DEMO, USE_MOCKS } from '@/lib/modo';
 
 const statusConfig: Record<
   StatusPagamento,
@@ -53,8 +54,8 @@ export default function PaymentPage() {
   useEffect(() => {
     setModoDemo(
       localStorage.getItem('freelai_perfil_demo') === 'true' ||
-        process.env.NEXT_PUBLIC_MODO_DEMO === 'true' ||
-        process.env.NEXT_PUBLIC_USE_MOCKS !== 'false' ||
+        MODO_DEMO ||
+        USE_MOCKS ||
         process.env.NODE_ENV !== 'production'
     );
   }, []);

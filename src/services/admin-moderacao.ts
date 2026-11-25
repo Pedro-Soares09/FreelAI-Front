@@ -2,6 +2,7 @@ import { ApiError, erroDeResposta } from "@/api/erro";
 import { fetchAutenticado } from "@/api/client";
 import type { components } from "@/api/schema";
 import { BANIDOS_MOCK, DENUNCIAS_MOCK, DISPUTAS_MOCK } from "@/mocks/moderacao";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 // Fila de denúncias e disputas da administração.
 
@@ -11,7 +12,6 @@ export type UsuarioBanido = components["schemas"]["UsuarioBanido"];
 export type DecisaoDenuncia = "procedente" | "improcedente";
 export type DecisaoDisputa = "reembolso_total" | "reembolso_parcial" | "pagamento_integral";
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {
   let resposta: Response;

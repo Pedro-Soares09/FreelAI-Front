@@ -20,6 +20,7 @@ const MapaVagas = dynamic(() => import('@/components/vagas/mapa-vagas'), {
 });
 import { useToast } from '@/components/ui/toast';
 import { useSessao } from '@/lib/session';
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 const RECIFE_CENTER = { lat: -8.0476, lng: -34.877 };
 const CATEGORIAS = [
@@ -68,7 +69,6 @@ function EstadoBadge({ estado }: { estado: EstadoPainelVaga }) {
   );
 }
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
 export default function VagasPage() {
   const { usuario } = useSessao();

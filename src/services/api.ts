@@ -14,8 +14,8 @@ import { mockRouter } from '@/mocks/freelai-mock';
 import { fetchAutenticado } from '@/api/client';
 import { ApiError, erroDeResposta } from '@/api/erro';
 import type { DadosAcordo, PagamentoDetalhe } from '@/api/tipos';
+import { USE_MOCKS } from "@/lib/modo";
 
-const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   if (USE_MOCKS) {

@@ -1,5 +1,6 @@
 import { fetchAutenticado } from "@/api/client";
 import { contaApi, type ItemFila as ItemFilaApi } from "@/services/conta";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 export type TipoItem = "verificacao" | "experiencia" | "qualificacao" | "epi";
 
@@ -98,7 +99,6 @@ const repositorioLocal: RepositorioCadastros = {
   },
 };
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 /** O id do item na tela é "tipo:id" para devolver os dois à API na decisão. */
 const repositorioApi: RepositorioCadastros = {

@@ -29,13 +29,14 @@ import type {
   Review,
   ReviewRating,
 } from "@/types";
+import { USE_MOCKS } from "@/lib/modo";
 
 // ===== Chat, acordo e pós-serviço (Pessoa 5) =====
 // Funções mockadas com atraso simulado. Quando o back estiver pronto,
 // trocar o corpo de cada função por apiRequest(...) mantendo a mesma assinatura,
 // assim as telas não precisam mudar.
 
-export const CHAT_USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
+export const CHAT_USA_MOCKS = USE_MOCKS;
 
 /** Chamada autenticada à API real; converte falhas no erro padrão da aplicação. */
 async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {

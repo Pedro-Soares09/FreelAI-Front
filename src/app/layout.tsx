@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ToastProvider } from "@/components/ui/toast";
 import { ConfirmarProvider } from "@/components/ui/confirmar";
+import { AvisoDadosSimulados } from "@/components/ui/aviso-dados-simulados";
 import { SessionProvider } from "@/lib/session";
 import { UserProvider } from "@/context/user-context";
 import { CHAVE_TEMA, TEMA_PADRAO } from "@/theme/tokens";
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: scriptTema }} />
       </head>
       <body>
+        <AvisoDadosSimulados />
         <ToastProvider>
           <SessionProvider>
             <UserProvider>

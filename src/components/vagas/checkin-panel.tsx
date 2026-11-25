@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { freelaiApi } from '@/services/api';
 import { PerfilAtivo, Vaga } from '@/types';
 import { useConfirmar } from '@/components/ui/confirmar';
+import { MODO_DEMO, USE_MOCKS } from '@/lib/modo';
 
 interface CheckinPanelProps {
   vaga: Vaga;
@@ -26,12 +27,10 @@ export function CheckinPanel({
 
   useEffect(() => {
     const demoStorage = localStorage.getItem('freelai_perfil_demo') === 'true';
-    const mocksEnv = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
-    const modoDemoEnv = process.env.NEXT_PUBLIC_MODO_DEMO === 'true';
     setIsModoDemo(
       demoStorage ||
-        mocksEnv ||
-        modoDemoEnv ||
+        USE_MOCKS ||
+        MODO_DEMO ||
         process.env.NODE_ENV !== 'production'
     );
   }, []);
