@@ -373,3 +373,25 @@
     @apply mt-2 text-muted;
   }
 }
+
+/* Cor de destaque do perfil do contratante (definida por estiloDaCor em src/lib/cores-perfil.ts). */
+.cor-perfil {
+  --cor-perfil: var(--cor-perfil-escuro, 167 139 250);
+}
+:root[data-theme="light"] .cor-perfil {
+  --cor-perfil: var(--cor-perfil-claro, 109 40 217);
+}
+.cor-perfil-borda {
+  border-color: rgb(var(--cor-perfil) / 0.7);
+}
+.cor-perfil-topo {
+  background: linear-gradient(135deg, rgb(var(--cor-perfil) / 0.28), rgb(var(--cor-perfil) / 0.06));
+  border-bottom: 1px solid rgb(var(--cor-perfil) / 0.5);
+}
+.cor-perfil-texto {
+  color: rgb(var(--cor-perfil));
+}
+.cor-perfil-fundo {
+  background: rgb(var(--cor-perfil) / 0.16);
+  color: rgb(var(--cor-perfil));
+}

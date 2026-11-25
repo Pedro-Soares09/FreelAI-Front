@@ -155,6 +155,117 @@
         "title": "AssinaturaProDetalhe",
         "type": "object"
       },
+      "AtualizacaoContratanteEntrada": {
+        "description": "Campos opcionais da personalização; só o que for enviado é alterado.",
+        "properties": {
+          "aceita_notificacoes": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aceita Notificacoes"
+          },
+          "avatar_arquivo_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Arquivo do tipo foto já enviado; 0 remove o avatar.",
+            "title": "Avatar Arquivo Id"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "categorias_interesse": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 10,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categorias Interesse"
+          },
+          "cor_destaque": {
+            "anyOf": [
+              {
+                "enum": [
+                  "lilas",
+                  "azul",
+                  "verde",
+                  "rosa",
+                  "laranja",
+                  "grafite"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cor Destaque"
+          },
+          "exigir_verificado": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exigir Verificado"
+          },
+          "horario_contato": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horario Contato"
+          }
+        },
+        "title": "AtualizacaoContratanteEntrada",
+        "type": "object"
+      },
       "AtualizacaoProfissionalEntrada": {
         "properties": {
           "caracteristicas": {
@@ -337,6 +448,46 @@
           "nota"
         ],
         "title": "AvaliacaoEntrada",
+        "type": "object"
+      },
+      "AvaliacaoPublica": {
+        "properties": {
+          "avaliador_nome": {
+            "title": "Avaliador Nome",
+            "type": "string"
+          },
+          "comentario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comentario"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "nota": {
+            "title": "Nota",
+            "type": "integer"
+          },
+          "vaga_titulo": {
+            "title": "Vaga Titulo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nota",
+          "avaliador_nome",
+          "vaga_titulo",
+          "criado_em"
+        ],
+        "title": "AvaliacaoPublica",
         "type": "object"
       },
       "AvaliacoesDaVaga": {
@@ -630,10 +781,18 @@
             "title": "Foto Url"
           },
           "latitude": {
-            "maximum": 90.0,
-            "minimum": -90.0,
-            "title": "Latitude",
-            "type": "number"
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Opcional: deduzida do bairro quando ausente.",
+            "title": "Latitude"
           },
           "logradouro": {
             "anyOf": [
@@ -648,10 +807,17 @@
             "title": "Logradouro"
           },
           "longitude": {
-            "maximum": 180.0,
-            "minimum": -180.0,
-            "title": "Longitude",
-            "type": "number"
+            "anyOf": [
+              {
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
           },
           "raio_km": {
             "default": 5,
@@ -669,8 +835,6 @@
           "data_nascimento",
           "telefone",
           "bairro",
-          "latitude",
-          "longitude",
           "categorias"
         ],
         "title": "CadastroProfissionalEntrada",
@@ -720,6 +884,24 @@
           }
         },
         "title": "CaracteristicasEntrada",
+        "type": "object"
+      },
+      "CategoriaDeInteresse": {
+        "properties": {
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome"
+        ],
+        "title": "CategoriaDeInteresse",
         "type": "object"
       },
       "CategoriaDoPerfil": {
@@ -1013,6 +1195,17 @@
             "title": "Adicionais Pagos",
             "type": "integer"
           },
+          "cor_destaque": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cor Destaque"
+          },
           "destaque": {
             "default": false,
             "title": "Destaque",
@@ -1049,6 +1242,17 @@
           "total_avaliacoes": {
             "title": "Total Avaliacoes",
             "type": "integer"
+          },
+          "usuario_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usuario Id"
           },
           "verificado": {
             "title": "Verificado",
@@ -1700,6 +1904,17 @@
             "title": "Denunciado Id",
             "type": "integer"
           },
+          "denunciado_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denunciado Nome"
+          },
           "denunciante_id": {
             "anyOf": [
               {
@@ -1711,6 +1926,17 @@
             ],
             "description": "Autor da denúncia (nulo quando gerada automaticamente pelo chat).",
             "title": "Denunciante Id"
+          },
+          "denunciante_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denunciante Nome"
           },
           "denuncias_procedentes_acumuladas": {
             "default": 0,
@@ -2039,6 +2265,17 @@
             "title": "Chat",
             "type": "array"
           },
+          "contratante_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contratante Nome"
+          },
           "contratante_usuario_id": {
             "title": "Contratante Usuario Id",
             "type": "integer"
@@ -2111,6 +2348,17 @@
               }
             ],
             "title": "Percentual Reembolso"
+          },
+          "profissional_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profissional Nome"
           },
           "profissional_usuario_id": {
             "anyOf": [
@@ -2714,6 +2962,46 @@
         "title": "LoginEntrada",
         "type": "object"
       },
+      "MapaDeOfertas": {
+        "properties": {
+          "categorias_do_perfil": {
+            "description": "Slugs das categorias de atuação e de experiência usadas no filtro.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Categorias Do Perfil",
+            "type": "array"
+          },
+          "centro_latitude": {
+            "title": "Centro Latitude",
+            "type": "number"
+          },
+          "centro_longitude": {
+            "title": "Centro Longitude",
+            "type": "number"
+          },
+          "ofertas": {
+            "items": {
+              "$ref": "#/components/schemas/OfertaNoMapa"
+            },
+            "title": "Ofertas",
+            "type": "array"
+          },
+          "raio_km": {
+            "title": "Raio Km",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "centro_latitude",
+          "centro_longitude",
+          "raio_km",
+          "categorias_do_perfil",
+          "ofertas"
+        ],
+        "title": "MapaDeOfertas",
+        "type": "object"
+      },
       "MensagemDetalhe": {
         "description": "Mensagem persistida no histórico de uma conversa.",
         "examples": [
@@ -3015,6 +3303,78 @@
         "title": "NotificacaoDetalhe",
         "type": "object"
       },
+      "OfertaNoMapa": {
+        "properties": {
+          "bairro": {
+            "title": "Bairro",
+            "type": "string"
+          },
+          "categoria_nome": {
+            "title": "Categoria Nome",
+            "type": "string"
+          },
+          "categoria_slug": {
+            "title": "Categoria Slug",
+            "type": "string"
+          },
+          "distancia_km": {
+            "title": "Distancia Km",
+            "type": "number"
+          },
+          "inicio_em": {
+            "title": "Inicio Em",
+            "type": "string"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "pendencias": {
+            "description": "O que falta aprovar: experiencia, qualificacao, epi.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Pendencias",
+            "type": "array"
+          },
+          "pode_atuar": {
+            "description": "Verdadeiro quando o perfil já cumpre as regras de risco.",
+            "title": "Pode Atuar",
+            "type": "boolean"
+          },
+          "titulo": {
+            "title": "Titulo",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "titulo",
+          "categoria_slug",
+          "categoria_nome",
+          "bairro",
+          "latitude",
+          "longitude",
+          "distancia_km",
+          "valor",
+          "inicio_em",
+          "pode_atuar"
+        ],
+        "title": "OfertaNoMapa",
+        "type": "object"
+      },
       "OrigemDenuncia": {
         "enum": [
           "usuario",
@@ -3207,10 +3567,60 @@
       },
       "PerfilContratanteDetalhe": {
         "properties": {
+          "aceita_notificacoes": {
+            "default": true,
+            "title": "Aceita Notificacoes",
+            "type": "boolean"
+          },
           "adicionais_pagos": {
             "default": 0,
             "title": "Adicionais Pagos",
             "type": "integer"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "categorias_interesse": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Categorias Interesse",
+            "type": "array"
+          },
+          "cor_destaque": {
+            "default": "lilas",
+            "title": "Cor Destaque",
+            "type": "string"
           },
           "destaque": {
             "default": false,
@@ -3227,6 +3637,22 @@
               }
             ],
             "title": "Documento"
+          },
+          "exigir_verificado": {
+            "default": false,
+            "title": "Exigir Verificado",
+            "type": "boolean"
+          },
+          "horario_contato": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horario Contato"
           },
           "id": {
             "title": "Id",
@@ -3442,6 +3868,144 @@
         "title": "PerfilProfissionalDetalhe",
         "type": "object"
       },
+      "PerfilPublicoContratante": {
+        "description": "Visão pública do contratante, sem documento, telefone, selfie nem e-mail.",
+        "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "avaliacoes": {
+            "items": {
+              "$ref": "#/components/schemas/AvaliacaoPublica"
+            },
+            "title": "Avaliacoes",
+            "type": "array"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "categorias_interesse": {
+            "items": {
+              "$ref": "#/components/schemas/CategoriaDeInteresse"
+            },
+            "title": "Categorias Interesse",
+            "type": "array"
+          },
+          "cor_destaque": {
+            "default": "lilas",
+            "title": "Cor Destaque",
+            "type": "string"
+          },
+          "destaque": {
+            "default": false,
+            "title": "Destaque",
+            "type": "boolean"
+          },
+          "exigir_verificado": {
+            "default": false,
+            "title": "Exigir Verificado",
+            "type": "boolean"
+          },
+          "horario_contato": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horario Contato"
+          },
+          "membro_desde": {
+            "format": "date-time",
+            "title": "Membro Desde",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Media"
+          },
+          "servicos_concluidos": {
+            "default": 0,
+            "title": "Servicos Concluidos",
+            "type": "integer"
+          },
+          "tipo_pessoa": {
+            "$ref": "#/components/schemas/TipoPessoa"
+          },
+          "total_avaliacoes": {
+            "default": 0,
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "vagas_publicadas": {
+            "default": 0,
+            "title": "Vagas Publicadas",
+            "type": "integer"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "tipo_pessoa",
+          "verificado",
+          "membro_desde"
+        ],
+        "title": "PerfilPublicoContratante",
+        "type": "object"
+      },
       "PerfilResumo": {
         "description": "Dados públicos de um perfil, exibidos em cards, listas e no chat.",
         "properties": {
@@ -3450,6 +4014,18 @@
             "description": "Horas extras e bônus pagos (só contratantes).",
             "title": "Adicionais Pagos",
             "type": "integer"
+          },
+          "cor_destaque": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Cor de destaque escolhida pelo contratante.",
+            "title": "Cor Destaque"
           },
           "destaque": {
             "default": false,
@@ -4510,10 +5086,18 @@
             "type": "number"
           },
           "latitude": {
-            "maximum": 90.0,
-            "minimum": -90.0,
-            "title": "Latitude",
-            "type": "number"
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Opcional: deduzida do bairro quando ausente.",
+            "title": "Latitude"
           },
           "logradouro": {
             "anyOf": [
@@ -4528,10 +5112,17 @@
             "title": "Logradouro"
           },
           "longitude": {
-            "maximum": 180.0,
-            "minimum": -180.0,
-            "title": "Longitude",
-            "type": "number"
+            "anyOf": [
+              {
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
           },
           "titulo": {
             "maxLength": 120,
@@ -4553,9 +5144,7 @@
           "valor",
           "duracao_horas",
           "data_inicio",
-          "bairro",
-          "latitude",
-          "longitude"
+          "bairro"
         ],
         "title": "VagaCriar",
         "type": "object"
@@ -5921,6 +6510,54 @@
         ]
       }
     },
+    "/api/v1/contratantes/{usuario_id}/perfil": {
+      "get": {
+        "description": "Visão pública do contratante, sem dados sensíveis, para quem está logado.",
+        "operationId": "perfis_consultar_perfil_publico_do_contratante",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilPublicoContratante"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Perfil Publico Do Contratante",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
     "/api/v1/conversas": {
       "get": {
         "description": "Lista as conversas do usuário com a outra parte, última mensagem e total de não lidas.",
@@ -6866,6 +7503,51 @@
         "tags": [
           "perfis"
         ]
+      },
+      "patch": {
+        "description": "Edita bio, bairro, horário de contato, preferências, cor de destaque e avatar.",
+        "operationId": "perfis_atualizar_meu_perfil_contratante",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizacaoContratanteEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilContratanteDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Atualizar Meu Perfil Contratante",
+        "tags": [
+          "perfis"
+        ]
       }
     },
     "/api/v1/perfis/profissional": {
@@ -7210,6 +7892,62 @@
         "summary": "Enviar Experiencia",
         "tags": [
           "perfis"
+        ]
+      }
+    },
+    "/api/v1/profissional/mapa-ofertas": {
+      "get": {
+        "description": "Ofertas abertas perto do profissional, filtradas pelas categorias e experiências dele.",
+        "operationId": "profissional_mapa_de_ofertas",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "raio_km",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Raio Km"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MapaDeOfertas"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Mapa De Ofertas",
+        "tags": [
+          "profissional"
         ]
       }
     },

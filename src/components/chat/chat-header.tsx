@@ -21,7 +21,12 @@ export function ChatHeader({ conversation, connection, onAgreementClick, onRepor
       <Link href="/chat" aria-label="Voltar para as conversas">
         ←
       </Link>
-      <AvatarVerified name={contact.name} imageUrl={contact.avatarUrl} verified={contact.verified} />
+      <AvatarVerified
+        name={contact.name}
+        imageUrl={contact.avatarUrl}
+        verified={contact.verified}
+        cor={contact.role === "contratante" ? (contact.corDestaque ?? "lilas") : undefined}
+      />
       <div className="chat-header-info">
         <strong>
           {contact.name} {contact.destaque && <SeloDestaque />}
@@ -31,9 +36,15 @@ export function ChatHeader({ conversation, connection, onAgreementClick, onRepor
         </span>
       </div>
       <span className="chat-amount">{formatCurrency(job.amount)}</span>
-      <Link href="/perfil" className="chip">
-        Ver perfil
-      </Link>
+      {contact.role === "contratante" ? (
+        <Link href={`/contratante/${contact.id}`} className="chip">
+          Ver perfil
+        </Link>
+      ) : (
+        <Link href="/perfil" className="chip">
+          Ver perfil
+        </Link>
+      )}
       {onReportClick && (
         <button type="button" className="chip" onClick={onReportClick}>
           Denunciar
