@@ -156,7 +156,7 @@
         "type": "object"
       },
       "AtualizacaoContratanteEntrada": {
-        "description": "Campos opcionais da personalização; só o que for enviado é alterado.",
+        "description": "Dados cadastrais e personalização do perfil; só o que for enviado é alterado.",
         "properties": {
           "aceita_notificacoes": {
             "anyOf": [
@@ -239,6 +239,18 @@
             ],
             "title": "Cor Destaque"
           },
+          "documento": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Documento"
+          },
           "exigir_verificado": {
             "anyOf": [
               {
@@ -261,6 +273,54 @@
               }
             ],
             "title": "Horario Contato"
+          },
+          "nome": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nome"
+          },
+          "razao_social": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Razao Social"
+          },
+          "selfie_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selfie Url"
+          },
+          "telefone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Telefone"
           }
         },
         "title": "AtualizacaoContratanteEntrada",
@@ -268,6 +328,19 @@
       },
       "AtualizacaoProfissionalEntrada": {
         "properties": {
+          "bairro": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
           "caracteristicas": {
             "anyOf": [
               {
@@ -293,6 +366,29 @@
             ],
             "title": "Categorias"
           },
+          "cpf": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpf"
+          },
+          "data_nascimento": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Nascimento"
+          },
           "foto_url": {
             "anyOf": [
               {
@@ -304,6 +400,57 @@
               }
             ],
             "title": "Foto Url"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          },
+          "logradouro": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logradouro"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "nome": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nome"
           },
           "raio_km": {
             "anyOf": [
@@ -683,7 +830,7 @@
                 "type": "null"
               }
             ],
-            "description": "CPF (pessoa física) ou CNPJ.",
+            "description": "CPF (pessoa física) ou CNPJ (pessoa jurídica, opcional).",
             "title": "Documento"
           },
           "razao_social": {
@@ -781,18 +928,11 @@
             "title": "Foto Url"
           },
           "latitude": {
-            "anyOf": [
-              {
-                "maximum": 90.0,
-                "minimum": -90.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Opcional: deduzida do bairro quando ausente.",
-            "title": "Latitude"
+            "description": "Latitude obrigatória da localização.",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
           },
           "logradouro": {
             "anyOf": [
@@ -807,17 +947,11 @@
             "title": "Logradouro"
           },
           "longitude": {
-            "anyOf": [
-              {
-                "maximum": 180.0,
-                "minimum": -180.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Longitude"
+            "description": "Longitude obrigatória da localização.",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
           },
           "raio_km": {
             "default": 5,
@@ -835,6 +969,8 @@
           "data_nascimento",
           "telefone",
           "bairro",
+          "latitude",
+          "longitude",
           "categorias"
         ],
         "title": "CadastroProfissionalEntrada",
@@ -3638,6 +3774,10 @@
             ],
             "title": "Documento"
           },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
           "exigir_verificado": {
             "default": false,
             "title": "Exigir Verificado",
@@ -3721,6 +3861,7 @@
           "id",
           "usuario_id",
           "nome",
+          "email",
           "tipo_pessoa",
           "documento",
           "razao_social",
@@ -7505,7 +7646,7 @@
         ]
       },
       "patch": {
-        "description": "Edita bio, bairro, horário de contato, preferências, cor de destaque e avatar.",
+        "description": "Edita dados cadastrais e a personalização (bio, cor, avatar, preferências).",
         "operationId": "perfis_atualizar_meu_perfil_contratante",
         "requestBody": {
           "content": {

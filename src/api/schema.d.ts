@@ -922,7 +922,7 @@ export interface paths {
         head?: never;
         /**
          * Atualizar Meu Perfil Contratante
-         * @description Edita bio, bairro, horário de contato, preferências, cor de destaque e avatar.
+         * @description Edita dados cadastrais e a personalização (bio, cor, avatar, preferências).
          */
         patch: operations["perfis_atualizar_meu_perfil_contratante"];
         trace?: never;
@@ -1666,7 +1666,7 @@ export interface components {
         };
         /**
          * AtualizacaoContratanteEntrada
-         * @description Campos opcionais da personalização; só o que for enviado é alterado.
+         * @description Dados cadastrais e personalização do perfil; só o que for enviado é alterado.
          */
         AtualizacaoContratanteEntrada: {
             /** Aceita Notificacoes */
@@ -1684,18 +1684,42 @@ export interface components {
             categorias_interesse?: string[] | null;
             /** Cor Destaque */
             cor_destaque?: ("lilas" | "azul" | "verde" | "rosa" | "laranja" | "grafite") | null;
+            /** Documento */
+            documento?: string | null;
             /** Exigir Verificado */
             exigir_verificado?: boolean | null;
             /** Horario Contato */
             horario_contato?: string | null;
+            /** Nome */
+            nome?: string | null;
+            /** Razao Social */
+            razao_social?: string | null;
+            /** Selfie Url */
+            selfie_url?: string | null;
+            /** Telefone */
+            telefone?: string | null;
         };
         /** AtualizacaoProfissionalEntrada */
         AtualizacaoProfissionalEntrada: {
+            /** Bairro */
+            bairro?: string | null;
             caracteristicas?: components["schemas"]["CaracteristicasEntrada"] | null;
             /** Categorias */
             categorias?: string[] | null;
+            /** Cpf */
+            cpf?: string | null;
+            /** Data Nascimento */
+            data_nascimento?: string | null;
             /** Foto Url */
             foto_url?: string | null;
+            /** Latitude */
+            latitude?: number | null;
+            /** Logradouro */
+            logradouro?: string | null;
+            /** Longitude */
+            longitude?: number | null;
+            /** Nome */
+            nome?: string | null;
             /** Raio Km */
             raio_km?: number | null;
             /** Telefone */
@@ -1879,7 +1903,7 @@ export interface components {
         CadastroContratanteEntrada: {
             /**
              * Documento
-             * @description CPF (pessoa física) ou CNPJ.
+             * @description CPF (pessoa física) ou CNPJ (pessoa jurídica, opcional).
              */
             documento?: string | null;
             /** Razao Social */
@@ -1913,13 +1937,16 @@ export interface components {
             foto_url?: string | null;
             /**
              * Latitude
-             * @description Opcional: deduzida do bairro quando ausente.
+             * @description Latitude obrigatória da localização.
              */
-            latitude?: number | null;
+            latitude: number;
             /** Logradouro */
             logradouro?: string | null;
-            /** Longitude */
-            longitude?: number | null;
+            /**
+             * Longitude
+             * @description Longitude obrigatória da localização.
+             */
+            longitude: number;
             /**
              * Raio Km
              * @default 5
@@ -3235,6 +3262,8 @@ export interface components {
             destaque: boolean;
             /** Documento */
             documento: string | null;
+            /** Email */
+            email: string;
             /**
              * Exigir Verificado
              * @default false
