@@ -628,9 +628,11 @@ export async function confirmCompletion(
   if (agreement.completionByHirer && agreement.completionByWorker) {
     agreement.status = "completed";
     agreement.completedAt = new Date().toISOString();
-    agreement.contestDeadline = new Date(
-      Date.parse(agreement.completedAt) + CONTEST_WINDOW_HOURS * 60 * 60 * 1000,
-    ).toISOString();
+    const concluidoEm = Date.parse(agreement.completedAt);
+    agreement.contestDeadline = new Date(concluidoEm + CONTEST_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
+    // Regra da tela de pagamento: revisão em 48 h; após 72 h, decisão automática.
+    agreement.reviewDeadline = new Date(concluidoEm + 48 * 60 * 60 * 1000).toISOString();
+    agreement.autoDecisionDeadline = new Date(concluidoEm + 72 * 60 * 60 * 1000).toISOString();
     addEvent(agreement, "Serviço concluído");
   }
   return structuredClone(agreement);

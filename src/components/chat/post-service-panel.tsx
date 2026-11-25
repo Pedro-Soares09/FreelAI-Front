@@ -143,11 +143,27 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
         <ReviewModal agreement={agreement} targetName={otherName} onClose={() => setReviewOpen(false)} />
       )}
 
-      {agreement.status === "completed" && agreement.contestDeadline && (
-        <p>
-          Prazo para contestar:{" "}
-          <time dateTime={agreement.contestDeadline}>{formatDateTime(agreement.contestDeadline)}</time>.
-        </p>
+      {agreement.status === "completed" && (agreement.contestDeadline || agreement.reviewDeadline || agreement.autoDecisionDeadline) && (
+        <ul className="prazos">
+          {agreement.contestDeadline && (
+            <li>
+              Fim para contestar ({CONTEST_WINDOW_HOURS} h):{" "}
+              <time dateTime={agreement.contestDeadline}>{formatDateTime(agreement.contestDeadline)}</time>
+            </li>
+          )}
+          {agreement.reviewDeadline && (
+            <li>
+              Prazo de revisão (48 h):{" "}
+              <time dateTime={agreement.reviewDeadline}>{formatDateTime(agreement.reviewDeadline)}</time>
+            </li>
+          )}
+          {agreement.autoDecisionDeadline && (
+            <li>
+              Decisão automática (72 h):{" "}
+              <time dateTime={agreement.autoDecisionDeadline}>{formatDateTime(agreement.autoDecisionDeadline)}</time>
+            </li>
+          )}
+        </ul>
       )}
 
       {agreement.status === "contested" && (
