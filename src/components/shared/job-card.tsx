@@ -3,8 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Vaga } from '@/types';
-import { SeloPro } from '@/components/ui/selos';
+import { SeloDestaque, SeloPro } from '@/components/ui/selos';
 import { IconCheck } from '@/components/ui/icons';
+import { AvatarVerified } from '@/components/shared/avatar-verified';
 import { formatCurrency } from '@/lib/format';
 
 interface JobCardProps {
@@ -56,7 +57,24 @@ export function JobCard({ vaga, selecionada = false }: JobCardProps) {
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-borda pt-3">
         <div className="flex min-w-0 items-center gap-2 text-xs text-muted">
-          <span className="truncate">{vaga.contratante.nome}</span>
+          {vaga.contratante.usuario_id ? (
+            <Link
+              href={`/contratante/${vaga.contratante.usuario_id}`}
+              className="flex min-w-0 items-center gap-2 hover:text-primary"
+              aria-label={`Ver perfil de ${vaga.contratante.nome}`}
+            >
+              <AvatarVerified
+                name={vaga.contratante.nome}
+                imageUrl={vaga.contratante.foto_url}
+                cor={vaga.contratante.cor_destaque ?? "lilas"}
+                size={24}
+              />
+              <span className="truncate underline-offset-2 hover:underline">{vaga.contratante.nome}</span>
+            </Link>
+          ) : (
+            <span className="truncate">{vaga.contratante.nome}</span>
+          )}
+          {vaga.contratante.destaque && <SeloDestaque />}
           {vaga.contratante.verificado && (
             <span className="inline-flex shrink-0 items-center gap-1 rounded bg-info/15 px-1.5 py-0.5 text-[11px] font-semibold text-info">
               <IconCheck width={11} height={11} strokeWidth={3} />

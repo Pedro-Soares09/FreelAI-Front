@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { AvisoBeta } from "@/components/institucional/aviso-beta";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 type AuthShellProps = {
@@ -24,6 +25,7 @@ export function AuthShell({ titulo, descricao, children, rodape }: AuthShellProp
           <p className="mt-1 text-sm text-muted">{descricao}</p>
           <div className="mt-6">{children}</div>
           <p className="mt-6 text-center text-sm text-muted">{rodape}</p>
+          <AvisoBeta className="mt-4" />
         </div>
       </main>
     </div>

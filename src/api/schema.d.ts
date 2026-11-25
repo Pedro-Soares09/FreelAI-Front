@@ -4,6 +4,66 @@
  */
 
 export interface paths {
+    "/api/v1/admin/aprovacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Aprovacoes
+         * @description Fila unificada de aprovações; por padrão só os itens pendentes.
+         */
+        get: operations["admin_listar_aprovacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/aprovacoes/{tipo}/{item_id}/decisao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Aprovacao
+         * @description Aprova ou recusa (com motivo). Aprovar a verificação ativa a conta pendente.
+         */
+        post: operations["admin_decidir_aprovacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/banimentos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Banimentos
+         * @description Contas banidas de forma permanente após duas denúncias procedentes.
+         */
+        get: operations["admin_listar_banimentos"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/configuracoes": {
         parameters: {
             query?: never;
@@ -18,6 +78,43 @@ export interface paths {
         get: operations["admin_consultar_configuracoes"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/contestacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Listar Contestacoes */
+        get: operations["admin_listar_contestacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/contestacoes/{contestacao_id}/decisao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Contestacao
+         * @description Aceita (reativa a conta) ou recusa a contestação, com motivo.
+         */
+        post: operations["admin_decidir_contestacao"];
         delete?: never;
         options?: never;
         head?: never;
@@ -144,6 +241,206 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/sancoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Sancoes
+         * @description Suspensões e banimentos; por padrão só os vigentes.
+         */
+        get: operations["admin_listar_sancoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usuarios/{usuario_id}/banimento": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Banir Usuario
+         * @description Bane a conta de forma permanente, com motivo.
+         */
+        post: operations["admin_banir_usuario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usuarios/{usuario_id}/reativacao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reativar Usuario
+         * @description Encerra a sanção vigente e devolve a conta ao estado ativo.
+         */
+        post: operations["admin_reativar_usuario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/usuarios/{usuario_id}/suspensao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Suspender Usuario
+         * @description Suspende a conta por alguns dias, com motivo.
+         */
+        post: operations["admin_suspender_usuario"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/arquivos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Enviar Arquivo
+         * @description Valida tipo (jpg, png, pdf) e tamanho (até 10 MB), armazena com nome gerado e retorna URL.
+         */
+        post: operations["arquivos_enviar_arquivo"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/arquivos/{tipo}/{nome}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Baixar Arquivo
+         * @description Serve o arquivo armazenado. Documento e selfie exigem ser o dono ou administrador.
+         */
+        get: operations["arquivos_baixar_arquivo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assinatura/pro": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Assinatura
+         * @description Situação do plano Pro e o valor mensal (simulado).
+         */
+        get: operations["conta_consultar_assinatura"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assinatura/pro/assinar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Assinar
+         * @description Ativa o plano Pro: notificações imediatas e selo; não altera a pontuação do match.
+         */
+        post: operations["conta_assinar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/assinatura/pro/cancelar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancelar
+         * @description Cancela a renovação; o plano segue valendo até o fim do período pago.
+         */
+        post: operations["conta_cancelar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/contestacao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Contestar Sancao
+         * @description Envia a contestação da sanção vigente (uma por caso, dentro do prazo).
+         */
+        post: operations["sancoes_contestar_sancao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/login": {
         parameters: {
             query?: never;
@@ -238,6 +535,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/sancao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Consultar Sancao
+         * @description Situação da conta bloqueada: motivo, data de retorno e andamento da contestação.
+         */
+        post: operations["sancoes_consultar_sancao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/categorias": {
         parameters: {
             query?: never;
@@ -252,6 +569,46 @@ export interface paths {
         get: operations["vagas_listar_categorias"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/categorias/{slug}/seguranca": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Seguranca Da Categoria
+         * @description EPIs e checklist de segurança da categoria, exibidos no cadastro e ao criar vaga.
+         */
+        get: operations["perfis_consultar_seguranca_da_categoria"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/conta/exclusao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Excluir Conta
+         * @description Exclui a conta (anonimiza os dados pessoais) depois de confirmar a senha.
+         */
+        post: operations["conta_excluir_conta"];
         delete?: never;
         options?: never;
         head?: never;
@@ -312,6 +669,26 @@ export interface paths {
          * @description Escolhe um dos três profissionais e abre a janela de aceite.
          */
         post: operations["vagas_escolher_profissional"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/contratantes/{usuario_id}/perfil": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Perfil Publico Do Contratante
+         * @description Visão pública do contratante, sem dados sensíveis, para quem está logado.
+         */
+        get: operations["perfis_consultar_perfil_publico_do_contratante"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -666,6 +1043,146 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/perfis/contratante": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cadastrar Contratante
+         * @description Cadastra o perfil contratante, pessoa física ou jurídica (CNPJ opcional).
+         */
+        post: operations["perfis_cadastrar_contratante"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/perfis/contratante/meu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Consultar Meu Perfil Contratante */
+        get: operations["perfis_consultar_meu_perfil_contratante"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Atualizar Meu Perfil Contratante
+         * @description Edita dados cadastrais e a personalização (bio, cor, avatar, preferências).
+         */
+        patch: operations["perfis_atualizar_meu_perfil_contratante"];
+        trace?: never;
+    };
+    "/api/v1/perfis/profissional": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cadastrar Profissional
+         * @description Cadastra o perfil profissional com localização, categorias e experiências.
+         */
+        post: operations["perfis_cadastrar_profissional"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/perfis/profissional/meu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Consultar Meu Perfil Profissional */
+        get: operations["perfis_consultar_meu_perfil_profissional"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Atualizar Meu Perfil Profissional */
+        patch: operations["perfis_atualizar_meu_perfil_profissional"];
+        trace?: never;
+    };
+    "/api/v1/profissional/agenda/bloqueios": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Bloqueios
+         * @description Períodos bloqueados que ainda não terminaram.
+         */
+        get: operations["profissional_listar_bloqueios"];
+        put?: never;
+        /**
+         * Criar Bloqueio
+         * @description Bloqueia um período: o profissional não recebe convites que o atravessem.
+         */
+        post: operations["profissional_criar_bloqueio"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/agenda/bloqueios/{bloqueio_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remover Bloqueio */
+        delete: operations["profissional_remover_bloqueio"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/comprovacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Comprovacoes
+         * @description Experiências, qualificações e EPIs enviados, com o status de cada um.
+         */
+        get: operations["perfis_listar_comprovacoes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/profissional/convites": {
         parameters: {
             query?: never;
@@ -680,6 +1197,177 @@ export interface paths {
         get: operations["vagas_listar_convites_do_profissional"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/disponibilidade": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Disponibilidade
+         * @description Situação atual do modo Disponível agora, do raio de busca e da agenda.
+         */
+        get: operations["profissional_consultar_disponibilidade"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/disponivel-agora": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Alternar Disponivel Agora
+         * @description Liga o modo Disponível agora pela duração configurada, ou desliga.
+         */
+        post: operations["profissional_alternar_disponivel_agora"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/epis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enviar Epi */
+        post: operations["perfis_enviar_epi"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/experiencias": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enviar Experiencia */
+        post: operations["perfis_enviar_experiencia"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/mapa-ofertas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Mapa De Ofertas
+         * @description Ofertas abertas perto do profissional, filtradas pelas categorias e experiências dele.
+         */
+        get: operations["profissional_mapa_de_ofertas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/qualificacoes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Enviar Qualificacao */
+        post: operations["perfis_enviar_qualificacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profissional/raio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Atualizar Raio
+         * @description Salva o raio de busca do mapa, limitado ao máximo configurado.
+         */
+        patch: operations["profissional_atualizar_raio"];
+        trace?: never;
+    };
+    "/api/v1/termos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Termos
+         * @description Versão atual dos termos e se a conta já a aceitou.
+         */
+        get: operations["conta_consultar_termos"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/termos/aceite": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Aceitar Termos
+         * @description Registra o aceite da versão atual dos termos, com data e hora.
+         */
+        post: operations["conta_aceitar_termos"];
         delete?: never;
         options?: never;
         head?: never;
@@ -850,6 +1538,94 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/vagas/{vaga_id}/cancelamento": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Cancelamento
+         * @description Mostra se a vaga pode ser cancelada agora e se isso gera advertência.
+         */
+        get: operations["cancelamento_consultar_cancelamento"];
+        put?: never;
+        /**
+         * Cancelar Vaga
+         * @description Cancela a vaga; cancelamento tardio gera advertência e pode suspender a conta.
+         */
+        post: operations["cancelamento_cancelar_vaga"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/checkin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Fazer Checkin
+         * @description O profissional contratado confirma a chegada ao local, dentro da janela e do raio.
+         */
+        post: operations["pagamentos_fazer_checkin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/comprovantes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Comprovantes
+         * @description Comprovantes da vaga com totais e a taxa adicional da plataforma.
+         */
+        get: operations["comprovantes_listar_comprovantes"];
+        put?: never;
+        /**
+         * Anexar Comprovante
+         * @description Anexa o comprovante de pagamento. Horas extras e bônus pagam a taxa adicional.
+         */
+        post: operations["comprovantes_anexar_comprovante"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vagas/{vaga_id}/comprovantes/{comprovante_id}/arquivo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Baixar Comprovante
+         * @description Serve o arquivo do comprovante às partes da vaga e à administração.
+         */
+        get: operations["comprovantes_baixar_comprovante"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vagas/{vaga_id}/conclusao": {
         parameters: {
             query?: never;
@@ -998,6 +1774,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/verificacao/consentimento": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Aceitar Consentimento
+         * @description Registra o consentimento de uso de biometria (LGPD); idempotente.
+         */
+        post: operations["verificacao_aceitar_consentimento"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/verificacao/envio": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Enviar Verificacao
+         * @description Envia o documento e a selfie (já enviados em /arquivos) para análise da administração.
+         */
+        post: operations["verificacao_enviar_verificacao"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/verificacao/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Status
+         * @description Estado da verificação do perfil ativo: pendente, em análise, verificado ou recusado.
+         */
+        get: operations["verificacao_consultar_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1009,12 +1845,127 @@ export interface components {
             /** Vaga Id */
             vaga_id: string;
         };
+        /** AceiteTermosEntrada */
+        AceiteTermosEntrada: {
+            /** Versao */
+            versao: string;
+        };
         /** AceitesAcordo */
         AceitesAcordo: {
             /** Contratante */
             contratante: boolean;
             /** Profissional */
             profissional: boolean;
+        };
+        /** ArquivoDaFila */
+        ArquivoDaFila: {
+            /** Tipo */
+            tipo: string;
+            /** Url */
+            url: string;
+        };
+        /**
+         * ArquivoEnviado
+         * @description Metadados e URL do arquivo armazenado após o upload.
+         * @example {
+         *       "criado_em": "2026-11-20T14:00:00Z",
+         *       "id": 12,
+         *       "mime_type": "image/jpeg",
+         *       "tamanho_bytes": 48210,
+         *       "tipo": "foto",
+         *       "url": "/api/v1/arquivos/foto/a1b2c3d4e5f60718293a4b5c6d7e8f90.jpg"
+         *     }
+         */
+        ArquivoEnviado: {
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Id */
+            id: number;
+            /** Mime Type */
+            mime_type: string;
+            /** Tamanho Bytes */
+            tamanho_bytes: number;
+            tipo: components["schemas"]["TipoArquivo"];
+            /**
+             * Url
+             * @description URL da API para acessar o arquivo armazenado.
+             */
+            url: string;
+        };
+        /** AssinaturaProDetalhe */
+        AssinaturaProDetalhe: {
+            /** Ativo */
+            ativo: boolean;
+            /** Renovacao Automatica */
+            renovacao_automatica: boolean;
+            /** Valido Ate */
+            valido_ate?: string | null;
+            /** Valor Mensal */
+            valor_mensal: number;
+        };
+        /**
+         * AtualizacaoContratanteEntrada
+         * @description Dados cadastrais e personalização do perfil; só o que for enviado é alterado.
+         */
+        AtualizacaoContratanteEntrada: {
+            /** Aceita Notificacoes */
+            aceita_notificacoes?: boolean | null;
+            /**
+             * Avatar Arquivo Id
+             * @description Arquivo do tipo foto já enviado; 0 remove o avatar.
+             */
+            avatar_arquivo_id?: number | null;
+            /** Bairro */
+            bairro?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Categorias Interesse */
+            categorias_interesse?: string[] | null;
+            /** Cor Destaque */
+            cor_destaque?: ("lilas" | "azul" | "verde" | "rosa" | "laranja" | "grafite") | null;
+            /** Documento */
+            documento?: string | null;
+            /** Exigir Verificado */
+            exigir_verificado?: boolean | null;
+            /** Horario Contato */
+            horario_contato?: string | null;
+            /** Nome */
+            nome?: string | null;
+            /** Razao Social */
+            razao_social?: string | null;
+            /** Selfie Url */
+            selfie_url?: string | null;
+            /** Telefone */
+            telefone?: string | null;
+        };
+        /** AtualizacaoProfissionalEntrada */
+        AtualizacaoProfissionalEntrada: {
+            /** Bairro */
+            bairro?: string | null;
+            caracteristicas?: components["schemas"]["CaracteristicasEntrada"] | null;
+            /** Categorias */
+            categorias?: string[] | null;
+            /** Cpf */
+            cpf?: string | null;
+            /** Data Nascimento */
+            data_nascimento?: string | null;
+            /** Foto Url */
+            foto_url?: string | null;
+            /** Latitude */
+            latitude?: number | null;
+            /** Logradouro */
+            logradouro?: string | null;
+            /** Longitude */
+            longitude?: number | null;
+            /** Nome */
+            nome?: string | null;
+            /** Raio Km */
+            raio_km?: number | null;
+            /** Telefone */
+            telefone?: string | null;
         };
         /**
          * AvaliacaoDetalhe
@@ -1075,6 +2026,22 @@ export interface components {
              */
             nota: number;
         };
+        /** AvaliacaoPublica */
+        AvaliacaoPublica: {
+            /** Avaliador Nome */
+            avaliador_nome: string;
+            /** Comentario */
+            comentario?: string | null;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Nota */
+            nota: number;
+            /** Vaga Titulo */
+            vaga_titulo: string;
+        };
         /**
          * AvaliacoesDaVaga
          * @description Estado das avaliações de uma vaga para quem consulta.
@@ -1131,6 +2098,68 @@ export interface components {
             /** Vaga Id */
             vaga_id: number;
         };
+        /** BloqueioDaAgenda */
+        BloqueioDaAgenda: {
+            /**
+             * Fim
+             * Format: date-time
+             */
+            fim: string;
+            /** Id */
+            id: string;
+            /**
+             * Inicio
+             * Format: date-time
+             */
+            inicio: string;
+            /** Motivo */
+            motivo?: string | null;
+        };
+        /** BloqueioEntrada */
+        BloqueioEntrada: {
+            /**
+             * Fim
+             * Format: date-time
+             */
+            fim: string;
+            /**
+             * Inicio
+             * Format: date-time
+             */
+            inicio: string;
+            /** Motivo */
+            motivo?: string | null;
+        };
+        /** Body_arquivos_enviar_arquivo */
+        Body_arquivos_enviar_arquivo: {
+            /**
+             * Arquivo
+             * @description Arquivo em formato jpg, png ou pdf (até 10 MB).
+             */
+            arquivo: string;
+            /** @description Finalidade do arquivo: foto, selfie, documento, qualificacao, epi ou anexo. */
+            tipo: components["schemas"]["TipoArquivo"];
+        };
+        /** Body_comprovantes_anexar_comprovante */
+        Body_comprovantes_anexar_comprovante: {
+            /**
+             * Acordo Previo
+             * @description Registro do acordo prévio (obrigatório em horas extras).
+             */
+            acordo_previo?: string | null;
+            /**
+             * Arquivo
+             * @description Comprovante em jpg, png ou pdf.
+             */
+            arquivo: string;
+            /** @description servico, horas_extras ou bonus. */
+            tipo: components["schemas"]["TipoComprovante"];
+            /**
+             * Valor
+             * @description Valor pago, em reais.
+             */
+            valor: number | string;
+        };
         /** Body_conversas_enviar_anexo */
         Body_conversas_enviar_anexo: {
             /**
@@ -1143,6 +2172,112 @@ export interface components {
              * @description Legenda opcional.
              */
             texto?: string | null;
+        };
+        /** CadastroContratanteEntrada */
+        CadastroContratanteEntrada: {
+            /**
+             * Documento
+             * @description CPF (pessoa física) ou CNPJ (pessoa jurídica, opcional).
+             */
+            documento?: string | null;
+            /** Razao Social */
+            razao_social?: string | null;
+            /** Selfie Url */
+            selfie_url?: string | null;
+            /** Telefone */
+            telefone: string;
+            tipo_pessoa: components["schemas"]["TipoPessoa"];
+        };
+        /** CadastroProfissionalEntrada */
+        CadastroProfissionalEntrada: {
+            /** Bairro */
+            bairro: string;
+            caracteristicas?: components["schemas"]["CaracteristicasEntrada"] | null;
+            /**
+             * Categorias
+             * @description Slugs das categorias de atuação.
+             */
+            categorias: string[];
+            /** Cpf */
+            cpf: string;
+            /**
+             * Data Nascimento
+             * Format: date
+             */
+            data_nascimento: string;
+            /** Experiencias */
+            experiencias?: components["schemas"]["ExperienciaEntrada"][];
+            /** Foto Url */
+            foto_url?: string | null;
+            /**
+             * Latitude
+             * @description Latitude obrigatória da localização.
+             */
+            latitude: number;
+            /** Logradouro */
+            logradouro?: string | null;
+            /**
+             * Longitude
+             * @description Longitude obrigatória da localização.
+             */
+            longitude: number;
+            /**
+             * Raio Km
+             * @default 5
+             */
+            raio_km: number;
+            /** Telefone */
+            telefone: string;
+        };
+        /** CancelamentoEntrada */
+        CancelamentoEntrada: {
+            /** Motivo */
+            motivo: string;
+        };
+        /** CancelamentoResposta */
+        CancelamentoResposta: {
+            /** Advertencia Aplicada */
+            advertencia_aplicada: boolean;
+            /** Advertencias No Periodo */
+            advertencias_no_periodo: number;
+            /** Estado */
+            estado: string;
+            /** Suspensa Ate */
+            suspensa_ate?: string | null;
+            /** Valor Estornado */
+            valor_estornado: boolean;
+        };
+        /**
+         * CaracteristicasEntrada
+         * @description Características autodeclaradas, de 1 a 5; informação complementar, sem peso no match.
+         */
+        CaracteristicasEntrada: {
+            /** Agilidade */
+            agilidade?: number | null;
+            /** Comunicacao */
+            comunicacao?: number | null;
+            /** Organizacao */
+            organizacao?: number | null;
+        };
+        /** CategoriaDeInteresse */
+        CategoriaDeInteresse: {
+            /** Nome */
+            nome: string;
+            /** Slug */
+            slug: string;
+        };
+        /** CategoriaDoPerfil */
+        CategoriaDoPerfil: {
+            nivel_risco: components["schemas"]["RiscoCategoria"];
+            /** Nome */
+            nome: string;
+            /**
+             * Pendencias
+             * @description O que ainda falta aprovar para atuar na categoria.
+             */
+            pendencias: ("experiencia" | "qualificacao" | "epi")[];
+            /** Slug */
+            slug: string;
         };
         /** CategoriaResumo */
         CategoriaResumo: {
@@ -1185,6 +2320,84 @@ export interface components {
              */
             nao_lidas: number;
         };
+        /** CheckinEntrada */
+        CheckinEntrada: {
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Simular Local
+             * @description Só no perfil demo: usa o endereço da vaga como posição.
+             * @default false
+             */
+            simular_local: boolean;
+        };
+        /** CheckinResposta */
+        CheckinResposta: {
+            /**
+             * Checkin Em
+             * Format: date-time
+             */
+            checkin_em: string;
+            /** Distancia Metros */
+            distancia_metros: number;
+            /** Mensagem */
+            mensagem: string;
+        };
+        /** ComprovacaoDetalhe */
+        ComprovacaoDetalhe: {
+            /** Arquivo Url */
+            arquivo_url?: string | null;
+            /** Categoria */
+            categoria: string | null;
+            /** Descricao */
+            descricao?: string | null;
+            /** Id */
+            id: number;
+            /** Motivo Recusa */
+            motivo_recusa?: string | null;
+            status: components["schemas"]["StatusAprovacao"];
+            /**
+             * Tipo
+             * @enum {string}
+             */
+            tipo: "experiencia" | "qualificacao" | "epi";
+        };
+        /** ComprovanteDetalhe */
+        ComprovanteDetalhe: {
+            /** Acordo Previo */
+            acordo_previo?: string | null;
+            /**
+             * Arquivo Url
+             * @description Rota que serve o arquivo, restrita às partes e à admin.
+             */
+            arquivo_url: string;
+            /**
+             * Criado Em
+             * Format: date-time
+             */
+            criado_em: string;
+            /** Enviado Por Id */
+            enviado_por_id: number;
+            /** Id */
+            id: number;
+            /**
+             * Taxa Pct
+             * @description Percentual da plataforma sobre o valor adicional.
+             */
+            taxa_pct: string;
+            /**
+             * Taxa Plataforma
+             * @description Taxa da plataforma sobre este comprovante.
+             */
+            taxa_plataforma: string;
+            tipo: components["schemas"]["TipoComprovante"];
+            /** Vaga Id */
+            vaga_id: number;
+            /** Valor */
+            valor: string;
+        };
         /** ConfiguracoesEfetivas */
         ConfiguracoesEfetivas: {
             /** Perfil */
@@ -1205,8 +2418,74 @@ export interface components {
             /** Nao Lidas */
             nao_lidas: number;
         };
+        /** ContestacaoDaFila */
+        ContestacaoDaFila: {
+            /** Aceita */
+            aceita?: boolean | null;
+            /**
+             * Criada Em
+             * Format: date-time
+             */
+            criada_em: string;
+            /** Decidida Em */
+            decidida_em?: string | null;
+            /** Id */
+            id: number;
+            /** Motivo Decisao */
+            motivo_decisao?: string | null;
+            /** Sancao Motivo */
+            sancao_motivo: string;
+            /** Sancao Tipo */
+            sancao_tipo: string;
+            /** Texto */
+            texto: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /** Usuario Nome */
+            usuario_nome: string;
+        };
+        /** ContestacaoDetalhe */
+        ContestacaoDetalhe: {
+            /** Aceita */
+            aceita?: boolean | null;
+            /**
+             * Criada Em
+             * Format: date-time
+             */
+            criada_em: string;
+            /** Decidida Em */
+            decidida_em?: string | null;
+            /** Motivo Decisao */
+            motivo_decisao?: string | null;
+            /** Texto */
+            texto: string;
+        };
+        /** ContestacaoEntrada */
+        ContestacaoEntrada: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /** Senha */
+            senha: string;
+            /** Texto */
+            texto: string;
+        };
         /** ContratanteResumo */
         ContratanteResumo: {
+            /**
+             * Adicionais Pagos
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /** Cor Destaque */
+            cor_destaque?: string | null;
+            /**
+             * Destaque
+             * @default false
+             */
+            destaque: boolean;
             /** Foto Url */
             foto_url?: string | null;
             /** Id */
@@ -1222,6 +2501,8 @@ export interface components {
             pro: boolean;
             /** Total Avaliacoes */
             total_avaliacoes: number;
+            /** Usuario Id */
+            usuario_id?: number | null;
             /** Verificado */
             verificado: boolean;
         };
@@ -1254,6 +2535,12 @@ export interface components {
              * @description Falso quando a vaga foi cancelada ou encerrada.
              */
             aberta: boolean;
+            /**
+             * Bloqueada
+             * @description Verdadeiro quando uma denúncia procedente bloqueou o envio de mensagens.
+             * @default false
+             */
+            bloqueada: boolean;
             /** Id */
             id: number;
             /**
@@ -1390,6 +2677,23 @@ export interface components {
             /** Vestimenta */
             vestimenta?: string | null;
         };
+        /** DecisaoAprovacaoEntrada */
+        DecisaoAprovacaoEntrada: {
+            /**
+             * Decisao
+             * @enum {string}
+             */
+            decisao: "aprovar" | "recusar";
+            /** Motivo */
+            motivo?: string | null;
+        };
+        /** DecisaoContestacaoEntrada */
+        DecisaoContestacaoEntrada: {
+            /** Aceita */
+            aceita: boolean;
+            /** Motivo */
+            motivo: string;
+        };
         /**
          * DecisaoDenunciaEntrada
          * @description Decisão administrativa sobre uma denúncia aberta (procedente ou improcedente + motivo).
@@ -1503,6 +2807,12 @@ export interface components {
              * @description Verdadeiro quando o tempo em horas úteis ultrapassou a meta de 48h úteis.
              */
             acima_da_meta: boolean;
+            /**
+             * Conversa Bloqueada
+             * @description Denúncia procedente: a troca de mensagens entre as partes está bloqueada.
+             * @default false
+             */
+            conversa_bloqueada: boolean;
             /** Conversa Id */
             conversa_id?: number | null;
             /**
@@ -1514,13 +2824,19 @@ export interface components {
             decidido_em?: string | null;
             /** Decisao Motivo */
             decisao_motivo?: string | null;
+            /** @description Situação atual da conta denunciada (banida após 2 penalidades). */
+            denunciado_estado?: components["schemas"]["EstadoConta"] | null;
             /** Denunciado Id */
             denunciado_id: number;
+            /** Denunciado Nome */
+            denunciado_nome?: string | null;
             /**
              * Denunciante Id
              * @description Autor da denúncia (nulo quando gerada automaticamente pelo chat).
              */
             denunciante_id?: number | null;
+            /** Denunciante Nome */
+            denunciante_nome?: string | null;
             /**
              * Denuncias Procedentes Acumuladas
              * @description Total de denúncias procedentes acumuladas pelo denunciado.
@@ -1591,6 +2907,22 @@ export interface components {
             motivo: string;
             /** Vaga Id */
             vaga_id?: number | null;
+        };
+        /** DisponibilidadeProfissional */
+        DisponibilidadeProfissional: {
+            /** Bloqueios */
+            bloqueios?: components["schemas"]["BloqueioDaAgenda"][];
+            /** Disponivel Agora */
+            disponivel_agora: boolean;
+            /** Disponivel Ate */
+            disponivel_ate?: string | null;
+            /** Raio Km */
+            raio_km: number;
+        };
+        /** DisponivelAgoraEntrada */
+        DisponivelAgoraEntrada: {
+            /** Ativo */
+            ativo: boolean;
         };
         /**
          * DisputaAdminDetalhe
@@ -1685,6 +3017,8 @@ export interface components {
              * @description Histórico completo de mensagens da conversa da vaga.
              */
             chat: components["schemas"]["MensagemDisputaAdmin"][];
+            /** Contratante Nome */
+            contratante_nome?: string | null;
             /** Contratante Usuario Id */
             contratante_usuario_id: number;
             /** Conversa Id */
@@ -1711,6 +3045,8 @@ export interface components {
             pagamento: components["schemas"]["PagamentoDetalhe"];
             /** Percentual Reembolso */
             percentual_reembolso?: number | null;
+            /** Profissional Nome */
+            profissional_nome?: string | null;
             /** Profissional Usuario Id */
             profissional_usuario_id?: number | null;
             /**
@@ -1842,6 +3178,13 @@ export interface components {
             /** Valor Total */
             valor_total: string;
         };
+        /** EpiEntrada */
+        EpiEntrada: {
+            /** Arquivo Url */
+            arquivo_url: string;
+            /** Categoria */
+            categoria: string;
+        };
         /** EscolhaEntrada */
         EscolhaEntrada: {
             /** Profissional Id */
@@ -1872,6 +3215,27 @@ export interface components {
          * @enum {string}
          */
         EstadoVaga: "publicada" | "aguardando_aceite" | "aceita" | "aguardando_pagamento" | "contratada" | "em_execucao" | "encerrada" | "concluida" | "liberada" | "liberada_parcial" | "expirada" | "cancelada" | "falta" | "em_disputa" | "reembolsada";
+        /** ExclusaoContaEntrada */
+        ExclusaoContaEntrada: {
+            /** Senha */
+            senha: string;
+        };
+        /** ExperienciaEntrada */
+        ExperienciaEntrada: {
+            /** Arquivo Url */
+            arquivo_url?: string | null;
+            /**
+             * Categoria
+             * @description Slug da categoria, se houver.
+             */
+            categoria?: string | null;
+            /** Descricao */
+            descricao: string;
+            /** Referencia Contato */
+            referencia_contato?: string | null;
+            /** Referencia Nome */
+            referencia_nome?: string | null;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -1881,6 +3245,36 @@ export interface components {
         InteresseEntrada: {
             /** Valor Proposto */
             valor_proposto?: number | null;
+        };
+        /** ItemChecklist */
+        ItemChecklist: {
+            /** Critico */
+            critico: boolean;
+            /** Id */
+            id: number;
+            /** Texto */
+            texto: string;
+        };
+        /** ItemFilaAprovacao */
+        ItemFilaAprovacao: {
+            /** Arquivos */
+            arquivos?: components["schemas"]["ArquivoDaFila"][];
+            /** Descricao */
+            descricao: string;
+            /** Enviado Em */
+            enviado_em?: string | null;
+            /** Id */
+            id: number;
+            status: components["schemas"]["StatusAprovacao"];
+            /**
+             * Tipo
+             * @enum {string}
+             */
+            tipo: "profissional" | "contratante" | "experiencia" | "qualificacao" | "epi";
+            /** Usuario Id */
+            usuario_id: number;
+            /** Usuario Nome */
+            usuario_nome: string;
         };
         /**
          * LancamentoResumo
@@ -1915,6 +3309,22 @@ export interface components {
             email: string;
             /** Senha */
             senha: string;
+        };
+        /** MapaDeOfertas */
+        MapaDeOfertas: {
+            /**
+             * Categorias Do Perfil
+             * @description Slugs das categorias de atuação e de experiência usadas no filtro.
+             */
+            categorias_do_perfil: string[];
+            /** Centro Latitude */
+            centro_latitude: number;
+            /** Centro Longitude */
+            centro_longitude: number;
+            /** Ofertas */
+            ofertas: components["schemas"]["OfertaNoMapa"][];
+            /** Raio Km */
+            raio_km: number;
         };
         /**
          * MensagemDetalhe
@@ -1999,6 +3409,11 @@ export interface components {
             /** Texto */
             texto: string | null;
         };
+        /** MotivoEntrada */
+        MotivoEntrada: {
+            /** Motivo */
+            motivo: string;
+        };
         /**
          * NotificacaoDetalhe
          * @description Notificação já visível ao usuário na central do aplicativo.
@@ -2044,6 +3459,39 @@ export interface components {
              * Format: date-time
              */
             visivel_em: string;
+        };
+        /** OfertaNoMapa */
+        OfertaNoMapa: {
+            /** Bairro */
+            bairro: string;
+            /** Categoria Nome */
+            categoria_nome: string;
+            /** Categoria Slug */
+            categoria_slug: string;
+            /** Distancia Km */
+            distancia_km: number;
+            /** Inicio Em */
+            inicio_em: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Pendencias
+             * @description O que falta aprovar: experiencia, qualificacao, epi.
+             */
+            pendencias?: string[];
+            /**
+             * Pode Atuar
+             * @description Verdadeiro quando o perfil já cumpre as regras de risco.
+             */
+            pode_atuar: boolean;
+            /** Titulo */
+            titulo: string;
+            /** Vaga Id */
+            vaga_id: number;
+            /** Valor */
+            valor: string;
         };
         /**
          * OrigemDenuncia
@@ -2163,11 +3611,198 @@ export interface components {
         PerfilAtivoEntrada: {
             perfil: components["schemas"]["TipoPerfil"];
         };
+        /** PerfilContratanteDetalhe */
+        PerfilContratanteDetalhe: {
+            /**
+             * Aceita Notificacoes
+             * @default true
+             */
+            aceita_notificacoes: boolean;
+            /**
+             * Adicionais Pagos
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /** Avatar Url */
+            avatar_url?: string | null;
+            /** Bairro */
+            bairro?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Categorias Interesse */
+            categorias_interesse?: string[];
+            /**
+             * Cor Destaque
+             * @default lilas
+             */
+            cor_destaque: string;
+            /**
+             * Destaque
+             * @default false
+             */
+            destaque: boolean;
+            /** Documento */
+            documento: string | null;
+            /** Email */
+            email: string;
+            /**
+             * Exigir Verificado
+             * @default false
+             */
+            exigir_verificado: boolean;
+            /** Horario Contato */
+            horario_contato?: string | null;
+            /** Id */
+            id: number;
+            /** Nome */
+            nome: string;
+            /** Razao Social */
+            razao_social: string | null;
+            /** Selfie Url */
+            selfie_url: string | null;
+            /** Telefone */
+            telefone: string;
+            tipo_pessoa: components["schemas"]["TipoPessoa"];
+            /** Usuario Id */
+            usuario_id: number;
+            /**
+             * Verificacao
+             * @enum {string}
+             */
+            verificacao: "pendente" | "em_analise" | "verificado" | "recusado";
+            /** Verificacao Motivo */
+            verificacao_motivo: string | null;
+        };
+        /** PerfilProfissionalDetalhe */
+        PerfilProfissionalDetalhe: {
+            /** Bairro */
+            bairro: string | null;
+            caracteristicas: components["schemas"]["CaracteristicasEntrada"];
+            /** Categorias */
+            categorias: components["schemas"]["CategoriaDoPerfil"][];
+            /** Cpf */
+            cpf: string;
+            /**
+             * Data Nascimento
+             * Format: date
+             */
+            data_nascimento: string;
+            experiencia_aprovada: components["schemas"]["StatusAprovacao"];
+            /** Foto Url */
+            foto_url: string | null;
+            /** Id */
+            id: number;
+            /** Latitude */
+            latitude: number | null;
+            /** Longitude */
+            longitude: number | null;
+            /** Nome */
+            nome: string;
+            /** Pro */
+            pro: boolean;
+            /** Raio Km */
+            raio_km: number;
+            /** Telefone */
+            telefone: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /**
+             * Verificacao
+             * @enum {string}
+             */
+            verificacao: "pendente" | "em_analise" | "verificado" | "recusado";
+            /** Verificacao Motivo */
+            verificacao_motivo: string | null;
+        };
+        /**
+         * PerfilPublicoContratante
+         * @description Visão pública do contratante, sem documento, telefone, selfie nem e-mail.
+         */
+        PerfilPublicoContratante: {
+            /**
+             * Adicionais Pagos
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /** Avaliacoes */
+            avaliacoes?: components["schemas"]["AvaliacaoPublica"][];
+            /** Avatar Url */
+            avatar_url?: string | null;
+            /** Bairro */
+            bairro?: string | null;
+            /** Bio */
+            bio?: string | null;
+            /** Categorias Interesse */
+            categorias_interesse?: components["schemas"]["CategoriaDeInteresse"][];
+            /**
+             * Cor Destaque
+             * @default lilas
+             */
+            cor_destaque: string;
+            /**
+             * Destaque
+             * @default false
+             */
+            destaque: boolean;
+            /**
+             * Exigir Verificado
+             * @default false
+             */
+            exigir_verificado: boolean;
+            /** Horario Contato */
+            horario_contato?: string | null;
+            /**
+             * Membro Desde
+             * Format: date-time
+             */
+            membro_desde: string;
+            /** Nome */
+            nome: string;
+            /** Nota Media */
+            nota_media?: number | null;
+            /**
+             * Servicos Concluidos
+             * @default 0
+             */
+            servicos_concluidos: number;
+            tipo_pessoa: components["schemas"]["TipoPessoa"];
+            /**
+             * Total Avaliacoes
+             * @default 0
+             */
+            total_avaliacoes: number;
+            /** Usuario Id */
+            usuario_id: number;
+            /**
+             * Vagas Publicadas
+             * @default 0
+             */
+            vagas_publicadas: number;
+            /** Verificado */
+            verificado: boolean;
+        };
         /**
          * PerfilResumo
          * @description Dados públicos de um perfil, exibidos em cards, listas e no chat.
          */
         PerfilResumo: {
+            /**
+             * Adicionais Pagos
+             * @description Horas extras e bônus pagos (só contratantes).
+             * @default 0
+             */
+            adicionais_pagos: number;
+            /**
+             * Cor Destaque
+             * @description Cor de destaque escolhida pelo contratante.
+             */
+            cor_destaque?: string | null;
+            /**
+             * Destaque
+             * @description Contratante com adicionais pagos; sem efeito no match.
+             * @default false
+             */
+            destaque: boolean;
             /** Foto Url */
             foto_url?: string | null;
             /** Nome */
@@ -2241,6 +3876,21 @@ export interface components {
              */
             valor?: string | null;
         };
+        /** PreviaCancelamento */
+        PreviaCancelamento: {
+            /** Advertencias No Periodo */
+            advertencias_no_periodo: number;
+            /** Advertencias Para Suspensao */
+            advertencias_para_suspensao: number;
+            /** Gera Advertencia */
+            gera_advertencia: boolean;
+            /** Horas Para Inicio */
+            horas_para_inicio: number;
+            /** Limite Horas */
+            limite_horas: number;
+            /** Pode Cancelar */
+            pode_cancelar: boolean;
+        };
         /** ProfissionalRecomendado */
         ProfissionalRecomendado: {
             /** Demonstrou Interesse */
@@ -2277,6 +3927,22 @@ export interface components {
             valor_proposto?: number | null;
             /** Verificado */
             verificado: boolean;
+        };
+        /** QualificacaoEntrada */
+        QualificacaoEntrada: {
+            /** Arquivo Url */
+            arquivo_url?: string | null;
+            /** Categoria */
+            categoria: string;
+            /** Referencia */
+            referencia?: string | null;
+            /** @default declaracao */
+            tipo: components["schemas"]["TipoQualificacao"];
+        };
+        /** RaioEntrada */
+        RaioEntrada: {
+            /** Raio Km */
+            raio_km: number;
         };
         /** RegistroEntrada */
         RegistroEntrada: {
@@ -2380,6 +4046,13 @@ export interface components {
             /** Usuario Id */
             usuario_id: number;
         };
+        /** RespostaChecklist */
+        RespostaChecklist: {
+            /** Atendido */
+            atendido: boolean;
+            /** Item Id */
+            item_id: number;
+        };
         /** RespostaSaude */
         RespostaSaude: {
             /** Perfil */
@@ -2430,6 +4103,174 @@ export interface components {
             /** Marcadas */
             marcadas: number;
         };
+        /** ResumoComprovantes */
+        ResumoComprovantes: {
+            /** Comprovantes */
+            comprovantes: components["schemas"]["ComprovanteDetalhe"][];
+            /** Liquido Adicional Profissional */
+            liquido_adicional_profissional: string;
+            /** Percentual Taxa Adicional */
+            percentual_taxa_adicional: string;
+            /** Taxa Adicional Plataforma */
+            taxa_adicional_plataforma: string;
+            /**
+             * Total Adicional
+             * @description Horas extras mais bônus.
+             */
+            total_adicional: string;
+            /** Total Bonus */
+            total_bonus: string;
+            /** Total Horas Extras */
+            total_horas_extras: string;
+            /** Total Servico */
+            total_servico: string;
+            /** Vaga Id */
+            vaga_id: number;
+        };
+        /**
+         * RiscoCategoria
+         * @enum {string}
+         */
+        RiscoCategoria: "baixo" | "medio" | "alto";
+        /** SancaoDaFila */
+        SancaoDaFila: {
+            /** Ativa */
+            ativa: boolean;
+            /** Contestada */
+            contestada: boolean;
+            /** Id */
+            id: number;
+            /**
+             * Inicio Em
+             * Format: date-time
+             */
+            inicio_em: string;
+            /** Motivo */
+            motivo: string;
+            /** Origem */
+            origem: string;
+            /** Retorno Em */
+            retorno_em?: string | null;
+            /** Tipo */
+            tipo: string;
+            /** Usuario Email */
+            usuario_email: string;
+            /** Usuario Id */
+            usuario_id: number;
+            /** Usuario Nome */
+            usuario_nome: string;
+        };
+        /** SancaoDetalhe */
+        SancaoDetalhe: {
+            /**
+             * Contestavel Ate
+             * Format: date-time
+             */
+            contestavel_ate: string;
+            /** Id */
+            id: number;
+            /**
+             * Inicio Em
+             * Format: date-time
+             */
+            inicio_em: string;
+            /** Motivo */
+            motivo: string;
+            /** Pode Contestar */
+            pode_contestar: boolean;
+            /** Retorno Em */
+            retorno_em?: string | null;
+            /** Tipo */
+            tipo: string;
+        };
+        /** SancaoManualEntrada */
+        SancaoManualEntrada: {
+            /**
+             * Dias
+             * @default 30
+             */
+            dias: number;
+            /** Motivo */
+            motivo: string;
+        };
+        /** SegurancaDaCategoria */
+        SegurancaDaCategoria: {
+            /** Checklist */
+            checklist: components["schemas"]["ItemChecklist"][];
+            /** Epis */
+            epis: string[];
+            /** Exige Epi */
+            exige_epi: boolean;
+            /** Exige Qualificacao */
+            exige_qualificacao: boolean;
+            nivel_risco: components["schemas"]["RiscoCategoria"];
+            /** Nome */
+            nome: string;
+            /** Slug */
+            slug: string;
+        };
+        /** SituacaoDaConta */
+        SituacaoDaConta: {
+            contestacao?: components["schemas"]["ContestacaoDetalhe"] | null;
+            /** Estado */
+            estado: string;
+            sancao?: components["schemas"]["SancaoDetalhe"] | null;
+        };
+        /** SituacaoTermos */
+        SituacaoTermos: {
+            /** Aceito */
+            aceito: boolean;
+            /** Versao Atual */
+            versao_atual: string;
+        };
+        /**
+         * StatusAprovacao
+         * @enum {string}
+         */
+        StatusAprovacao: "pendente" | "aprovado" | "recusado";
+        /**
+         * StatusVerificacao
+         * @example {
+         *       "consentimento_biometria": true,
+         *       "documento_enviado": true,
+         *       "enviada_em": "2026-11-25T14:00:00Z",
+         *       "perfil": "profissional",
+         *       "selfie_enviada": true,
+         *       "status": "em_analise"
+         *     }
+         */
+        StatusVerificacao: {
+            /** Consentimento Biometria */
+            consentimento_biometria: boolean;
+            /** Documento Enviado */
+            documento_enviado: boolean;
+            /** Enviada Em */
+            enviada_em?: string | null;
+            /** Motivo */
+            motivo?: string | null;
+            /**
+             * Perfil
+             * @enum {string}
+             */
+            perfil: "profissional" | "contratante";
+            /** Selfie Enviada */
+            selfie_enviada: boolean;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pendente" | "em_analise" | "verificado" | "recusado";
+        };
+        /**
+         * TipoArquivo
+         * @enum {string}
+         */
+        TipoArquivo: "foto" | "selfie" | "documento" | "qualificacao" | "epi" | "anexo" | "comprovante";
+        /**
+         * TipoComprovante
+         * @enum {string}
+         */
+        TipoComprovante: "servico" | "horas_extras" | "bonus";
         /**
          * TipoLancamento
          * @enum {string}
@@ -2440,6 +4281,16 @@ export interface components {
          * @enum {string}
          */
         TipoPerfil: "profissional" | "contratante";
+        /**
+         * TipoPessoa
+         * @enum {string}
+         */
+        TipoPessoa: "pf" | "pj";
+        /**
+         * TipoQualificacao
+         * @enum {string}
+         */
+        TipoQualificacao: "certificado" | "registro" | "declaracao";
         /** Top3Contratacao */
         Top3Contratacao: {
             convite_atual?: components["schemas"]["ConviteContratante"] | null;
@@ -2493,6 +4344,20 @@ export interface components {
              */
             verificado: boolean;
         };
+        /**
+         * UsuarioBanido
+         * @description Conta banida de forma permanente por reincidência em denúncias procedentes.
+         */
+        UsuarioBanido: {
+            /** Email */
+            email: string;
+            /** Nome */
+            nome: string;
+            /** Penalidades */
+            penalidades: number;
+            /** Usuario Id */
+            usuario_id: number;
+        };
         /** VagaCriar */
         VagaCriar: {
             /** Bairro */
@@ -2503,6 +4368,11 @@ export interface components {
              */
             categoria: string;
             /**
+             * Checklist
+             * @description Respostas do checklist de segurança; obrigatório nas categorias de risco médio ou alto (itens em GET /categorias/{slug}/seguranca).
+             */
+            checklist?: components["schemas"]["RespostaChecklist"][];
+            /**
              * Data Inicio
              * Format: date-time
              */
@@ -2511,12 +4381,15 @@ export interface components {
             descricao: string;
             /** Duracao Horas */
             duracao_horas: number;
-            /** Latitude */
-            latitude: number;
+            /**
+             * Latitude
+             * @description Opcional: deduzida do bairro quando ausente.
+             */
+            latitude?: number | null;
             /** Logradouro */
             logradouro?: string | null;
             /** Longitude */
-            longitude: number;
+            longitude?: number | null;
             /** Titulo */
             titulo: string;
             /** Valor */
@@ -2528,6 +4401,8 @@ export interface components {
             bairro: string;
             /** Categoria */
             categoria: string;
+            /** Checkin Realizado Em */
+            checkin_realizado_em?: string | null;
             contratante: components["schemas"]["ContratanteResumo"];
             /**
              * Data Inicio
@@ -2542,6 +4417,11 @@ export interface components {
             duracao_horas: number;
             /** Endereco Completo */
             endereco_completo?: string | null;
+            /**
+             * Falta Registrada
+             * @default false
+             */
+            falta_registrada: boolean;
             /** Id */
             id: string;
             /** Latitude */
@@ -2583,6 +4463,19 @@ export interface components {
             /** Error Type */
             type: string;
         };
+        /** VerificacaoEntrada */
+        VerificacaoEntrada: {
+            /**
+             * Documento Arquivo Id
+             * @description Arquivo do tipo documento já enviado.
+             */
+            documento_arquivo_id: number;
+            /**
+             * Selfie Arquivo Id
+             * @description Arquivo do tipo selfie já enviado.
+             */
+            selfie_arquivo_id: number;
+        };
     };
     responses: never;
     parameters: never;
@@ -2592,6 +4485,94 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    admin_listar_aprovacoes: {
+        parameters: {
+            query?: {
+                tipo?: ("profissional" | "contratante" | "experiencia" | "qualificacao" | "epi") | null;
+                estado?: components["schemas"]["StatusAprovacao"] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemFilaAprovacao"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_decidir_aprovacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tipo: "profissional" | "contratante" | "experiencia" | "qualificacao" | "epi";
+                item_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisaoAprovacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ItemFilaAprovacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_listar_banimentos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsuarioBanido"][];
+                };
+            };
+        };
+    };
     admin_consultar_configuracoes: {
         parameters: {
             query?: never;
@@ -2608,6 +4589,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConfiguracoesEfetivas"];
+                };
+            };
+        };
+    };
+    admin_listar_contestacoes: {
+        parameters: {
+            query?: {
+                estado?: "abertas" | "decididas";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContestacaoDaFila"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_decidir_contestacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contestacao_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisaoContestacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContestacaoDaFila"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -2796,6 +4843,294 @@ export interface operations {
             };
         };
     };
+    admin_listar_sancoes: {
+        parameters: {
+            query?: {
+                ativas?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SancaoDaFila"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_banir_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MotivoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SancaoDaFila"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_reativar_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    admin_suspender_usuario: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SancaoManualEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SancaoDaFila"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    arquivos_enviar_arquivo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_arquivos_enviar_arquivo"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArquivoEnviado"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    arquivos_baixar_arquivo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tipo: components["schemas"]["TipoArquivo"];
+                nome: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conta_consultar_assinatura: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
+    conta_assinar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
+    conta_cancelar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssinaturaProDetalhe"];
+                };
+            };
+        };
+    };
+    sancoes_contestar_sancao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContestacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoDaConta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     auth_entrar: {
         parameters: {
             query?: never;
@@ -2948,6 +5283,39 @@ export interface operations {
             };
         };
     };
+    sancoes_consultar_sancao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoDaConta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     vagas_listar_categorias: {
         parameters: {
             query?: never;
@@ -2964,6 +5332,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CategoriaResumo"][];
+                };
+            };
+        };
+    };
+    perfis_consultar_seguranca_da_categoria: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SegurancaDaCategoria"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conta_excluir_conta: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExclusaoContaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -3030,6 +5460,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Top3Contratacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_consultar_perfil_publico_do_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilPublicoContratante"];
                 };
             };
             /** @description Validation Error */
@@ -3593,6 +6054,280 @@ export interface operations {
             };
         };
     };
+    perfis_cadastrar_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CadastroContratanteEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilContratanteDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_consultar_meu_perfil_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilContratanteDetalhe"];
+                };
+            };
+        };
+    };
+    perfis_atualizar_meu_perfil_contratante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AtualizacaoContratanteEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilContratanteDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_cadastrar_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CadastroProfissionalEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_consultar_meu_perfil_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+        };
+    };
+    perfis_atualizar_meu_perfil_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AtualizacaoProfissionalEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_listar_bloqueios: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BloqueioDaAgenda"][];
+                };
+            };
+        };
+    };
+    profissional_criar_bloqueio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BloqueioEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BloqueioDaAgenda"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_remover_bloqueio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                bloqueio_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_listar_comprovacoes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"][];
+                };
+            };
+        };
+    };
     vagas_listar_convites_do_profissional: {
         parameters: {
             query?: never;
@@ -3609,6 +6344,275 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConviteComVaga"][];
+                };
+            };
+        };
+    };
+    profissional_consultar_disponibilidade: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+        };
+    };
+    profissional_alternar_disponivel_agora: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DisponivelAgoraEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_enviar_epi: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EpiEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_enviar_experiencia: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExperienciaEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_mapa_de_ofertas: {
+        parameters: {
+            query?: {
+                raio_km?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MapaDeOfertas"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_enviar_qualificacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QualificacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    profissional_atualizar_raio: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RaioEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DisponibilidadeProfissional"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    conta_consultar_termos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoTermos"];
+                };
+            };
+        };
+    };
+    conta_aceitar_termos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AceiteTermosEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SituacaoTermos"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
@@ -3887,6 +6891,205 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AvaliacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancelamento_consultar_cancelamento: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PreviaCancelamento"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancelamento_cancelar_vaga: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CancelamentoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CancelamentoResposta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pagamentos_fazer_checkin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CheckinEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckinResposta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    comprovantes_listar_comprovantes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResumoComprovantes"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    comprovantes_anexar_comprovante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_comprovantes_anexar_comprovante"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ComprovanteDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    comprovantes_baixar_comprovante: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+                comprovante_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Validation Error */
@@ -4187,6 +7390,79 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verificacao_aceitar_consentimento: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusVerificacao"];
+                };
+            };
+        };
+    };
+    verificacao_enviar_verificacao: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerificacaoEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusVerificacao"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verificacao_consultar_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatusVerificacao"];
                 };
             };
         };

@@ -4,7 +4,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
+import { ComprovantesPanel } from '@/components/pagamento/comprovantes-panel';
 import { PagamentoPix, StatusPagamento } from '@/types';
+import { MODO_DEMO, USE_MOCKS } from '@/lib/modo';
 
 const statusConfig: Record<
   StatusPagamento,
@@ -52,8 +54,8 @@ export default function PaymentPage() {
   useEffect(() => {
     setModoDemo(
       localStorage.getItem('freelai_perfil_demo') === 'true' ||
-        process.env.NEXT_PUBLIC_MODO_DEMO === 'true' ||
-        process.env.NEXT_PUBLIC_USE_MOCKS !== 'false' ||
+        MODO_DEMO ||
+        USE_MOCKS ||
         process.env.NODE_ENV !== 'production'
     );
   }, []);
@@ -182,8 +184,11 @@ export default function PaymentPage() {
                 Pagamento Pix
               </p>
               <h1 className="mt-1 text-2xl font-bold text-white">
-                Cobrança da vaga
+                Pagamento do serviço
               </h1>
+              <p className="mt-1 text-xs text-zinc-400">
+                O pagamento é feito depois da conclusão do serviço, conforme o acordo.
+              </p>
             </div>
             {pagamento.status === 'aguardando' && (
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-right">
@@ -247,7 +252,7 @@ export default function PaymentPage() {
                 {pagamento.status === 'retido'
                   ? 'Pagamento confirmado. O valor está retido até a conclusão e validação.'
                   : pagamento.status === 'liberado'
-                  ? 'Valor liberado após a validação facial.'
+                  ? 'Pagamento confirmado. O valor foi liberado ao profissional.'
                   : 'O estado atual da cobrança é exibido neste painel.'}
               </p>
             </div>
@@ -297,7 +302,7 @@ export default function PaymentPage() {
             </dl>
           </section>
 
-          {(validar || pagamento.status === 'retido' || pagamento.status === 'liberado') && (
+          {(validar || pagamento.status === 'retido') && (
             <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
               <h2 className="font-bold text-white">Validação facial</h2>
               <p className="mt-2 text-xs leading-relaxed text-zinc-400">
@@ -362,6 +367,8 @@ export default function PaymentPage() {
               </div>
             </section>
           )}
+
+          <ComprovantesPanel vagaId={vagaId} souContratante />
         </aside>
       </div>
     </div>

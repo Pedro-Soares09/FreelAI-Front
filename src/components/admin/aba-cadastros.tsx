@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/toast";
 import { mensagemDeErro } from "@/api/erro";
 import {
   ROTULOS_TIPO,
+  abrirArquivo,
   acimaDoPrazo,
   repositorioCadastros,
   tempoEmFila,
@@ -103,14 +104,13 @@ export function AbaCadastros({ onContagem }: { onContagem?: (n: number) => void 
                     <ul className="mt-3 flex flex-wrap gap-3 text-sm">
                       {item.arquivos.map((a) => (
                         <li key={a.nome}>
-                          <a
-                            href={a.url}
-                            target="_blank"
-                            rel="noreferrer"
+                          <button
+                            type="button"
+                            onClick={() => void abrirArquivo(a.url).catch((e) => avisar(mensagemDeErro(e), "error"))}
                             className="text-accent underline underline-offset-2"
                           >
                             {a.nome}
-                          </a>
+                          </button>
                         </li>
                       ))}
                     </ul>

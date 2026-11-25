@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ReviewModal } from "@/components/chat/review-modal";
 import { CONTEST_REASONS, CONTEST_WINDOW_HOURS } from "@/lib/constants";
 import { formatDateTime } from "@/lib/format";
@@ -9,8 +10,9 @@ import {
   confirmCompletion,
   contestAgreement,
   getAgreementEvents,
+  getMyReview,
 } from "@/services/api";
-import type { Agreement, ContestReason, Conversation } from "@/types";
+import type { Agreement, ContestReason, Conversation, Review } from "@/types";
 
 type PostServicePanelProps = {
   conversation: Conversation;
@@ -27,6 +29,20 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   const [reason, setReason] = useState<ContestReason>("nao-realizado");
   const [details, setDetails] = useState("");
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [myReview, setMyReview] = useState<Review | null>(null);
+
+  useEffect(() => {
+    if (agreement.status !== "completed" || reviewOpen) return;
+    let active = true;
+    getMyReview(agreement.id)
+      .then((found) => {
+        if (active) setMyReview(found);
+      })
+      .catch(() => undefined);
+    return () => {
+      active = false;
+    };
+  }, [agreement.id, agreement.status, reviewOpen]);
 
   const otherName = conversation.contact.name;
   const iConfirmed = iAmHirer ? agreement.completionByHirer : agreement.completionByWorker;
@@ -62,9 +78,18 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       {agreement.status === "completed" && (
         <>
           <p role="status">Serviço concluído pelas duas partes.</p>
-          <button type="button" className="cta" onClick={() => setReviewOpen(true)}>
-            Avaliar {otherName}
-          </button>
+          {iAmHirer && (
+            <Link href={`/pagamento/${agreement.id}`} className="cta">
+              Pagar o serviço (Pix)
+            </Link>
+          )}
+          {myReview ? (
+            <p role="status">Você avaliou {otherName} com nota {myReview.rating}.</p>
+          ) : (
+            <button type="button" className="cta" onClick={() => setReviewOpen(true)}>
+              Avaliar {otherName}
+            </button>
+          )}
         </>
       )}
 

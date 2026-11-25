@@ -6,10 +6,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
 import { api, chamar } from "@/api/client";
+import { ApiError } from "@/api/erro";
 import { aoExpirarSessao, lerTokens, limparTokens, salvarTokens } from "@/api/tokens";
 import type { RegistroEntrada, TipoPerfil, Usuario } from "@/api/tipos";
 
@@ -30,6 +32,7 @@ const SessaoContext = createContext<ContextoSessao | null>(null);
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState<Estado>("carregando");
   const [usuario, setUsuario] = useState<Usuario | null>(null);
+  const contaBloqueada = useRef<string | null>(null);
 
   const sair = useCallback(() => {
     limparTokens();
@@ -48,7 +51,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setUsuario(dados);
       setEstado("autenticado");
       return dados;
-    } catch {
+    } catch (e) {
+      contaBloqueada.current =
+        e instanceof ApiError && (e.codigo === "conta_banida" || e.codigo === "conta_suspensa")
+          ? e.codigo
+          : null;
       sair();
       return null;
     }
@@ -66,7 +73,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     async (email: string, senha: string) => {
       const par = await chamar(api.POST("/api/v1/auth/login", { body: { email, senha } }));
       salvarTokens({ access: par.access_token, refresh: par.refresh_token });
+      contaBloqueada.current = null;
       const dados = await atualizar();
+      if (!dados && contaBloqueada.current) {
+        throw new ApiError(403, contaBloqueada.current, "Esta conta não pode entrar na plataforma.");
+      }
       if (!dados) throw new Error("Não foi possível carregar a conta.");
       return dados;
     },

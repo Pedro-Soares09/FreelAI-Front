@@ -28,6 +28,7 @@ export const config = {
     "/suporte/:path*",
     "/verificacao/:path*",
     "/vagas/:path*",
+    "/mapa/:path*",
     "/admin/:path*",
   ],
 };

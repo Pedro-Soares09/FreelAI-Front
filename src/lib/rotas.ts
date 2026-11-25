@@ -11,6 +11,7 @@ const comum: ItemNav[] = [
 
 const navProfissional: ItemNav[] = [
   { href: "/vagas", rotulo: "Vagas" },
+  { href: "/mapa", rotulo: "Mapa" },
   { href: "/match", rotulo: "Convites" },
   ...comum,
 ];
@@ -38,6 +39,7 @@ export function itensDeNavegacao(usuario: Usuario | null): ItemNav[] {
 const restricoes: Array<{ prefixo: string; perfil?: TipoPerfil; admin?: boolean }> = [
   { prefixo: "/criar-vaga", perfil: "contratante" },
   { prefixo: "/pagamento", perfil: "contratante" },
+  { prefixo: "/mapa", perfil: "profissional" },
   { prefixo: "/admin", admin: true },
 ];
 

@@ -46,7 +46,7 @@ export default function ChatPage() {
       )}
 
       {conversations && conversations.length > 0 && (
-        <ul className="conversation-list">
+        <ul className="conversation-list tema-chat rounded-card bg-bg p-3">
           {conversations.map((conversation) => (
             <li key={conversation.id}>
               <ConversationItem conversation={conversation} />

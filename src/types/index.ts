@@ -25,12 +25,17 @@ export type NivelRisco = 'baixo' | 'medio' | 'alto';
 
 export interface ContratanteResumo {
   id: string;
+  usuario_id?: number | null;
+  cor_destaque?: string | null;
   nome: string;
   foto_url?: string;
   verificado: boolean;
   nota_media: number;
   total_avaliacoes: number;
   pro?: boolean;
+  /** Pagou horas extras ou bônus; não altera o match. */
+  destaque?: boolean;
+  adicionais_pagos?: number;
 }
 
 export interface ConviteVaga {
@@ -111,7 +116,7 @@ export interface ItemPainelContratante {
   vaga: Vaga;
   estado: EstadoPainelVaga;
   interessados_count: number;
-  proxima_acao: 'escolher' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
+  proxima_acao: 'escolher' | 'acordar' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
   conversa_id?: string | null;
   pagamento_id?: string | null;
 }
@@ -226,6 +231,8 @@ export type Conversation = {
   agreementId?: string;
   /** Vaga encerrada: a conversa vira somente leitura. */
   jobClosed?: boolean;
+  /** Denúncia procedente: a troca de mensagens entre as partes está bloqueada. */
+  blocked?: boolean;
 };
 
 export type Payment = {
@@ -246,6 +253,8 @@ export type ChatContact = {
   verified: boolean;
   online: boolean;
   role: ChatRole;
+  destaque?: boolean;
+  corDestaque?: string;
 };
 
 export type ChatJob = {

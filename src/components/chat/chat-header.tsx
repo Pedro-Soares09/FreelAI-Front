@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AvatarVerified } from "@/components/shared/avatar-verified";
+import { SeloDestaque } from "@/components/ui/selos";
 import { formatCurrency } from "@/lib/format";
 import type { Conversation } from "@/types";
 
@@ -20,17 +21,30 @@ export function ChatHeader({ conversation, connection, onAgreementClick, onRepor
       <Link href="/chat" aria-label="Voltar para as conversas">
         ←
       </Link>
-      <AvatarVerified name={contact.name} imageUrl={contact.avatarUrl} verified={contact.verified} />
+      <AvatarVerified
+        name={contact.name}
+        imageUrl={contact.avatarUrl}
+        verified={contact.verified}
+        cor={contact.role === "contratante" ? (contact.corDestaque ?? "lilas") : undefined}
+      />
       <div className="chat-header-info">
-        <strong>{contact.name}</strong>
+        <strong>
+          {contact.name} {contact.destaque && <SeloDestaque />}
+        </strong>
         <span className="text-xs text-muted">
           {contact.online ? "Online" : "Offline"} · {job.title}
         </span>
       </div>
       <span className="chat-amount">{formatCurrency(job.amount)}</span>
-      <Link href="/perfil" className="chip">
-        Ver perfil
-      </Link>
+      {contact.role === "contratante" ? (
+        <Link href={`/contratante/${contact.id}`} className="chip">
+          Ver perfil
+        </Link>
+      ) : (
+        <Link href="/perfil" className="chip">
+          Ver perfil
+        </Link>
+      )}
       {onReportClick && (
         <button type="button" className="chip" onClick={onReportClick}>
           Denunciar

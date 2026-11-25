@@ -19,6 +19,21 @@
         "title": "AceiteResposta",
         "type": "object"
       },
+      "AceiteTermosEntrada": {
+        "properties": {
+          "versao": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Versao",
+            "type": "string"
+          }
+        },
+        "required": [
+          "versao"
+        ],
+        "title": "AceiteTermosEntrada",
+        "type": "object"
+      },
       "AceitesAcordo": {
         "properties": {
           "contratante": {
@@ -35,6 +50,433 @@
           "contratante"
         ],
         "title": "AceitesAcordo",
+        "type": "object"
+      },
+      "ArquivoDaFila": {
+        "properties": {
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo",
+          "url"
+        ],
+        "title": "ArquivoDaFila",
+        "type": "object"
+      },
+      "ArquivoEnviado": {
+        "description": "Metadados e URL do arquivo armazenado após o upload.",
+        "examples": [
+          {
+            "criado_em": "2026-11-20T14:00:00Z",
+            "id": 12,
+            "mime_type": "image/jpeg",
+            "tamanho_bytes": 48210,
+            "tipo": "foto",
+            "url": "/api/v1/arquivos/foto/a1b2c3d4e5f60718293a4b5c6d7e8f90.jpg"
+          }
+        ],
+        "properties": {
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "mime_type": {
+            "title": "Mime Type",
+            "type": "string"
+          },
+          "tamanho_bytes": {
+            "title": "Tamanho Bytes",
+            "type": "integer"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoArquivo"
+          },
+          "url": {
+            "description": "URL da API para acessar o arquivo armazenado.",
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tipo",
+          "url",
+          "mime_type",
+          "tamanho_bytes",
+          "criado_em"
+        ],
+        "title": "ArquivoEnviado",
+        "type": "object"
+      },
+      "AssinaturaProDetalhe": {
+        "properties": {
+          "ativo": {
+            "title": "Ativo",
+            "type": "boolean"
+          },
+          "renovacao_automatica": {
+            "title": "Renovacao Automatica",
+            "type": "boolean"
+          },
+          "valido_ate": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valido Ate"
+          },
+          "valor_mensal": {
+            "title": "Valor Mensal",
+            "type": "number"
+          }
+        },
+        "required": [
+          "ativo",
+          "valor_mensal",
+          "renovacao_automatica"
+        ],
+        "title": "AssinaturaProDetalhe",
+        "type": "object"
+      },
+      "AtualizacaoContratanteEntrada": {
+        "description": "Dados cadastrais e personalização do perfil; só o que for enviado é alterado.",
+        "properties": {
+          "aceita_notificacoes": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aceita Notificacoes"
+          },
+          "avatar_arquivo_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Arquivo do tipo foto já enviado; 0 remove o avatar.",
+            "title": "Avatar Arquivo Id"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "categorias_interesse": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 10,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categorias Interesse"
+          },
+          "cor_destaque": {
+            "anyOf": [
+              {
+                "enum": [
+                  "lilas",
+                  "azul",
+                  "verde",
+                  "rosa",
+                  "laranja",
+                  "grafite"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cor Destaque"
+          },
+          "documento": {
+            "anyOf": [
+              {
+                "maxLength": 32,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Documento"
+          },
+          "exigir_verificado": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exigir Verificado"
+          },
+          "horario_contato": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horario Contato"
+          },
+          "nome": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nome"
+          },
+          "razao_social": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Razao Social"
+          },
+          "selfie_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selfie Url"
+          },
+          "telefone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Telefone"
+          }
+        },
+        "title": "AtualizacaoContratanteEntrada",
+        "type": "object"
+      },
+      "AtualizacaoProfissionalEntrada": {
+        "properties": {
+          "bairro": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "caracteristicas": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CaracteristicasEntrada"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "categorias": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categorias"
+          },
+          "cpf": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpf"
+          },
+          "data_nascimento": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Nascimento"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          },
+          "logradouro": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logradouro"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "nome": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nome"
+          },
+          "raio_km": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raio Km"
+          },
+          "telefone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Telefone"
+          }
+        },
+        "title": "AtualizacaoProfissionalEntrada",
         "type": "object"
       },
       "AvaliacaoDetalhe": {
@@ -155,6 +597,46 @@
         "title": "AvaliacaoEntrada",
         "type": "object"
       },
+      "AvaliacaoPublica": {
+        "properties": {
+          "avaliador_nome": {
+            "title": "Avaliador Nome",
+            "type": "string"
+          },
+          "comentario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comentario"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "nota": {
+            "title": "Nota",
+            "type": "integer"
+          },
+          "vaga_titulo": {
+            "title": "Vaga Titulo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nota",
+          "avaliador_nome",
+          "vaga_titulo",
+          "criado_em"
+        ],
+        "title": "AvaliacaoPublica",
+        "type": "object"
+      },
       "AvaliacoesDaVaga": {
         "description": "Estado das avaliações de uma vaga para quem consulta.",
         "examples": [
@@ -243,6 +725,140 @@
         "title": "AvaliacoesDaVaga",
         "type": "object"
       },
+      "BloqueioDaAgenda": {
+        "properties": {
+          "fim": {
+            "format": "date-time",
+            "title": "Fim",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "inicio": {
+            "format": "date-time",
+            "title": "Inicio",
+            "type": "string"
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo"
+          }
+        },
+        "required": [
+          "id",
+          "inicio",
+          "fim"
+        ],
+        "title": "BloqueioDaAgenda",
+        "type": "object"
+      },
+      "BloqueioEntrada": {
+        "properties": {
+          "fim": {
+            "format": "date-time",
+            "title": "Fim",
+            "type": "string"
+          },
+          "inicio": {
+            "format": "date-time",
+            "title": "Inicio",
+            "type": "string"
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo"
+          }
+        },
+        "required": [
+          "inicio",
+          "fim"
+        ],
+        "title": "BloqueioEntrada",
+        "type": "object"
+      },
+      "Body_arquivos_enviar_arquivo": {
+        "properties": {
+          "arquivo": {
+            "contentMediaType": "application/octet-stream",
+            "description": "Arquivo em formato jpg, png ou pdf (até 10 MB).",
+            "title": "Arquivo",
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoArquivo",
+            "description": "Finalidade do arquivo: foto, selfie, documento, qualificacao, epi ou anexo."
+          }
+        },
+        "required": [
+          "tipo",
+          "arquivo"
+        ],
+        "title": "Body_arquivos_enviar_arquivo",
+        "type": "object"
+      },
+      "Body_comprovantes_anexar_comprovante": {
+        "properties": {
+          "acordo_previo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Registro do acordo prévio (obrigatório em horas extras).",
+            "title": "Acordo Previo"
+          },
+          "arquivo": {
+            "contentMediaType": "application/octet-stream",
+            "description": "Comprovante em jpg, png ou pdf.",
+            "title": "Arquivo",
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoComprovante",
+            "description": "servico, horas_extras ou bonus."
+          },
+          "valor": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "description": "Valor pago, em reais.",
+            "title": "Valor"
+          }
+        },
+        "required": [
+          "tipo",
+          "valor",
+          "arquivo"
+        ],
+        "title": "Body_comprovantes_anexar_comprovante",
+        "type": "object"
+      },
       "Body_conversas_enviar_anexo": {
         "properties": {
           "arquivo": {
@@ -269,6 +885,318 @@
           "arquivo"
         ],
         "title": "Body_conversas_enviar_anexo",
+        "type": "object"
+      },
+      "CadastroContratanteEntrada": {
+        "properties": {
+          "documento": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "CPF (pessoa física) ou CNPJ (pessoa jurídica, opcional).",
+            "title": "Documento"
+          },
+          "razao_social": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Razao Social"
+          },
+          "selfie_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selfie Url"
+          },
+          "telefone": {
+            "title": "Telefone",
+            "type": "string"
+          },
+          "tipo_pessoa": {
+            "$ref": "#/components/schemas/TipoPessoa"
+          }
+        },
+        "required": [
+          "tipo_pessoa",
+          "telefone"
+        ],
+        "title": "CadastroContratanteEntrada",
+        "type": "object"
+      },
+      "CadastroProfissionalEntrada": {
+        "properties": {
+          "bairro": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Bairro",
+            "type": "string"
+          },
+          "caracteristicas": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CaracteristicasEntrada"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "categorias": {
+            "description": "Slugs das categorias de atuação.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Categorias",
+            "type": "array"
+          },
+          "cpf": {
+            "title": "Cpf",
+            "type": "string"
+          },
+          "data_nascimento": {
+            "format": "date",
+            "title": "Data Nascimento",
+            "type": "string"
+          },
+          "experiencias": {
+            "items": {
+              "$ref": "#/components/schemas/ExperienciaEntrada"
+            },
+            "title": "Experiencias",
+            "type": "array"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "latitude": {
+            "description": "Latitude obrigatória da localização.",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "logradouro": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logradouro"
+          },
+          "longitude": {
+            "description": "Longitude obrigatória da localização.",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "raio_km": {
+            "default": 5,
+            "minimum": 1.0,
+            "title": "Raio Km",
+            "type": "integer"
+          },
+          "telefone": {
+            "title": "Telefone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "cpf",
+          "data_nascimento",
+          "telefone",
+          "bairro",
+          "latitude",
+          "longitude",
+          "categorias"
+        ],
+        "title": "CadastroProfissionalEntrada",
+        "type": "object"
+      },
+      "CancelamentoEntrada": {
+        "properties": {
+          "motivo": {
+            "maxLength": 255,
+            "minLength": 3,
+            "title": "Motivo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "motivo"
+        ],
+        "title": "CancelamentoEntrada",
+        "type": "object"
+      },
+      "CancelamentoResposta": {
+        "properties": {
+          "advertencia_aplicada": {
+            "title": "Advertencia Aplicada",
+            "type": "boolean"
+          },
+          "advertencias_no_periodo": {
+            "title": "Advertencias No Periodo",
+            "type": "integer"
+          },
+          "estado": {
+            "title": "Estado",
+            "type": "string"
+          },
+          "suspensa_ate": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suspensa Ate"
+          },
+          "valor_estornado": {
+            "title": "Valor Estornado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "estado",
+          "advertencia_aplicada",
+          "advertencias_no_periodo",
+          "valor_estornado"
+        ],
+        "title": "CancelamentoResposta",
+        "type": "object"
+      },
+      "CaracteristicasEntrada": {
+        "description": "Características autodeclaradas, de 1 a 5; informação complementar, sem peso no match.",
+        "properties": {
+          "agilidade": {
+            "anyOf": [
+              {
+                "maximum": 5.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agilidade"
+          },
+          "comunicacao": {
+            "anyOf": [
+              {
+                "maximum": 5.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comunicacao"
+          },
+          "organizacao": {
+            "anyOf": [
+              {
+                "maximum": 5.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Organizacao"
+          }
+        },
+        "title": "CaracteristicasEntrada",
+        "type": "object"
+      },
+      "CategoriaDeInteresse": {
+        "properties": {
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome"
+        ],
+        "title": "CategoriaDeInteresse",
+        "type": "object"
+      },
+      "CategoriaDoPerfil": {
+        "properties": {
+          "nivel_risco": {
+            "$ref": "#/components/schemas/RiscoCategoria"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "pendencias": {
+            "description": "O que ainda falta aprovar para atuar na categoria.",
+            "items": {
+              "enum": [
+                "experiencia",
+                "qualificacao",
+                "epi"
+              ],
+              "type": "string"
+            },
+            "title": "Pendencias",
+            "type": "array"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome",
+          "nivel_risco",
+          "pendencias"
+        ],
+        "title": "CategoriaDoPerfil",
         "type": "object"
       },
       "CategoriaResumo": {
@@ -340,6 +1268,197 @@
         "title": "CentralNotificacoes",
         "type": "object"
       },
+      "CheckinEntrada": {
+        "properties": {
+          "latitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "simular_local": {
+            "default": false,
+            "description": "Só no perfil demo: usa o endereço da vaga como posição.",
+            "title": "Simular Local",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "title": "CheckinEntrada",
+        "type": "object"
+      },
+      "CheckinResposta": {
+        "properties": {
+          "checkin_em": {
+            "format": "date-time",
+            "title": "Checkin Em",
+            "type": "string"
+          },
+          "distancia_metros": {
+            "title": "Distancia Metros",
+            "type": "number"
+          },
+          "mensagem": {
+            "title": "Mensagem",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mensagem",
+          "distancia_metros",
+          "checkin_em"
+        ],
+        "title": "CheckinResposta",
+        "type": "object"
+      },
+      "ComprovacaoDetalhe": {
+        "properties": {
+          "arquivo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arquivo Url"
+          },
+          "categoria": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categoria"
+          },
+          "descricao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Descricao"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "motivo_recusa": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Recusa"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusAprovacao"
+          },
+          "tipo": {
+            "enum": [
+              "experiencia",
+              "qualificacao",
+              "epi"
+            ],
+            "title": "Tipo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tipo",
+          "categoria",
+          "status"
+        ],
+        "title": "ComprovacaoDetalhe",
+        "type": "object"
+      },
+      "ComprovanteDetalhe": {
+        "properties": {
+          "acordo_previo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acordo Previo"
+          },
+          "arquivo_url": {
+            "description": "Rota que serve o arquivo, restrita às partes e à admin.",
+            "title": "Arquivo Url",
+            "type": "string"
+          },
+          "criado_em": {
+            "format": "date-time",
+            "title": "Criado Em",
+            "type": "string"
+          },
+          "enviado_por_id": {
+            "title": "Enviado Por Id",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "taxa_pct": {
+            "description": "Percentual da plataforma sobre o valor adicional.",
+            "title": "Taxa Pct",
+            "type": "string"
+          },
+          "taxa_plataforma": {
+            "description": "Taxa da plataforma sobre este comprovante.",
+            "title": "Taxa Plataforma",
+            "type": "string"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoComprovante"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "vaga_id",
+          "tipo",
+          "valor",
+          "taxa_pct",
+          "taxa_plataforma",
+          "enviado_por_id",
+          "arquivo_url",
+          "criado_em"
+        ],
+        "title": "ComprovanteDetalhe",
+        "type": "object"
+      },
       "ConfiguracoesEfetivas": {
         "properties": {
           "perfil": {
@@ -380,8 +1499,188 @@
         "title": "ContagemNaoLidas",
         "type": "object"
       },
+      "ContestacaoDaFila": {
+        "properties": {
+          "aceita": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aceita"
+          },
+          "criada_em": {
+            "format": "date-time",
+            "title": "Criada Em",
+            "type": "string"
+          },
+          "decidida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decidida Em"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "motivo_decisao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Decisao"
+          },
+          "sancao_motivo": {
+            "title": "Sancao Motivo",
+            "type": "string"
+          },
+          "sancao_tipo": {
+            "title": "Sancao Tipo",
+            "type": "string"
+          },
+          "texto": {
+            "title": "Texto",
+            "type": "string"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "usuario_nome": {
+            "title": "Usuario Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "usuario_id",
+          "usuario_nome",
+          "sancao_tipo",
+          "sancao_motivo",
+          "texto",
+          "criada_em"
+        ],
+        "title": "ContestacaoDaFila",
+        "type": "object"
+      },
+      "ContestacaoDetalhe": {
+        "properties": {
+          "aceita": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aceita"
+          },
+          "criada_em": {
+            "format": "date-time",
+            "title": "Criada Em",
+            "type": "string"
+          },
+          "decidida_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decidida Em"
+          },
+          "motivo_decisao": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo Decisao"
+          },
+          "texto": {
+            "title": "Texto",
+            "type": "string"
+          }
+        },
+        "required": [
+          "texto",
+          "criada_em"
+        ],
+        "title": "ContestacaoDetalhe",
+        "type": "object"
+      },
+      "ContestacaoEntrada": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "senha": {
+            "maxLength": 72,
+            "minLength": 1,
+            "title": "Senha",
+            "type": "string"
+          },
+          "texto": {
+            "maxLength": 1000,
+            "minLength": 10,
+            "title": "Texto",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "senha",
+          "texto"
+        ],
+        "title": "ContestacaoEntrada",
+        "type": "object"
+      },
       "ContratanteResumo": {
         "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "cor_destaque": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cor Destaque"
+          },
+          "destaque": {
+            "default": false,
+            "title": "Destaque",
+            "type": "boolean"
+          },
           "foto_url": {
             "anyOf": [
               {
@@ -413,6 +1712,17 @@
           "total_avaliacoes": {
             "title": "Total Avaliacoes",
             "type": "integer"
+          },
+          "usuario_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usuario Id"
           },
           "verificado": {
             "title": "Verificado",
@@ -456,6 +1766,12 @@
           "aberta": {
             "description": "Falso quando a vaga foi cancelada ou encerrada.",
             "title": "Aberta",
+            "type": "boolean"
+          },
+          "bloqueada": {
+            "default": false,
+            "description": "Verdadeiro quando uma denúncia procedente bloqueou o envio de mensagens.",
+            "title": "Bloqueada",
             "type": "boolean"
           },
           "id": {
@@ -760,6 +2076,55 @@
         "title": "DadosAcordo",
         "type": "object"
       },
+      "DecisaoAprovacaoEntrada": {
+        "properties": {
+          "decisao": {
+            "enum": [
+              "aprovar",
+              "recusar"
+            ],
+            "title": "Decisao",
+            "type": "string"
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo"
+          }
+        },
+        "required": [
+          "decisao"
+        ],
+        "title": "DecisaoAprovacaoEntrada",
+        "type": "object"
+      },
+      "DecisaoContestacaoEntrada": {
+        "properties": {
+          "aceita": {
+            "title": "Aceita",
+            "type": "boolean"
+          },
+          "motivo": {
+            "maxLength": 255,
+            "minLength": 3,
+            "title": "Motivo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "aceita",
+          "motivo"
+        ],
+        "title": "DecisaoContestacaoEntrada",
+        "type": "object"
+      },
       "DecisaoDenunciaEntrada": {
         "description": "Decisão administrativa sobre uma denúncia aberta (procedente ou improcedente + motivo).",
         "properties": {
@@ -969,6 +2334,12 @@
             "title": "Acima Da Meta",
             "type": "boolean"
           },
+          "conversa_bloqueada": {
+            "default": false,
+            "description": "Denúncia procedente: a troca de mensagens entre as partes está bloqueada.",
+            "title": "Conversa Bloqueada",
+            "type": "boolean"
+          },
           "conversa_id": {
             "anyOf": [
               {
@@ -1008,9 +2379,31 @@
             ],
             "title": "Decisao Motivo"
           },
+          "denunciado_estado": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EstadoConta"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Situação atual da conta denunciada (banida após 2 penalidades)."
+          },
           "denunciado_id": {
             "title": "Denunciado Id",
             "type": "integer"
+          },
+          "denunciado_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denunciado Nome"
           },
           "denunciante_id": {
             "anyOf": [
@@ -1023,6 +2416,17 @@
             ],
             "description": "Autor da denúncia (nulo quando gerada automaticamente pelo chat).",
             "title": "Denunciante Id"
+          },
+          "denunciante_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Denunciante Nome"
           },
           "denuncias_procedentes_acumuladas": {
             "default": 0,
@@ -1199,6 +2603,56 @@
         "title": "DenunciaPublicaResumo",
         "type": "object"
       },
+      "DisponibilidadeProfissional": {
+        "properties": {
+          "bloqueios": {
+            "items": {
+              "$ref": "#/components/schemas/BloqueioDaAgenda"
+            },
+            "title": "Bloqueios",
+            "type": "array"
+          },
+          "disponivel_agora": {
+            "title": "Disponivel Agora",
+            "type": "boolean"
+          },
+          "disponivel_ate": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Disponivel Ate"
+          },
+          "raio_km": {
+            "title": "Raio Km",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "disponivel_agora",
+          "raio_km"
+        ],
+        "title": "DisponibilidadeProfissional",
+        "type": "object"
+      },
+      "DisponivelAgoraEntrada": {
+        "properties": {
+          "ativo": {
+            "title": "Ativo",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ativo"
+        ],
+        "title": "DisponivelAgoraEntrada",
+        "type": "object"
+      },
       "DisputaAdminDetalhe": {
         "description": "Visão completa da aba de disputas no admin: disputa, pagamento, chat e anexos da vaga.",
         "examples": [
@@ -1300,6 +2754,17 @@
             "title": "Chat",
             "type": "array"
           },
+          "contratante_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contratante Nome"
+          },
           "contratante_usuario_id": {
             "title": "Contratante Usuario Id",
             "type": "integer"
@@ -1372,6 +2837,17 @@
               }
             ],
             "title": "Percentual Reembolso"
+          },
+          "profissional_nome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profissional Nome"
           },
           "profissional_usuario_id": {
             "anyOf": [
@@ -1617,6 +3093,25 @@
         "title": "DivisaoValores",
         "type": "object"
       },
+      "EpiEntrada": {
+        "properties": {
+          "arquivo_url": {
+            "maxLength": 255,
+            "title": "Arquivo Url",
+            "type": "string"
+          },
+          "categoria": {
+            "title": "Categoria",
+            "type": "string"
+          }
+        },
+        "required": [
+          "categoria",
+          "arquivo_url"
+        ],
+        "title": "EpiEntrada",
+        "type": "object"
+      },
       "EscolhaEntrada": {
         "properties": {
           "profissional_id": {
@@ -1692,6 +3187,84 @@
         "title": "EstadoVaga",
         "type": "string"
       },
+      "ExclusaoContaEntrada": {
+        "properties": {
+          "senha": {
+            "maxLength": 72,
+            "minLength": 1,
+            "title": "Senha",
+            "type": "string"
+          }
+        },
+        "required": [
+          "senha"
+        ],
+        "title": "ExclusaoContaEntrada",
+        "type": "object"
+      },
+      "ExperienciaEntrada": {
+        "properties": {
+          "arquivo_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arquivo Url"
+          },
+          "categoria": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Slug da categoria, se houver.",
+            "title": "Categoria"
+          },
+          "descricao": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Descricao",
+            "type": "string"
+          },
+          "referencia_contato": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Referencia Contato"
+          },
+          "referencia_nome": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Referencia Nome"
+          }
+        },
+        "required": [
+          "descricao"
+        ],
+        "title": "ExperienciaEntrada",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1721,6 +3294,92 @@
           }
         },
         "title": "InteresseEntrada",
+        "type": "object"
+      },
+      "ItemChecklist": {
+        "properties": {
+          "critico": {
+            "title": "Critico",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "texto": {
+            "title": "Texto",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "texto",
+          "critico"
+        ],
+        "title": "ItemChecklist",
+        "type": "object"
+      },
+      "ItemFilaAprovacao": {
+        "properties": {
+          "arquivos": {
+            "items": {
+              "$ref": "#/components/schemas/ArquivoDaFila"
+            },
+            "title": "Arquivos",
+            "type": "array"
+          },
+          "descricao": {
+            "title": "Descricao",
+            "type": "string"
+          },
+          "enviado_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enviado Em"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusAprovacao"
+          },
+          "tipo": {
+            "enum": [
+              "profissional",
+              "contratante",
+              "experiencia",
+              "qualificacao",
+              "epi"
+            ],
+            "title": "Tipo",
+            "type": "string"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "usuario_nome": {
+            "title": "Usuario Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo",
+          "id",
+          "usuario_id",
+          "usuario_nome",
+          "descricao",
+          "status"
+        ],
+        "title": "ItemFilaAprovacao",
         "type": "object"
       },
       "LancamentoResumo": {
@@ -1790,6 +3449,46 @@
           "senha"
         ],
         "title": "LoginEntrada",
+        "type": "object"
+      },
+      "MapaDeOfertas": {
+        "properties": {
+          "categorias_do_perfil": {
+            "description": "Slugs das categorias de atuação e de experiência usadas no filtro.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Categorias Do Perfil",
+            "type": "array"
+          },
+          "centro_latitude": {
+            "title": "Centro Latitude",
+            "type": "number"
+          },
+          "centro_longitude": {
+            "title": "Centro Longitude",
+            "type": "number"
+          },
+          "ofertas": {
+            "items": {
+              "$ref": "#/components/schemas/OfertaNoMapa"
+            },
+            "title": "Ofertas",
+            "type": "array"
+          },
+          "raio_km": {
+            "title": "Raio Km",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "centro_latitude",
+          "centro_longitude",
+          "raio_km",
+          "categorias_do_perfil",
+          "ofertas"
+        ],
+        "title": "MapaDeOfertas",
         "type": "object"
       },
       "MensagemDetalhe": {
@@ -1999,6 +3698,21 @@
         "title": "MensagemResumo",
         "type": "object"
       },
+      "MotivoEntrada": {
+        "properties": {
+          "motivo": {
+            "maxLength": 255,
+            "minLength": 3,
+            "title": "Motivo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "motivo"
+        ],
+        "title": "MotivoEntrada",
+        "type": "object"
+      },
       "NotificacaoDetalhe": {
         "description": "Notificação já visível ao usuário na central do aplicativo.",
         "examples": [
@@ -2091,6 +3805,78 @@
           "criado_em"
         ],
         "title": "NotificacaoDetalhe",
+        "type": "object"
+      },
+      "OfertaNoMapa": {
+        "properties": {
+          "bairro": {
+            "title": "Bairro",
+            "type": "string"
+          },
+          "categoria_nome": {
+            "title": "Categoria Nome",
+            "type": "string"
+          },
+          "categoria_slug": {
+            "title": "Categoria Slug",
+            "type": "string"
+          },
+          "distancia_km": {
+            "title": "Distancia Km",
+            "type": "number"
+          },
+          "inicio_em": {
+            "title": "Inicio Em",
+            "type": "string"
+          },
+          "latitude": {
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitude",
+            "type": "number"
+          },
+          "pendencias": {
+            "description": "O que falta aprovar: experiencia, qualificacao, epi.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Pendencias",
+            "type": "array"
+          },
+          "pode_atuar": {
+            "description": "Verdadeiro quando o perfil já cumpre as regras de risco.",
+            "title": "Pode Atuar",
+            "type": "boolean"
+          },
+          "titulo": {
+            "title": "Titulo",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          },
+          "valor": {
+            "title": "Valor",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "titulo",
+          "categoria_slug",
+          "categoria_nome",
+          "bairro",
+          "latitude",
+          "longitude",
+          "distancia_km",
+          "valor",
+          "inicio_em",
+          "pode_atuar"
+        ],
+        "title": "OfertaNoMapa",
         "type": "object"
       },
       "OrigemDenuncia": {
@@ -2283,9 +4069,479 @@
         "title": "PerfilAtivoEntrada",
         "type": "object"
       },
+      "PerfilContratanteDetalhe": {
+        "properties": {
+          "aceita_notificacoes": {
+            "default": true,
+            "title": "Aceita Notificacoes",
+            "type": "boolean"
+          },
+          "adicionais_pagos": {
+            "default": 0,
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "categorias_interesse": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Categorias Interesse",
+            "type": "array"
+          },
+          "cor_destaque": {
+            "default": "lilas",
+            "title": "Cor Destaque",
+            "type": "string"
+          },
+          "destaque": {
+            "default": false,
+            "title": "Destaque",
+            "type": "boolean"
+          },
+          "documento": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Documento"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "exigir_verificado": {
+            "default": false,
+            "title": "Exigir Verificado",
+            "type": "boolean"
+          },
+          "horario_contato": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horario Contato"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "razao_social": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Razao Social"
+          },
+          "selfie_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selfie Url"
+          },
+          "telefone": {
+            "title": "Telefone",
+            "type": "string"
+          },
+          "tipo_pessoa": {
+            "$ref": "#/components/schemas/TipoPessoa"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "verificacao": {
+            "enum": [
+              "pendente",
+              "em_analise",
+              "verificado",
+              "recusado"
+            ],
+            "title": "Verificacao",
+            "type": "string"
+          },
+          "verificacao_motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verificacao Motivo"
+          }
+        },
+        "required": [
+          "id",
+          "usuario_id",
+          "nome",
+          "email",
+          "tipo_pessoa",
+          "documento",
+          "razao_social",
+          "telefone",
+          "selfie_url",
+          "verificacao",
+          "verificacao_motivo"
+        ],
+        "title": "PerfilContratanteDetalhe",
+        "type": "object"
+      },
+      "PerfilProfissionalDetalhe": {
+        "properties": {
+          "bairro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "caracteristicas": {
+            "$ref": "#/components/schemas/CaracteristicasEntrada"
+          },
+          "categorias": {
+            "items": {
+              "$ref": "#/components/schemas/CategoriaDoPerfil"
+            },
+            "title": "Categorias",
+            "type": "array"
+          },
+          "cpf": {
+            "title": "Cpf",
+            "type": "string"
+          },
+          "data_nascimento": {
+            "format": "date",
+            "title": "Data Nascimento",
+            "type": "string"
+          },
+          "experiencia_aprovada": {
+            "$ref": "#/components/schemas/StatusAprovacao"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "pro": {
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "raio_km": {
+            "title": "Raio Km",
+            "type": "integer"
+          },
+          "telefone": {
+            "title": "Telefone",
+            "type": "string"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "verificacao": {
+            "enum": [
+              "pendente",
+              "em_analise",
+              "verificado",
+              "recusado"
+            ],
+            "title": "Verificacao",
+            "type": "string"
+          },
+          "verificacao_motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verificacao Motivo"
+          }
+        },
+        "required": [
+          "id",
+          "usuario_id",
+          "nome",
+          "cpf",
+          "data_nascimento",
+          "telefone",
+          "foto_url",
+          "bairro",
+          "latitude",
+          "longitude",
+          "raio_km",
+          "categorias",
+          "caracteristicas",
+          "verificacao",
+          "verificacao_motivo",
+          "experiencia_aprovada",
+          "pro"
+        ],
+        "title": "PerfilProfissionalDetalhe",
+        "type": "object"
+      },
+      "PerfilPublicoContratante": {
+        "description": "Visão pública do contratante, sem documento, telefone, selfie nem e-mail.",
+        "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "avaliacoes": {
+            "items": {
+              "$ref": "#/components/schemas/AvaliacaoPublica"
+            },
+            "title": "Avaliacoes",
+            "type": "array"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          },
+          "categorias_interesse": {
+            "items": {
+              "$ref": "#/components/schemas/CategoriaDeInteresse"
+            },
+            "title": "Categorias Interesse",
+            "type": "array"
+          },
+          "cor_destaque": {
+            "default": "lilas",
+            "title": "Cor Destaque",
+            "type": "string"
+          },
+          "destaque": {
+            "default": false,
+            "title": "Destaque",
+            "type": "boolean"
+          },
+          "exigir_verificado": {
+            "default": false,
+            "title": "Exigir Verificado",
+            "type": "boolean"
+          },
+          "horario_contato": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horario Contato"
+          },
+          "membro_desde": {
+            "format": "date-time",
+            "title": "Membro Desde",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Media"
+          },
+          "servicos_concluidos": {
+            "default": 0,
+            "title": "Servicos Concluidos",
+            "type": "integer"
+          },
+          "tipo_pessoa": {
+            "$ref": "#/components/schemas/TipoPessoa"
+          },
+          "total_avaliacoes": {
+            "default": 0,
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "vagas_publicadas": {
+            "default": 0,
+            "title": "Vagas Publicadas",
+            "type": "integer"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "tipo_pessoa",
+          "verificado",
+          "membro_desde"
+        ],
+        "title": "PerfilPublicoContratante",
+        "type": "object"
+      },
       "PerfilResumo": {
         "description": "Dados públicos de um perfil, exibidos em cards, listas e no chat.",
         "properties": {
+          "adicionais_pagos": {
+            "default": 0,
+            "description": "Horas extras e bônus pagos (só contratantes).",
+            "title": "Adicionais Pagos",
+            "type": "integer"
+          },
+          "cor_destaque": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Cor de destaque escolhida pelo contratante.",
+            "title": "Cor Destaque"
+          },
+          "destaque": {
+            "default": false,
+            "description": "Contratante com adicionais pagos; sem efeito no match.",
+            "title": "Destaque",
+            "type": "boolean"
+          },
           "foto_url": {
             "anyOf": [
               {
@@ -2438,6 +4694,44 @@
         "title": "PontoMapa",
         "type": "object"
       },
+      "PreviaCancelamento": {
+        "properties": {
+          "advertencias_no_periodo": {
+            "title": "Advertencias No Periodo",
+            "type": "integer"
+          },
+          "advertencias_para_suspensao": {
+            "title": "Advertencias Para Suspensao",
+            "type": "integer"
+          },
+          "gera_advertencia": {
+            "title": "Gera Advertencia",
+            "type": "boolean"
+          },
+          "horas_para_inicio": {
+            "title": "Horas Para Inicio",
+            "type": "number"
+          },
+          "limite_horas": {
+            "title": "Limite Horas",
+            "type": "number"
+          },
+          "pode_cancelar": {
+            "title": "Pode Cancelar",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "pode_cancelar",
+          "gera_advertencia",
+          "limite_horas",
+          "horas_para_inicio",
+          "advertencias_no_periodo",
+          "advertencias_para_suspensao"
+        ],
+        "title": "PreviaCancelamento",
+        "type": "object"
+      },
       "ProfissionalRecomendado": {
         "properties": {
           "demonstrou_interesse": {
@@ -2533,6 +4827,61 @@
           "estado"
         ],
         "title": "ProfissionalRecomendado",
+        "type": "object"
+      },
+      "QualificacaoEntrada": {
+        "properties": {
+          "arquivo_url": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arquivo Url"
+          },
+          "categoria": {
+            "title": "Categoria",
+            "type": "string"
+          },
+          "referencia": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Referencia"
+          },
+          "tipo": {
+            "$ref": "#/components/schemas/TipoQualificacao",
+            "default": "declaracao"
+          }
+        },
+        "required": [
+          "categoria"
+        ],
+        "title": "QualificacaoEntrada",
+        "type": "object"
+      },
+      "RaioEntrada": {
+        "properties": {
+          "raio_km": {
+            "minimum": 1.0,
+            "title": "Raio Km",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "raio_km"
+        ],
+        "title": "RaioEntrada",
         "type": "object"
       },
       "RegistroEntrada": {
@@ -2693,6 +5042,24 @@
         "title": "ReputacaoDetalhe",
         "type": "object"
       },
+      "RespostaChecklist": {
+        "properties": {
+          "atendido": {
+            "title": "Atendido",
+            "type": "boolean"
+          },
+          "item_id": {
+            "title": "Item Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "item_id",
+          "atendido"
+        ],
+        "title": "RespostaChecklist",
+        "type": "object"
+      },
       "RespostaSaude": {
         "properties": {
           "perfil": {
@@ -2803,6 +5170,423 @@
         "title": "ResultadoVisto",
         "type": "object"
       },
+      "ResumoComprovantes": {
+        "properties": {
+          "comprovantes": {
+            "items": {
+              "$ref": "#/components/schemas/ComprovanteDetalhe"
+            },
+            "title": "Comprovantes",
+            "type": "array"
+          },
+          "liquido_adicional_profissional": {
+            "title": "Liquido Adicional Profissional",
+            "type": "string"
+          },
+          "percentual_taxa_adicional": {
+            "title": "Percentual Taxa Adicional",
+            "type": "string"
+          },
+          "taxa_adicional_plataforma": {
+            "title": "Taxa Adicional Plataforma",
+            "type": "string"
+          },
+          "total_adicional": {
+            "description": "Horas extras mais bônus.",
+            "title": "Total Adicional",
+            "type": "string"
+          },
+          "total_bonus": {
+            "title": "Total Bonus",
+            "type": "string"
+          },
+          "total_horas_extras": {
+            "title": "Total Horas Extras",
+            "type": "string"
+          },
+          "total_servico": {
+            "title": "Total Servico",
+            "type": "string"
+          },
+          "vaga_id": {
+            "title": "Vaga Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "vaga_id",
+          "comprovantes",
+          "total_servico",
+          "total_horas_extras",
+          "total_bonus",
+          "total_adicional",
+          "percentual_taxa_adicional",
+          "taxa_adicional_plataforma",
+          "liquido_adicional_profissional"
+        ],
+        "title": "ResumoComprovantes",
+        "type": "object"
+      },
+      "RiscoCategoria": {
+        "enum": [
+          "baixo",
+          "medio",
+          "alto"
+        ],
+        "title": "RiscoCategoria",
+        "type": "string"
+      },
+      "SancaoDaFila": {
+        "properties": {
+          "ativa": {
+            "title": "Ativa",
+            "type": "boolean"
+          },
+          "contestada": {
+            "title": "Contestada",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "inicio_em": {
+            "format": "date-time",
+            "title": "Inicio Em",
+            "type": "string"
+          },
+          "motivo": {
+            "title": "Motivo",
+            "type": "string"
+          },
+          "origem": {
+            "title": "Origem",
+            "type": "string"
+          },
+          "retorno_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retorno Em"
+          },
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
+          },
+          "usuario_email": {
+            "title": "Usuario Email",
+            "type": "string"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "usuario_nome": {
+            "title": "Usuario Nome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "usuario_id",
+          "usuario_nome",
+          "usuario_email",
+          "tipo",
+          "origem",
+          "motivo",
+          "inicio_em",
+          "ativa",
+          "contestada"
+        ],
+        "title": "SancaoDaFila",
+        "type": "object"
+      },
+      "SancaoDetalhe": {
+        "properties": {
+          "contestavel_ate": {
+            "format": "date-time",
+            "title": "Contestavel Ate",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "inicio_em": {
+            "format": "date-time",
+            "title": "Inicio Em",
+            "type": "string"
+          },
+          "motivo": {
+            "title": "Motivo",
+            "type": "string"
+          },
+          "pode_contestar": {
+            "title": "Pode Contestar",
+            "type": "boolean"
+          },
+          "retorno_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retorno Em"
+          },
+          "tipo": {
+            "title": "Tipo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tipo",
+          "motivo",
+          "inicio_em",
+          "contestavel_ate",
+          "pode_contestar"
+        ],
+        "title": "SancaoDetalhe",
+        "type": "object"
+      },
+      "SancaoManualEntrada": {
+        "properties": {
+          "dias": {
+            "default": 30,
+            "maximum": 365.0,
+            "minimum": 1.0,
+            "title": "Dias",
+            "type": "integer"
+          },
+          "motivo": {
+            "maxLength": 255,
+            "minLength": 3,
+            "title": "Motivo",
+            "type": "string"
+          }
+        },
+        "required": [
+          "motivo"
+        ],
+        "title": "SancaoManualEntrada",
+        "type": "object"
+      },
+      "SegurancaDaCategoria": {
+        "properties": {
+          "checklist": {
+            "items": {
+              "$ref": "#/components/schemas/ItemChecklist"
+            },
+            "title": "Checklist",
+            "type": "array"
+          },
+          "epis": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Epis",
+            "type": "array"
+          },
+          "exige_epi": {
+            "title": "Exige Epi",
+            "type": "boolean"
+          },
+          "exige_qualificacao": {
+            "title": "Exige Qualificacao",
+            "type": "boolean"
+          },
+          "nivel_risco": {
+            "$ref": "#/components/schemas/RiscoCategoria"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome",
+          "nivel_risco",
+          "exige_qualificacao",
+          "exige_epi",
+          "epis",
+          "checklist"
+        ],
+        "title": "SegurancaDaCategoria",
+        "type": "object"
+      },
+      "SituacaoDaConta": {
+        "properties": {
+          "contestacao": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContestacaoDetalhe"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "estado": {
+            "title": "Estado",
+            "type": "string"
+          },
+          "sancao": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SancaoDetalhe"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "estado"
+        ],
+        "title": "SituacaoDaConta",
+        "type": "object"
+      },
+      "SituacaoTermos": {
+        "properties": {
+          "aceito": {
+            "title": "Aceito",
+            "type": "boolean"
+          },
+          "versao_atual": {
+            "title": "Versao Atual",
+            "type": "string"
+          }
+        },
+        "required": [
+          "versao_atual",
+          "aceito"
+        ],
+        "title": "SituacaoTermos",
+        "type": "object"
+      },
+      "StatusAprovacao": {
+        "enum": [
+          "pendente",
+          "aprovado",
+          "recusado"
+        ],
+        "title": "StatusAprovacao",
+        "type": "string"
+      },
+      "StatusVerificacao": {
+        "examples": [
+          {
+            "consentimento_biometria": true,
+            "documento_enviado": true,
+            "enviada_em": "2026-11-25T14:00:00Z",
+            "perfil": "profissional",
+            "selfie_enviada": true,
+            "status": "em_analise"
+          }
+        ],
+        "properties": {
+          "consentimento_biometria": {
+            "title": "Consentimento Biometria",
+            "type": "boolean"
+          },
+          "documento_enviado": {
+            "title": "Documento Enviado",
+            "type": "boolean"
+          },
+          "enviada_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enviada Em"
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo"
+          },
+          "perfil": {
+            "enum": [
+              "profissional",
+              "contratante"
+            ],
+            "title": "Perfil",
+            "type": "string"
+          },
+          "selfie_enviada": {
+            "title": "Selfie Enviada",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "pendente",
+              "em_analise",
+              "verificado",
+              "recusado"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "perfil",
+          "status",
+          "consentimento_biometria",
+          "documento_enviado",
+          "selfie_enviada"
+        ],
+        "title": "StatusVerificacao",
+        "type": "object"
+      },
+      "TipoArquivo": {
+        "enum": [
+          "foto",
+          "selfie",
+          "documento",
+          "qualificacao",
+          "epi",
+          "anexo",
+          "comprovante"
+        ],
+        "title": "TipoArquivo",
+        "type": "string"
+      },
+      "TipoComprovante": {
+        "enum": [
+          "servico",
+          "horas_extras",
+          "bonus"
+        ],
+        "title": "TipoComprovante",
+        "type": "string"
+      },
       "TipoLancamento": {
         "enum": [
           "retencao",
@@ -2819,6 +5603,23 @@
           "contratante"
         ],
         "title": "TipoPerfil",
+        "type": "string"
+      },
+      "TipoPessoa": {
+        "enum": [
+          "pf",
+          "pj"
+        ],
+        "title": "TipoPessoa",
+        "type": "string"
+      },
+      "TipoQualificacao": {
+        "enum": [
+          "certificado",
+          "registro",
+          "declaracao"
+        ],
+        "title": "TipoQualificacao",
         "type": "string"
       },
       "Top3Contratacao": {
@@ -2943,6 +5744,35 @@
         "title": "UsuarioAtual",
         "type": "object"
       },
+      "UsuarioBanido": {
+        "description": "Conta banida de forma permanente por reincidência em denúncias procedentes.",
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "penalidades": {
+            "title": "Penalidades",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "email",
+          "penalidades"
+        ],
+        "title": "UsuarioBanido",
+        "type": "object"
+      },
       "VagaCriar": {
         "properties": {
           "bairro": {
@@ -2955,6 +5785,14 @@
             "description": "Slug da categoria, obtido em GET /categorias.",
             "title": "Categoria",
             "type": "string"
+          },
+          "checklist": {
+            "description": "Respostas do checklist de segurança; obrigatório nas categorias de risco médio ou alto (itens em GET /categorias/{slug}/seguranca).",
+            "items": {
+              "$ref": "#/components/schemas/RespostaChecklist"
+            },
+            "title": "Checklist",
+            "type": "array"
           },
           "data_inicio": {
             "format": "date-time",
@@ -2973,10 +5811,18 @@
             "type": "number"
           },
           "latitude": {
-            "maximum": 90.0,
-            "minimum": -90.0,
-            "title": "Latitude",
-            "type": "number"
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Opcional: deduzida do bairro quando ausente.",
+            "title": "Latitude"
           },
           "logradouro": {
             "anyOf": [
@@ -2991,10 +5837,17 @@
             "title": "Logradouro"
           },
           "longitude": {
-            "maximum": 180.0,
-            "minimum": -180.0,
-            "title": "Longitude",
-            "type": "number"
+            "anyOf": [
+              {
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
           },
           "titulo": {
             "maxLength": 120,
@@ -3016,9 +5869,7 @@
           "valor",
           "duracao_horas",
           "data_inicio",
-          "bairro",
-          "latitude",
-          "longitude"
+          "bairro"
         ],
         "title": "VagaCriar",
         "type": "object"
@@ -3032,6 +5883,18 @@
           "categoria": {
             "title": "Categoria",
             "type": "string"
+          },
+          "checkin_realizado_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checkin Realizado Em"
           },
           "contratante": {
             "$ref": "#/components/schemas/ContratanteResumo"
@@ -3063,6 +5926,11 @@
               }
             ],
             "title": "Endereco Completo"
+          },
+          "falta_registrada": {
+            "default": false,
+            "title": "Falta Registrada",
+            "type": "boolean"
           },
           "id": {
             "title": "Id",
@@ -3188,6 +6056,26 @@
         ],
         "title": "ValidationError",
         "type": "object"
+      },
+      "VerificacaoEntrada": {
+        "properties": {
+          "documento_arquivo_id": {
+            "description": "Arquivo do tipo documento já enviado.",
+            "title": "Documento Arquivo Id",
+            "type": "integer"
+          },
+          "selfie_arquivo_id": {
+            "description": "Arquivo do tipo selfie já enviado.",
+            "title": "Selfie Arquivo Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "documento_arquivo_id",
+          "selfie_arquivo_id"
+        ],
+        "title": "VerificacaoEntrada",
+        "type": "object"
       }
     },
     "securitySchemes": {
@@ -3205,6 +6093,194 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/admin/aprovacoes": {
+      "get": {
+        "description": "Fila unificada de aprovações; por padrão só os itens pendentes.",
+        "operationId": "admin_listar_aprovacoes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tipo",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "profissional",
+                    "contratante",
+                    "experiencia",
+                    "qualificacao",
+                    "epi"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tipo"
+            }
+          },
+          {
+            "in": "query",
+            "name": "estado",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/StatusAprovacao"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": "pendente",
+              "title": "Estado"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ItemFilaAprovacao"
+                  },
+                  "title": "Response Admin Listar Aprovacoes",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Aprovacoes",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/aprovacoes/{tipo}/{item_id}/decisao": {
+      "post": {
+        "description": "Aprova ou recusa (com motivo). Aprovar a verificação ativa a conta pendente.",
+        "operationId": "admin_decidir_aprovacao",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tipo",
+            "required": true,
+            "schema": {
+              "enum": [
+                "profissional",
+                "contratante",
+                "experiencia",
+                "qualificacao",
+                "epi"
+              ],
+              "title": "Tipo",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "title": "Item Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisaoAprovacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemFilaAprovacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decidir Aprovacao",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/banimentos": {
+      "get": {
+        "description": "Contas banidas de forma permanente após duas denúncias procedentes.",
+        "operationId": "admin_listar_banimentos",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioBanido"
+                  },
+                  "title": "Response Admin Listar Banimentos",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Banimentos",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/v1/admin/configuracoes": {
       "get": {
         "description": "Prazos, pesos e limites em vigor para o perfil de execução atual.",
@@ -3227,6 +6303,120 @@
           }
         ],
         "summary": "Consultar Configuracoes",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/contestacoes": {
+      "get": {
+        "operationId": "admin_listar_contestacoes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "estado",
+            "required": false,
+            "schema": {
+              "default": "abertas",
+              "enum": [
+                "abertas",
+                "decididas"
+              ],
+              "title": "Estado",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ContestacaoDaFila"
+                  },
+                  "title": "Response Admin Listar Contestacoes",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Contestacoes",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/contestacoes/{contestacao_id}/decisao": {
+      "post": {
+        "description": "Aceita (reativa a conta) ou recusa a contestação, com motivo.",
+        "operationId": "admin_decidir_contestacao",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contestacao_id",
+            "required": true,
+            "schema": {
+              "title": "Contestacao Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisaoContestacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContestacaoDaFila"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decidir Contestacao",
         "tags": [
           "admin"
         ]
@@ -3557,6 +6747,440 @@
         ]
       }
     },
+    "/api/v1/admin/sancoes": {
+      "get": {
+        "description": "Suspensões e banimentos; por padrão só os vigentes.",
+        "operationId": "admin_listar_sancoes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "ativas",
+            "required": false,
+            "schema": {
+              "default": true,
+              "title": "Ativas",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SancaoDaFila"
+                  },
+                  "title": "Response Admin Listar Sancoes",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Sancoes",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{usuario_id}/banimento": {
+      "post": {
+        "description": "Bane a conta de forma permanente, com motivo.",
+        "operationId": "admin_banir_usuario",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MotivoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SancaoDaFila"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Banir Usuario",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{usuario_id}/reativacao": {
+      "post": {
+        "description": "Encerra a sanção vigente e devolve a conta ao estado ativo.",
+        "operationId": "admin_reativar_usuario",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Reativar Usuario",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/admin/usuarios/{usuario_id}/suspensao": {
+      "post": {
+        "description": "Suspende a conta por alguns dias, com motivo.",
+        "operationId": "admin_suspender_usuario",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SancaoManualEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SancaoDaFila"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Suspender Usuario",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/v1/arquivos": {
+      "post": {
+        "description": "Valida tipo (jpg, png, pdf) e tamanho (até 10 MB), armazena com nome gerado e retorna URL.",
+        "operationId": "arquivos_enviar_arquivo",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_arquivos_enviar_arquivo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArquivoEnviado"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Arquivo",
+        "tags": [
+          "arquivos"
+        ]
+      }
+    },
+    "/api/v1/arquivos/{tipo}/{nome}": {
+      "get": {
+        "description": "Serve o arquivo armazenado. Documento e selfie exigem ser o dono ou administrador.",
+        "operationId": "arquivos_baixar_arquivo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tipo",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TipoArquivo"
+            }
+          },
+          {
+            "in": "path",
+            "name": "nome",
+            "required": true,
+            "schema": {
+              "title": "Nome",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Baixar Arquivo",
+        "tags": [
+          "arquivos"
+        ]
+      }
+    },
+    "/api/v1/assinatura/pro": {
+      "get": {
+        "description": "Situação do plano Pro e o valor mensal (simulado).",
+        "operationId": "conta_consultar_assinatura",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssinaturaProDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Assinatura",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/assinatura/pro/assinar": {
+      "post": {
+        "description": "Ativa o plano Pro: notificações imediatas e selo; não altera a pontuação do match.",
+        "operationId": "conta_assinar",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssinaturaProDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Assinar",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/assinatura/pro/cancelar": {
+      "post": {
+        "description": "Cancela a renovação; o plano segue valendo até o fim do período pago.",
+        "operationId": "conta_cancelar",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssinaturaProDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancelar",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/auth/contestacao": {
+      "post": {
+        "description": "Envia a contestação da sanção vigente (uma por caso, dentro do prazo).",
+        "operationId": "sancoes_contestar_sancao",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContestacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SituacaoDaConta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Contestar Sancao",
+        "tags": [
+          "sancoes"
+        ]
+      }
+    },
     "/api/v1/auth/login": {
       "post": {
         "operationId": "auth_entrar",
@@ -3755,6 +7379,48 @@
         ]
       }
     },
+    "/api/v1/auth/sancao": {
+      "post": {
+        "description": "Situação da conta bloqueada: motivo, data de retorno e andamento da contestação.",
+        "operationId": "sancoes_consultar_sancao",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SituacaoDaConta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Consultar Sancao",
+        "tags": [
+          "sancoes"
+        ]
+      }
+    },
     "/api/v1/categorias": {
       "get": {
         "description": "Categorias de serviço disponíveis para publicar uma vaga.",
@@ -3783,6 +7449,94 @@
         "summary": "Listar Categorias",
         "tags": [
           "vagas"
+        ]
+      }
+    },
+    "/api/v1/categorias/{slug}/seguranca": {
+      "get": {
+        "description": "EPIs e checklist de segurança da categoria, exibidos no cadastro e ao criar vaga.",
+        "operationId": "perfis_consultar_seguranca_da_categoria",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegurancaDaCategoria"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Seguranca Da Categoria",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/conta/exclusao": {
+      "post": {
+        "description": "Exclui a conta (anonimiza os dados pessoais) depois de confirmar a senha.",
+        "operationId": "conta_excluir_conta",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExclusaoContaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Excluir Conta",
+        "tags": [
+          "conta"
         ]
       }
     },
@@ -3903,6 +7657,54 @@
         "summary": "Escolher Profissional",
         "tags": [
           "vagas"
+        ]
+      }
+    },
+    "/api/v1/contratantes/{usuario_id}/perfil": {
+      "get": {
+        "description": "Visão pública do contratante, sem dados sensíveis, para quem está logado.",
+        "operationId": "perfis_consultar_perfil_publico_do_contratante",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilPublicoContratante"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Perfil Publico Do Contratante",
+        "tags": [
+          "perfis"
         ]
       }
     },
@@ -4780,6 +8582,388 @@
         ]
       }
     },
+    "/api/v1/perfis/contratante": {
+      "post": {
+        "description": "Cadastra o perfil contratante, pessoa física ou jurídica (CNPJ opcional).",
+        "operationId": "perfis_cadastrar_contratante",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CadastroContratanteEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilContratanteDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cadastrar Contratante",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/perfis/contratante/meu": {
+      "get": {
+        "operationId": "perfis_consultar_meu_perfil_contratante",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilContratanteDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Meu Perfil Contratante",
+        "tags": [
+          "perfis"
+        ]
+      },
+      "patch": {
+        "description": "Edita dados cadastrais e a personalização (bio, cor, avatar, preferências).",
+        "operationId": "perfis_atualizar_meu_perfil_contratante",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizacaoContratanteEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilContratanteDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Atualizar Meu Perfil Contratante",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/perfis/profissional": {
+      "post": {
+        "description": "Cadastra o perfil profissional com localização, categorias e experiências.",
+        "operationId": "perfis_cadastrar_profissional",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CadastroProfissionalEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilProfissionalDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cadastrar Profissional",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/perfis/profissional/meu": {
+      "get": {
+        "operationId": "perfis_consultar_meu_perfil_profissional",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilProfissionalDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Meu Perfil Profissional",
+        "tags": [
+          "perfis"
+        ]
+      },
+      "patch": {
+        "operationId": "perfis_atualizar_meu_perfil_profissional",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AtualizacaoProfissionalEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilProfissionalDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Atualizar Meu Perfil Profissional",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/profissional/agenda/bloqueios": {
+      "get": {
+        "description": "Períodos bloqueados que ainda não terminaram.",
+        "operationId": "profissional_listar_bloqueios",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BloqueioDaAgenda"
+                  },
+                  "title": "Response Profissional Listar Bloqueios",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Bloqueios",
+        "tags": [
+          "profissional"
+        ]
+      },
+      "post": {
+        "description": "Bloqueia um período: o profissional não recebe convites que o atravessem.",
+        "operationId": "profissional_criar_bloqueio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BloqueioEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BloqueioDaAgenda"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Criar Bloqueio",
+        "tags": [
+          "profissional"
+        ]
+      }
+    },
+    "/api/v1/profissional/agenda/bloqueios/{bloqueio_id}": {
+      "delete": {
+        "operationId": "profissional_remover_bloqueio",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bloqueio_id",
+            "required": true,
+            "schema": {
+              "title": "Bloqueio Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Remover Bloqueio",
+        "tags": [
+          "profissional"
+        ]
+      }
+    },
+    "/api/v1/profissional/comprovacoes": {
+      "get": {
+        "description": "Experiências, qualificações e EPIs enviados, com o status de cada um.",
+        "operationId": "perfis_listar_comprovacoes",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ComprovacaoDetalhe"
+                  },
+                  "title": "Response Perfis Listar Comprovacoes",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Comprovacoes",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
     "/api/v1/profissional/convites": {
       "get": {
         "description": "Convites em que o contratante já escolheu o profissional e o prazo de aceite segue aberto.",
@@ -4808,6 +8992,395 @@
         "summary": "Listar Convites Do Profissional",
         "tags": [
           "vagas"
+        ]
+      }
+    },
+    "/api/v1/profissional/disponibilidade": {
+      "get": {
+        "description": "Situação atual do modo Disponível agora, do raio de busca e da agenda.",
+        "operationId": "profissional_consultar_disponibilidade",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisponibilidadeProfissional"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Disponibilidade",
+        "tags": [
+          "profissional"
+        ]
+      }
+    },
+    "/api/v1/profissional/disponivel-agora": {
+      "post": {
+        "description": "Liga o modo Disponível agora pela duração configurada, ou desliga.",
+        "operationId": "profissional_alternar_disponivel_agora",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisponivelAgoraEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisponibilidadeProfissional"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Alternar Disponivel Agora",
+        "tags": [
+          "profissional"
+        ]
+      }
+    },
+    "/api/v1/profissional/epis": {
+      "post": {
+        "operationId": "perfis_enviar_epi",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EpiEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComprovacaoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Epi",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/profissional/experiencias": {
+      "post": {
+        "operationId": "perfis_enviar_experiencia",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienciaEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComprovacaoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Experiencia",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/profissional/mapa-ofertas": {
+      "get": {
+        "description": "Ofertas abertas perto do profissional, filtradas pelas categorias e experiências dele.",
+        "operationId": "profissional_mapa_de_ofertas",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "raio_km",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Raio Km"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MapaDeOfertas"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Mapa De Ofertas",
+        "tags": [
+          "profissional"
+        ]
+      }
+    },
+    "/api/v1/profissional/qualificacoes": {
+      "post": {
+        "operationId": "perfis_enviar_qualificacao",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualificacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComprovacaoDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Qualificacao",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/profissional/raio": {
+      "patch": {
+        "description": "Salva o raio de busca do mapa, limitado ao máximo configurado.",
+        "operationId": "profissional_atualizar_raio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RaioEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisponibilidadeProfissional"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Atualizar Raio",
+        "tags": [
+          "profissional"
+        ]
+      }
+    },
+    "/api/v1/termos": {
+      "get": {
+        "description": "Versão atual dos termos e se a conta já a aceitou.",
+        "operationId": "conta_consultar_termos",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SituacaoTermos"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Termos",
+        "tags": [
+          "conta"
+        ]
+      }
+    },
+    "/api/v1/termos/aceite": {
+      "post": {
+        "description": "Registra o aceite da versão atual dos termos, com data e hora.",
+        "operationId": "conta_aceitar_termos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AceiteTermosEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SituacaoTermos"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Termos",
+        "tags": [
+          "conta"
         ]
       }
     },
@@ -5284,6 +9857,327 @@
         ]
       }
     },
+    "/api/v1/vagas/{vaga_id}/cancelamento": {
+      "get": {
+        "description": "Mostra se a vaga pode ser cancelada agora e se isso gera advertência.",
+        "operationId": "cancelamento_consultar_cancelamento",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviaCancelamento"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Cancelamento",
+        "tags": [
+          "cancelamento"
+        ]
+      },
+      "post": {
+        "description": "Cancela a vaga; cancelamento tardio gera advertência e pode suspender a conta.",
+        "operationId": "cancelamento_cancelar_vaga",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelamentoResposta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancelar Vaga",
+        "tags": [
+          "cancelamento"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/checkin": {
+      "post": {
+        "description": "O profissional contratado confirma a chegada ao local, dentro da janela e do raio.",
+        "operationId": "pagamentos_fazer_checkin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckinEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckinResposta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fazer Checkin",
+        "tags": [
+          "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/comprovantes": {
+      "get": {
+        "description": "Comprovantes da vaga com totais e a taxa adicional da plataforma.",
+        "operationId": "comprovantes_listar_comprovantes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResumoComprovantes"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Listar Comprovantes",
+        "tags": [
+          "comprovantes"
+        ]
+      },
+      "post": {
+        "description": "Anexa o comprovante de pagamento. Horas extras e bônus pagam a taxa adicional.",
+        "operationId": "comprovantes_anexar_comprovante",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_comprovantes_anexar_comprovante"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComprovanteDetalhe"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Anexar Comprovante",
+        "tags": [
+          "comprovantes"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/comprovantes/{comprovante_id}/arquivo": {
+      "get": {
+        "description": "Serve o arquivo do comprovante às partes da vaga e à administração.",
+        "operationId": "comprovantes_baixar_comprovante",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "comprovante_id",
+            "required": true,
+            "schema": {
+              "title": "Comprovante Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Baixar Comprovante",
+        "tags": [
+          "comprovantes"
+        ]
+      }
+    },
     "/api/v1/vagas/{vaga_id}/conclusao": {
       "post": {
         "description": "O contratante confirma a conclusão do serviço depois do fim previsto.",
@@ -5746,6 +10640,107 @@
         "summary": "Validar Facial",
         "tags": [
           "pagamentos"
+        ]
+      }
+    },
+    "/api/v1/verificacao/consentimento": {
+      "post": {
+        "description": "Registra o consentimento de uso de biometria (LGPD); idempotente.",
+        "operationId": "verificacao_aceitar_consentimento",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusVerificacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Aceitar Consentimento",
+        "tags": [
+          "verificacao"
+        ]
+      }
+    },
+    "/api/v1/verificacao/envio": {
+      "post": {
+        "description": "Envia o documento e a selfie (já enviados em /arquivos) para análise da administração.",
+        "operationId": "verificacao_enviar_verificacao",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificacaoEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusVerificacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Enviar Verificacao",
+        "tags": [
+          "verificacao"
+        ]
+      }
+    },
+    "/api/v1/verificacao/status": {
+      "get": {
+        "description": "Estado da verificação do perfil ativo: pendente, em análise, verificado ou recusado.",
+        "operationId": "verificacao_consultar_status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusVerificacao"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Status",
+        "tags": [
+          "verificacao"
         ]
       }
     }

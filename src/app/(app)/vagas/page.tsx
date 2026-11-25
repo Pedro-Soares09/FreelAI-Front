@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
 import {
   DisponibilidadeProfissional,
@@ -18,6 +19,8 @@ const MapaVagas = dynamic(() => import('@/components/vagas/mapa-vagas'), {
   loading: () => <Carregando rotulo="Carregando mapa" />,
 });
 import { useToast } from '@/components/ui/toast';
+import { useSessao } from '@/lib/session';
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 const RECIFE_CENTER = { lat: -8.0476, lng: -34.877 };
 const CATEGORIAS = [
@@ -66,17 +69,31 @@ function EstadoBadge({ estado }: { estado: EstadoPainelVaga }) {
   );
 }
 
+
 export default function VagasPage() {
-  const [perfil, setPerfil] = useState<'profissional' | 'contratante' | 'admin'>(
+  const { usuario } = useSessao();
+  const router = useRouter();
+  const ehAdmin = !USA_MOCKS && usuario?.papel === 'admin';
+  const [perfilSalvo, setPerfilSalvo] = useState<'profissional' | 'contratante' | 'admin'>(
     'profissional'
   );
 
   useEffect(() => {
     const salvo = localStorage.getItem('freelai_perfil_ativo');
     if (salvo === 'contratante' || salvo === 'admin') {
-      setPerfil(salvo);
+      setPerfilSalvo(salvo);
     }
   }, []);
+
+  // Com a API real, o perfil ativo vem da sessão; no mock, do que ficou salvo no navegador.
+  const perfil = USA_MOCKS ? perfilSalvo : (usuario?.perfil_ativo ?? 'profissional');
+
+  // A administração não tem painel de vagas: vai direto para /admin, sem chamar rotas de profissional.
+  useEffect(() => {
+    if (ehAdmin) router.replace('/admin');
+  }, [ehAdmin, router]);
+
+  if (ehAdmin) return <Carregando rotulo="Abrindo a administração" />;
 
   return perfil === 'contratante' || perfil === 'admin' ? (
     <PainelContratante />
@@ -206,6 +223,14 @@ function PainelContratante() {
                               className="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-zinc-950"
                             >
                               Ver 3 melhores
+                            </Link>
+                          )}
+                          {proxima_acao === 'acordar' && (
+                            <Link
+                              href={`/acordo/${vaga.id}`}
+                              className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950"
+                            >
+                              Fechar acordo
                             </Link>
                           )}
                           {proxima_acao === 'pagar' && pagamento_id && (

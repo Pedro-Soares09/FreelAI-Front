@@ -29,13 +29,14 @@ import type {
   Review,
   ReviewRating,
 } from "@/types";
+import { USE_MOCKS } from "@/lib/modo";
 
 // ===== Chat, acordo e pós-serviço (Pessoa 5) =====
 // Funções mockadas com atraso simulado. Quando o back estiver pronto,
 // trocar o corpo de cada função por apiRequest(...) mantendo a mesma assinatura,
 // assim as telas não precisam mudar.
 
-export const CHAT_USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
+export const CHAT_USA_MOCKS = USE_MOCKS;
 
 /** Chamada autenticada à API real; converte falhas no erro padrão da aplicação. */
 async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {
@@ -72,6 +73,7 @@ async function perfilAtivo(): Promise<ChatRole> {
 }
 
 async function conversaDaApi(c: ConversaApi): Promise<Conversation> {
+  memorizarVaga(String(c.id), String(c.vaga_id));
   const meuPerfil = await perfilAtivo();
   let titulo = `Vaga ${c.vaga_id}`;
   let valor = 0;
@@ -93,11 +95,14 @@ async function conversaDaApi(c: ConversaApi): Promise<Conversation> {
       verified: true,
       online: false,
       role: meuPerfil === "profissional" ? "contratante" : "profissional",
+      destaque: c.outra_parte.destaque ?? false,
+      corDestaque: c.outra_parte.cor_destaque ?? undefined,
     },
     job: { id: String(c.vaga_id), title: titulo, amount: valor },
     lastMessageAt: c.ultima_mensagem?.enviada_em ?? new Date(0).toISOString(),
     unreadCount: c.nao_lidas,
     jobClosed: !c.aberta,
+    blocked: c.bloqueada ?? false,
   };
 }
 
@@ -109,6 +114,101 @@ function mensagemDaApi(m: MensagemApi): Message {
     text: m.texto ?? undefined,
     createdAt: m.enviada_em,
     status: m.lida_em ? "seen" : "sent",
+  };
+}
+
+// --- Acordo, conclusão, disputa, avaliação e denúncia na API real ---
+// Na API o acordo é da vaga: o id do acordo no front passa a ser o id da vaga.
+
+type DadosAcordoApi = components["schemas"]["DadosAcordo"];
+type PagamentoApi = components["schemas"]["PagamentoDetalhe"];
+type AvaliacaoApi = components["schemas"]["AvaliacaoDetalhe"];
+
+const vagaDaConversa = new Map<string, string>();
+const conversaDaVaga = new Map<string, string>();
+
+function memorizarVaga(conversaId: string, vagaId: string) {
+  vagaDaConversa.set(conversaId, vagaId);
+  conversaDaVaga.set(vagaId, conversaId);
+}
+
+async function vagaIdDaConversa(conversaId: string): Promise<string> {
+  const conhecida = vagaDaConversa.get(conversaId);
+  if (conhecida) return conhecida;
+  const c = await chamar<ConversaApi>(`/api/v1/conversas/${encodeURIComponent(conversaId)}`);
+  memorizarVaga(String(c.id), String(c.vaga_id));
+  return String(c.vaga_id);
+}
+
+function statusDoAcordo(ambosAceitaram: boolean, estadoVaga: string | null): Agreement["status"] {
+  if (estadoVaga === "em_disputa") return "contested";
+  if (estadoVaga && ["concluida", "liberada", "liberada_parcial"].includes(estadoVaga)) {
+    return "completed";
+  }
+  if (estadoVaga && ["cancelada", "reembolsada", "falta", "expirada"].includes(estadoVaga)) {
+    return "cancelled";
+  }
+  return ambosAceitaram ? "accepted" : "pending";
+}
+
+/** Monta o acordo do front a partir do acordo e do pagamento da vaga; nulo se ninguém aceitou. */
+async function acordoDaVaga(vagaId: string): Promise<Agreement | null> {
+  let dados: DadosAcordoApi;
+  try {
+    dados = await chamar<DadosAcordoApi>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/acordo`);
+  } catch (erro) {
+    if (erro instanceof ApiError && [403, 404, 409].includes(erro.status)) return null;
+    throw erro;
+  }
+  const { contratante, profissional } = dados.aceites;
+  if (!contratante && !profissional) return null;
+
+  const ambos = contratante && profissional;
+  let pagamento: PagamentoApi | null = null;
+  if (ambos) {
+    try {
+      pagamento = await chamar<PagamentoApi>(
+        `/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento`,
+      );
+    } catch (erro) {
+      if (!(erro instanceof ApiError && erro.status === 404)) throw erro;
+    }
+  }
+  const status = statusDoAcordo(ambos, pagamento?.vaga_estado ?? null);
+  const concluido = status === "completed";
+  return {
+    id: vagaId,
+    conversationId: conversaDaVaga.get(vagaId) ?? "",
+    jobId: vagaId,
+    jobTitle: dados.servico,
+    hirerId: String(dados.contratante.usuario_id),
+    workerId: String(dados.profissional.usuario_id),
+    acceptedByHirer: contratante,
+    acceptedByWorker: profissional,
+    status,
+    createdAt: pagamento?.criado_em ?? dados.inicio_em,
+    startsAt: dados.inicio_em,
+    duration: `${dados.duracao_minutos / 60} h`,
+    dressCode: dados.vestimenta ?? "",
+    paymentDate: pagamento?.expira_em ?? "",
+    duties: dados.escopo,
+    amount: Number(dados.valor_total),
+    completionByHirer: concluido,
+    completionByWorker: concluido,
+    completedAt: concluido ? (pagamento?.atualizado_em ?? undefined) : undefined,
+    events: [],
+  };
+}
+
+function avaliacaoDaApi(a: AvaliacaoApi, acordoId: string): Review {
+  return {
+    id: String(a.id),
+    agreementId: acordoId,
+    authorId: String(a.avaliador_id),
+    targetId: String(a.avaliado_id),
+    rating: a.nota as ReviewRating,
+    comment: a.comentario ?? undefined,
+    createdAt: a.criado_em,
   };
 }
 
@@ -269,6 +369,7 @@ export async function improveText(text: string): Promise<string> {
 export async function getAgreementByConversation(
   conversationId: string,
 ): Promise<Agreement | null> {
+  if (!CHAT_USA_MOCKS) return acordoDaVaga(await vagaIdDaConversa(conversationId));
   await simulateDelay();
   const agreement = chatDb.agreements.find(
     (a) => a.conversationId === conversationId && a.status !== "cancelled",
@@ -365,6 +466,17 @@ export async function completeAgreement(agreementId: string): Promise<Agreement>
 // --- Avaliação e denúncia ---
 
 export async function getMyReview(agreementId: string): Promise<Review | null> {
+  if (!CHAT_USA_MOCKS) {
+    try {
+      const dados = await chamar<{ minha_avaliacao?: AvaliacaoApi | null }>(
+        `/api/v1/vagas/${encodeURIComponent(agreementId)}/avaliacoes`,
+      );
+      return dados.minha_avaliacao ? avaliacaoDaApi(dados.minha_avaliacao, agreementId) : null;
+    } catch (erro) {
+      if (erro instanceof ApiError && [403, 404, 409].includes(erro.status)) return null;
+      throw erro;
+    }
+  }
   await simulateDelay(200);
   const review = chatDb.reviews.find(
     (r) => r.agreementId === agreementId && r.authorId === CURRENT_USER_ID,
@@ -377,6 +489,16 @@ export async function submitReview(
   rating: ReviewRating,
   comment?: string,
 ): Promise<Review> {
+  if (!CHAT_USA_MOCKS) {
+    const criada = await chamar<AvaliacaoApi>(
+      `/api/v1/vagas/${encodeURIComponent(agreementId)}/avaliacoes`,
+      {
+        method: "POST",
+        body: JSON.stringify({ nota: rating, comentario: comment?.trim() || null }),
+      },
+    );
+    return avaliacaoDaApi(criada, agreementId);
+  }
   const agreement = findAgreement(agreementId);
   if (agreement.status !== "completed") {
     throw new Error("A avaliação fica disponível após o serviço ser concluído.");
@@ -405,6 +527,24 @@ export async function reportConversation(
   reason: ReportReason,
   details?: string,
 ): Promise<Report> {
+  if (!CHAT_USA_MOCKS) {
+    const criada = await chamar<{ id: number; criado_em: string }>("/api/v1/denuncias", {
+      method: "POST",
+      body: JSON.stringify({
+        conversa_id: Number(conversationId),
+        motivo: reason,
+        descricao: details?.trim() || null,
+      }),
+    });
+    return {
+      id: String(criada.id),
+      conversationId,
+      reporterId: "",
+      reason,
+      details: details?.trim() || undefined,
+      createdAt: criada.criado_em,
+    };
+  }
   findConversation(conversationId);
   await simulateDelay();
   const report: Report = {
@@ -447,6 +587,14 @@ export function canContest(agreement: Agreement, now = new Date()): boolean {
 }
 
 export async function confirmCompletion(agreementId: string): Promise<Agreement> {
+  if (!CHAT_USA_MOCKS) {
+    await chamar<unknown>(`/api/v1/vagas/${encodeURIComponent(agreementId)}/conclusao`, {
+      method: "POST",
+    });
+    const atual = await acordoDaVaga(agreementId);
+    if (!atual) throw new Error("Acordo não encontrado.");
+    return atual;
+  }
   const agreement = findAgreement(agreementId);
   if (agreement.status !== "accepted") {
     throw new Error("Só é possível confirmar a conclusão de um acordo aceito pelas duas partes.");
@@ -480,6 +628,17 @@ export async function contestAgreement(
   reason: ContestReason,
   details?: string,
 ): Promise<Agreement> {
+  if (!CHAT_USA_MOCKS) {
+    const motivo = CONTEST_REASONS.find((r) => r.value === reason)?.label ?? reason;
+    const descricao = details?.trim() ? `${motivo}: ${details.trim()}` : motivo;
+    await chamar<unknown>(`/api/v1/vagas/${encodeURIComponent(agreementId)}/disputa`, {
+      method: "POST",
+      body: JSON.stringify({ descricao }),
+    });
+    const atual = await acordoDaVaga(agreementId);
+    if (!atual) throw new Error("Acordo não encontrado.");
+    return atual;
+  }
   const agreement = findAgreement(agreementId);
   if (!canContest(agreement)) {
     throw new Error(
@@ -510,6 +669,19 @@ export type ReviewSummary = {
 
 /** Avaliações recebidas por um usuário, com média para o perfil público. */
 export async function getReviewsFor(userId: string): Promise<ReviewSummary> {
+  if (!CHAT_USA_MOCKS) {
+    const [lista, reputacao] = await Promise.all([
+      chamar<AvaliacaoApi[]>(`/api/v1/usuarios/${encodeURIComponent(userId)}/avaliacoes`),
+      chamar<{ nota_media?: number | null; total_avaliacoes: number }>(
+        `/api/v1/usuarios/${encodeURIComponent(userId)}/reputacao`,
+      ),
+    ]);
+    return {
+      average: reputacao.nota_media ?? null,
+      total: reputacao.total_avaliacoes,
+      reviews: lista.map((a) => avaliacaoDaApi(a, String(a.vaga_id))),
+    };
+  }
   await simulateDelay(250);
   const reviews = chatDb.reviews
     .filter((r) => r.targetId === userId)
