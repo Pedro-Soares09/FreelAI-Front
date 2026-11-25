@@ -32,7 +32,7 @@ const SessaoContext = createContext<ContextoSessao | null>(null);
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState<Estado>("carregando");
   const [usuario, setUsuario] = useState<Usuario | null>(null);
-  const contaBanida = useRef(false);
+  const contaBloqueada = useRef<string | null>(null);
 
   const sair = useCallback(() => {
     limparTokens();
@@ -52,7 +52,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setEstado("autenticado");
       return dados;
     } catch (e) {
-      contaBanida.current = e instanceof ApiError && e.codigo === "conta_banida";
+      contaBloqueada.current =
+        e instanceof ApiError && (e.codigo === "conta_banida" || e.codigo === "conta_suspensa")
+          ? e.codigo
+          : null;
       sair();
       return null;
     }
@@ -70,10 +73,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     async (email: string, senha: string) => {
       const par = await chamar(api.POST("/api/v1/auth/login", { body: { email, senha } }));
       salvarTokens({ access: par.access_token, refresh: par.refresh_token });
-      contaBanida.current = false;
+      contaBloqueada.current = null;
       const dados = await atualizar();
-      if (!dados && contaBanida.current) {
-        throw new ApiError(403, "conta_banida", "Conta banida de forma permanente após duas penalidades por denúncias validadas. Não é possível entrar na plataforma.");
+      if (!dados && contaBloqueada.current) {
+        throw new ApiError(403, contaBloqueada.current, "Esta conta não pode entrar na plataforma.");
       }
       if (!dados) throw new Error("Não foi possível carregar a conta.");
       return dados;

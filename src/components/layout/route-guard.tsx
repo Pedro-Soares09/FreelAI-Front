@@ -71,7 +71,7 @@ export function RouteGuard({ children }: { children: ReactNode }) {
     return (
       <TelaDeConta
         titulo="Conta suspensa"
-        texto="Sua conta está suspensa temporariamente. Entre em contato com o suporte para mais detalhes."
+        texto="Sua conta está suspensa temporariamente. Saia e entre de novo para ver o motivo, a data de retorno e contestar a decisão."
       />
     );
   }
@@ -79,7 +79,7 @@ export function RouteGuard({ children }: { children: ReactNode }) {
     return (
       <TelaDeConta
         titulo="Conta banida"
-        texto="Sua conta foi banida de forma permanente após duas penalidades por denúncias validadas. Não é possível entrar nem contratar na plataforma."
+        texto="Sua conta foi banida. Saia e entre de novo para ver o motivo e contestar a decisão."
       />
     );
   }
