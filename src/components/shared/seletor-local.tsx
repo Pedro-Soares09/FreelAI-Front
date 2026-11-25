@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Carregando } from "@/components/ui/estados";
 import { Input } from "@/components/ui/input";
 import {
+  bairroDaLista,
   bairroMaisProximo,
   buscarEndereco,
   centroDoBairro,
@@ -75,7 +76,7 @@ export function SeletorLocal({ bairro, coords, onChange }: Props) {
     const alvo = base ?? centroDoBairro(bairro);
     onChange({
       coords: alvo,
-      bairro: bairroMaisProximo(alvo),
+      bairro: bairroDaLista(r.bairro) ?? bairroMaisProximo(alvo),
       logradouro: r.logradouro || undefined,
     });
     setOcupado(false);

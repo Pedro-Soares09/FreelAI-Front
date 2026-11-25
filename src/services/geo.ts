@@ -80,7 +80,7 @@ export function centroDoBairro(nome: string): Coordenada {
 
 const semAcento = (t: string) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-function bairroDaLista(nome?: string): string | undefined {
+export function bairroDaLista(nome?: string): string | undefined {
   if (!nome) return undefined;
   return BAIRROS.find((b) => semAcento(b.nome) === semAcento(nome))?.nome;
 }
