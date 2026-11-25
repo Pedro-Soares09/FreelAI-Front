@@ -35,6 +35,7 @@ let perfilLocal: PerfilContratanteDetalhe = {
   id: 1,
   usuario_id: 1,
   nome: "Maria Contratante",
+  email: "maria@example.com",
   tipo_pessoa: "pf",
   documento: null,
   razao_social: null,
