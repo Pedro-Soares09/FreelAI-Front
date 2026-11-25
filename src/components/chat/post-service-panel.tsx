@@ -32,6 +32,8 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   const [details, setDetails] = useState("");
   const [reviewOpen, setReviewOpen] = useState(false);
   const [myReview, setMyReview] = useState<Review | null>(null);
+  const [nota, setNota] = useState("");
+  const [anexos, setAnexos] = useState<File[]>([]);
 
   useEffect(() => {
     if (agreement.status !== "completed" || reviewOpen) return;
@@ -67,7 +69,12 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   }
 
   async function confirmarConclusao() {
-    const updated = await run(() => confirmCompletion(agreement.id));
+    const updated = await run(() =>
+      confirmCompletion(agreement.id, {
+        texto: nota,
+        anexos: anexos.map((arquivo) => arquivo.name),
+      }),
+    );
     // Serviço concluído pelas duas partes: o contratante segue para a validação facial (US42).
     if (updated?.status === "completed" && iAmHirer) {
       router.push(`/pagamento/${agreement.id}?validar=1`);
@@ -79,9 +86,35 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       <h3>Serviço</h3>
 
       {agreement.status === "accepted" && !iConfirmed && (
-        <button type="button" className="cta" disabled={busy} onClick={() => void confirmarConclusao()}>
-          {busy ? "Confirmando..." : "Confirmar conclusão do serviço"}
-        </button>
+        <>
+          <label>
+            Observação (opcional)
+            <textarea value={nota} onChange={(e) => setNota(e.target.value)} rows={3} />
+          </label>
+          <label>
+            Anexos (imagem ou PDF, opcional)
+            <input
+              type="file"
+              accept="image/*,application/pdf"
+              multiple
+              onChange={(e) => setAnexos(Array.from(e.target.files ?? []))}
+            />
+          </label>
+          {anexos.length > 0 && (
+            <ul>
+              {anexos.map((arquivo) => (
+                <li key={arquivo.name}>{arquivo.name}</li>
+              ))}
+            </ul>
+          )}
+          <p>
+            Você pode confirmar agora ou aguardar. Sem contestação em {CONTEST_WINDOW_HOURS} h após a conclusão, a
+            conclusão é confirmada automaticamente.
+          </p>
+          <button type="button" className="cta" disabled={busy} onClick={() => void confirmarConclusao()}>
+            {busy ? "Confirmando..." : "Confirmar conclusão do serviço"}
+          </button>
+        </>
       )}
 
       {agreement.status === "accepted" && iConfirmed && (

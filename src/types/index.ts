@@ -334,6 +334,14 @@ export type Agreement = AgreementTerms & {
   completedAt?: string;
   /** Fim da janela de contestação, informado pela API. */
   contestDeadline?: string;
+  /** Observação enviada na confirmação de conclusão (só mock; a API ainda não recebe). */
+  completionNote?: string;
+  /** Nomes dos anexos enviados na confirmação (só mock; a API ainda não recebe). */
+  completionAttachments?: string[];
+  /** Prazo de revisão (48 h após a conclusão), informado pela API. */
+  reviewDeadline?: string;
+  /** Decisão automática (72 h após a conclusão), informada pela API. */
+  autoDecisionDeadline?: string;
   contestedAt?: string;
   contestReason?: ContestReason;
   contestDetails?: string;

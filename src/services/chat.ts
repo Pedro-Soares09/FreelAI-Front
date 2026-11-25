@@ -586,7 +586,15 @@ export function canContest(agreement: Agreement, now = new Date()): boolean {
   return hours <= CONTEST_WINDOW_HOURS;
 }
 
-export async function confirmCompletion(agreementId: string): Promise<Agreement> {
+/**
+ * Confirma a conclusão. `detalhes` (texto e nomes dos anexos) só é guardado no mock:
+ * o endpoint POST /api/v1/vagas/{id}/conclusao do contrato não tem corpo, então a API
+ * ignora esses campos até o back ganhar um corpo para a confirmação.
+ */
+export async function confirmCompletion(
+  agreementId: string,
+  detalhes?: { texto?: string; anexos?: string[] },
+): Promise<Agreement> {
   if (!CHAT_USA_MOCKS) {
     await chamar<unknown>(`/api/v1/vagas/${encodeURIComponent(agreementId)}/conclusao`, {
       method: "POST",
@@ -607,6 +615,8 @@ export async function confirmCompletion(agreementId: string): Promise<Agreement>
   await simulateDelay();
   if (iAmHirer) agreement.completionByHirer = true;
   else agreement.completionByWorker = true;
+  if (detalhes?.texto?.trim()) agreement.completionNote = detalhes.texto.trim();
+  if (detalhes?.anexos?.length) agreement.completionAttachments = [...detalhes.anexos];
   addEvent(agreement, `Conclusão confirmada pelo ${iAmHirer ? "contratante" : "profissional"}`);
 
   if (MOCK_OTHER_PARTY_AUTO_CONFIRM) {
