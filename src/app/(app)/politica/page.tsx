@@ -16,8 +16,8 @@ import {
   ChevronRightIcon,
   FileTextIcon,
 } from "@/components/ui/icons";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 export default function PolicyMainPage() {
   const router = useRouter();

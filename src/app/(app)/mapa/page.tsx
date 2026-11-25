@@ -11,6 +11,7 @@ import { useSessao } from "@/lib/session";
 import { freelaiApi } from "@/services/api";
 import { contaApi } from "@/services/conta";
 import type { Vaga } from "@/types";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 const MapaVagas = dynamic(() => import("@/components/vagas/mapa-vagas"), {
   ssr: false,
@@ -18,7 +19,6 @@ const MapaVagas = dynamic(() => import("@/components/vagas/mapa-vagas"), {
 });
 
 const CENTRO_PADRAO = { lat: -8.0476, lng: -34.877 };
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 export default function MapaOfertasPage() {
   const { usuario } = useSessao();

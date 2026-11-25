@@ -1,6 +1,7 @@
 import { ApiError, erroDeResposta } from "@/api/erro";
 import { fetchAutenticado } from "@/api/client";
 import type { components } from "@/api/schema";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 // Comprovantes de pagamento da vaga: serviço, horas extras e bônus.
 // Horas extras e bônus são acertados entre as partes; a plataforma cobra
@@ -18,7 +19,6 @@ export const ROTULOS_COMPROVANTE: Record<TipoComprovante, string> = {
 
 export const TAXA_ADICIONAL_PADRAO = 7;
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {
   let resposta: Response;

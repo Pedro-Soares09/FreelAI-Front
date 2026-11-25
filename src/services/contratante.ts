@@ -2,6 +2,7 @@ import { ApiError, erroDeResposta } from "@/api/erro";
 import { fetchAutenticado } from "@/api/client";
 import type { components } from "@/api/schema";
 import { contaApi } from "@/services/conta";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 // Perfil do contratante: personalização (próprio perfil) e visão pública.
 
@@ -9,7 +10,6 @@ export type PerfilContratanteDetalhe = components["schemas"]["PerfilContratanteD
 export type PerfilPublicoContratante = components["schemas"]["PerfilPublicoContratante"];
 export type AtualizacaoContratante = components["schemas"]["AtualizacaoContratanteEntrada"];
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 async function chamar<T>(caminho: string, init?: RequestInit): Promise<T> {
   let resposta: Response;

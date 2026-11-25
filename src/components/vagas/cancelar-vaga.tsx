@@ -11,8 +11,8 @@ import {
   sancoesApi,
   type PreviaCancelamento,
 } from "@/services/sancoes";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
-const USA_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 
 type Props = { vagaId: string; status: string; onCancelada: () => void };
 

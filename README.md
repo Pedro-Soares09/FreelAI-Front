@@ -74,7 +74,7 @@ cp .env.example .env                                    # ajuste DATABASE_URL=sq
 .venv/Scripts/python -m uvicorn app.main:app --port 8000
 ```
 
-Contas de demonstração (senha `senha-segura-123`): `ana@example.com` (profissional e contratante) e `admin@example.com` (administração).
+Contas de demonstração (senha `senha-segura-123`): `maria@example.com` (contratante) e `ana@example.com` (profissional e contratante). A conta de administração (`admin@example.com`) tem senha própria: no ambiente local ela é impressa por `python scripts/preparar_demo.py` no repositório do back, e no deploy vem da variável `SENHA_ADMIN_DEMO` do Render.
 
 ### 2. Front
 
@@ -84,7 +84,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Abra http://localhost:3000 e entre com uma das contas acima. As telas de vagas, match, chat, acordo, perfil e verificação usam dados de apoio locais (`NEXT_PUBLIC_USE_MOCKS=true`) até os endpoints correspondentes entrarem no contrato; login, cadastro e sessão usam a API real.
+Abra http://localhost:3000 e entre com uma das contas acima. As telas de vagas, match, chat, acordo, perfil e verificação usam dados de apoio locais (`NEXT_PUBLIC_USE_MOCKS=true`, que só vale por padrão no desenvolvimento local; em build de produção o padrão é a API real e um build com mock mostra a faixa "Dados simulados") até os endpoints correspondentes entrarem no contrato; login, cadastro e sessão usam a API real.
 
 ## Scripts
 
