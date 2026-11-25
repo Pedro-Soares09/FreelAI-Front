@@ -27,8 +27,12 @@ export function CheckinPanel({
   useEffect(() => {
     const demoStorage = localStorage.getItem('freelai_perfil_demo') === 'true';
     const mocksEnv = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
+    const modoDemoEnv = process.env.NEXT_PUBLIC_MODO_DEMO === 'true';
     setIsModoDemo(
-      demoStorage || mocksEnv || process.env.NODE_ENV !== 'production'
+      demoStorage ||
+        mocksEnv ||
+        modoDemoEnv ||
+        process.env.NODE_ENV !== 'production'
     );
   }, []);
 
