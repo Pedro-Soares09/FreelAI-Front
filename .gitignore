@@ -28,3 +28,8 @@ Thumbs.db
 *.pid
 *.seed
 *.pid.lock
+
+# testes
+/test-results/
+/playwright-report/
+/coverage/
