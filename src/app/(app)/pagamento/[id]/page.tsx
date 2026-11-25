@@ -301,7 +301,7 @@ export default function PaymentPage() {
             </dl>
           </section>
 
-          {(validar || pagamento.status === 'retido' || pagamento.status === 'liberado') && (
+          {(validar || pagamento.status === 'retido') && (
             <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
               <h2 className="font-bold text-white">Validação facial</h2>
               <p className="mt-2 text-xs leading-relaxed text-zinc-400">
