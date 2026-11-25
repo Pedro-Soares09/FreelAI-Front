@@ -21,7 +21,7 @@ const PASSOS = [
 ];
 
 const DIFERENCIAIS = [
-  { titulo: "Match inteligente", texto: "Uma vaga, três melhores profissionais. Sem enviar 50 propostas." },
+  { titulo: "Os três melhores", texto: "Uma vaga, três profissionais compatíveis. Sem enviar 50 propostas." },
   { titulo: "Preço justo", texto: "Sem leilão de preço. O valor é combinado de forma transparente." },
   { titulo: "Acordo claro entre as partes", texto: "O acordo do serviço é gerado pela plataforma e aceito pelas duas partes." },
 ];
@@ -81,7 +81,7 @@ export function Landing() {
   <p className="max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
     Encontre profissionais para realizar seus serviços ou descubra novas
     oportunidades de trabalho. A FreelAI aproxima talentos e clientes
-    por meio de conexões inteligentes.
+    por meio de uma conexão direta e transparente.
   </p>
 
   <BotoesDeCadastro />
@@ -97,7 +97,7 @@ export function Landing() {
   <div className="mx-auto w-full max-w-6xl px-4 py-20">
     <div className="mx-auto max-w-2xl text-center">
       <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary">
-        Simples e inteligente
+        Simples e direto
       </p>
 
       <h2 className="text-3xl font-extrabold md:text-4xl">
@@ -177,8 +177,8 @@ export function Landing() {
 
       <p className="mt-6 leading-relaxed text-muted">
         A FreelAI nasceu para aproximar pessoas que precisam de serviços de
-        profissionais que sabem realizá-los. Utilizando tecnologia e inteligência
-        artificial, buscamos tornar essa conexão mais simples, rápida e eficiente.
+        profissionais que sabem realizá-los. Por meio de uma plataforma web com match por regras, buscamos
+        tornar essa conexão mais simples, rápida e segura.
       </p>
 
       <p className="mt-4 leading-relaxed text-muted">
@@ -200,7 +200,7 @@ export function Landing() {
         <span className="text-3xl font-extrabold text-accent">Pro</span>
         <h3 className="mt-3 text-lg font-bold">FreelAI Pro</h3>
         <p className="mt-2 text-sm text-muted">
-          Mais destaque e prioridade para profissionais na plataforma.
+          Selo no perfil e avisos imediatos de novas vagas. O plano não altera a posição no match.
         </p>
       </div>
     </div>
