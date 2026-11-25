@@ -7,7 +7,7 @@ Responsável: Hugo (front). A `main` não foi alterada. Esta branch ainda não f
 
 - O back é `Pedro-Soares09/FreelAI-Back`. Foi lido em modo leitura, sem alterações.
 - Três coisas do front não têm correspondente real no back hoje:
-  1. **Contestação:** o front chama `POST /api/v1/vagas/{id}/disputa`, mas o back não tem essa rota. Só existe o modelo `disputas` e a checagem `_em_disputa`, que suspende a liberação.
+  1. **Contestação:** o front chama `POST /api/v1/vagas/{id}/disputa`, caminho definido no contrato `contracts/openapi.json`. No back, essa rota ainda não existe: há só o modelo `disputas` e a checagem `_em_disputa`, que suspende a liberação. Segundo o Pedro, a rota está em finalização, sem data definida. Não há branch nem PR com ela no repositório (a clonagem é rasa e só traz a `main`). O front não precisa mudar se a rota seguir o contrato.
   2. **Acordo e conversas:** `GET /vagas/{id}/acordo` e `GET /conversas/{id}` são stubs com dados de exemplo (`X-Stub: true`, sem autenticação).
   3. **Chat em tempo real e anexos:** não há WebSocket. O campo `anexo_url` existe no modelo de mensagens, mas o upload foi revertido (PR #10) e não há rota de envio.
 - Os prazos do back vêm de `app/services/configuracao.py` (perfil `producao`). O front foi ajustado para eles no commit `f770ce2`.
@@ -77,7 +77,7 @@ Tarefas do card:
 
 Para o front funcionar em modo API, o back precisa de:
 
-- Rota de contestação (`POST /vagas/{id}/disputa`, ou o equivalente no back) e leitura do estado da disputa. Hoje não existe.
+- Rota de contestação (`POST /vagas/{id}/disputa`, conforme o contrato) e leitura do estado da disputa. Em finalização no back, sem data definida.
 - Acordo real em `GET /vagas/{id}/acordo` (hoje é stub) com `status`, `completedAt`, `contestDeadline`, `avaliacaoDeadline` e `liberacaoParcialDeadline`.
 - Conversas reais em `GET /conversas/{id}` e mensagens com autenticação (hoje são stubs).
 - Corpo na confirmação de conclusão (observação e nomes ou ids dos anexos), se o time quiser que isso chegue ao servidor.
@@ -103,7 +103,7 @@ Premissa a confirmar: `getAgreementStatus(vagaId)` assume que o id do acordo é 
 
 ## 6. Pendências
 
-- Combinar com o back a rota de contestação. Sem ela, o botão "Contestar serviço" falha em modo API.
+- Confirmar com o Pedro a data da rota de contestação e se o corpo e a resposta seguem o contrato. Sem ela, o botão "Contestar serviço" falha em modo API.
 - Definir se a confirmação deve levar texto e anexos ao servidor.
 - Upload real de anexos.
 - WebSocket (US44) e só então validar a entrega em dois navegadores.
