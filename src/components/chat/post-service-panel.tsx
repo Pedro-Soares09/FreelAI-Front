@@ -75,9 +75,9 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
         anexos: anexos.map((arquivo) => arquivo.name),
       }),
     );
-    // Serviço concluído pelas duas partes: o contratante segue para a validação facial (US42).
+    // Serviço concluído pelas duas partes: o contratante segue para o pagamento do serviço.
     if (updated?.status === "completed" && iAmHirer) {
-      router.push(`/pagamento/${agreement.id}?validar=1`);
+      router.push(`/pagamento/${agreement.id}`);
     }
   }
 

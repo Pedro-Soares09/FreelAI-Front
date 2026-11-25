@@ -34,7 +34,7 @@ Pontos de atenção:
 
 | Critério | Status | Onde | Observação |
 |---|---|---|---|
-| Confirmar leva o contratante à validação facial (US42) | Feito (mock) | `post-service-panel.tsx` | Após a conclusão pelas duas partes, o contratante vai para `/pagamento/[id]?validar=1`. |
+| Confirmar leva o contratante ao pagamento do serviço | Feito (mock) | `post-service-panel.tsx` | Após a conclusão pelas duas partes, o contratante vai para `/pagamento/[id]?validar=1`. |
 | Contestar bloqueia a liberação e mostra "em análise" | Feito (mock) | `pagamento/[id]/page.tsx`, `services/chat.ts` (`getAgreementStatus`) | Com o acordo `contested`, a validação fica bloqueada. No back, a liberação já é suspensa por `_em_disputa`. Mas a rota de disputa não existe. |
 | Linha do tempo mostra o prazo atual vindo da API | Parcial | `post-service-panel.tsx` | Exibe `contestDeadline`, `avaliacaoDeadline` e `liberacaoParcialDeadline`. Hoje são preenchidos pelo mock. |
 
@@ -99,7 +99,7 @@ Premissa a confirmar: `getAgreementStatus(vagaId)` assume que o id do acordo é 
 - `npx tsc --noEmit`: 15 erros, iguais aos da `develop`. Estão em `session.tsx` e `mapa-vagas.tsx`, fora do escopo desta entrega. Nenhum erro novo nos arquivos alterados.
 - Teste manual sugerido (mock ligado):
   1. Abrir uma conversa com acordo aceito pelas duas partes.
-  2. Como contratante, escrever uma observação, anexar um PDF e confirmar. Ver se a tela leva para `/pagamento/[id]?validar=1`.
+  2. Como contratante, escrever uma observação, anexar um PDF e confirmar. Ver se a tela leva para `/pagamento/[id]`, onde o Pix é cobrado depois da conclusão.
   3. Como profissional, confirmar e ver o aviso de pagamento e os três prazos.
   4. Contestar e abrir a tela de pagamento: deve aparecer "Em análise" e o botão de selfie deve ficar bloqueado.
 
