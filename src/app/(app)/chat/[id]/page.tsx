@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { AgreementModal } from "@/components/chat/agreement-modal";
 import { AiSuggestion } from "@/components/chat/ai-suggestion";
-import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatHeader, rotuloEstadoVaga } from "@/components/chat/chat-header";
 import { Composer } from "@/components/chat/composer";
 import { ComprovantesPanel } from "@/components/pagamento/comprovantes-panel";
 import { MessageList } from "@/components/chat/message-list";
@@ -139,6 +139,7 @@ export default function ConversationPage({ params }: ConversationPageProps) {
       <ChatHeader
         conversation={conversation}
         connection={connection}
+        estadoVaga={rotuloEstadoVaga(agreement?.status)}
         onAgreementClick={
           canOpenAgreement
             ? () =>
