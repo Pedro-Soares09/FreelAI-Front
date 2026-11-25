@@ -1340,6 +1340,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/vagas/{vaga_id}/checkin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Fazer Checkin
+         * @description O profissional contratado confirma a chegada ao local, dentro da janela e do raio.
+         */
+        post: operations["pagamentos_fazer_checkin"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vagas/{vaga_id}/comprovantes": {
         parameters: {
             query?: never;
@@ -2027,6 +2047,31 @@ export interface components {
              * @description Total de notificações já visíveis e ainda não lidas.
              */
             nao_lidas: number;
+        };
+        /** CheckinEntrada */
+        CheckinEntrada: {
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Simular Local
+             * @description Só no perfil demo: usa o endereço da vaga como posição.
+             * @default false
+             */
+            simular_local: boolean;
+        };
+        /** CheckinResposta */
+        CheckinResposta: {
+            /**
+             * Checkin Em
+             * Format: date-time
+             */
+            checkin_em: string;
+            /** Distancia Metros */
+            distancia_metros: number;
+            /** Mensagem */
+            mensagem: string;
         };
         /** ComprovacaoDetalhe */
         ComprovacaoDetalhe: {
@@ -3937,6 +3982,8 @@ export interface components {
             bairro: string;
             /** Categoria */
             categoria: string;
+            /** Checkin Realizado Em */
+            checkin_realizado_em?: string | null;
             contratante: components["schemas"]["ContratanteResumo"];
             /**
              * Data Inicio
@@ -3951,6 +3998,11 @@ export interface components {
             duracao_horas: number;
             /** Endereco Completo */
             endereco_completo?: string | null;
+            /**
+             * Falta Registrada
+             * @default false
+             */
+            falta_registrada: boolean;
             /** Id */
             id: string;
             /** Latitude */
@@ -6076,6 +6128,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AvaliacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pagamentos_fazer_checkin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                vaga_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CheckinEntrada"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckinResposta"];
                 };
             };
             /** @description Validation Error */

@@ -1145,6 +1145,58 @@
         "title": "CentralNotificacoes",
         "type": "object"
       },
+      "CheckinEntrada": {
+        "properties": {
+          "latitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude",
+            "type": "number"
+          },
+          "longitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude",
+            "type": "number"
+          },
+          "simular_local": {
+            "default": false,
+            "description": "Só no perfil demo: usa o endereço da vaga como posição.",
+            "title": "Simular Local",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "title": "CheckinEntrada",
+        "type": "object"
+      },
+      "CheckinResposta": {
+        "properties": {
+          "checkin_em": {
+            "format": "date-time",
+            "title": "Checkin Em",
+            "type": "string"
+          },
+          "distancia_metros": {
+            "title": "Distancia Metros",
+            "type": "number"
+          },
+          "mensagem": {
+            "title": "Mensagem",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mensagem",
+          "distancia_metros",
+          "checkin_em"
+        ],
+        "title": "CheckinResposta",
+        "type": "object"
+      },
       "ComprovacaoDetalhe": {
         "properties": {
           "arquivo_url": {
@@ -5300,6 +5352,18 @@
             "title": "Categoria",
             "type": "string"
           },
+          "checkin_realizado_em": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checkin Realizado Em"
+          },
           "contratante": {
             "$ref": "#/components/schemas/ContratanteResumo"
           },
@@ -5330,6 +5394,11 @@
               }
             ],
             "title": "Endereco Completo"
+          },
+          "falta_registrada": {
+            "default": false,
+            "title": "Falta Registrada",
+            "type": "boolean"
           },
           "id": {
             "title": "Id",
@@ -8729,6 +8798,64 @@
         "summary": "Avaliar Vaga",
         "tags": [
           "avaliacoes"
+        ]
+      }
+    },
+    "/api/v1/vagas/{vaga_id}/checkin": {
+      "post": {
+        "description": "O profissional contratado confirma a chegada ao local, dentro da janela e do raio.",
+        "operationId": "pagamentos_fazer_checkin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vaga_id",
+            "required": true,
+            "schema": {
+              "title": "Vaga Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckinEntrada"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckinResposta"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Fazer Checkin",
+        "tags": [
+          "pagamentos"
         ]
       }
     },
