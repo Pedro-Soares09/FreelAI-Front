@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { freelaiApi } from '@/services/api';
+import { freelaiApi, getAgreementStatus } from '@/services/api';
 import { ComprovantesPanel } from '@/components/pagamento/comprovantes-panel';
 import { PagamentoPix, StatusPagamento } from '@/types';
 import { MODO_DEMO, USE_MOCKS } from '@/lib/modo';
@@ -34,6 +34,19 @@ export default function PaymentPage() {
   const [modoDemo, setModoDemo] = useState(false);
   const [validando, setValidando] = useState(false);
   const [validacaoMensagem, setValidacaoMensagem] = useState<string | null>(null);
+  const [emAnalise, setEmAnalise] = useState(false);
+
+  useEffect(() => {
+    let ativo = true;
+    getAgreementStatus(vagaId)
+      .then((acordo) => {
+        if (ativo) setEmAnalise(acordo?.status === 'contested');
+      })
+      .catch(() => undefined);
+    return () => {
+      ativo = false;
+    };
+  }, [vagaId]);
 
   const carregar = useCallback(async () => {
     setLoading(true);
@@ -87,6 +100,12 @@ export default function PaymentPage() {
   };
 
   const validarFacial = async () => {
+    if (emAnalise) {
+      setValidacaoMensagem(
+        'Serviço em análise: a liberação fica bloqueada até a decisão da equipe FREELAÍ.'
+      );
+      return;
+    }
     if (!pagamento?.conclusao_confirmada) {
       setValidacaoMensagem(
         'Sem conclusão confirmada, a validação facial não está liberada.'
@@ -310,13 +329,19 @@ export default function PaymentPage() {
                 Prazo de revisão: 48h. Após 72h, a plataforma aplica a decisão automática.
               </p>
 
-              {!pagamento.conclusao_confirmada ? (
+              {emAnalise && (
+                <p className="mt-4 rounded-lg bg-amber-500/10 p-2.5 text-xs text-amber-300">
+                  Em análise: a contestação do serviço bloqueia a liberação até a decisão da equipe FREELAÍ.
+                </p>
+              )}
+
+              {!pagamento.conclusao_confirmada || emAnalise ? (
                 <button
                   type="button"
                   disabled
                   className="mt-4 w-full rounded-xl bg-zinc-800 py-2.5 text-xs font-bold text-zinc-500"
                 >
-                  Validação bloqueada
+                  {emAnalise ? 'Liberação em análise' : 'Validação bloqueada'}
                 </button>
               ) : !pagamento.liberacao_validada ? (
                 <div className="mt-4 space-y-3">

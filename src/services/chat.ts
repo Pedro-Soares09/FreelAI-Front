@@ -626,6 +626,16 @@ export async function confirmCompletion(agreementId: string): Promise<Agreement>
   return structuredClone(agreement);
 }
 
+/** Estado atual do acordo de uma vaga (usado pela tela de pagamento). */
+export async function getAgreementStatus(agreementId: string): Promise<Agreement | null> {
+  if (!CHAT_USA_MOCKS) return acordoDaVaga(agreementId);
+  try {
+    return structuredClone(findAgreement(agreementId));
+  } catch {
+    return null;
+  }
+}
+
 export async function contestAgreement(
   agreementId: string,
   reason: ContestReason,
