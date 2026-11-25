@@ -332,6 +332,8 @@ export type Agreement = AgreementTerms & {
   completionByHirer?: boolean;
   completionByWorker?: boolean;
   completedAt?: string;
+  /** Fim da janela de contestação, informado pela API. */
+  contestDeadline?: string;
   contestedAt?: string;
   contestReason?: ContestReason;
   contestDetails?: string;

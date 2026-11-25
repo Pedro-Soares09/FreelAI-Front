@@ -21,11 +21,6 @@ type PostServicePanelProps = {
   onChanged: (agreement: Agreement) => void;
 };
 
-/** Fim da janela de contestação, contada a partir da conclusão. */
-function contestDeadline(completedAt: string): Date {
-  return new Date(Date.parse(completedAt) + CONTEST_WINDOW_HOURS * 60 * 60 * 1000);
-}
-
 /** Confirmação de conclusão, contestação e linha do tempo do serviço. */
 export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged }: PostServicePanelProps) {
   const [busy, setBusy] = useState(false);
@@ -102,13 +97,10 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
         <ReviewModal agreement={agreement} targetName={otherName} onClose={() => setReviewOpen(false)} />
       )}
 
-      {agreement.status === "completed" && agreement.completedAt && (
+      {agreement.status === "completed" && agreement.contestDeadline && (
         <p>
           Prazo para contestar:{" "}
-          <time dateTime={contestDeadline(agreement.completedAt).toISOString()}>
-            {formatDateTime(contestDeadline(agreement.completedAt).toISOString())}
-          </time>
-          .
+          <time dateTime={agreement.contestDeadline}>{formatDateTime(agreement.contestDeadline)}</time>.
         </p>
       )}
 

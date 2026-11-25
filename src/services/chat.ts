@@ -618,6 +618,9 @@ export async function confirmCompletion(agreementId: string): Promise<Agreement>
   if (agreement.completionByHirer && agreement.completionByWorker) {
     agreement.status = "completed";
     agreement.completedAt = new Date().toISOString();
+    agreement.contestDeadline = new Date(
+      Date.parse(agreement.completedAt) + CONTEST_WINDOW_HOURS * 60 * 60 * 1000,
+    ).toISOString();
     addEvent(agreement, "Serviço concluído");
   }
   return structuredClone(agreement);
