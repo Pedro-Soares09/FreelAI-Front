@@ -332,6 +332,16 @@ export type Agreement = AgreementTerms & {
   completionByHirer?: boolean;
   completionByWorker?: boolean;
   completedAt?: string;
+  /** Fim da janela de contestação, informado pela API. */
+  contestDeadline?: string;
+  /** Observação enviada na confirmação de conclusão (só mock; a API ainda não recebe). */
+  completionNote?: string;
+  /** Nomes dos anexos enviados na confirmação (só mock; a API ainda não recebe). */
+  completionAttachments?: string[];
+  /** Prazo para as partes avaliarem (48 h após o fim previsto), informado pela API. */
+  avaliacaoDeadline?: string;
+  /** Liberação parcial de 50% sem validação facial (72 h após o fim previsto), informada pela API. */
+  liberacaoParcialDeadline?: string;
   contestedAt?: string;
   contestReason?: ContestReason;
   contestDetails?: string;

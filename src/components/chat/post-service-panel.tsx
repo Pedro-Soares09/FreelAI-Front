@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ReviewModal } from "@/components/chat/review-modal";
 import { CONTEST_REASONS, CONTEST_WINDOW_HOURS } from "@/lib/constants";
@@ -23,6 +24,7 @@ type PostServicePanelProps = {
 
 /** Confirmação de conclusão, contestação e linha do tempo do serviço. */
 export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged }: PostServicePanelProps) {
+  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [contesting, setContesting] = useState(false);
@@ -30,6 +32,8 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   const [details, setDetails] = useState("");
   const [reviewOpen, setReviewOpen] = useState(false);
   const [myReview, setMyReview] = useState<Review | null>(null);
+  const [nota, setNota] = useState("");
+  const [anexos, setAnexos] = useState<File[]>([]);
 
   useEffect(() => {
     if (agreement.status !== "completed" || reviewOpen) return;
@@ -48,16 +52,32 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
   const iConfirmed = iAmHirer ? agreement.completionByHirer : agreement.completionByWorker;
   const events = getAgreementEvents(agreement);
 
-  async function run(action: () => Promise<Agreement>) {
+  async function run(action: () => Promise<Agreement>): Promise<Agreement | null> {
     setError(null);
     setBusy(true);
     try {
-      onChanged(await action());
+      const updated = await action();
+      onChanged(updated);
       setContesting(false);
+      return updated;
     } catch (err) {
       setError((err as Error).message);
+      return null;
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function confirmarConclusao() {
+    const updated = await run(() =>
+      confirmCompletion(agreement.id, {
+        texto: nota,
+        anexos: anexos.map((arquivo) => arquivo.name),
+      }),
+    );
+    // Serviço concluído pelas duas partes: o contratante segue para o pagamento do serviço.
+    if (updated?.status === "completed" && iAmHirer) {
+      router.push(`/pagamento/${agreement.id}`);
     }
   }
 
@@ -66,9 +86,35 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       <h3>Serviço</h3>
 
       {agreement.status === "accepted" && !iConfirmed && (
-        <button type="button" className="cta" disabled={busy} onClick={() => void run(() => confirmCompletion(agreement.id))}>
-          {busy ? "Confirmando..." : "Confirmar conclusão do serviço"}
-        </button>
+        <>
+          <label>
+            Observação (opcional)
+            <textarea value={nota} onChange={(e) => setNota(e.target.value)} rows={3} />
+          </label>
+          <label>
+            Anexos (imagem ou PDF, opcional)
+            <input
+              type="file"
+              accept="image/*,application/pdf"
+              multiple
+              onChange={(e) => setAnexos(Array.from(e.target.files ?? []))}
+            />
+          </label>
+          {anexos.length > 0 && (
+            <ul>
+              {anexos.map((arquivo) => (
+                <li key={arquivo.name}>{arquivo.name}</li>
+              ))}
+            </ul>
+          )}
+          <p>
+            Você pode confirmar agora ou aguardar. Sem contestação em {CONTEST_WINDOW_HOURS} h após a conclusão, a
+            conclusão é confirmada automaticamente.
+          </p>
+          <button type="button" className="cta" disabled={busy} onClick={() => void confirmarConclusao()}>
+            {busy ? "Confirmando..." : "Confirmar conclusão do serviço"}
+          </button>
+        </>
       )}
 
       {agreement.status === "accepted" && iConfirmed && (
@@ -78,6 +124,12 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
       {agreement.status === "completed" && (
         <>
           <p role="status">Serviço concluído pelas duas partes.</p>
+          {!iAmHirer && (
+            <p>
+              O pagamento é feito pelo contratante via Pix. O valor fica retido até a validação facial e só é liberado
+              depois dela.
+            </p>
+          )}
           {iAmHirer && (
             <Link href={`/pagamento/${agreement.id}`} className="cta">
               Pagar o serviço (Pix)
@@ -95,6 +147,31 @@ export function PostServicePanel({ conversation, agreement, iAmHirer, onChanged 
 
       {reviewOpen && (
         <ReviewModal agreement={agreement} targetName={otherName} onClose={() => setReviewOpen(false)} />
+      )}
+
+      {agreement.status === "completed" && (agreement.contestDeadline || agreement.avaliacaoDeadline || agreement.liberacaoParcialDeadline) && (
+        <ul className="prazos">
+          {agreement.contestDeadline && (
+            <li>
+              Fim para contestar ({CONTEST_WINDOW_HOURS} h):{" "}
+              <time dateTime={agreement.contestDeadline}>{formatDateTime(agreement.contestDeadline)}</time>
+            </li>
+          )}
+          {agreement.avaliacaoDeadline && (
+            <li>
+              Prazo para avaliar (48 h):{" "}
+              <time dateTime={agreement.avaliacaoDeadline}>{formatDateTime(agreement.avaliacaoDeadline)}</time>
+            </li>
+          )}
+          {agreement.liberacaoParcialDeadline && (
+            <li>
+              Liberação parcial de 50% sem validação facial (72 h):{" "}
+              <time dateTime={agreement.liberacaoParcialDeadline}>
+                {formatDateTime(agreement.liberacaoParcialDeadline)}
+              </time>
+            </li>
+          )}
+        </ul>
       )}
 
       {agreement.status === "contested" && (

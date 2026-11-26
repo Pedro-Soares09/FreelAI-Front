@@ -586,7 +586,15 @@ export function canContest(agreement: Agreement, now = new Date()): boolean {
   return hours <= CONTEST_WINDOW_HOURS;
 }
 
-export async function confirmCompletion(agreementId: string): Promise<Agreement> {
+/**
+ * Confirma a conclusão. `detalhes` (texto e nomes dos anexos) só é guardado no mock:
+ * o endpoint POST /api/v1/vagas/{id}/conclusao do contrato não tem corpo, então a API
+ * ignora esses campos até o back ganhar um corpo para a confirmação.
+ */
+export async function confirmCompletion(
+  agreementId: string,
+  detalhes?: { texto?: string; anexos?: string[] },
+): Promise<Agreement> {
   if (!CHAT_USA_MOCKS) {
     await chamar<unknown>(`/api/v1/vagas/${encodeURIComponent(agreementId)}/conclusao`, {
       method: "POST",
@@ -607,6 +615,8 @@ export async function confirmCompletion(agreementId: string): Promise<Agreement>
   await simulateDelay();
   if (iAmHirer) agreement.completionByHirer = true;
   else agreement.completionByWorker = true;
+  if (detalhes?.texto?.trim()) agreement.completionNote = detalhes.texto.trim();
+  if (detalhes?.anexos?.length) agreement.completionAttachments = [...detalhes.anexos];
   addEvent(agreement, `Conclusão confirmada pelo ${iAmHirer ? "contratante" : "profissional"}`);
 
   if (MOCK_OTHER_PARTY_AUTO_CONFIRM) {
@@ -618,9 +628,25 @@ export async function confirmCompletion(agreementId: string): Promise<Agreement>
   if (agreement.completionByHirer && agreement.completionByWorker) {
     agreement.status = "completed";
     agreement.completedAt = new Date().toISOString();
+    const concluidoEm = Date.parse(agreement.completedAt);
+    agreement.contestDeadline = new Date(concluidoEm + CONTEST_WINDOW_HOURS * 60 * 60 * 1000).toISOString();
+    // Valores do back (app/services/configuracao.py, perfil producao): avaliação em 48 h e
+    // liberação parcial de 50% em 72 h após o fim. O mock usa a conclusão como referência.
+    agreement.avaliacaoDeadline = new Date(concluidoEm + 48 * 60 * 60 * 1000).toISOString();
+    agreement.liberacaoParcialDeadline = new Date(concluidoEm + 72 * 60 * 60 * 1000).toISOString();
     addEvent(agreement, "Serviço concluído");
   }
   return structuredClone(agreement);
+}
+
+/** Estado atual do acordo de uma vaga (usado pela tela de pagamento). */
+export async function getAgreementStatus(agreementId: string): Promise<Agreement | null> {
+  if (!CHAT_USA_MOCKS) return acordoDaVaga(agreementId);
+  try {
+    return structuredClone(findAgreement(agreementId));
+  } catch {
+    return null;
+  }
 }
 
 export async function contestAgreement(
