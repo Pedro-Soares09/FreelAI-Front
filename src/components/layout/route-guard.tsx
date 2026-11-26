@@ -29,7 +29,7 @@ function TelaDeConta({ titulo, texto }: { titulo: string; texto: string }) {
 }
 
 export function RouteGuard({ children }: { children: ReactNode }) {
-  const { estado, usuario } = useSessao();
+  const { estado, usuario, bloqueio } = useSessao();
   const caminho = usePathname();
   const router = useRouter();
   const { avisar } = useToast();
@@ -47,6 +47,19 @@ export function RouteGuard({ children }: { children: ReactNode }) {
       router.replace(acesso.destino);
     }
   }, [estado, acesso, caminho, router, avisar]);
+
+  if (estado === "bloqueado" && bloqueio) {
+    const retornoEm =
+      bloqueio.retornoEm && !Number.isNaN(Date.parse(bloqueio.retornoEm))
+        ? ` A suspensão termina em ${new Date(bloqueio.retornoEm).toLocaleString("pt-BR")}.`
+        : "";
+    return (
+      <TelaDeConta
+        titulo={bloqueio.codigo === "conta_suspensa" ? "Conta suspensa" : "Conta banida"}
+        texto={`${bloqueio.mensagem}${retornoEm}`}
+      />
+    );
+  }
 
   if (estado === "carregando" || estado === "anonimo") return <Carregando rotulo="Verificando sessão" />;
   if (!usuario) return <Carregando rotulo="Verificando sessão" />;

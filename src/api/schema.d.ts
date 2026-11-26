@@ -726,6 +726,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/usuarios/{usuario_id}/perfil": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Perfil Publico Profissional
+         * @description Exibe o perfil público de um profissional com conta ativa.
+         */
+        get: operations["usuarios_consultar_perfil_publico_profissional"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/vagas": {
         parameters: {
             query?: never;
@@ -2200,6 +2220,33 @@ export interface components {
              */
             verificado: boolean;
         };
+        AvaliacaoPublica: {
+            comentario: string | null;
+            /** Format: date-time */
+            criada_em: string;
+            id: number;
+            nota: number;
+        };
+        ExperienciaPublica: {
+            categoria: string | null;
+            descricao: string;
+            id: number;
+        };
+        PerfilPublicoProfissional: {
+            avaliacoes: components["schemas"]["AvaliacaoPublica"][];
+            categorias: string[];
+            cidade: string | null;
+            experiencias: components["schemas"]["ExperienciaPublica"][];
+            foto_url: string | null;
+            nome: string;
+            nota_media: number | null;
+            novo: boolean;
+            servicos_concluidos: number;
+            total_avaliacoes: number;
+            uf: string | null;
+            usuario_id: number;
+            verificado: boolean;
+        };
         /**
          * PontoMapa
          * @description Ponto genérico do mapa: serve a vagas e a profissionais.
@@ -3662,6 +3709,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ReputacaoDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    usuarios_consultar_perfil_publico_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilPublicoProfissional"];
+                };
+            };
+            /** @description Perfil não encontrado. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
                 };
             };
             /** @description Validation Error */

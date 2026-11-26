@@ -2,9 +2,16 @@ const CHAVE = "freelai-tokens";
 export const COOKIE_SESSAO = "freelai-sessao";
 
 export type Tokens = { access: string; refresh: string };
+export type BloqueioConta = {
+  codigo: "conta_suspensa" | "conta_banida";
+  mensagem: string;
+  retornoEm?: string;
+};
 
 type Ouvinte = () => void;
+type OuvinteBloqueio = (bloqueio: BloqueioConta) => void;
 const ouvintesExpiracao = new Set<Ouvinte>();
+const ouvintesBloqueio = new Set<OuvinteBloqueio>();
 
 export function lerTokens(): Tokens | null {
   if (typeof window === "undefined") return null;
@@ -49,6 +56,16 @@ export function limparTokens() {
 export function aoExpirarSessao(ouvinte: Ouvinte): () => void {
   ouvintesExpiracao.add(ouvinte);
   return () => ouvintesExpiracao.delete(ouvinte);
+}
+
+export function aoBloquearConta(ouvinte: OuvinteBloqueio): () => void {
+  ouvintesBloqueio.add(ouvinte);
+  return () => ouvintesBloqueio.delete(ouvinte);
+}
+
+export function notificarBloqueioConta(bloqueio: BloqueioConta) {
+  limparTokens();
+  ouvintesBloqueio.forEach((ouvinte) => ouvinte(bloqueio));
 }
 
 export function notificarExpiracao() {

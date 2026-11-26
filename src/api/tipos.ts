@@ -7,3 +7,4 @@ export type RegistroEntrada = components["schemas"]["RegistroEntrada"];
 export type DadosAcordo = components["schemas"]["DadosAcordo"];
 export type PagamentoDetalhe = components["schemas"]["PagamentoDetalhe"];
 export type PerfilResumo = components["schemas"]["PerfilResumo"];
+export type PerfilPublicoProfissional = components["schemas"]["PerfilPublicoProfissional"];

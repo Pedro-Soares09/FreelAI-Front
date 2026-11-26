@@ -155,6 +155,42 @@
         "title": "AvaliacaoEntrada",
         "type": "object"
       },
+      "AvaliacaoPublica": {
+        "properties": {
+          "comentario": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comentario"
+          },
+          "criada_em": {
+            "format": "date-time",
+            "title": "Criada Em",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "nota": {
+            "title": "Nota",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "nota",
+          "comentario",
+          "criada_em"
+        ],
+        "title": "AvaliacaoPublica",
+        "type": "object"
+      },
       "AvaliacoesDaVaga": {
         "description": "Estado das avaliações de uma vaga para quem consulta.",
         "examples": [
@@ -1692,6 +1728,36 @@
         "title": "EstadoVaga",
         "type": "string"
       },
+      "ExperienciaPublica": {
+        "properties": {
+          "categoria": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Categoria"
+          },
+          "descricao": {
+            "title": "Descricao",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "descricao",
+          "categoria"
+        ],
+        "title": "ExperienciaPublica",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2281,6 +2347,116 @@
           "perfil"
         ],
         "title": "PerfilAtivoEntrada",
+        "type": "object"
+      },
+      "PerfilPublicoProfissional": {
+        "properties": {
+          "avaliacoes": {
+            "items": {
+              "$ref": "#/components/schemas/AvaliacaoPublica"
+            },
+            "title": "Avaliacoes",
+            "type": "array"
+          },
+          "categorias": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Categorias",
+            "type": "array"
+          },
+          "cidade": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cidade"
+          },
+          "experiencias": {
+            "items": {
+              "$ref": "#/components/schemas/ExperienciaPublica"
+            },
+            "title": "Experiencias",
+            "type": "array"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Media"
+          },
+          "novo": {
+            "title": "Novo",
+            "type": "boolean"
+          },
+          "servicos_concluidos": {
+            "title": "Servicos Concluidos",
+            "type": "integer"
+          },
+          "total_avaliacoes": {
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "uf": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uf"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "foto_url",
+          "verificado",
+          "cidade",
+          "uf",
+          "categorias",
+          "servicos_concluidos",
+          "novo",
+          "nota_media",
+          "total_avaliacoes",
+          "avaliacoes",
+          "experiencias"
+        ],
+        "title": "PerfilPublicoProfissional",
         "type": "object"
       },
       "PerfilResumo": {
@@ -4855,6 +5031,52 @@
         "summary": "Listar Avaliacoes Do Usuario",
         "tags": [
           "avaliacoes"
+        ]
+      }
+    },
+    "/api/v1/usuarios/{usuario_id}/perfil": {
+      "get": {
+        "description": "Exibe o perfil público de um profissional com conta ativa.",
+        "operationId": "usuarios_consultar_perfil_publico_profissional",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilPublicoProfissional"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "Perfil não encontrado."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Consultar Perfil Publico Profissional",
+        "tags": [
+          "usuarios"
         ]
       }
     },

@@ -3,13 +3,21 @@ export class ApiError extends Error {
   readonly status: number;
   readonly codigo: string;
   readonly campos: Record<string, string>;
+  readonly detalhes: Record<string, unknown>;
 
-  constructor(status: number, codigo: string, mensagem: string, campos: Record<string, string> = {}) {
+  constructor(
+    status: number,
+    codigo: string,
+    mensagem: string,
+    campos: Record<string, string> = {},
+    detalhes: Record<string, unknown> = {},
+  ) {
     super(mensagem);
     this.name = "ApiError";
     this.status = status;
     this.codigo = codigo;
     this.campos = campos;
+    this.detalhes = detalhes;
   }
 }
 
@@ -42,11 +50,15 @@ export function erroDeResposta(status: number, corpo: unknown): ApiError {
   }
 
   if (typeof detail === "object" && detail !== null) {
-    const d = detail as { codigo?: string; mensagem?: string };
+    const d = detail as Record<string, unknown> & { codigo?: string; mensagem?: string };
     return new ApiError(
       status,
-      d.codigo ?? `http_${status}`,
-      d.mensagem ?? MENSAGENS_PADRAO[status] ?? "Erro inesperado.",
+      typeof d.codigo === "string" ? d.codigo : `http_${status}`,
+      typeof d.mensagem === "string"
+        ? d.mensagem
+        : MENSAGENS_PADRAO[status] ?? "Erro inesperado.",
+      {},
+      d,
     );
   }
 
