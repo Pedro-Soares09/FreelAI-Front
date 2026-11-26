@@ -19,7 +19,7 @@ npm run test:cov
 
 Cobrem o formulário de login (validação, erro 401, redirecionamento, `next` seguro, conta suspensa e banida), o tratamento de erros da API (`src/api/erro.ts`) e as validações de CPF, CNPJ e data de nascimento (`src/lib/validation.ts`). O fuso dos testes é fixado em `America/Sao_Paulo` em `vitest.config.mts`.
 
-Falha conhecida registrada: `DEF-01` (maioridade no fuso do Brasil) está marcada com `it.fails` em `src/lib/validation.test.ts`.
+A validação de maioridade (`validateBirthDate`) é testada com valores limite de 17, 18 e 120 anos no fuso de Recife.
 
 ## Ponta a ponta (Playwright)
 
