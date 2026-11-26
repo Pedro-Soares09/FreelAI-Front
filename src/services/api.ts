@@ -3,14 +3,19 @@ import {
   BloqueioAgenda,
   ConviteVaga,
   DisponibilidadeProfissional,
+  ItemPainelContratante,
   Notificacao,
+  PagamentoPix,
+  ResultadoValidacaoFacial,
+  Top3Contratacao,
   Vaga,
 } from '@/types';
 import { mockRouter } from '@/mocks/freelai-mock';
 import { fetchAutenticado } from '@/api/client';
 import { ApiError, erroDeResposta } from '@/api/erro';
+import type { DadosAcordo, PagamentoDetalhe } from '@/api/tipos';
+import { USE_MOCKS } from "@/lib/modo";
 
-const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false';
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   if (USE_MOCKS) {
@@ -38,7 +43,198 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+/** Cobrança Pix da vaga na API real; abre a cobrança na primeira visita. */
+async function cobrancaPix(vagaId: string): Promise<PagamentoDetalhe> {
+  const caminho = `/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento`;
+  try {
+    return await request<PagamentoDetalhe>(caminho);
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 404) {
+      return request<PagamentoDetalhe>(caminho, { method: 'POST' });
+    }
+    throw e;
+  }
+}
+
+/** Adapta o pagamento da API ao formato usado pela tela de Pix. */
+function pagamentoParaPix(d: PagamentoDetalhe): PagamentoPix {
+  const retido = d.estado === 'retido';
+  return {
+    id: String(d.id),
+    vaga_id: String(d.vaga_id),
+    status: d.estado === 'liberado_parcial' ? 'parcial' : d.estado,
+    total: Number(d.divisao.valor_total),
+    taxa: Number(d.divisao.taxa_plataforma),
+    liquido: Number(d.divisao.valor_liquido_profissional),
+    qr_codigo: d.codigo_pix ?? '',
+    copia_e_cola: d.codigo_pix ?? '',
+    prazo_em: d.expira_em ?? d.atualizado_em,
+    lancamentos: [],
+    conclusao_confirmada: !retido && d.estado !== 'aguardando' && d.estado !== 'expirado',
+    liberacao_validada: false,
+  };
+}
+
+type NotificacaoApi = {
+  id: number;
+  tipo: string;
+  titulo: string;
+  mensagem?: string | null;
+  lida: boolean;
+  criado_em: string;
+  vaga_id?: number | null;
+};
+
+/** Adapta a notificação da API ao formato usado pelo sino. */
+function notificacaoDaApi(n: NotificacaoApi): Notificacao {
+  return {
+    id: String(n.id),
+    tipo: n.tipo as Notificacao['tipo'],
+    titulo: n.titulo,
+    mensagem: n.mensagem ?? '',
+    lida: n.lida,
+    criada_em: n.criado_em,
+    referencia_id: n.vaga_id != null ? String(n.vaga_id) : undefined,
+  };
+}
+
+type Top3Api = {
+  vaga: { id: string };
+  profissionais: { demonstrou_interesse?: boolean }[];
+};
+
+const PAINEL_POR_STATUS: Record<
+  string,
+  { estado: ItemPainelContratante['estado']; acao: ItemPainelContratante['proxima_acao'] }
+> = {
+  publicada: { estado: 'publicada', acao: 'escolher' },
+  em_contratacao: { estado: 'em_contratacao', acao: null },
+  aceita: { estado: 'contratada', acao: 'acordar' },
+  aguardando_pagamento: { estado: 'contratada', acao: 'pagar' },
+  contratada: { estado: 'contratada', acao: null },
+  em_execucao: { estado: 'em_execucao', acao: null },
+  aguardando_confirmacao: { estado: 'aguardando_confirmacao', acao: 'validar' },
+  em_disputa: { estado: 'aguardando_confirmacao', acao: null },
+  concluida: { estado: 'concluida', acao: 'avaliar' },
+  cancelada: { estado: 'encerradas', acao: null },
+  expirada: { estado: 'encerradas', acao: null },
+};
+
+/** Painel do contratante montado a partir das vagas, do top 3 e das conversas da API. */
+async function painelDaApi(): Promise<ItemPainelContratante[]> {
+  const [vagas, top3] = await Promise.all([
+    request<Vaga[]>('/api/v1/contratante/vagas'),
+    request<Top3Api[]>('/api/v1/contratante/top3').catch(() => [] as Top3Api[]),
+  ]);
+  const interessados = new Map(
+    top3.map((t) => [
+      String(t.vaga.id),
+      t.profissionais.filter((p) => p.demonstrou_interesse).length,
+    ])
+  );
+  return Promise.all(
+    vagas.map(async (vaga) => {
+      const regra = PAINEL_POR_STATUS[vaga.status] ?? { estado: 'encerradas' as const, acao: null };
+      let conversaId: string | null = null;
+      if (!['publicada', 'em_contratacao', 'cancelada', 'expirada'].includes(vaga.status)) {
+        conversaId = await request<{ id: number }>(`/api/v1/vagas/${vaga.id}/conversa`)
+          .then((c) => String(c.id))
+          .catch(() => null);
+      }
+      return {
+        vaga,
+        estado: regra.estado,
+        interessados_count: interessados.get(String(vaga.id)) ?? 0,
+        proxima_acao: regra.acao,
+        conversa_id: conversaId,
+        pagamento_id: regra.acao === 'pagar' ? String(vaga.id) : null,
+      } satisfies ItemPainelContratante;
+    })
+  );
+}
+
+export type CategoriaVaga = { slug: string; nome: string; nivel_risco: 'baixo' | 'medio' | 'alto' };
+
+export type NovaVaga = {
+  titulo: string;
+  descricao: string;
+  categoria: string;
+  valor: number;
+  duracao_horas: number;
+  data_inicio: string;
+  bairro: string;
+  logradouro?: string;
+  latitude: number;
+  longitude: number;
+  checklist?: { item_id: number; atendido: boolean }[];
+};
+
+const CATEGORIAS_MOCK: CategoriaVaga[] = [
+  { slug: 'montagem', nome: 'Montagem de móveis', nivel_risco: 'baixo' },
+  { slug: 'limpeza', nome: 'Limpeza', nivel_risco: 'baixo' },
+  { slug: 'eletrica', nome: 'Elétrica', nivel_risco: 'alto' },
+  { slug: 'pintura', nome: 'Pintura', nivel_risco: 'medio' },
+];
+
 export const freelaiApi = {
+  obterAcordo: (vagaId: string) => request<DadosAcordo>(`/api/v1/vagas/${vagaId}/acordo`),
+
+  aceitarAcordo: (vagaId: string) =>
+    request<DadosAcordo>(`/api/v1/vagas/${vagaId}/acordo/aceite`, { method: 'POST' }),
+
+  obterPagamento: (vagaId: string) =>
+    request<PagamentoDetalhe>(`/api/v1/vagas/${vagaId}/pagamento`),
+
+  abrirCobranca: (vagaId: string) =>
+    request<PagamentoDetalhe>(`/api/v1/vagas/${vagaId}/pagamento`, { method: 'POST' }),
+
+  simularPagamento: (pagamentoId: number) =>
+    request<PagamentoDetalhe>(`/api/v1/pagamentos/${pagamentoId}/simular-confirmacao`, {
+      method: 'POST',
+    }),
+
+  listarCategorias: () =>
+    USE_MOCKS
+      ? Promise.resolve(CATEGORIAS_MOCK)
+      : request<CategoriaVaga[]>('/api/v1/categorias'),
+
+  criarVaga: (dados: NovaVaga) =>
+    USE_MOCKS
+      ? Promise.resolve({ id: 'mock-nova-vaga', titulo: dados.titulo } as unknown as Vaga)
+      : request<Vaga>('/api/v1/vagas', { method: 'POST', body: JSON.stringify(dados) }),
+
+  listarPainelContratante: () =>
+    USE_MOCKS
+      ? request<ItemPainelContratante[]>('/api/v1/contratante/painel')
+      : painelDaApi(),
+
+  obterPagamentoPix: (vagaId: string) =>
+    USE_MOCKS
+      ? request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix`)
+      : cobrancaPix(vagaId).then(pagamentoParaPix),
+
+  simularPagamentoPix: (vagaId: string) =>
+    USE_MOCKS
+      ? request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix/simular`, {
+          method: 'POST',
+        })
+      : cobrancaPix(vagaId)
+          .then((p) =>
+            request<PagamentoDetalhe>(`/api/v1/pagamentos/${p.id}/simular-confirmacao`, {
+              method: 'POST',
+            })
+          )
+          .then(pagamentoParaPix),
+
+  validarLiberacaoFacial: (vagaId: string) =>
+    request<ResultadoValidacaoFacial>(
+      `/api/v1/vagas/${encodeURIComponent(vagaId)}/validacao-facial`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ selfie: 'captura_simulada' }),
+      }
+    ),
+
   listarVagasProximas: (params: {
     raio_km: number;
     categoria?: string;
@@ -56,6 +252,18 @@ export const freelaiApi = {
   },
 
   obterVaga: (vagaId: string) => request<Vaga>(`/api/v1/vagas/${vagaId}`),
+
+  listarTop3Contratante: () =>
+    request<Top3Contratacao[]>('/api/v1/contratante/top3'),
+
+  escolherProfissional: (vagaId: string, profissionalId: string) =>
+    request<Top3Contratacao>(
+      `/api/v1/contratante/vagas/${encodeURIComponent(vagaId)}/escolher`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ profissional_id: profissionalId }),
+      }
+    ),
 
   manifestarInteresse: (vagaId: string, valorProposto?: number | null) =>
     request<ConviteVaga>(`/api/v1/vagas/${vagaId}/interesse`, {
@@ -131,13 +339,22 @@ export const freelaiApi = {
       method: 'POST',
     }),
 
-  listarNotificacoes: () =>
-    request<{ itens: Notificacao[]; nao_lidas: number }>(
+  listarNotificacoes: async () => {
+    if (USE_MOCKS) {
+      return request<{ itens: Notificacao[]; nao_lidas: number }>('/api/v1/notificacoes');
+    }
+    const dados = await request<{ itens: NotificacaoApi[]; nao_lidas: number }>(
       '/api/v1/notificacoes'
-    ),
+    );
+    return { itens: dados.itens.map(notificacaoDaApi), nao_lidas: dados.nao_lidas };
+  },
 
   marcarNotificacaoLida: (id: string) =>
-    request<void>(`/api/v1/notificacoes/${id}/lida`, { method: 'PATCH' }),
+    USE_MOCKS
+      ? request<void>(`/api/v1/notificacoes/${id}/lida`, { method: 'PATCH' })
+      : request<unknown>(`/api/v1/notificacoes/${id}/lida`, { method: 'POST' }).then(
+          () => undefined
+        ),
 
   marcarTodasNotificacoesLidas: () =>
     request<void>('/api/v1/notificacoes/ler-todas', { method: 'POST' }),
@@ -155,3 +372,6 @@ export const freelaiApi = {
       method: 'POST',
     }),
 };
+
+// Chat, acordo e pós-serviço (mocks com atraso simulado até o back expor os endpoints).
+export * from './chat';

@@ -3,7 +3,12 @@ import {
   BloqueioAgenda,
   ConviteVaga,
   DisponibilidadeProfissional,
+  ItemPainelContratante,
   Notificacao,
+  PagamentoPix,
+  ProfissionalRecomendado,
+  ResultadoValidacaoFacial,
+  Top3Contratacao,
   Vaga,
 } from '@/types';
 
@@ -28,6 +33,7 @@ const mockVagas: Vaga[] = [
     longitude: -34.9046,
     endereco_completo: 'Av. Boa Viagem, 3420 - Salão Atlântico, Recife - PE',
     status: 'em_contratacao',
+    interessados_count: 4,
     contratante: {
       id: 'cont-1',
       nome: 'Recife Eventos & Co.',
@@ -62,6 +68,7 @@ const mockVagas: Vaga[] = [
     longitude: -34.9511,
     endereco_completo: 'Av. Caxangá, 4890 - Centro de Convenções Oeste, Recife - PE',
     status: 'publicada',
+    interessados_count: 7,
     contratante: {
       id: 'cont-2',
       nome: 'Porto Digital Summit',
@@ -88,6 +95,7 @@ const mockVagas: Vaga[] = [
     longitude: -34.9254,
     endereco_completo: 'Praça de Casa Forte, 310 - Galpão B, Recife - PE',
     status: 'publicada',
+    interessados_count: 2,
     contratante: {
       id: 'cont-3',
       nome: 'Studio Norte Produções',
@@ -139,7 +147,9 @@ const mockVagas: Vaga[] = [
     latitude: -8.0938,
     longitude: -34.8825,
     endereco_completo: 'Av. Herculano Bandeira, 513 - Rooftop, Pina, Recife - PE',
-    status: 'contratada',
+    status: 'aguardando_confirmacao',
+    interessados_count: 1,
+    conclusao_confirmada_em: emMinutos(-20),
     contratante: {
       id: 'cont-5',
       nome: 'Mirante Lounge Recife',
@@ -160,7 +170,190 @@ const mockVagas: Vaga[] = [
     checkin_realizado_em: null,
     falta_registrada: false,
   },
+  {
+    id: 'vaga-106',
+    titulo: 'Auxiliar de Montagem para Workshop',
+    descricao: 'Montagem e organização de mesas para oficina técnica.',
+    categoria: 'logistica',
+    nivel_risco: 'baixo',
+    valor: 150,
+    duracao_horas: 4,
+    data_inicio: emHoras(-48),
+    bairro: 'Santo Amaro',
+    distancia_km: 3,
+    latitude: -8.052,
+    longitude: -34.884,
+    endereco_completo: 'Rua da Aurora, 820, Recife - PE',
+    status: 'expirada',
+    interessados_count: 0,
+    encerrada_motivo: 'Prazo para publicação encerrado',
+    contratante: {
+      id: 'cont-6',
+      nome: 'CEUS Workshop',
+      verificado: true,
+      nota_media: 4.8,
+      total_avaliacoes: 12,
+    },
+    meu_convite: null,
+  },
 ];
+
+const profissionaisPorRodada: ProfissionalRecomendado[][] = [
+  [
+    {
+      id: 'prof-top-1',
+      nome: 'Ana Beatriz Lima',
+      foto_url: 'https://i.pravatar.cc/160?img=47',
+      verificado: true,
+      nota_media: 4.9,
+      total_avaliacoes: 38,
+      distancia_km: 2.4,
+      novo: false,
+      pro: true,
+      demonstrou_interesse: true,
+      valor_proposto: 180,
+      resumo: 'Garçonete com experiência em eventos corporativos e recepções.',
+      habilidades: ['Atendimento', 'Eventos corporativos', 'Inglês'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-2',
+      nome: 'Lucas Ferreira',
+      foto_url: 'https://i.pravatar.cc/160?img=12',
+      verificado: true,
+      nota_media: 4.8,
+      total_avaliacoes: 24,
+      distancia_km: 4.1,
+      novo: false,
+      pro: false,
+      demonstrou_interesse: true,
+      valor_proposto: null,
+      resumo: 'Profissional de atendimento focado em eventos e serviço de salão.',
+      habilidades: ['Serviço de salão', 'Recepção'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-3',
+      nome: 'Mariana Costa',
+      foto_url: 'https://i.pravatar.cc/160?img=44',
+      verificado: true,
+      nota_media: 4.7,
+      total_avaliacoes: 12,
+      distancia_km: 5.3,
+      novo: true,
+      pro: false,
+      demonstrou_interesse: false,
+      valor_proposto: null,
+      resumo: 'Nova na plataforma, com experiência prévia em eventos e buffets.',
+      habilidades: ['Buffet', 'Organização', 'Atendimento'],
+      estado: 'disponivel',
+    },
+  ],
+  [
+    {
+      id: 'prof-top-4',
+      nome: 'Rafael Santos',
+      foto_url: 'https://i.pravatar.cc/160?img=13',
+      verificado: true,
+      nota_media: 4.8,
+      total_avaliacoes: 19,
+      distancia_km: 3.2,
+      novo: false,
+      pro: true,
+      demonstrou_interesse: true,
+      valor_proposto: 175,
+      resumo: 'Atendente Pro com experiência em eventos de médio e grande porte.',
+      habilidades: ['Eventos', 'Coquetel', 'Liderança'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-5',
+      nome: 'Camila Oliveira',
+      foto_url: 'https://i.pravatar.cc/160?img=49',
+      verificado: true,
+      nota_media: 4.9,
+      total_avaliacoes: 31,
+      distancia_km: 4.7,
+      novo: false,
+      pro: false,
+      demonstrou_interesse: true,
+      valor_proposto: null,
+      resumo: 'Profissional experiente em atendimento e organização de salão.',
+      habilidades: ['Atendimento', 'Organização'],
+      estado: 'disponivel',
+    },
+    {
+      id: 'prof-top-6',
+      nome: 'Pedro Henrique Alves',
+      foto_url: 'https://i.pravatar.cc/160?img=60',
+      verificado: true,
+      nota_media: 4.6,
+      total_avaliacoes: 8,
+      distancia_km: 6.1,
+      novo: true,
+      pro: false,
+      demonstrou_interesse: false,
+      valor_proposto: null,
+      resumo: 'Profissional recém-chegado à plataforma, disponível para eventos.',
+      habilidades: ['Recepção', 'Serviço de salão'],
+      estado: 'disponivel',
+    },
+  ],
+];
+
+const mockTop3Contratacoes: Top3Contratacao[] = [
+  {
+    vaga: mockVagas[1],
+    rodada: 1,
+    profissionais: profissionaisPorRodada[0].map((profissional) => ({
+      ...profissional,
+      habilidades: [...profissional.habilidades],
+    })),
+    convite_atual: null,
+  },
+];
+
+function atualizarRodadasTop3(): void {
+  for (const match of mockTop3Contratacoes) {
+    const convite = match.convite_atual;
+    if (
+      !convite ||
+      convite.status !== 'em_andamento' ||
+      new Date(convite.prazo_em).getTime() > Date.now()
+    ) {
+      continue;
+    }
+
+    const profissional = match.profissionais.find(
+      (item) => item.id === convite.profissional_id
+    );
+    if (profissional) profissional.estado = 'falhou';
+    match.convite_atual = null;
+
+    if (match.profissionais.every((item) => item.estado === 'falhou')) {
+      match.rodada += 1;
+      const novaRodada =
+        profissionaisPorRodada[(match.rodada - 1) % profissionaisPorRodada.length];
+      match.profissionais = novaRodada.map((item) => ({
+        ...item,
+        estado: 'disponivel',
+        habilidades: [...item.habilidades],
+      }));
+    }
+  }
+}
+
+function copiarTop3(match: Top3Contratacao): Top3Contratacao {
+  return {
+    ...match,
+    vaga: { ...match.vaga },
+    profissionais: match.profissionais.map((item) => ({
+      ...item,
+      habilidades: [...item.habilidades],
+    })),
+    convite_atual: match.convite_atual ? { ...match.convite_atual } : null,
+  };
+}
 
 let mockDisponibilidade: DisponibilidadeProfissional = {
   disponivel_agora: false,
@@ -216,6 +409,33 @@ let mockAssinatura: AssinaturaPro = {
   renovacao_automatica: false,
 };
 
+const mockPagamentos = new Map<string, PagamentoPix>();
+
+function criarPagamento(vaga: Vaga): PagamentoPix {
+  const existente = mockPagamentos.get(vaga.id);
+  if (existente) return existente;
+
+  const total = vaga.valor === 150 ? 150 : vaga.valor;
+  const pagamento: PagamentoPix = {
+    id: `pag-${vaga.id}`,
+    vaga_id: vaga.id,
+    status: 'aguardando',
+    total,
+    taxa: Number((total * 0.1).toFixed(2)),
+    liquido: Number((total * 0.9).toFixed(2)),
+    qr_codigo: '00020126580014BR.GOV.BCB.PIX0136freelai-pagamento-ficticio',
+    copia_e_cola:
+      '00020126580014BR.GOV.BCB.PIX0136freelai-pagamento-ficticio5204000053039865802BR5913FREELAI6008RECIFE62070503***6304ABCD',
+    prazo_em: emMinutos(15),
+    lancamentos: [],
+    conclusao_confirmada: Boolean(vaga.conclusao_confirmada_em),
+    liberacao_validada: false,
+    liberacao_prazo_em: null,
+  };
+  mockPagamentos.set(vaga.id, pagamento);
+  return pagamento;
+}
+
 function sanitizeVagaLGP01(vaga: Vaga): Vaga {
   const liberado =
     [
@@ -242,6 +462,152 @@ export async function mockRouter<T>(
   const body = options?.body ? JSON.parse(String(options.body)) : {};
   const [pathname, search] = path.split('?');
   const params = new URLSearchParams(search || '');
+
+  if (pathname === '/api/v1/contratante/painel' && method === 'GET') {
+    const itens: ItemPainelContratante[] = mockVagas.map((vaga) => {
+      let estado: ItemPainelContratante['estado'];
+      let proxima_acao: ItemPainelContratante['proxima_acao'];
+
+      if (vaga.status === 'expirada' || vaga.status === 'cancelada') {
+        estado = 'encerradas';
+        proxima_acao = null;
+      } else if (vaga.status === 'publicada') {
+        estado = 'publicada';
+        proxima_acao = null;
+      } else if (vaga.status === 'em_contratacao') {
+        estado = 'em_contratacao';
+        proxima_acao = 'escolher';
+      } else if (vaga.status === 'contratada' || vaga.status === 'aceita') {
+        estado = 'contratada';
+        proxima_acao = 'pagar';
+      } else if (vaga.status === 'em_execucao') {
+        estado = 'em_execucao';
+        proxima_acao = 'confirmar';
+      } else if (vaga.status === 'aguardando_confirmacao') {
+        estado = 'aguardando_confirmacao';
+        proxima_acao = 'validar';
+      } else if (vaga.status === 'concluida') {
+        estado = 'concluida';
+        proxima_acao = 'avaliar';
+      } else {
+        estado = 'encerradas';
+        proxima_acao = null;
+      }
+
+      return {
+        vaga: sanitizeVagaLGP01(vaga),
+        estado,
+        interessados_count: vaga.interessados_count ?? 0,
+        proxima_acao,
+        conversa_id: vaga.meu_convite?.status === 'aceito' ? vaga.id : null,
+        pagamento_id: vaga.id,
+      };
+    });
+    return itens as unknown as T;
+  }
+
+  const pagamentoGetMatch = pathname.match(
+    /^\/api\/v1\/vagas\/([^/]+)\/pagamento\/pix$/
+  );
+  if (pagamentoGetMatch && method === 'GET') {
+    const vaga = mockVagas.find((v) => v.id === pagamentoGetMatch[1]);
+    if (!vaga) throw new Error('Vaga não encontrada.');
+    const pagamento = criarPagamento(vaga);
+    if (
+      pagamento.status === 'aguardando' &&
+      new Date(pagamento.prazo_em).getTime() <= Date.now()
+    ) {
+      pagamento.status = 'expirado';
+    }
+    return { ...pagamento } as unknown as T;
+  }
+
+  const pagamentoSimularMatch = pathname.match(
+    /^\/api\/v1\/vagas\/([^/]+)\/pagamento\/pix\/simular$/
+  );
+  if (pagamentoSimularMatch && method === 'POST') {
+    const vaga = mockVagas.find((v) => v.id === pagamentoSimularMatch[1]);
+    if (!vaga) throw new Error('Vaga não encontrada.');
+    const pagamento = criarPagamento(vaga);
+    if (new Date(pagamento.prazo_em).getTime() <= Date.now()) {
+      pagamento.status = 'expirado';
+      return { ...pagamento } as unknown as T;
+    }
+    pagamento.status = 'retido';
+    return { ...pagamento } as unknown as T;
+  }
+
+  const facialMatch = pathname.match(
+    /^\/api\/v1\/vagas\/([^/]+)\/validacao-facial$/
+  );
+  if (facialMatch && method === 'POST') {
+    const vaga = mockVagas.find((v) => v.id === facialMatch[1]);
+    if (!vaga) throw new Error('Vaga não encontrada.');
+    if (!vaga.conclusao_confirmada_em) {
+      throw new Error(
+        'A validação facial só pode ser iniciada após a conclusão ser confirmada.'
+      );
+    }
+
+    const pagamento = criarPagamento(vaga);
+    pagamento.status = 'liberado';
+    pagamento.liberacao_validada = true;
+    pagamento.liberacao_prazo_em = emHoras(48);
+    pagamento.lancamentos = [
+      {
+        tipo: 'profissional',
+        descricao: 'Crédito líquido ao profissional',
+        valor: pagamento.liquido,
+      },
+      {
+        tipo: 'freelai',
+        descricao: 'Taxa da plataforma',
+        valor: pagamento.taxa,
+      },
+    ];
+
+    const resultado: ResultadoValidacaoFacial = {
+      vaga_id: vaga.id,
+      validado: true,
+      prazo_em: pagamento.liberacao_prazo_em,
+      mensagem: 'Validação facial concluída. Liberação do valor iniciada.',
+      lancamentos: pagamento.lancamentos,
+    };
+    vaga.status = 'concluida';
+    return resultado as unknown as T;
+  }
+
+  if (pathname === '/api/v1/contratante/top3' && method === 'GET') {
+    atualizarRodadasTop3();
+    return mockTop3Contratacoes.map(copiarTop3) as unknown as T;
+  }
+
+  const escolhaMatch = pathname.match(
+    /^\/api\/v1\/contratante\/vagas\/([^/]+)\/escolher$/
+  );
+  if (escolhaMatch && method === 'POST') {
+    atualizarRodadasTop3();
+    const match = mockTop3Contratacoes.find(
+      (item) => item.vaga.id === escolhaMatch[1]
+    );
+    if (!match) throw new Error('Vaga não encontrada para esta rodada.');
+    if (match.convite_atual) {
+      throw new Error('Aguarde a resolução do convite atual.');
+    }
+    const profissional = match.profissionais.find(
+      (item) => item.id === body.profissional_id
+    );
+    if (!profissional || profissional.estado === 'falhou') {
+      throw new Error('Este profissional não está disponível nesta rodada.');
+    }
+    match.convite_atual = {
+      id: `convite-match-${Date.now()}`,
+      profissional_id: profissional.id,
+      status: 'em_andamento',
+      prazo_em: new Date(Date.now() + 30 * 60_000).toISOString(),
+    };
+    return copiarTop3(match) as unknown as T;
+  }
 
   if (pathname === '/api/v1/vagas/oportunidades' && method === 'GET') {
     const raio = Number(params.get('raio_km') || 15);

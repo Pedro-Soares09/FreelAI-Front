@@ -2,8 +2,14 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { freelaiApi } from '@/services/api';
-import { DisponibilidadeProfissional, Vaga } from '@/types';
+import {
+  DisponibilidadeProfissional,
+  ItemPainelContratante,
+  EstadoPainelVaga,
+  Vaga,
+} from '@/types';
 import dynamic from 'next/dynamic';
 import { JobCard } from '@/components/shared/job-card';
 import { Carregando } from '@/components/ui/estados';
@@ -13,6 +19,8 @@ const MapaVagas = dynamic(() => import('@/components/vagas/mapa-vagas'), {
   loading: () => <Carregando rotulo="Carregando mapa" />,
 });
 import { useToast } from '@/components/ui/toast';
+import { useSessao } from '@/lib/session';
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
 
 const RECIFE_CENTER = { lat: -8.0476, lng: -34.877 };
 const CATEGORIAS = [
@@ -34,7 +42,242 @@ function formatarTempoRestante(isoTarget?: string | null): string | null {
   return `${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
 }
 
-export default function VagasMapaPage() {
+const grupoLabels: Record<EstadoPainelVaga, string> = {
+  publicada: 'Publicadas',
+  em_contratacao: 'Em contratação',
+  contratada: 'Contratadas',
+  em_execucao: 'Em execução',
+  aguardando_confirmacao: 'Aguardando confirmação',
+  concluida: 'Concluídas',
+  encerradas: 'Encerradas',
+};
+
+function EstadoBadge({ estado }: { estado: EstadoPainelVaga }) {
+  const classes: Record<EstadoPainelVaga, string> = {
+    publicada: 'bg-sky-500/15 text-sky-300',
+    em_contratacao: 'bg-amber-500/15 text-amber-300',
+    contratada: 'bg-violet-500/15 text-violet-300',
+    em_execucao: 'bg-cyan-500/15 text-cyan-300',
+    aguardando_confirmacao: 'bg-orange-500/15 text-orange-300',
+    concluida: 'bg-emerald-500/15 text-emerald-300',
+    encerradas: 'bg-zinc-700/60 text-zinc-300',
+  };
+  return (
+    <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${classes[estado]}`}>
+      {grupoLabels[estado]}
+    </span>
+  );
+}
+
+
+export default function VagasPage() {
+  const { usuario } = useSessao();
+  const router = useRouter();
+  const ehAdmin = !USA_MOCKS && usuario?.papel === 'admin';
+  const [perfilSalvo, setPerfilSalvo] = useState<'profissional' | 'contratante' | 'admin'>(
+    'profissional'
+  );
+
+  useEffect(() => {
+    const salvo = localStorage.getItem('freelai_perfil_ativo');
+    if (salvo === 'contratante' || salvo === 'admin') {
+      setPerfilSalvo(salvo);
+    }
+  }, []);
+
+  // Com a API real, o perfil ativo vem da sessão; no mock, do que ficou salvo no navegador.
+  const perfil = USA_MOCKS ? perfilSalvo : (usuario?.perfil_ativo ?? 'profissional');
+
+  // A administração não tem painel de vagas: vai direto para /admin, sem chamar rotas de profissional.
+  useEffect(() => {
+    if (ehAdmin) router.replace('/admin');
+  }, [ehAdmin, router]);
+
+  if (ehAdmin) return <Carregando rotulo="Abrindo a administração" />;
+
+  return perfil === 'contratante' || perfil === 'admin' ? (
+    <PainelContratante />
+  ) : (
+    <VagasProfissionalPage />
+  );
+}
+
+function PainelContratante() {
+  const [itens, setItens] = useState<ItemPainelContratante[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+
+  useEffect(() => {
+    freelaiApi
+      .listarPainelContratante()
+      .then(setItens)
+      .catch((e) =>
+        setErro(e instanceof Error ? e.message : 'Erro ao carregar vagas.')
+      )
+      .finally(() => setLoading(false));
+  }, []);
+
+  const grupos: EstadoPainelVaga[] = [
+    'publicada',
+    'em_contratacao',
+    'contratada',
+    'em_execucao',
+    'aguardando_confirmacao',
+    'concluida',
+    'encerradas',
+  ];
+
+  return (
+    <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Painel do contratante</h1>
+          <p className="mt-1 text-sm text-zinc-400">
+            Acompanhe suas vagas e a próxima ação necessária.
+          </p>
+        </div>
+        <Link
+          href="/criar-vaga"
+          className="rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-bold text-zinc-950"
+        >
+          + Criar vaga
+        </Link>
+      </div>
+
+      {loading ? (
+        <div className="h-64 animate-pulse rounded-2xl border border-zinc-800 bg-zinc-900" />
+      ) : erro ? (
+        <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4 text-sm text-rose-200">
+          {erro}
+        </div>
+      ) : (
+        <div className="space-y-5">
+          {grupos.map((estado) => {
+            const itensGrupo = itens.filter((item) => item.estado === estado);
+            return (
+              <section
+                key={estado}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <h2 className="text-base font-bold text-white">
+                    {grupoLabels[estado]}
+                  </h2>
+                  <span className="rounded-full bg-zinc-800 px-2.5 py-1 text-xs font-bold text-zinc-300">
+                    {itensGrupo.length}
+                  </span>
+                </div>
+
+                {itensGrupo.length === 0 ? (
+                  <div className="rounded-xl border border-dashed border-zinc-700 p-5 text-center">
+                    <p className="text-sm text-zinc-400">Nenhuma vaga neste estado.</p>
+                    <Link
+                      href="/criar-vaga"
+                      className="mt-3 inline-block text-xs font-bold text-emerald-400"
+                    >
+                      Criar uma nova vaga
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {itensGrupo.map(({ vaga, interessados_count, proxima_acao, conversa_id, pagamento_id }) => (
+                      <article
+                        key={vaga.id}
+                        className="rounded-xl border border-zinc-800 bg-zinc-950 p-4"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <EstadoBadge estado={estado} />
+                            <h3 className="mt-2 font-bold text-white">{vaga.titulo}</h3>
+                            <p className="mt-1 text-xs text-zinc-500">
+                              R$ {vaga.valor.toFixed(2).replace('.', ',')} · {vaga.bairro}
+                            </p>
+                          </div>
+                          <div className="shrink-0 rounded-lg bg-zinc-900 px-3 py-2 text-right">
+                            <span className="block text-lg font-black text-emerald-400">
+                              {interessados_count}
+                            </span>
+                            <span className="text-[10px] text-zinc-500">interessados</span>
+                          </div>
+                        </div>
+
+                        {vaga.encerrada_motivo && (
+                          <p className="mt-3 rounded-lg bg-zinc-800/70 p-2.5 text-xs text-zinc-300">
+                            Encerrada: {vaga.encerrada_motivo}
+                          </p>
+                        )}
+
+                        {proxima_acao && (
+                          <p className="mt-3 text-xs text-zinc-400">
+                            Próxima ação:{' '}
+                            <strong className="capitalize text-amber-300">
+                              {proxima_acao}
+                            </strong>
+                          </p>
+                        )}
+
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {proxima_acao === 'escolher' && (
+                            <Link
+                              href="/match"
+                              className="rounded-lg bg-amber-400 px-3 py-2 text-xs font-bold text-zinc-950"
+                            >
+                              Ver 3 melhores
+                            </Link>
+                          )}
+                          {proxima_acao === 'acordar' && (
+                            <Link
+                              href={`/acordo/${vaga.id}`}
+                              className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950"
+                            >
+                              Fechar acordo
+                            </Link>
+                          )}
+                          {proxima_acao === 'pagar' && pagamento_id && (
+                            <Link
+                              href={`/pagamento/${pagamento_id}`}
+                              className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950"
+                            >
+                              Pagar
+                            </Link>
+                          )}
+                          {proxima_acao === 'validar' && (
+                            <Link
+                              href={`/pagamento/${vaga.id}?validar=1`}
+                              className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950"
+                            >
+                              Validar conclusão
+                            </Link>
+                          )}
+                          {conversa_id && (
+                            <Link
+                              href={`/chat/${conversa_id}`}
+                              className="rounded-lg border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-200"
+                            >
+                              Abrir chat
+                            </Link>
+                          )}
+                          <Link
+                            href={`/vagas/${vaga.id}`}
+                            className="rounded-lg border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-300"
+                          >
+                            Ver vaga
+                          </Link>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function VagasProfissionalPage() {
   const { avisar } = useToast();
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [loading, setLoading] = useState(true);
@@ -211,7 +454,7 @@ export default function VagasMapaPage() {
             className={`flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
               disponibilidade.disponivel_agora
                 ? 'bg-primary text-primary-fg shadow-lg shadow-primary/25'
-                : 'border border-borda bg-surface-2 text-fg hover:border-primary/50'
+                : 'border border-borda bg-surface-2 text-primary-fg hover:border-primary/50'
             }`}
           >
             <span
@@ -416,7 +659,7 @@ export default function VagasMapaPage() {
                 className={`rounded-xl py-2 text-xs font-semibold transition ${
                   dataFiltro === opt.id
                     ? 'bg-primary text-primary-fg'
-                    : 'border border-borda bg-bg text-fg hover:border-primary/60'
+                    : 'border border-borda bg-bg text-primary-fg hover:border-primary/60'
                 }`}
               >
                 {opt.label}
@@ -473,7 +716,7 @@ export default function VagasMapaPage() {
               <button
                 type="button"
                 onClick={carregarDados}
-                className="mt-2 rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-fg"
+                className="mt-2 rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-primary-fg"
               >
                 Tentar novamente
               </button>
