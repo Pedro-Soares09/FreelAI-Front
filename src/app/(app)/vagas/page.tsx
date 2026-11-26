@@ -54,13 +54,13 @@ const grupoLabels: Record<EstadoPainelVaga, string> = {
 
 function EstadoBadge({ estado }: { estado: EstadoPainelVaga }) {
   const classes: Record<EstadoPainelVaga, string> = {
-    publicada: 'bg-sky-500/15 text-sky-300',
-    em_contratacao: 'bg-amber-500/15 text-amber-300',
-    contratada: 'bg-violet-500/15 text-violet-300',
+    publicada: 'bg-sky-500/15 text-info',
+    em_contratacao: 'bg-amber-500/15 text-warning',
+    contratada: 'bg-violet-500/15 text-primary',
     em_execucao: 'bg-cyan-500/15 text-cyan-300',
     aguardando_confirmacao: 'bg-orange-500/15 text-orange-300',
-    concluida: 'bg-emerald-500/15 text-emerald-300',
-    encerradas: 'bg-zinc-700/60 text-zinc-300',
+    concluida: 'bg-emerald-500/15 text-success',
+    encerradas: 'bg-surface-2 text-fg',
   };
   return (
     <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${classes[estado]}`}>
@@ -131,8 +131,8 @@ function PainelContratante() {
     <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Painel do contratante</h1>
-          <p className="mt-1 text-sm text-zinc-400">
+          <h1 className="text-2xl font-bold text-fg">Painel do contratante</h1>
+          <p className="mt-1 text-sm text-muted">
             Acompanhe suas vagas e a próxima ação necessária.
           </p>
         </div>
@@ -145,7 +145,7 @@ function PainelContratante() {
       </div>
 
       {loading ? (
-        <div className="h-64 animate-pulse rounded-2xl border border-zinc-800 bg-zinc-900" />
+        <div className="h-64 animate-pulse rounded-2xl border border-borda bg-surface" />
       ) : erro ? (
         <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4 text-sm text-rose-200">
           {erro}
@@ -157,23 +157,23 @@ function PainelContratante() {
             return (
               <section
                 key={estado}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4"
+                className="rounded-2xl border border-borda bg-surface p-4"
               >
                 <div className="mb-3 flex items-center justify-between">
-                  <h2 className="text-base font-bold text-white">
+                  <h2 className="text-base font-bold text-fg">
                     {grupoLabels[estado]}
                   </h2>
-                  <span className="rounded-full bg-zinc-800 px-2.5 py-1 text-xs font-bold text-zinc-300">
+                  <span className="rounded-full bg-surface-2 px-2.5 py-1 text-xs font-bold text-fg">
                     {itensGrupo.length}
                   </span>
                 </div>
 
                 {itensGrupo.length === 0 ? (
-                  <div className="rounded-xl border border-dashed border-zinc-700 p-5 text-center">
-                    <p className="text-sm text-zinc-400">Nenhuma vaga neste estado.</p>
+                  <div className="rounded-xl border border-dashed border-borda p-5 text-center">
+                    <p className="text-sm text-muted">Nenhuma vaga neste estado.</p>
                     <Link
                       href="/criar-vaga"
-                      className="mt-3 inline-block text-xs font-bold text-emerald-400"
+                      className="mt-3 inline-block text-xs font-bold text-success"
                     >
                       Criar uma nova vaga
                     </Link>
@@ -183,34 +183,34 @@ function PainelContratante() {
                     {itensGrupo.map(({ vaga, interessados_count, proxima_acao, conversa_id, pagamento_id }) => (
                       <article
                         key={vaga.id}
-                        className="rounded-xl border border-zinc-800 bg-zinc-950 p-4"
+                        className="rounded-xl border border-borda bg-bg p-4"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>
                             <EstadoBadge estado={estado} />
-                            <h3 className="mt-2 font-bold text-white">{vaga.titulo}</h3>
-                            <p className="mt-1 text-xs text-zinc-500">
+                            <h3 className="mt-2 font-bold text-fg">{vaga.titulo}</h3>
+                            <p className="mt-1 text-xs text-muted">
                               R$ {vaga.valor.toFixed(2).replace('.', ',')} · {vaga.bairro}
                             </p>
                           </div>
-                          <div className="shrink-0 rounded-lg bg-zinc-900 px-3 py-2 text-right">
-                            <span className="block text-lg font-black text-emerald-400">
+                          <div className="shrink-0 rounded-lg bg-surface px-3 py-2 text-right">
+                            <span className="block text-lg font-black text-success">
                               {interessados_count}
                             </span>
-                            <span className="text-[10px] text-zinc-500">interessados</span>
+                            <span className="text-[10px] text-muted">interessados</span>
                           </div>
                         </div>
 
                         {vaga.encerrada_motivo && (
-                          <p className="mt-3 rounded-lg bg-zinc-800/70 p-2.5 text-xs text-zinc-300">
+                          <p className="mt-3 rounded-lg bg-surface-2 p-2.5 text-xs text-fg">
                             Encerrada: {vaga.encerrada_motivo}
                           </p>
                         )}
 
                         {proxima_acao && (
-                          <p className="mt-3 text-xs text-zinc-400">
+                          <p className="mt-3 text-xs text-muted">
                             Próxima ação:{' '}
-                            <strong className="capitalize text-amber-300">
+                            <strong className="capitalize text-warning">
                               {proxima_acao}
                             </strong>
                           </p>
@@ -252,14 +252,14 @@ function PainelContratante() {
                           {conversa_id && (
                             <Link
                               href={`/chat/${conversa_id}`}
-                              className="rounded-lg border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-200"
+                              className="rounded-lg border border-borda px-3 py-2 text-xs font-bold text-fg"
                             >
                               Abrir chat
                             </Link>
                           )}
                           <Link
                             href={`/vagas/${vaga.id}`}
-                            className="rounded-lg border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-300"
+                            className="rounded-lg border border-borda px-3 py-2 text-xs font-bold text-fg"
                           >
                             Ver vaga
                           </Link>

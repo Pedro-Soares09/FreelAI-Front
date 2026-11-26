@@ -58,15 +58,20 @@ export function Tabs({ abas, inicial }: { abas: Aba[]; inicial?: string }) {
           );
         })}
       </div>
-      <div
-        role="tabpanel"
-        id={`${base}-painel-${atual.id}`}
-        aria-labelledby={`${base}-aba-${atual.id}`}
-        tabIndex={0}
-        className="pt-6"
-      >
-        {atual.conteudo}
-      </div>
+      {/* Todos os painéis ficam montados (os inativos ocultos) para as contagens das abas carregarem. */}
+      {abas.map((a) => (
+        <div
+          key={a.id}
+          role="tabpanel"
+          id={`${base}-painel-${a.id}`}
+          aria-labelledby={`${base}-aba-${a.id}`}
+          tabIndex={0}
+          hidden={a.id !== atual.id}
+          className="pt-6"
+        >
+          {a.conteudo}
+        </div>
+      ))}
     </div>
   );
 }

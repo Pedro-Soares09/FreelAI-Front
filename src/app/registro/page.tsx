@@ -53,7 +53,7 @@ function FormularioRegistro() {
       await entrar(email.trim(), senha);
       avisar("Conta criada com sucesso.", "success");
       router.replace(
-        tipo === "contratante" ? "/cadastro/empresa" : tipo === "profissional" ? "/cadastro/profissional" : "/vagas",
+        tipo === "contratante" ? "/cadastro/empresa" : tipo === "profissional" ? "/cadastro/profissional" : "/verificacao",
       );
     } catch (err) {
       if (err instanceof ApiError && Object.keys(err.campos).length > 0) {

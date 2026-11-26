@@ -94,6 +94,31 @@ export default function VerificacaoPage() {
     }
   }
 
+  const semPerfil = usuario !== null && (usuario.perfis?.length ?? 0) === 0;
+  if (semPerfil) {
+    return (
+      <Pagina titulo="Complete seu cadastro" descricao="Escolha como você vai usar a FreelAI para continuar com a verificação.">
+        <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
+          <Link
+            href="/cadastro/profissional"
+            className="rounded-card border border-borda bg-surface p-5 transition hover:border-primary"
+          >
+            <h2 className="text-lg font-semibold">Quero trabalhar</h2>
+            <p className="mt-1 text-sm text-muted">Cadastre seu perfil de profissional e receba convites de vagas.</p>
+            <span className="mt-4 inline-block font-semibold text-primary">Cadastrar como profissional</span>
+          </Link>
+          <Link
+            href="/cadastro/empresa"
+            className="rounded-card border border-borda bg-surface p-5 transition hover:border-primary"
+          >
+            <h2 className="text-lg font-semibold">Preciso de um serviço</h2>
+            <p className="mt-1 text-sm text-muted">Cadastre seu perfil de contratante e publique vagas.</p>
+            <span className="mt-4 inline-block font-semibold text-primary">Cadastrar como contratante</span>
+          </Link>
+        </div>
+      </Pagina>
+    );
+  }
   if (erro) return <Pagina titulo="Verificação de identidade"><ErroComRetry mensagem={erro} onTentarNovamente={() => void carregar()} /></Pagina>;
   if (!status) return <Pagina titulo="Verificação de identidade"><Carregando /></Pagina>;
 

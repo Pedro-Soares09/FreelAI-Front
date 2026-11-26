@@ -12,12 +12,12 @@ const statusConfig: Record<
   StatusPagamento,
   { label: string; classes: string }
 > = {
-  aguardando: { label: 'Aguardando pagamento', classes: 'bg-amber-500/15 text-amber-300' },
-  retido: { label: 'Valor retido', classes: 'bg-sky-500/15 text-sky-300' },
-  liberado: { label: 'Liberado', classes: 'bg-emerald-500/15 text-emerald-300' },
-  parcial: { label: 'Pagamento parcial', classes: 'bg-violet-500/15 text-violet-300' },
-  estornado: { label: 'Estornado', classes: 'bg-rose-500/15 text-rose-300' },
-  expirado: { label: 'Pix expirado', classes: 'bg-zinc-700 text-zinc-300' },
+  aguardando: { label: 'Aguardando pagamento', classes: 'bg-amber-500/15 text-warning' },
+  retido: { label: 'Valor retido', classes: 'bg-sky-500/15 text-info' },
+  liberado: { label: 'Liberado', classes: 'bg-emerald-500/15 text-success' },
+  parcial: { label: 'Pagamento parcial', classes: 'bg-violet-500/15 text-primary' },
+  estornado: { label: 'Estornado', classes: 'bg-rose-500/15 text-danger' },
+  expirado: { label: 'Pix expirado', classes: 'bg-surface-2 text-fg' },
 };
 
 export default function PaymentPage() {
@@ -140,7 +140,7 @@ export default function PaymentPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-4xl p-6">
-        <div className="h-96 animate-pulse rounded-3xl border border-zinc-800 bg-zinc-900" />
+        <div className="h-96 animate-pulse rounded-3xl border border-borda bg-surface" />
       </div>
     );
   }
@@ -148,7 +148,7 @@ export default function PaymentPage() {
   if (erro || !pagamento) {
     return (
       <div className="mx-auto max-w-4xl p-6">
-        <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-5 text-rose-200">
+        <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-5 text-danger">
           {erro || 'Pagamento não encontrado.'}
         </div>
       </div>
@@ -158,14 +158,14 @@ export default function PaymentPage() {
   if (pagamento.status === 'expirado') {
     return (
       <div className="mx-auto flex min-h-[70vh] max-w-lg items-center p-6">
-        <div className="w-full rounded-3xl border border-rose-500/40 bg-zinc-900 p-7 text-center">
-          <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-bold text-rose-300">
+        <div className="w-full rounded-3xl border border-rose-500/40 bg-surface p-7 text-center">
+          <span className="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-bold text-danger">
             Pix expirado
           </span>
-          <h1 className="mt-4 text-2xl font-bold text-white">
+          <h1 className="mt-4 text-2xl font-bold text-fg">
             Tempo esgotado
           </h1>
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-muted">
             O prazo de 15 minutos terminou. Gere uma nova cobrança pelo painel.
           </p>
           <button
@@ -187,7 +187,7 @@ export default function PaymentPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-5 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <Link href="/vagas" className="text-xs text-zinc-400 hover:text-white">
+        <Link href="/vagas" className="text-xs text-muted hover:text-fg">
           ← Voltar ao painel
         </Link>
         <span className={`rounded-full px-3 py-1 text-xs font-bold ${config.classes}`}>
@@ -196,25 +196,25 @@ export default function PaymentPage() {
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[1.3fr_0.7fr]">
-        <section className="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 md:p-7">
+        <section className="rounded-3xl border border-borda bg-surface p-5 md:p-7">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+              <p className="text-xs font-bold uppercase tracking-wider text-success">
                 Pagamento Pix
               </p>
-              <h1 className="mt-1 text-2xl font-bold text-white">
+              <h1 className="mt-1 text-2xl font-bold text-fg">
                 Pagamento do serviço
               </h1>
-              <p className="mt-1 text-xs text-zinc-400">
+              <p className="mt-1 text-xs text-muted">
                 O pagamento é feito depois da conclusão do serviço, conforme o acordo.
               </p>
             </div>
             {pagamento.status === 'aguardando' && (
               <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-right">
-                <span className="block text-[10px] uppercase text-amber-300">
+                <span className="block text-[10px] uppercase text-warning">
                   Expira em
                 </span>
-                <strong className="font-mono text-lg text-amber-300">
+                <strong className="font-mono text-lg text-warning">
                   {String(minutos).padStart(2, '0')}:
                   {String(restoSegundos).padStart(2, '0')}
                 </strong>
@@ -224,14 +224,14 @@ export default function PaymentPage() {
 
           {pagamento.status === 'aguardando' ? (
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <div className="flex items-center justify-center rounded-2xl border border-zinc-800 bg-white p-5">
+              <div className="flex items-center justify-center rounded-2xl border border-borda bg-white p-5">
                 <div className="grid h-48 w-48 grid-cols-7 gap-1 bg-white p-3">
                   {Array.from({ length: 49 }).map((_, index) => (
                     <span
                       key={index}
                       className={
                         (index * 7 + 3) % 11 < 5
-                          ? 'rounded-sm bg-zinc-950'
+                          ? 'rounded-sm bg-bg'
                           : 'rounded-sm bg-white'
                       }
                     />
@@ -239,18 +239,18 @@ export default function PaymentPage() {
                 </div>
               </div>
               <div className="space-y-3">
-                <p className="text-sm text-zinc-300">
+                <p className="text-sm text-fg">
                   Escaneie o QR fictício ou copie o código.
                 </p>
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-                  <code className="block break-all text-[11px] text-zinc-400">
+                <div className="rounded-xl border border-borda bg-bg p-3">
+                  <code className="block break-all text-[11px] text-muted">
                     {pagamento.copia_e_cola}
                   </code>
                 </div>
                 <button
                   type="button"
                   onClick={() => navigator.clipboard?.writeText(pagamento.copia_e_cola)}
-                  className="w-full rounded-xl border border-zinc-700 py-2.5 text-xs font-bold text-zinc-200"
+                  className="w-full rounded-xl border border-borda py-2.5 text-xs font-bold text-fg"
                 >
                   Copiar código Pix
                 </button>
@@ -266,8 +266,8 @@ export default function PaymentPage() {
               </div>
             </div>
           ) : (
-            <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
-              <p className="text-sm text-zinc-300">
+            <div className="mt-6 rounded-2xl border border-borda bg-bg p-5">
+              <p className="text-sm text-fg">
                 {pagamento.status === 'retido'
                   ? 'Pagamento confirmado. O valor está retido até a conclusão e validação.'
                   : pagamento.status === 'liberado'
@@ -287,7 +287,7 @@ export default function PaymentPage() {
                 key={metodo}
                 type="button"
                 disabled
-                className="rounded-xl border border-zinc-800 px-2 py-3 text-xs text-zinc-500"
+                className="rounded-xl border border-borda px-2 py-3 text-xs text-muted"
               >
                 {metodo}
                 <span className="mt-1 block text-[10px]">{aviso}</span>
@@ -297,24 +297,24 @@ export default function PaymentPage() {
         </section>
 
         <aside className="space-y-4">
-          <section className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <h2 className="font-bold text-white">Resumo</h2>
+          <section className="rounded-2xl border border-borda bg-surface p-5">
+            <h2 className="font-bold text-fg">Resumo</h2>
             <dl className="mt-4 space-y-3 text-sm">
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-muted">
                 <dt>Total</dt>
-                <dd className="text-white">
+                <dd className="text-fg">
                   R$ {pagamento.total.toFixed(2).replace('.', ',')}
                 </dd>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-muted">
                 <dt>Taxa FREELAI</dt>
-                <dd className="text-amber-300">
+                <dd className="text-warning">
                   R$ {pagamento.taxa.toFixed(2).replace('.', ',')}
                 </dd>
               </div>
-              <div className="flex justify-between border-t border-zinc-800 pt-3 font-bold">
-                <dt className="text-zinc-300">Líquido profissional</dt>
-                <dd className="text-emerald-400">
+              <div className="flex justify-between border-t border-borda pt-3 font-bold">
+                <dt className="text-fg">Líquido profissional</dt>
+                <dd className="text-success">
                   R$ {pagamento.liquido.toFixed(2).replace('.', ',')}
                 </dd>
               </div>
@@ -323,14 +323,14 @@ export default function PaymentPage() {
 
           {(validar || pagamento.status === 'retido') && (
             <section className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
-              <h2 className="font-bold text-white">Validação facial</h2>
-              <p className="mt-2 text-xs leading-relaxed text-zinc-400">
+              <h2 className="font-bold text-fg">Validação facial</h2>
+              <p className="mt-2 text-xs leading-relaxed text-muted">
                 A selfie valida a conclusão e libera o valor. Não é o pagamento.
                 Prazo de revisão: 48h. Após 72h, a plataforma aplica a decisão automática.
               </p>
 
               {emAnalise && (
-                <p className="mt-4 rounded-lg bg-amber-500/10 p-2.5 text-xs text-amber-300">
+                <p className="mt-4 rounded-lg bg-amber-500/10 p-2.5 text-xs text-warning">
                   Em análise: a contestação do serviço bloqueia a liberação até a decisão da equipe FREELAÍ.
                 </p>
               )}
@@ -339,13 +339,13 @@ export default function PaymentPage() {
                 <button
                   type="button"
                   disabled
-                  className="mt-4 w-full rounded-xl bg-zinc-800 py-2.5 text-xs font-bold text-zinc-500"
+                  className="mt-4 w-full rounded-xl bg-surface-2 py-2.5 text-xs font-bold text-muted"
                 >
                   {emAnalise ? 'Liberação em análise' : 'Validação bloqueada'}
                 </button>
               ) : !pagamento.liberacao_validada ? (
                 <div className="mt-4 space-y-3">
-                  <div className="flex h-36 items-center justify-center rounded-xl border border-dashed border-zinc-700 bg-zinc-950 text-4xl">
+                  <div className="flex h-36 items-center justify-center rounded-xl border border-dashed border-borda bg-bg text-4xl">
                     ◉
                   </div>
                   <button
@@ -360,14 +360,14 @@ export default function PaymentPage() {
               ) : null}
 
               {pagamento.liberacao_prazo_em && (
-                <p className="mt-3 rounded-lg bg-zinc-950 p-2.5 text-xs text-zinc-300">
+                <p className="mt-3 rounded-lg bg-bg p-2.5 text-xs text-fg">
                   Prazo restante informado pela API:{' '}
                   {new Date(pagamento.liberacao_prazo_em).toLocaleString('pt-BR')}
                 </p>
               )}
 
               {validacaoMensagem && (
-                <p className="mt-3 rounded-lg bg-emerald-500/10 p-2.5 text-xs text-emerald-300">
+                <p className="mt-3 rounded-lg bg-emerald-500/10 p-2.5 text-xs text-success">
                   {validacaoMensagem}
                 </p>
               )}
@@ -375,16 +375,16 @@ export default function PaymentPage() {
           )}
 
           {pagamento.lancamentos.length > 0 && (
-            <section className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-              <h2 className="font-bold text-white">Extrato da vaga</h2>
+            <section className="rounded-2xl border border-borda bg-surface p-5">
+              <h2 className="font-bold text-fg">Extrato da vaga</h2>
               <div className="mt-3 space-y-2">
                 {pagamento.lancamentos.map((lancamento) => (
                   <div
                     key={lancamento.tipo}
-                    className="flex items-center justify-between rounded-lg bg-zinc-950 p-3 text-xs"
+                    className="flex items-center justify-between rounded-lg bg-bg p-3 text-xs"
                   >
-                    <span className="text-zinc-400">{lancamento.descricao}</span>
-                    <strong className="text-emerald-400">
+                    <span className="text-muted">{lancamento.descricao}</span>
+                    <strong className="text-success">
                       R$ {lancamento.valor.toFixed(2).replace('.', ',')}
                     </strong>
                   </div>

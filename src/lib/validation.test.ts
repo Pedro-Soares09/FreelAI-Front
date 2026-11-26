@@ -37,7 +37,8 @@ function dataComIdade(anos: number, diasAMais = 0): string {
   const d = new Date();
   d.setFullYear(d.getFullYear() - anos);
   d.setDate(d.getDate() + diasAMais);
-  return d.toISOString().slice(0, 10);
+  const dois = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${dois(d.getMonth() + 1)}-${dois(d.getDate())}`;
 }
 
 describe("validateBirthDate", () => {
@@ -50,11 +51,7 @@ describe("validateBirthDate", () => {
     expect(validateBirthDate(dataComIdade(18)).valid).toBe(true);
   });
 
-  // DEF-01: new Date("AAAA-MM-DD") é lido em UTC e comparado com getDate() local; no fuso de
-  // Recife (UTC-3) a data de nascimento recua um dia, e quem faz 18 anos amanhã é aceito hoje.
-  // O teste descreve o comportamento correto e está marcado como falha conhecida (it.fails);
-  // quando o defeito for corrigido, ele passa a falhar e a marcação deve ser removida.
-  it.fails("DEF-01: falta um dia para os 18 anos deveria ser recusado", () => {
+  it("DEF-01: falta um dia para os 18 anos é recusado (data lida no fuso local)", () => {
     expect(validateBirthDate(dataComIdade(18, 1)).valid).toBe(false);
   });
 

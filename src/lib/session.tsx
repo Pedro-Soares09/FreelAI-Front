@@ -27,12 +27,16 @@ type ContextoSessao = {
   trocarPerfil: (perfil: TipoPerfil) => Promise<void>;
 };
 
+const MAX_TENTATIVAS_DE_REDE = 5;
+const ESPERA_ENTRE_TENTATIVAS_MS = 3000;
+
 const SessaoContext = createContext<ContextoSessao | null>(null);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [estado, setEstado] = useState<Estado>("carregando");
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const contaBloqueada = useRef<string | null>(null);
+  const tentativasDeRede = useRef(0);
 
   const sair = useCallback(() => {
     limparTokens();
@@ -48,10 +52,18 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
     try {
       const dados = await chamar(api.GET("/api/v1/auth/me"));
+      tentativasDeRede.current = 0;
       setUsuario(dados);
       setEstado("autenticado");
       return dados;
     } catch (e) {
+      const recusada = e instanceof ApiError && (e.status === 401 || e.status === 403);
+      if (!recusada && tentativasDeRede.current < MAX_TENTATIVAS_DE_REDE) {
+        // Rede fora do ar ou erro 5xx (por exemplo, o back acordando): mantém a sessão e tenta de novo.
+        tentativasDeRede.current += 1;
+        setTimeout(() => void atualizar(), ESPERA_ENTRE_TENTATIVAS_MS);
+        return null;
+      }
       contaBloqueada.current =
         e instanceof ApiError && (e.codigo === "conta_banida" || e.codigo === "conta_suspensa")
           ? e.codigo
