@@ -82,6 +82,20 @@ export default function DetalheVagaPage() {
 
   const limiteMaximoContraproposta = Number((vaga.valor * 1.5).toFixed(2));
   const conviteStatus = vaga.meu_convite?.status;
+
+  // Depois da contratação, o texto de "aguarde a escolha" não vale mais: mostra o estado atual.
+  const ESTADOS_AVANCADOS: Record<string, { rotulo: string; texto: string }> = {
+    aceita: { rotulo: 'Contratada', texto: 'Você foi escolhido(a). Feche o acordo no chat com o contratante.' },
+    aguardando_pagamento: { rotulo: 'Contratada', texto: 'Acordo fechado. Combine os detalhes no chat e faça o check-in no horário.' },
+    contratada: { rotulo: 'Contratada', texto: 'Acordo fechado. Combine os detalhes no chat e faça o check-in no horário.' },
+    em_execucao: { rotulo: 'Em andamento', texto: 'Serviço em andamento.' },
+    aguardando_confirmacao: { rotulo: 'Serviço realizado', texto: 'Aguardando a confirmação de conclusão pelo contratante.' },
+    em_disputa: { rotulo: 'Em disputa', texto: 'O serviço está em análise pela administração.' },
+    concluida: { rotulo: 'Concluída', texto: 'Serviço concluído.' },
+    cancelada: { rotulo: 'Cancelada', texto: 'Esta vaga foi cancelada.' },
+    expirada: { rotulo: 'Expirada', texto: 'Esta vaga expirou.' },
+  };
+  const estadoAvancado = ESTADOS_AVANCADOS[vaga.status] ?? null;
   const jaEnviouInteresse =
     conviteStatus === 'interessado' ||
     conviteStatus === 'escolhido' ||
@@ -230,10 +244,12 @@ export default function DetalheVagaPage() {
             <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
               <div>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 text-xs font-bold text-primary">
-                  Interesse enviado
+                  {estadoAvancado?.rotulo ?? 'Interesse enviado'}
                 </span>
                 <p className="mt-1.5 text-sm text-fg">
-                  {vaga.meu_convite?.valor_proposto
+                  {estadoAvancado
+                    ? estadoAvancado.texto
+                    : vaga.meu_convite?.valor_proposto
                     ? `Você enviou uma contraproposta única de R$ ${vaga.meu_convite.valor_proposto
                         .toFixed(2)
                         .replace('.', ',')}.`

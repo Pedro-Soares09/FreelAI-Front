@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { AgreementModal } from "@/components/chat/agreement-modal";
 import { AiSuggestion } from "@/components/chat/ai-suggestion";
+import { USE_MOCKS } from "@/lib/modo";
 import { ChatHeader, rotuloEstadoVaga } from "@/components/chat/chat-header";
 import { Composer } from "@/components/chat/composer";
 import { ComprovantesPanel } from "@/components/pagamento/comprovantes-panel";
@@ -206,7 +207,8 @@ export default function ConversationPage({ params }: ConversationPageProps) {
 
       {!readOnly && !blocked && (
         <>
-          <AiSuggestion conversationId={id} draft={draft} onUse={setDraft} />
+          {/* A sugestão é simulada: só aparece no modo de dados simulados. */}
+          {USE_MOCKS && <AiSuggestion conversationId={id} draft={draft} onUse={setDraft} />}
           <Composer
             conversationId={id}
             text={draft}

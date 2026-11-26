@@ -47,20 +47,21 @@ describe("erroDeResposta", () => {
     expect(erroDeResposta(418, null).message).toBe("Erro inesperado.");
   });
 
-  it("registra o comportamento atual para o envelope de validação do back (detail.erros)", () => {
-    // O back responde 422 com detail { codigo, mensagem, erros: [{ field, message }] }.
-    // O parser atual só lê campos de uma lista em detail, então os campos não são mapeados.
+  it("422 do back (detail.erros) mapeia cada campo e mantém codigo e mensagem", () => {
     const erro = erroDeResposta(422, {
       detail: {
         codigo: "erro_validacao",
         mensagem: "Erro de validação: senha - muito curta",
-        erros: [{ field: "senha", message: "muito curta" }],
+        erros: [
+          { field: "body.senha", message: "muito curta" },
+          { field: "email", message: "E-mail inválido." },
+        ],
       },
     });
 
     expect(erro.codigo).toBe("erro_validacao");
     expect(erro.message).toBe("Erro de validação: senha - muito curta");
-    expect(erro.campos).toEqual({});
+    expect(erro.campos).toEqual({ senha: "muito curta", email: "E-mail inválido." });
   });
 });
 

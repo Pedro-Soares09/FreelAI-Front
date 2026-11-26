@@ -94,7 +94,11 @@ export function validateBirthDate(birthDateStr: string): {
     return { valid: false, message: "A data de nascimento é obrigatória." };
   }
 
-  const birthDate = new Date(birthDateStr);
+  // "AAAA-MM-DD" é lido como data local (new Date(str) o leria em UTC e recuaria um dia em Recife).
+  const partes = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthDateStr);
+  const birthDate = partes
+    ? new Date(Number(partes[1]), Number(partes[2]) - 1, Number(partes[3]))
+    : new Date(birthDateStr);
   if (isNaN(birthDate.getTime())) {
     return { valid: false, message: "Data de nascimento inválida." };
   }

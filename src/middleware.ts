@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { caminhoLivre } from "@/lib/rotas";
 
 const COOKIE_SESSAO = "freelai-sessao";
 
@@ -7,6 +8,7 @@ const COOKIE_SESSAO = "freelai-sessao";
  * O cookie é apenas um indicador de presença; a validação real é do back e do guard no cliente.
  */
 export function middleware(request: NextRequest) {
+  if (caminhoLivre(request.nextUrl.pathname)) return NextResponse.next();
   if (request.cookies.get(COOKIE_SESSAO)?.value === "1") return NextResponse.next();
 
   const destino = request.nextUrl.clone();

@@ -14,6 +14,7 @@ export class ApiError extends Error {
 }
 
 type Validacao = { loc?: Array<string | number>; msg?: string };
+type ErroDeCampo = { field?: string; message?: string };
 
 const MENSAGENS_PADRAO: Record<number, string> = {
   400: "Requisição inválida.",
@@ -42,7 +43,21 @@ export function erroDeResposta(status: number, corpo: unknown): ApiError {
   }
 
   if (typeof detail === "object" && detail !== null) {
-    const d = detail as { codigo?: string; mensagem?: string };
+    const d = detail as { codigo?: string; mensagem?: string; erros?: ErroDeCampo[] };
+    // Envelope do back para o 422: detail { codigo, mensagem, erros: [{ field, message }] }.
+    if (Array.isArray(d.erros)) {
+      const campos: Record<string, string> = {};
+      for (const item of d.erros) {
+        const campo = item.field?.replace(/^body\./, "") ?? "";
+        if (campo && item.message) campos[campo] = item.message;
+      }
+      return new ApiError(
+        status,
+        d.codigo ?? "validacao",
+        d.mensagem ?? MENSAGENS_PADRAO[422],
+        campos,
+      );
+    }
     return new ApiError(
       status,
       d.codigo ?? `http_${status}`,

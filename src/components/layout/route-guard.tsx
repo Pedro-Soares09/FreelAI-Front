@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Carregando } from "@/components/ui/estados";
 import { useToast } from "@/components/ui/toast";
-import { verificarAcesso } from "@/lib/rotas";
+import { caminhoLivre, verificarAcesso } from "@/lib/rotas";
 import { useSessao } from "@/lib/session";
 
 function TelaDeConta({ titulo, texto }: { titulo: string; texto: string }) {
@@ -34,13 +34,15 @@ export function RouteGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { avisar } = useToast();
 
+  const livre = caminhoLivre(caminho);
   const acesso =
-    usuario && usuario.estado === "ativa" ? verificarAcesso(caminho, usuario) : null;
+    !livre && usuario && usuario.estado === "ativa" ? verificarAcesso(caminho, usuario) : null;
 
   // Conta pendente só enxerga a verificação de identidade e o próprio perfil.
   const areaDaPendente = caminho.startsWith("/verificacao") || caminho.startsWith("/perfil");
 
   useEffect(() => {
+    if (livre) return;
     if (usuario?.estado === "pendente" && !areaDaPendente) {
       router.replace("/verificacao");
       return;
@@ -53,7 +55,10 @@ export function RouteGuard({ children }: { children: ReactNode }) {
       avisar(acesso.motivo, "info");
       router.replace(acesso.destino);
     }
-  }, [estado, usuario?.estado, areaDaPendente, acesso, caminho, router, avisar]);
+  }, [livre, estado, usuario?.estado, areaDaPendente, acesso, caminho, router, avisar]);
+
+  // Caminho livre: abre sem sessão e sem restrição de perfil.
+  if (livre) return <>{children}</>;
 
   if (estado === "carregando" || estado === "anonimo") return <Carregando rotulo="Verificando sessão" />;
   if (!usuario) return <Carregando rotulo="Verificando sessão" />;

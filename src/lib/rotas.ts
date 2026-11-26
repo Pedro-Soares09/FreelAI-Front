@@ -35,6 +35,16 @@ export function itensDeNavegacao(usuario: Usuario | null): ItemNav[] {
   return usuario.perfil_ativo === "contratante" ? navContratante : navProfissional;
 }
 
+/**
+ * Caminhos abertos sem login, por igualdade exata (sem curinga): a vaga de demonstração do
+ * pagamento pode ser vista a qualquer momento. Os demais /pagamento/* seguem protegidos.
+ */
+const CAMINHOS_LIVRES = ["/pagamento/vaga-105"];
+
+export function caminhoLivre(caminho: string): boolean {
+  return CAMINHOS_LIVRES.includes(caminho);
+}
+
 /** Rotas restritas a um perfil ou papel. O prefixo mais específico vale. */
 const restricoes: Array<{ prefixo: string; perfil?: TipoPerfil; admin?: boolean }> = [
   { prefixo: "/criar-vaga", perfil: "contratante" },

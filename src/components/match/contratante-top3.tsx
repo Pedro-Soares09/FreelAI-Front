@@ -259,7 +259,7 @@ export function ContratanteTop3() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-6 p-4 pb-24 md:p-6">
+    <div className="mx-auto max-w-6xl space-y-6 p-4 pb-24 md:p-6">
       <header className="space-y-2">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
           Contratação por match
@@ -414,6 +414,6 @@ export function ContratanteTop3() {
           })}
         </div>
       )}
-    </main>
+    </div>
   );
 }
