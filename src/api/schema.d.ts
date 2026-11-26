@@ -1122,6 +1122,26 @@ export interface paths {
         patch: operations["perfis_atualizar_meu_perfil_profissional"];
         trace?: never;
     };
+    "/api/v1/profissionais/{usuario_id}/perfil": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Consultar Perfil Publico Do Profissional
+         * @description Visão pública do profissional, sem dados sensíveis, para quem está logado.
+         */
+        get: operations["perfis_consultar_perfil_publico_do_profissional"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/profissional/agenda/bloqueios": {
         parameters: {
             query?: never;
@@ -2276,6 +2296,14 @@ export interface components {
              * @description O que ainda falta aprovar para atuar na categoria.
              */
             pendencias: ("experiencia" | "qualificacao" | "epi")[];
+            /** Slug */
+            slug: string;
+        };
+        /** CategoriaPublica */
+        CategoriaPublica: {
+            nivel_risco: components["schemas"]["RiscoCategoria"];
+            /** Nome */
+            nome: string;
             /** Slug */
             slug: string;
         };
@@ -3778,6 +3806,56 @@ export interface components {
              * @default 0
              */
             vagas_publicadas: number;
+            /** Verificado */
+            verificado: boolean;
+        };
+        /**
+         * PerfilPublicoProfissional
+         * @description Não expõe CPF, telefone, endereço exato nem arquivos de verificação.
+         */
+        PerfilPublicoProfissional: {
+            /** Avaliacoes */
+            avaliacoes?: components["schemas"]["AvaliacaoPublica"][];
+            /** Bairro */
+            bairro?: string | null;
+            caracteristicas: components["schemas"]["CaracteristicasEntrada"];
+            /** Categorias */
+            categorias?: components["schemas"]["CategoriaPublica"][];
+            /** Foto Url */
+            foto_url?: string | null;
+            /**
+             * Membro Desde
+             * Format: date-time
+             */
+            membro_desde: string;
+            /** Nome */
+            nome: string;
+            /** Nota Media */
+            nota_media?: number | null;
+            /**
+             * Novo
+             * @description Selo Novo enquanto tiver até 5 serviços concluídos.
+             */
+            novo: boolean;
+            /** Pro */
+            pro: boolean;
+            /**
+             * Reputacao
+             * @description Nota final de 0 a 5 pela fórmula de reputação.
+             */
+            reputacao: number;
+            /**
+             * Servicos Concluidos
+             * @default 0
+             */
+            servicos_concluidos: number;
+            /**
+             * Total Avaliacoes
+             * @default 0
+             */
+            total_avaliacoes: number;
+            /** Usuario Id */
+            usuario_id: number;
             /** Verificado */
             verificado: boolean;
         };
@@ -6213,6 +6291,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PerfilProfissionalDetalhe"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    perfis_consultar_perfil_publico_do_profissional: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                usuario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PerfilPublicoProfissional"];
                 };
             };
             /** @description Validation Error */
