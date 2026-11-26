@@ -1,5 +1,6 @@
 'use client';
 
+import { AvisoChuva } from '@/components/shared/aviso-chuva';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ContratanteTop3 } from '@/components/match/contratante-top3';
@@ -209,6 +210,13 @@ function ProfissionalConvites() {
                       {new Date(vaga.data_inicio).toLocaleString('pt-BR')} •{' '}
                       {vaga.duracao_horas}h
                     </p>
+                    <AvisoChuva
+                      categoria={vaga.categoria}
+                      titulo={vaga.titulo}
+                      lat={vaga.latitude}
+            lng={vaga.longitude}
+                      inicioIso={vaga.data_inicio}
+                    />
                   </div>
 
                   <div className="rounded-xl border border-borda bg-bg px-4 py-2.5 text-right">

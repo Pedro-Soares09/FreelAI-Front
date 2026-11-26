@@ -25,12 +25,17 @@ export type NivelRisco = 'baixo' | 'medio' | 'alto';
 
 export interface ContratanteResumo {
   id: string;
+  usuario_id?: number | null;
+  cor_destaque?: string | null;
   nome: string;
   foto_url?: string;
   verificado: boolean;
   nota_media: number;
   total_avaliacoes: number;
   pro?: boolean;
+  /** Pagou horas extras ou bônus; não altera o match. */
+  destaque?: boolean;
+  adicionais_pagos?: number;
 }
 
 export interface ConviteVaga {
@@ -45,6 +50,8 @@ export interface ConviteVaga {
 
 export interface ProfissionalRecomendado {
   id: string;
+  /** Id da conta, usado para abrir o perfil público do profissional. */
+  usuario_id?: number | null;
   nome: string;
   foto_url?: string | null;
   verificado: boolean;
@@ -111,7 +118,7 @@ export interface ItemPainelContratante {
   vaga: Vaga;
   estado: EstadoPainelVaga;
   interessados_count: number;
-  proxima_acao: 'escolher' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
+  proxima_acao: 'escolher' | 'acordar' | 'pagar' | 'confirmar' | 'validar' | 'avaliar' | null;
   conversa_id?: string | null;
   pagamento_id?: string | null;
 }
@@ -226,6 +233,8 @@ export type Conversation = {
   agreementId?: string;
   /** Vaga encerrada: a conversa vira somente leitura. */
   jobClosed?: boolean;
+  /** Denúncia procedente: a troca de mensagens entre as partes está bloqueada. */
+  blocked?: boolean;
 };
 
 export type Payment = {
@@ -246,6 +255,8 @@ export type ChatContact = {
   verified: boolean;
   online: boolean;
   role: ChatRole;
+  destaque?: boolean;
+  corDestaque?: string;
 };
 
 export type ChatJob = {
@@ -323,6 +334,16 @@ export type Agreement = AgreementTerms & {
   completionByHirer?: boolean;
   completionByWorker?: boolean;
   completedAt?: string;
+  /** Fim da janela de contestação, informado pela API. */
+  contestDeadline?: string;
+  /** Observação enviada na confirmação de conclusão (só mock; a API ainda não recebe). */
+  completionNote?: string;
+  /** Nomes dos anexos enviados na confirmação (só mock; a API ainda não recebe). */
+  completionAttachments?: string[];
+  /** Prazo para as partes avaliarem (48 h após o fim previsto), informado pela API. */
+  avaliacaoDeadline?: string;
+  /** Liberação parcial de 50% sem validação facial (72 h após o fim previsto), informada pela API. */
+  liberacaoParcialDeadline?: string;
   contestedAt?: string;
   contestReason?: ContestReason;
   contestDetails?: string;

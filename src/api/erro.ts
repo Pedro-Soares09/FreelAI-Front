@@ -3,25 +3,18 @@ export class ApiError extends Error {
   readonly status: number;
   readonly codigo: string;
   readonly campos: Record<string, string>;
-  readonly detalhes: Record<string, unknown>;
 
-  constructor(
-    status: number,
-    codigo: string,
-    mensagem: string,
-    campos: Record<string, string> = {},
-    detalhes: Record<string, unknown> = {},
-  ) {
+  constructor(status: number, codigo: string, mensagem: string, campos: Record<string, string> = {}) {
     super(mensagem);
     this.name = "ApiError";
     this.status = status;
     this.codigo = codigo;
     this.campos = campos;
-    this.detalhes = detalhes;
   }
 }
 
 type Validacao = { loc?: Array<string | number>; msg?: string };
+type ErroDeCampo = { field?: string; message?: string };
 
 const MENSAGENS_PADRAO: Record<number, string> = {
   400: "Requisição inválida.",
@@ -50,15 +43,25 @@ export function erroDeResposta(status: number, corpo: unknown): ApiError {
   }
 
   if (typeof detail === "object" && detail !== null) {
-    const d = detail as Record<string, unknown> & { codigo?: string; mensagem?: string };
+    const d = detail as { codigo?: string; mensagem?: string; erros?: ErroDeCampo[] };
+    // Envelope do back para o 422: detail { codigo, mensagem, erros: [{ field, message }] }.
+    if (Array.isArray(d.erros)) {
+      const campos: Record<string, string> = {};
+      for (const item of d.erros) {
+        const campo = item.field?.replace(/^body\./, "") ?? "";
+        if (campo && item.message) campos[campo] = item.message;
+      }
+      return new ApiError(
+        status,
+        d.codigo ?? "validacao",
+        d.mensagem ?? MENSAGENS_PADRAO[422],
+        campos,
+      );
+    }
     return new ApiError(
       status,
-      typeof d.codigo === "string" ? d.codigo : `http_${status}`,
-      typeof d.mensagem === "string"
-        ? d.mensagem
-        : MENSAGENS_PADRAO[status] ?? "Erro inesperado.",
-      {},
-      d,
+      d.codigo ?? `http_${status}`,
+      d.mensagem ?? MENSAGENS_PADRAO[status] ?? "Erro inesperado.",
     );
   }
 

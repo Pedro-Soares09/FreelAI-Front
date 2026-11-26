@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Carregando } from "@/components/ui/estados";
 import { useToast } from "@/components/ui/toast";
-import { verificarAcesso } from "@/lib/rotas";
+import { caminhoLivre, verificarAcesso } from "@/lib/rotas";
 import { useSessao } from "@/lib/session";
 
 function TelaDeConta({ titulo, texto }: { titulo: string; texto: string }) {
@@ -29,15 +29,24 @@ function TelaDeConta({ titulo, texto }: { titulo: string; texto: string }) {
 }
 
 export function RouteGuard({ children }: { children: ReactNode }) {
-  const { estado, usuario, bloqueio } = useSessao();
+  const { estado, usuario } = useSessao();
   const caminho = usePathname();
   const router = useRouter();
   const { avisar } = useToast();
 
+  const livre = caminhoLivre(caminho);
   const acesso =
-    usuario && usuario.estado === "ativa" ? verificarAcesso(caminho, usuario) : null;
+    !livre && usuario && usuario.estado === "ativa" ? verificarAcesso(caminho, usuario) : null;
+
+  // Conta pendente só enxerga a verificação de identidade e o próprio perfil.
+  const areaDaPendente = caminho.startsWith("/verificacao") || caminho.startsWith("/perfil");
 
   useEffect(() => {
+    if (livre) return;
+    if (usuario?.estado === "pendente" && !areaDaPendente) {
+      router.replace("/verificacao");
+      return;
+    }
     if (estado === "anonimo") {
       router.replace(`/login?next=${encodeURIComponent(caminho)}`);
       return;
@@ -46,24 +55,15 @@ export function RouteGuard({ children }: { children: ReactNode }) {
       avisar(acesso.motivo, "info");
       router.replace(acesso.destino);
     }
-  }, [estado, acesso, caminho, router, avisar]);
+  }, [livre, estado, usuario?.estado, areaDaPendente, acesso, caminho, router, avisar]);
 
-  if (estado === "bloqueado" && bloqueio) {
-    const retornoEm =
-      bloqueio.retornoEm && !Number.isNaN(Date.parse(bloqueio.retornoEm))
-        ? ` A suspensão termina em ${new Date(bloqueio.retornoEm).toLocaleString("pt-BR")}.`
-        : "";
-    return (
-      <TelaDeConta
-        titulo={bloqueio.codigo === "conta_suspensa" ? "Conta suspensa" : "Conta banida"}
-        texto={`${bloqueio.mensagem}${retornoEm}`}
-      />
-    );
-  }
+  // Caminho livre: abre sem sessão e sem restrição de perfil.
+  if (livre) return <>{children}</>;
 
   if (estado === "carregando" || estado === "anonimo") return <Carregando rotulo="Verificando sessão" />;
   if (!usuario) return <Carregando rotulo="Verificando sessão" />;
 
+  if (usuario.estado === "pendente" && areaDaPendente) return <>{children}</>;
   if (usuario.estado === "pendente") {
     return (
       <TelaDeConta
@@ -76,7 +76,7 @@ export function RouteGuard({ children }: { children: ReactNode }) {
     return (
       <TelaDeConta
         titulo="Conta suspensa"
-        texto="Sua conta está suspensa temporariamente. Entre em contato com o suporte para mais detalhes."
+        texto="Sua conta está suspensa temporariamente. Saia e entre de novo para ver o motivo, a data de retorno e contestar a decisão."
       />
     );
   }
@@ -84,7 +84,7 @@ export function RouteGuard({ children }: { children: ReactNode }) {
     return (
       <TelaDeConta
         titulo="Conta banida"
-        texto="Sua conta foi encerrada por violação das regras da plataforma."
+        texto="Sua conta foi banida. Saia e entre de novo para ver o motivo e contestar a decisão."
       />
     );
   }

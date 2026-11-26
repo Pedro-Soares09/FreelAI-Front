@@ -1,3 +1,7 @@
+import { fetchAutenticado } from "@/api/client";
+import { contaApi, type ItemFila as ItemFilaApi } from "@/services/conta";
+import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
+
 export type TipoItem = "verificacao" | "experiencia" | "qualificacao" | "epi";
 
 export type ItemFila = {
@@ -86,7 +90,7 @@ let fila: ItemFila[] = [
   },
 ];
 
-export const repositorioCadastros: RepositorioCadastros = {
+const repositorioLocal: RepositorioCadastros = {
   async listar() {
     return [...fila].sort((a, b) => a.enviadoEm.localeCompare(b.enviadoEm));
   },
@@ -94,3 +98,44 @@ export const repositorioCadastros: RepositorioCadastros = {
     fila = fila.filter((i) => i.id !== id);
   },
 };
+
+
+/** O id do item na tela é "tipo:id" para devolver os dois à API na decisão. */
+const repositorioApi: RepositorioCadastros = {
+  async listar() {
+    const itens = await contaApi.listarAprovacoes("pendente");
+    return itens
+      .map((i) => ({
+        id: `${i.tipo}:${i.id}`,
+        tipo: (i.tipo === "profissional" || i.tipo === "contratante" ? "verificacao" : i.tipo) as TipoItem,
+        usuario: i.usuario_nome,
+        descricao: i.descricao,
+        enviadoEm: i.enviado_em ?? new Date().toISOString(),
+        arquivos: (i.arquivos ?? []).map((a) => ({ nome: a.tipo, url: a.url })),
+      }))
+      .sort((a, b) => a.enviadoEm.localeCompare(b.enviadoEm));
+  },
+  async decidir({ id, aprovado, motivo }) {
+    const [tipo, numero] = id.split(":");
+    await contaApi.decidirAprovacao(
+      tipo as ItemFilaApi["tipo"],
+      Number(numero),
+      aprovado ? "aprovar" : "recusar",
+      motivo,
+    );
+  },
+};
+
+export const repositorioCadastros: RepositorioCadastros = USA_MOCKS ? repositorioLocal : repositorioApi;
+
+/** Abre um arquivo da API; os de documento e selfie exigem o token, então vêm como blob. */
+export async function abrirArquivo(url: string): Promise<void> {
+  if (!url.startsWith("/api/")) {
+    window.open(url, "_blank", "noreferrer");
+    return;
+  }
+  const resposta = await fetchAutenticado(url);
+  if (!resposta.ok) throw new Error("Não foi possível abrir o arquivo.");
+  const blob = await resposta.blob();
+  window.open(URL.createObjectURL(blob), "_blank", "noreferrer");
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { IconCheck } from '@/components/ui/icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { freelaiApi } from '@/services/api';
@@ -154,6 +155,14 @@ function CartaoProfissional({
         </summary>
         <div className="mt-3 space-y-3 text-xs text-muted">
           <p>{profissional.resumo}</p>
+          {profissional.usuario_id != null && (
+            <Link
+              href={`/profissional/${profissional.usuario_id}`}
+              className="inline-block font-semibold text-primary hover:underline"
+            >
+              Ver perfil completo
+            </Link>
+          )}
           <div className="flex flex-wrap gap-1.5">
             {profissional.habilidades.map((habilidade) => (
               <span
@@ -259,7 +268,7 @@ export function ContratanteTop3() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-6 p-4 pb-24 md:p-6">
+    <div className="mx-auto max-w-6xl space-y-6 p-4 pb-24 md:p-6">
       <header className="space-y-2">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">
           Contratação por match
@@ -414,6 +423,6 @@ export function ContratanteTop3() {
           })}
         </div>
       )}
-    </main>
+    </div>
   );
 }

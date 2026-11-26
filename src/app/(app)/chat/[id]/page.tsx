@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { AgreementModal } from "@/components/chat/agreement-modal";
 import { AiSuggestion } from "@/components/chat/ai-suggestion";
-import { ChatHeader } from "@/components/chat/chat-header";
+import { USE_MOCKS } from "@/lib/modo";
+import { ChatHeader, rotuloEstadoVaga } from "@/components/chat/chat-header";
 import { Composer } from "@/components/chat/composer";
+import { ComprovantesPanel } from "@/components/pagamento/comprovantes-panel";
 import { MessageList } from "@/components/chat/message-list";
 import { PostServicePanel } from "@/components/chat/post-service-panel";
 import { ReportModal } from "@/components/chat/report-modal";
@@ -42,6 +44,7 @@ export default function ConversationPage({ params }: ConversationPageProps) {
   const [agreement, setAgreement] = useState<Agreement | null>(null);
   const [agreementOpen, setAgreementOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
+  const [blockedNow, setBlockedNow] = useState(false);
 
   // Carrega a conversa e marca como lida.
   useEffect(() => {
@@ -69,11 +72,13 @@ export default function ConversationPage({ params }: ConversationPageProps) {
 
     async function poll() {
       try {
-        const [fresh, currentAgreement] = await Promise.all([
+        const [fresh, currentAgreement, current] = await Promise.all([
           getMessages(id),
           getAgreementByConversation(id),
+          getConversation(id),
         ]);
         if (!active) return;
+        if (current?.blocked) setBlockedNow(true);
         setMessages(fresh);
         setAgreement(currentAgreement);
         setConnection("online");
@@ -123,17 +128,19 @@ export default function ConversationPage({ params }: ConversationPageProps) {
   }
 
   const readOnly = Boolean(conversation.jobClosed);
+  const blocked = Boolean(conversation.blocked) || blockedNow;
   const iAmWorker = getMyRole(conversation) === "profissional";
   // Acordo cancelado não bloqueia uma nova proposta.
   const activeAgreement = agreement && agreement.status !== "cancelled" ? agreement : null;
   const canOpenAgreement = !readOnly && (!activeAgreement || activeAgreement.status === "pending");
-  const waitingPayment = activeAgreement?.status === "accepted" && iAmWorker;
+  const agreedAndOpen = activeAgreement?.status === "accepted";
 
   return (
-    <section className="chat-screen">
+    <section className="chat-screen tema-chat">
       <ChatHeader
         conversation={conversation}
         connection={connection}
+        estadoVaga={rotuloEstadoVaga(agreement?.status)}
         onAgreementClick={
           canOpenAgreement
             ? () =>
@@ -149,9 +156,9 @@ export default function ConversationPage({ params }: ConversationPageProps) {
         <ReportModal conversationId={id} onClose={() => setReportOpen(false)} />
       )}
 
-      {waitingPayment && (
+      {agreedAndOpen && (
         <p role="status" className="state-box">
-          Acordo aceito pelas duas partes. Aguardando pagamento do contratante.
+          Acordo aceito pelas duas partes. O pagamento é feito depois da conclusão do serviço.
         </p>
       )}
 
@@ -168,6 +175,10 @@ export default function ConversationPage({ params }: ConversationPageProps) {
           iAmHirer={!iAmWorker}
           onChanged={setAgreement}
         />
+      )}
+
+      {activeAgreement && activeAgreement.status !== "pending" && (
+        <ComprovantesPanel vagaId={conversation.job.id} souContratante={!iAmWorker} />
       )}
 
       {messages === null ? (
@@ -187,14 +198,23 @@ export default function ConversationPage({ params }: ConversationPageProps) {
         />
       )}
 
-      {!readOnly && (
+      {blocked && (
+        <p role="status" className="state-box">
+          O chat entre vocês foi bloqueado após uma denúncia validada pela administração. As demais
+          funções da plataforma continuam disponíveis.
+        </p>
+      )}
+
+      {!readOnly && !blocked && (
         <>
-          <AiSuggestion conversationId={id} draft={draft} onUse={setDraft} />
+          {/* A sugestão é simulada: só aparece no modo de dados simulados. */}
+          {USE_MOCKS && <AiSuggestion conversationId={id} draft={draft} onUse={setDraft} />}
           <Composer
             conversationId={id}
             text={draft}
             onTextChange={setDraft}
             onSent={(message) => setMessages((current) => [...(current ?? []), message])}
+            onBlocked={() => setBlockedNow(true)}
           />
         </>
       )}
