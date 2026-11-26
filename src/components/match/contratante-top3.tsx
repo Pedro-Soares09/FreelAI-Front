@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { IconCheck } from '@/components/ui/icons';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { freelaiApi } from '@/services/api';
@@ -154,6 +155,14 @@ function CartaoProfissional({
         </summary>
         <div className="mt-3 space-y-3 text-xs text-muted">
           <p>{profissional.resumo}</p>
+          {profissional.usuario_id != null && (
+            <Link
+              href={`/profissional/${profissional.usuario_id}`}
+              className="inline-block font-semibold text-primary hover:underline"
+            >
+              Ver perfil completo
+            </Link>
+          )}
           <div className="flex flex-wrap gap-1.5">
             {profissional.habilidades.map((habilidade) => (
               <span

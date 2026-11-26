@@ -50,6 +50,8 @@ export interface ConviteVaga {
 
 export interface ProfissionalRecomendado {
   id: string;
+  /** Id da conta, usado para abrir o perfil público do profissional. */
+  usuario_id?: number | null;
   nome: string;
   foto_url?: string | null;
   verificado: boolean;

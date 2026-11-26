@@ -1199,6 +1199,28 @@
         "title": "CategoriaDoPerfil",
         "type": "object"
       },
+      "CategoriaPublica": {
+        "properties": {
+          "nivel_risco": {
+            "$ref": "#/components/schemas/RiscoCategoria"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "nome",
+          "nivel_risco"
+        ],
+        "title": "CategoriaPublica",
+        "type": "object"
+      },
       "CategoriaResumo": {
         "properties": {
           "nivel_risco": {
@@ -4513,6 +4535,114 @@
           "membro_desde"
         ],
         "title": "PerfilPublicoContratante",
+        "type": "object"
+      },
+      "PerfilPublicoProfissional": {
+        "description": "Não expõe CPF, telefone, endereço exato nem arquivos de verificação.",
+        "properties": {
+          "avaliacoes": {
+            "items": {
+              "$ref": "#/components/schemas/AvaliacaoPublica"
+            },
+            "title": "Avaliacoes",
+            "type": "array"
+          },
+          "bairro": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bairro"
+          },
+          "caracteristicas": {
+            "$ref": "#/components/schemas/CaracteristicasEntrada"
+          },
+          "categorias": {
+            "items": {
+              "$ref": "#/components/schemas/CategoriaPublica"
+            },
+            "title": "Categorias",
+            "type": "array"
+          },
+          "foto_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Foto Url"
+          },
+          "membro_desde": {
+            "format": "date-time",
+            "title": "Membro Desde",
+            "type": "string"
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string"
+          },
+          "nota_media": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nota Media"
+          },
+          "novo": {
+            "description": "Selo Novo enquanto tiver até 5 serviços concluídos.",
+            "title": "Novo",
+            "type": "boolean"
+          },
+          "pro": {
+            "title": "Pro",
+            "type": "boolean"
+          },
+          "reputacao": {
+            "description": "Nota final de 0 a 5 pela fórmula de reputação.",
+            "title": "Reputacao",
+            "type": "number"
+          },
+          "servicos_concluidos": {
+            "default": 0,
+            "title": "Servicos Concluidos",
+            "type": "integer"
+          },
+          "total_avaliacoes": {
+            "default": 0,
+            "title": "Total Avaliacoes",
+            "type": "integer"
+          },
+          "usuario_id": {
+            "title": "Usuario Id",
+            "type": "integer"
+          },
+          "verificado": {
+            "title": "Verificado",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "nome",
+          "caracteristicas",
+          "verificado",
+          "pro",
+          "reputacao",
+          "novo",
+          "membro_desde"
+        ],
+        "title": "PerfilPublicoProfissional",
         "type": "object"
       },
       "PerfilResumo": {
@@ -8812,6 +8942,54 @@
           }
         ],
         "summary": "Atualizar Meu Perfil Profissional",
+        "tags": [
+          "perfis"
+        ]
+      }
+    },
+    "/api/v1/profissionais/{usuario_id}/perfil": {
+      "get": {
+        "description": "Visão pública do profissional, sem dados sensíveis, para quem está logado.",
+        "operationId": "perfis_consultar_perfil_publico_do_profissional",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "usuario_id",
+            "required": true,
+            "schema": {
+              "title": "Usuario Id",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilPublicoProfissional"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Consultar Perfil Publico Do Profissional",
         "tags": [
           "perfis"
         ]
