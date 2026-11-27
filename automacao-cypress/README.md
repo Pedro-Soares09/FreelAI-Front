@@ -42,3 +42,7 @@ npx cypress install
 ```
 
 Se ainda assim falhar, baixe o zip de `https://download.cypress.io/desktop/13.17.0?platform=win32&arch=x64`, extraia em `C:\cy-cache\13.17.0\Cypress` e rode `npx cypress verify`.
+
+## Testes que usam o back diretamente
+
+O TC0035 adianta o horario do servico com `scripts/avancar_servico.py` do back (tarefa `avancarServico` em `cypress.config.ts`) e confirma a conclusao pela API. Ele espera encontrar `FreelAI-Back` ao lado de `FreelAI-Front` com o venv criado; para outro local use as variaveis de ambiente `BACK_DIR` e `BACK_PYTHON`. Os testes de match, chat, acordo e Pix consultam a API em `http://localhost:8000` (altere com `CYPRESS_API_URL`).
