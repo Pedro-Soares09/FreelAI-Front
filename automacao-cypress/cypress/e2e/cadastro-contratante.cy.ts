@@ -13,6 +13,7 @@ describe("Cadastro de contratante", () => {
 
   it("TC0015 - Cadastro de empresa com CNPJ invalido (negativo)", () => {
     cy.visit("/cadastro/empresa");
+    cy.window().its("next").should("exist"); // a tela so responde a cliques depois de hidratada
     cy.contains("label", "Empresa").click();
     cy.campo("Razão social").type("Empresa de Teste Ltda");
     cy.campo("CNPJ (opcional)").type("11111111111111");

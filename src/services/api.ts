@@ -15,6 +15,7 @@ import { fetchAutenticado } from '@/api/client';
 import { ApiError, erroDeResposta } from '@/api/erro';
 import type { DadosAcordo, PagamentoDetalhe } from '@/api/tipos';
 import { USE_MOCKS } from "@/lib/modo";
+import { VAGA_DEMO_PAGAMENTO } from "@/lib/rotas";
 
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
@@ -209,13 +210,13 @@ export const freelaiApi = {
       : painelDaApi(),
 
   obterPagamentoPix: (vagaId: string) =>
-    USE_MOCKS
-      ? request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix`)
+    USE_MOCKS || vagaId === VAGA_DEMO_PAGAMENTO
+      ? mockRouter<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix`)
       : cobrancaPix(vagaId).then(pagamentoParaPix),
 
   simularPagamentoPix: (vagaId: string) =>
-    USE_MOCKS
-      ? request<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix/simular`, {
+    USE_MOCKS || vagaId === VAGA_DEMO_PAGAMENTO
+      ? mockRouter<PagamentoPix>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/pagamento/pix/simular`, {
           method: 'POST',
         })
       : cobrancaPix(vagaId)
