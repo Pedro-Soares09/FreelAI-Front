@@ -63,3 +63,5 @@ npx cypress run
 | TC0033 | Acordo | Profissional de fora da vaga não acessa o acordo |
 | TC0034 | Pix | Antes da conclusão a cobrança não existe |
 | TC0035 | Pix | Contratante simula o pagamento depois da conclusão |
+| TC0036 | Plano Pro | Contratante não acessa a página e recebe aviso |
+| TC0037 | Pagamento | Página livre de demonstração abre sem login |
