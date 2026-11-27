@@ -2,6 +2,7 @@ import { ApiError, erroDeResposta } from "@/api/erro";
 import { fetchAutenticado } from "@/api/client";
 import type { components } from "@/api/schema";
 import { USE_MOCKS as USA_MOCKS } from "@/lib/modo";
+import { VAGA_DEMO_PAGAMENTO } from "@/lib/rotas";
 
 // Comprovantes de pagamento da vaga: serviço, horas extras e bônus.
 // Horas extras e bônus são acertados entre as partes; a plataforma cobra
@@ -64,7 +65,7 @@ function resumir(vagaId: string, lista: Comprovante[]): ResumoComprovantes {
 
 export const comprovantesApi = {
   listar: async (vagaId: string): Promise<ResumoComprovantes> => {
-    if (USA_MOCKS) return resumir(vagaId, locais.get(vagaId) ?? []);
+    if (USA_MOCKS || vagaId === VAGA_DEMO_PAGAMENTO) return resumir(vagaId, locais.get(vagaId) ?? []);
     return chamar<ResumoComprovantes>(`/api/v1/vagas/${encodeURIComponent(vagaId)}/comprovantes`);
   },
 
@@ -72,7 +73,7 @@ export const comprovantesApi = {
     vagaId: string,
     dados: { tipo: TipoComprovante; valor: number; arquivo: File; acordoPrevio?: string },
   ): Promise<void> => {
-    if (USA_MOCKS) {
+    if (USA_MOCKS || vagaId === VAGA_DEMO_PAGAMENTO) {
       const lista = locais.get(vagaId) ?? [];
       const adicional = dados.tipo !== "servico";
       lista.push({
