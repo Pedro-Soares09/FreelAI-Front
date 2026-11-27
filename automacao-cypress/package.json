@@ -1,0 +1,14 @@
+{
+  "name": "freelai-automacao-cypress",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testes de ponta a ponta do FreelAI com Cypress",
+  "scripts": {
+    "test": "cypress run",
+    "abrir": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^13.17.0",
+    "typescript": "^5.6.0"
+  }
+}
