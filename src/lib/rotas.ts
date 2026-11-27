@@ -3,7 +3,6 @@ import type { TipoPerfil, Usuario } from "@/api/tipos";
 export type ItemNav = { href: string; rotulo: string };
 
 const comum: ItemNav[] = [
-  { href: "/plano-pro", rotulo: "Plano Pro" },
   { href: "/chat", rotulo: "Conversas" },
   { href: "/perfil", rotulo: "Perfil" },
   { href: "/suporte", rotulo: "Suporte" },
@@ -13,6 +12,7 @@ const navProfissional: ItemNav[] = [
   { href: "/vagas", rotulo: "Vagas" },
   { href: "/mapa", rotulo: "Mapa" },
   { href: "/match", rotulo: "Convites" },
+  { href: "/plano-pro", rotulo: "Plano Pro" },
   ...comum,
 ];
 
@@ -39,7 +39,9 @@ export function itensDeNavegacao(usuario: Usuario | null): ItemNav[] {
  * Caminhos abertos sem login, por igualdade exata (sem curinga): a vaga de demonstração do
  * pagamento pode ser vista a qualquer momento. Os demais /pagamento/* seguem protegidos.
  */
-const CAMINHOS_LIVRES = ["/pagamento/vaga-105"];
+/** Vaga de demonstração do pagamento: usa dados locais mesmo com a API real. */
+export const VAGA_DEMO_PAGAMENTO = "vaga-105";
+const CAMINHOS_LIVRES = [`/pagamento/${VAGA_DEMO_PAGAMENTO}`];
 
 export function caminhoLivre(caminho: string): boolean {
   return CAMINHOS_LIVRES.includes(caminho);
@@ -50,6 +52,7 @@ const restricoes: Array<{ prefixo: string; perfil?: TipoPerfil; admin?: boolean 
   { prefixo: "/criar-vaga", perfil: "contratante" },
   { prefixo: "/pagamento", perfil: "contratante" },
   { prefixo: "/mapa", perfil: "profissional" },
+  { prefixo: "/plano-pro", perfil: "profissional" },
   { prefixo: "/admin", admin: true },
 ];
 

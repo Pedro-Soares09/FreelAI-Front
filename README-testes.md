@@ -54,3 +54,12 @@ npx cypress run
 | TC0017 | Match | Profissional escolhido não pode ser escolhido de novo |
 | TC0018 | Convites | Profissional aceita o convite |
 | TC0019 | Convites | Profissional recusa o convite |
+| TC0020 | Administração | Aprovar um cadastro da fila |
+| TC0021 | Administração | Recusar sem informar o motivo é barrado |
+| TC0022 a TC0029 | Suporte, políticas, Plano Pro e perfil | Logado abre a página; visitante vai ao login |
+| TC0030 | Chat | Envio de mensagem |
+| TC0031 | Chat | Mensagem com telefone é barrada |
+| TC0032 | Acordo | Profissional lê e aceita o acordo |
+| TC0033 | Acordo | Profissional de fora da vaga não acessa o acordo |
+| TC0034 | Pix | Antes da conclusão a cobrança não existe |
+| TC0035 | Pix | Contratante simula o pagamento depois da conclusão |
