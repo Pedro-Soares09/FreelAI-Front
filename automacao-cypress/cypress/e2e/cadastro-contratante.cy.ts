@@ -13,7 +13,10 @@ describe("Cadastro de contratante", () => {
 
   it("TC0015 - Cadastro de empresa com CNPJ invalido (negativo)", () => {
     cy.visit("/cadastro/empresa");
-    cy.window().its("next").should("exist"); // a tela so responde a cliques depois de hidratada
+    // A tela so responde a cliques depois de hidratada: o React marca o elemento com __reactProps.
+    cy.get("input[name=tipo]")
+      .first()
+      .should(($i) => expect(Object.keys($i[0]).some((k) => k.startsWith("__reactProps"))).to.eq(true));
     cy.contains("label", "Empresa").click();
     cy.campo("Razão social").type("Empresa de Teste Ltda");
     cy.campo("CNPJ (opcional)").type("11111111111111");

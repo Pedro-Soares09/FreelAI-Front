@@ -20,7 +20,7 @@ describe("Acordo", () => {
         const fora = email === "ana@example.com" ? "elisa@example.com" : "ana@example.com";
         cy.entrarComo(fora);
         cy.visit(caminho);
-        cy.contains("Esta vaga ainda não tem acordo.").should("be.visible");
+        cy.contains("Acordo não encontrado, ou esta conta não participa dele.").should("be.visible");
         cy.contains("Termos do serviço").should("not.exist");
         cy.contains("button", "Li e aceito").should("not.exist");
       });
